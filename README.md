@@ -1,2 +1,5 @@
-# appliedML
-Basel R Bootcamp on Applied Machine Learning
+# Applied ML @ Basel January 2019
+
+Notes (aka todo):
+
+Everything!
