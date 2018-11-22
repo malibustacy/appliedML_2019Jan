@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>What is Machine Learning (ML)?</title>
+    <meta charset="utf-8">
+    <meta name="author" content="Applied Machine Learning with R www.therbootcamp.com @therbootcamp" />
+    <link href="libs/remark-css/default.css" rel="stylesheet" />
+    <link rel="stylesheet" href="baselrbootcamp.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# What is Machine Learning (ML)?
+### Applied Machine Learning with R<br/><a href='https://therbootcamp.github.io'>www.therbootcamp.com</a><br/><a href='https://twitter.com/therbootcamp'><span class="citation">@therbootcamp</span></a>
+### January 2019
+
+---
+
+
+layout: true
+
+&lt;div class="my-footer"&gt;&lt;span&gt;
+&lt;a href="https://therbootcamp.github.io/"&gt;&lt;font color="#7E7E7E"&gt;Applied Machine Learning with R, January 2019&lt;/font&gt;&lt;/a&gt;
+&amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp;
+&lt;a href="https://therbootcamp.github.io/"&gt;&lt;font color="#7E7E7E"&gt;www.therbootcamp.com&lt;/font&gt;&lt;/a&gt;
+&lt;/span&gt;&lt;/div&gt; 
+
+---
+  
+
+
+
+
+
+.pull-left6[
+
+# What is Machine Learning?
+
+&gt;Machine learning (ML) is a field of artificial intelligence that uses statistical techniques to give computer systems the ability to "learn" (e.g., progressively improve performance on a specific task) from data, without being explicitly programmed.
+&gt;~ Wikipedia
+
+## What else?
+
+- Machine Learning is about making *data driven* decisions.
+
+- To do machine learning, you need data!
+
+- ML algorithms try to automatically figure out which information is important and which is not
+
+- Performance of an ML algorithm can always be defined by some accuracy or loss function.
+
+
+]
+
+.pull-right4[
+
+&lt;br&gt;&lt;br&gt;
+
+&lt;div class="figure" style="text-align: center"&gt;
+&lt;img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSXjr_if5M3PSjd7Im1cLUNjqwKNd3bxjL9ym_MrOND7HF3nd1Z8w" alt="Source: www.towardsdatascience.com" width="90%" /&gt;
+&lt;p class="caption"&gt;Source: www.towardsdatascience.com&lt;/p&gt;
+&lt;/div&gt;
+
+
+]
+
+---
+
+.pull-left6[
+
+# Examples
+
+### Predicting Heart Attacks
+
+You are a hospital administrator. 
+
+Patients often come to the emergency room complaining of chest pain. Some are having heart attacks, many are not.
+
+*How do you know which patients are actually having heart attacks and which are not?*
+
+### Predicting customer purchasing
+
+You are an analyst at a marketing company.
+
+You can pay $0.05 to place a targeted ad for a in front of a potential customer.
+
+*How do you know which customers are likely to click the ad and which are not?*
+
+]
+
+.pull-right35[
+
+&lt;br&gt;
+&lt;div class="figure" style="text-align: center"&gt;
+&lt;img src="https://www.ucsf.edu/sites/default/files/styles/2014_inline_5-col/public/fields/field_insert_file/news/Man-Chest-Pain-Doctor.jpg?itok=nRgCK8R_" alt="&amp;lt;font size = 4&amp;gt;Source: www.ucsf.edu&amp;lt;/font&amp;gt;" width="70%" /&gt;
+&lt;p class="caption"&gt;&lt;font size = 4&gt;Source: www.ucsf.edu&lt;/font&gt;&lt;/p&gt;
+&lt;/div&gt;
+
+&lt;div class="figure" style="text-align: center"&gt;
+&lt;img src="https://static01.nyt.com/images/2018/09/03/business/03AMAZONADS.illo/merlin_143075382_80b4a6c8-91f8-4a35-9d67-c3fa595b3154-articleLarge.jpg?quality=75&amp;auto=webp&amp;disable=upscale" alt="&amp;lt;font size = 4&amp;gt;Source: The New York Times&amp;lt;/font&amp;gt;" width="85%" /&gt;
+&lt;p class="caption"&gt;&lt;font size = 4&gt;Source: The New York Times&lt;/font&gt;&lt;/p&gt;
+&lt;/div&gt;
+
+]
+
+---
+
+# Solution 1: Intuition
+
+.pull-left6[
+
+Many people  decide based an individual, or group's personal, intuitive judgment.
+
+- "I have a feeling this patient is having a heart attack"
+- "Put the ad in front of anyone who has made a purchase in the past 2 months. That's what they do in other industries"
+
+### What are potential problems with this?
+
+]
+
+.pull-right35[
+
+&lt;div class="figure" style="text-align: center"&gt;
+&lt;img src="https://www.irishtimes.com/polopoly_fs/1.2457200.1449486887!/image/image.jpg_gen/derivatives/ratio_1x1_w1200/image.jpg" alt="Source: Irish Times" width="90%" /&gt;
+&lt;p class="caption"&gt;Source: Irish Times&lt;/p&gt;
+&lt;/div&gt;
+
+]
+
+---
+
+# Solution 1: Intuition
+
+.pull-left6[
+
+Many people decide based an individual, or group's personal, intuitive judgment.
+
+- "I have a feeling this patient is having a heart attack"
+- "Put the ad in front of anyone who has made a purchase in the past 2 months. That's what they do in other industries"
+
+### What are potential problems with this?
+
+- Without rigorous testing, impossible to know if &lt;high&gt;critical information is being ignored&lt;/high&gt;.
+
+- If the decision isn't programmed, it might be &lt;high&gt;impossible to replicate&lt;/high&gt; (and improve) in the future.
+
+- Intuition could be based on &lt;high&gt;biased processes&lt;/high&gt;
+
+]
+
+.pull-right35[
+
+&lt;div class="figure" style="text-align: center"&gt;
+&lt;img src="https://www.irishtimes.com/polopoly_fs/1.2457200.1449486887!/image/image.jpg_gen/derivatives/ratio_1x1_w1200/image.jpg" alt="Source: Irish Times" width="90%" /&gt;
+&lt;p class="caption"&gt;Source: Irish Times&lt;/p&gt;
+&lt;/div&gt;
+
+]
+
+---
+
+# Solution 2: Data-Driven Machine Learning
+
+.pull-left6[
+
+With machine learning, you can create an algorithm &lt;high&gt;optimised&lt;/high&gt; to solve your task
+
+- Based on &lt;high&gt;data from past patients at this hospital&lt;/high&gt;, a &lt;high&gt;regression&lt;/high&gt; model using the patient's &lt;high&gt;age, BMI, and health history&lt;/high&gt;, predicts the probability that this patient is having a heart attack is only &lt;high&gt;20% &lt;/high&gt;.
+
+- Based on &lt;high&gt;prior purchasing records&lt;/high&gt;, a &lt;high&gt;decision tree&lt;/high&gt; predicts that a &lt;high&gt;male, 20 year old Facebook user with at least 500 'friends'&lt;/high&gt; has a &lt;high&gt;80% chance&lt;/high&gt; of clicking the ad.
+
+### What are the benefits of ML?
+
+- Algorithms fit to your past data can tell you which variables are important an which are not.
+
+- Many can give you probability estimates, rather than single decisions.
+
+]
+
+.pull-right35[
+
+&lt;div class="figure" style="text-align: center"&gt;
+&lt;img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS795QtyFgYH6vRDqhlhu9WtQKLJw11iNyAfGteNoiaTzZE3f-v" alt="Source: gstatic.com" width="100%" /&gt;
+&lt;p class="caption"&gt;Source: gstatic.com&lt;/p&gt;
+&lt;/div&gt;
+
+
+&lt;div class="figure" style="text-align: center"&gt;
+&lt;img src="https://wkdigital.com.au/wp-content/uploads/2016/06/How-To-Profile-Your-Customer.jpg" alt="Source: WK Digital" width="100%" /&gt;
+&lt;p class="caption"&gt;Source: WK Digital&lt;/p&gt;
+&lt;/div&gt;
+
+]
+
+---
+
+# What are the steps of machine learning?
+
+&lt;div class="figure" style="text-align: center"&gt;
+&lt;img src="https://cdn-images-1.medium.com/max/1600/1*_QGyIwpgq831xI54cIe_GQ.jpeg" alt="Source: Medium.com" width="100%" /&gt;
+&lt;p class="caption"&gt;Source: Medium.com&lt;/p&gt;
+&lt;/div&gt;
+
+
+--
+# Terminology
+
+What is a model?
+
+What is a parameter
+
+What is a feature?
+
+What is a criterion?
+
+
+---
+
+# Practical
+
+&lt;p&gt;
+  &lt;font size=6&gt;
+    &lt;a href="https://therbootcamp.github.io/Intro2DataScience_2018Oct/_sessions/Wrangling/Wrangling_practical.html"&gt;&lt;b&gt;Link to practical&lt;b&gt;&lt;/a&gt;
+  &lt;/font&gt;
+&lt;/p&gt;
+    </textarea>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false,
+"ratio": "16:9"
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function() {
+  var d = document, s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})();</script>
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  tex2jax: {
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+  }
+});
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

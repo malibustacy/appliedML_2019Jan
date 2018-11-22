@@ -1,0 +1,213 @@
+---
+title: "What is Machine Learning (ML)?"
+subtitle: ""
+author: "Applied Machine Learning with R<br/><a href='https://therbootcamp.github.io'>www.therbootcamp.com</a><br/><a href='https://twitter.com/therbootcamp'>@therbootcamp</a>"
+date: "January 2019"
+output:
+  xaringan::moon_reader:
+    css: ["default", "baselrbootcamp.css"]
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+      ratio: '16:9'
+
+---
+
+layout: true
+
+<div class="my-footer"><span>
+<a href="https://therbootcamp.github.io/"><font color="#7E7E7E">Applied Machine Learning with R, January 2019</font></a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+<a href="https://therbootcamp.github.io/"><font color="#7E7E7E">www.therbootcamp.com</font></a>
+</span></div> 
+
+---
+  
+```{r, eval = FALSE, echo = FALSE}
+# Code to knit slides
+xaringan::inf_mr('_sessions/D1S2_Wrangling/Wrangling.Rmd')
+baselers <- read_csv("https://raw.githubusercontent.com/therbootcamp/baselers/master/inst/extdata/baselers.txt")
+```
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+options(width=110)
+options(digits = 4)
+library(tidyverse)
+baselers <- read_csv("https://raw.githubusercontent.com/therbootcamp/baselers/master/inst/extdata/baselers.txt")
+```
+
+
+.pull-left6[
+
+# What is Machine Learning?
+
+>Machine learning (ML) is a field of artificial intelligence that uses statistical techniques to give computer systems the ability to "learn" (e.g., progressively improve performance on a specific task) from data, without being explicitly programmed.
+>~ Wikipedia
+
+## What else?
+
+- Machine Learning is about making *data driven* decisions.
+
+- To do machine learning, you need data!
+
+- ML algorithms try to automatically figure out which information is important and which is not
+
+- Performance of an ML algorithm can always be defined by some accuracy or loss function.
+
+
+]
+
+.pull-right4[
+
+<br><br>
+
+```{r, echo = FALSE, fig.align = 'center', out.width = "90%", fig.cap = "Source: www.towardsdatascience.com"}
+knitr::include_graphics("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSXjr_if5M3PSjd7Im1cLUNjqwKNd3bxjL9ym_MrOND7HF3nd1Z8w")
+```
+
+
+]
+
+---
+
+.pull-left6[
+
+# Examples
+
+### Predicting Heart Attacks
+
+You are a hospital administrator. 
+
+Patients often come to the emergency room complaining of chest pain. Some are having heart attacks, many are not.
+
+*How do you know which patients are actually having heart attacks and which are not?*
+
+### Predicting customer purchasing
+
+You are an analyst at a marketing company.
+
+You can pay $0.05 to place a targeted ad for a in front of a potential customer.
+
+*How do you know which customers are likely to click the ad and which are not?*
+
+]
+
+.pull-right35[
+
+<br>
+```{r, echo = FALSE, fig.align = 'center', out.width = "70%", fig.cap = "<font size = 4>Source: www.ucsf.edu</font>"}
+knitr::include_graphics("https://www.ucsf.edu/sites/default/files/styles/2014_inline_5-col/public/fields/field_insert_file/news/Man-Chest-Pain-Doctor.jpg?itok=nRgCK8R_")
+```
+
+```{r, echo = FALSE, fig.align = 'center', out.width = "85%", fig.cap = "<font size = 4>Source: The New York Times</font>"}
+knitr::include_graphics("https://static01.nyt.com/images/2018/09/03/business/03AMAZONADS.illo/merlin_143075382_80b4a6c8-91f8-4a35-9d67-c3fa595b3154-articleLarge.jpg?quality=75&auto=webp&disable=upscale")
+```
+
+]
+
+---
+
+# Solution 1: Intuition
+
+.pull-left6[
+
+Many people  decide based an individual, or group's personal, intuitive judgment.
+
+- "I have a feeling this patient is having a heart attack"
+- "Put the ad in front of anyone who has made a purchase in the past 2 months. That's what they do in other industries"
+
+### What are potential problems with this?
+
+]
+
+.pull-right35[
+
+```{r, echo = FALSE, fig.align = 'center', out.width = "90%", fig.cap = "Source: Irish Times"}
+knitr::include_graphics("https://www.irishtimes.com/polopoly_fs/1.2457200.1449486887!/image/image.jpg_gen/derivatives/ratio_1x1_w1200/image.jpg")
+```
+
+]
+
+---
+
+# Solution 1: Intuition
+
+.pull-left6[
+
+Many people decide based an individual, or group's personal, intuitive judgment.
+
+- "I have a feeling this patient is having a heart attack"
+- "Put the ad in front of anyone who has made a purchase in the past 2 months. That's what they do in other industries"
+
+### What are potential problems with this?
+
+- Without rigorous testing, impossible to know if <high>critical information is being ignored</high>.
+
+- If the decision isn't programmed, it might be <high>impossible to replicate</high> (and improve) in the future.
+
+- Intuition could be based on <high>biased processes</high>
+
+]
+
+.pull-right35[
+
+```{r, echo = FALSE, fig.align = 'center', out.width = "90%", fig.cap = "Source: Irish Times"}
+knitr::include_graphics("https://www.irishtimes.com/polopoly_fs/1.2457200.1449486887!/image/image.jpg_gen/derivatives/ratio_1x1_w1200/image.jpg")
+```
+
+]
+
+---
+
+# Solution 2: Data-Driven Machine Learning
+
+.pull-left6[
+
+With machine learning, you can create an algorithm <high>optimised</high> to solve your task
+
+- Based on <high>data from past patients at this hospital</high>, a <high>regression</high> model using the patient's <high>age, BMI, and health history</high>, predicts the probability that this patient is having a heart attack is only <high>20% </high>.
+
+- Based on <high>prior purchasing records</high>, a <high>decision tree</high> predicts that a <high>male, 20 year old Facebook user with at least 500 'friends'</high> has a <high>80% chance</high> of clicking the ad.
+
+### What are the benefits of ML?
+
+- Algorithms fit to your past data can tell you which variables are important an which are not.
+
+- Many can give you probability estimates, rather than single decisions.
+
+]
+
+.pull-right35[
+
+```{r, echo = FALSE, fig.align = 'center', out.width = "100%", fig.cap = "Source: gstatic.com"}
+knitr::include_graphics("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS795QtyFgYH6vRDqhlhu9WtQKLJw11iNyAfGteNoiaTzZE3f-v")
+```
+
+
+```{r, echo = FALSE, fig.align = 'center', out.width = "100%", fig.cap = "Source: WK Digital"}
+knitr::include_graphics("https://wkdigital.com.au/wp-content/uploads/2016/06/How-To-Profile-Your-Customer.jpg")
+```
+
+]
+
+---
+
+# What are the steps of machine learning?
+
+```{r, echo = FALSE, fig.align = 'center', out.width = "100%", fig.cap = "Source: Medium.com"}
+knitr::include_graphics("https://cdn-images-1.medium.com/max/1600/1*_QGyIwpgq831xI54cIe_GQ.jpeg")
+```
+
+
+---
+
+# Practical
+
+<p>
+  <font size=6>
+    <a href="https://therbootcamp.github.io/Intro2DataScience_2018Oct/_sessions/Wrangling/Wrangling_practical.html"><b>Link to practical<b></a>
+  </font>
+</p>

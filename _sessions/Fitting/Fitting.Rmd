@@ -1,0 +1,174 @@
+---
+title: "Model Fitting"
+author: "Applied Machine Learning with R<br/><a href='https://therbootcamp.github.io'>www.therbootcamp.com</a><br/><a href='https://twitter.com/therbootcamp'>@therbootcamp</a>"
+date: "January 2019"
+output:
+  xaringan::moon_reader:
+    css: ["default", "baselrbootcamp.css"]
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+      ratio: '16:9'
+---
+
+layout: true
+
+<div class="my-footer"><span>
+<a href="https://therbootcamp.github.io/"><font color="#7E7E7E">Applied Machine Learning with R, January 2019</font></a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+<a href="https://therbootcamp.github.io/"><font color="#7E7E7E">www.therbootcamp.com</font></a>
+</span></div> 
+
+---
+
+
+```{r, eval = TRUE, echo = FALSE, warning=F,message=F}
+# Code to knit slides
+baselers <- readr::read_csv("../_data/baselers.csv")
+```
+
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+# see: https://github.com/yihui/xaringan
+# install.packages("xaringan")
+# see: 
+# https://github.com/yihui/xaringan/wiki
+# https://github.com/gnab/remark/wiki/Markdown
+options(width=110)
+options(digits = 4)
+```
+
+```{r, echo = FALSE ,message = FALSE, warning = FALSE}
+knitr::opts_chunk$set(comment=NA, fig.width=6, fig.height=6, echo = TRUE, eval = TRUE, 
+                      message = FALSE, warning = FALSE, fig.align = 'center', dpi = 200)
+library(tidyverse)
+library(baselers)
+library(ggthemes)
+```
+
+
+.pull-left4[
+
+# What is a model?
+
+]
+
+.pull-right6[
+
+]
+
+
+---
+
+.pull-left4[
+
+# What models are there?
+
+]
+
+.pull-right6[
+
+]
+
+---
+
+.pull-left4[
+
+# What types of decision problems are there?
+
+]
+
+.pull-right6[
+
+]
+
+---
+
+
+.pull-left4[
+
+# What does it mean to 'fit' a model?
+
+]
+
+.pull-right6[
+
+]
+
+
+---
+
+
+.pull-left4[
+
+# 3 models
+
+- Regression
+- Decision Trees
+- Random Forests
+
+]
+
+.pull-right6[
+
+]
+
+
+---
+
+.pull-left4[
+
+# Quantifying performance
+
+Regression - Mean Squared error
+
+]
+
+.pull-right6[
+
+
+]
+
+---
+
+.pull-left4[
+
+# Quantifying performance
+
+Classification
+
+- Absolute classification error
+- Balanced Accuracy
+- AUC
+
+]
+
+.pull-right6[
+
+
+]
+
+
+---
+# Caret
+
+
+
+
+
+
+---
+
+
+# Practical
+
+<font size=6><b><a href="https://therbootcamp.github.io/Intro2DataScience_2018Oct/_sessions/Plotting/Plotting_practical.html">Link to practical</a>
+
+
+
+
+
+
