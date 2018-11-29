@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Model Fitting</title>
+    <title>Parameter Tuning</title>
     <meta charset="utf-8">
     <meta name="author" content="Applied Machine Learning with R www.therbootcamp.com @therbootcamp" />
     <link href="libs/remark-css/default.css" rel="stylesheet" />
@@ -11,7 +11,7 @@
     <textarea id="source">
 class: center, middle, inverse, title-slide
 
-# Model Fitting
+# Parameter Tuning
 ### Applied Machine Learning with R<br/><a href='https://therbootcamp.github.io'>www.therbootcamp.com</a><br/><a href='https://twitter.com/therbootcamp'><span class="citation">@therbootcamp</span></a>
 ### January 2019
 
@@ -36,10 +36,9 @@ layout: true
 
 
 
-
 .pull-left4[
 
-# What is a model?
+# Recap: What are model tuning parameters?
 
 ]
 
@@ -52,32 +51,10 @@ layout: true
 
 .pull-left4[
 
-# What models are there?
+# Why do we have tuning parameters
 
-]
-
-.pull-right6[
-
-]
-
----
-
-.pull-left4[
-
-# What types of decision problems are there?
-
-]
-
-.pull-right6[
-
-]
-
----
-
-
-.pull-left4[
-
-# What does it mean to 'fit' a model?
+- Regularisation
+- Complexity
 
 ]
 
@@ -88,16 +65,33 @@ layout: true
 
 ---
 
+.pull-left4[
+
+# Bias-Variance Trade-off
+
+- A short introduction
+
+]
+
+.pull-right6[
+
+]
+
+
+---
 
 .pull-left4[
 
-# 3 models
+# Shrinkage methods
 
 - Regression
-- Tree Based
-    - Decision Trees
-    - Random Forests
+  - Ridge, Lasso
+  
+- Trees
+  - Max depth, minimum elements per node
+  
 - KNN
+   - Just try different values of K
 
 ]
 
@@ -110,14 +104,26 @@ layout: true
 
 .pull-left4[
 
-# Quantifying performance
+# How do you select best tuning parameters?
 
-Regression - Mean Squared error
+- Crossvalidation
 
 ]
 
 .pull-right6[
 
+]
+
+
+---
+
+.pull-left4[
+
+# Cross-Validation
+
+]
+
+.pull-right6[
 
 ]
 
@@ -125,28 +131,34 @@ Regression - Mean Squared error
 
 .pull-left4[
 
-# Quantifying performance
-
-Classification
-
-- Absolute classification error
-- Balanced Accuracy
-- AUC
+# Estimating prediction accuracy with cross-validation
 
 ]
 
 .pull-right6[
 
+]
+
+---
+
+.pull-left4[
+
+# Estimating True prediction accuracy
+
+
+- Hold out set
+- Why do we always use a holdout set?
+
+]
+
+.pull-right6[
 
 ]
 
 
 ---
+
 # Caret
-
-
-
-
 
 
 ---

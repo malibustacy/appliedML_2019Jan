@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Model Fitting</title>
+    <title>Model Prediction</title>
     <meta charset="utf-8">
     <meta name="author" content="Applied Machine Learning with R www.therbootcamp.com @therbootcamp" />
     <link href="libs/remark-css/default.css" rel="stylesheet" />
@@ -11,7 +11,7 @@
     <textarea id="source">
 class: center, middle, inverse, title-slide
 
-# Model Fitting
+# Model Prediction
 ### Applied Machine Learning with R<br/><a href='https://therbootcamp.github.io'>www.therbootcamp.com</a><br/><a href='https://twitter.com/therbootcamp'><span class="citation">@therbootcamp</span></a>
 ### January 2019
 
@@ -37,9 +37,14 @@ layout: true
 
 
 
+&gt; # It's tough to make predictions, especially about the future
+&gt; # ~ Yogi Berra
+
+---
+
 .pull-left4[
 
-# What is a model?
+# What does prediction mean?
 
 ]
 
@@ -52,52 +57,7 @@ layout: true
 
 .pull-left4[
 
-# What models are there?
-
-]
-
-.pull-right6[
-
-]
-
----
-
-.pull-left4[
-
-# What types of decision problems are there?
-
-]
-
-.pull-right6[
-
-]
-
----
-
-
-.pull-left4[
-
-# What does it mean to 'fit' a model?
-
-]
-
-.pull-right6[
-
-]
-
-
----
-
-
-.pull-left4[
-
-# 3 models
-
-- Regression
-- Tree Based
-    - Decision Trees
-    - Random Forests
-- KNN
+# How do you measure prediction performance?
 
 ]
 
@@ -110,14 +70,11 @@ layout: true
 
 .pull-left4[
 
-# Quantifying performance
-
-Regression - Mean Squared error
+# What are reasons why prediction performance can differ from training?
 
 ]
 
 .pull-right6[
-
 
 ]
 
@@ -125,27 +82,47 @@ Regression - Mean Squared error
 
 .pull-left4[
 
-# Quantifying performance
+# How do you know if a model's predictions are 'good'?
 
-Classification
-
-- Absolute classification error
-- Balanced Accuracy
-- AUC
+- Compare to baseline models
+- Compare multiple models!
+- Define meaningful performance levels (aka, costs) *a priori* 
 
 ]
 
 .pull-right6[
 
+]
+
+---
+
+
+.pull-left4[
+
+# What are good baseline models of performance?
+
+]
+
+.pull-right6[
+
+]
+
+---
+
+.pull-left4[
+
+# What are reasons why prediction performance can differ from training?
+
+]
+
+.pull-right6[
 
 ]
 
 
 ---
+
 # Caret
-
-
-
 
 
 
