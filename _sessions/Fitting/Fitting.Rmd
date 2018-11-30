@@ -150,9 +150,11 @@ Classification
 
 .pull-right6[
 
-
 ]
 
+---
+
+# How do you know which features were important?
 
 ---
 # Caret

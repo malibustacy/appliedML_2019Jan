@@ -191,7 +191,7 @@ knitr::include_graphics("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS
 knitr::include_graphics("https://wkdigital.com.au/wp-content/uploads/2016/06/How-To-Profile-Your-Customer.jpg")
 ```
 
-]
+] 
 
 ---
 
@@ -200,6 +200,15 @@ knitr::include_graphics("https://wkdigital.com.au/wp-content/uploads/2016/06/How
 ```{r, echo = FALSE, fig.align = 'center', out.width = "100%", fig.cap = "Source: Medium.com"}
 knitr::include_graphics("https://cdn-images-1.medium.com/max/1600/1*_QGyIwpgq831xI54cIe_GQ.jpeg")
 ```
+
+
+---
+
+# What types of machine learning tasks are there?
+
+---
+
+# What models are out there?x 
 
 
 ---
