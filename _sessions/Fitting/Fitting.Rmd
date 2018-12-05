@@ -80,20 +80,35 @@ knitr::include_graphics("https://cdn-images-1.medium.com/max/1600/1*_QGyIwpgq831
 
 
 ---
-class: center, middle
+
+
+.pull-left6[
 
 # Why do we need a model at all?
 
+]
+
+.pull-right4[
+
+<br>
+
+```{r, echo = FALSE, fig.align = 'center', out.width = "100%"}
+knitr::include_graphics("https://github.com/therbootcamp/appliedML_2019Jan/blob/master/_sessions/Fitting/image/data_to_ml.jpg?raw=true")
+```
+
+]
+
 ---
 
-# Why do we need a model at all??
 
 .pull-left6[
+
+# Why do we need a model at all?
 
 
 ### Theoretical
 
-Want to learn something about the data
+*To <high>learn something</high> from the data*
 
 - Which features are most <high>important</high>?
 - What are the <high>relationship</high> between features and criterion?
@@ -103,23 +118,43 @@ Want to learn something about the data
 
 - Need a computational representation of the data that can be programmed
 
-
 ]
 
-.pull-right35[
+.pull-right4[
+
+<br>
+
+```{r, echo = FALSE, fig.align = 'center', out.width = "100%"}
+knitr::include_graphics("https://github.com/therbootcamp/appliedML_2019Jan/blob/master/_sessions/Fitting/image/data_to_ml.jpg?raw=true")
+```
 
 ]
-
 
 ---
 
-.pull-left4[
+.pull-left6[
 
 # What models are there?
 
+There are *thousands* of machine learning models
+
+No one could possibly know them all.
+
+In this course, you will learn 3 of the most popular:
+
+
+|Model|Description |
+|:----|:---- |
+|Regression|A weighted linear combination of features and weights|
+|Decision Tree|A series of heirarchical 'yes/no' decisions|
+|Random Forests|Combination of many decision trees|
+
 ]
 
-.pull-right6[
+.pull-right4[
+
+
+
 
 ]
 
