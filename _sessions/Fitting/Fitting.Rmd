@@ -80,9 +80,9 @@ knitr::include_graphics("https://cdn-images-1.medium.com/max/1600/1*_QGyIwpgq831
 
 
 ---
+class: center, middle
 
-
-> #Why do we need a model at all?
+# Why do we need a model at all?
 
 ---
 
@@ -109,30 +109,6 @@ Want to learn something about the data
 .pull-right35[
 
 ]
-
----
-
-.pull-left4[
-
-# Why do we nee
-
-What is the purpose of a model?
-
-Separating signal from noise.
-What is noise? Things you can't predict
-What is signal? Thanks you can predict.
-
-Trick: Don't trick yourself into thinking you can predict things you can't.
-
-]
-
-
-.pull-right55[
-
-
-]
-
-
 
 
 ---
