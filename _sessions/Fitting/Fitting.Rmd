@@ -154,6 +154,10 @@ In this course, you will learn 3 of the most popular:
 .pull-right4[
 
 
+```{r, echo = FALSE, fig.align = 'center', out.width = "100%"}
+knitr::include_graphics("https://github.com/therbootcamp/appliedML_2019Jan/blob/master/_sessions/Fitting/image/three_models_vert.jpg?raw=true")
+```
+
 
 
 ]
