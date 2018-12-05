@@ -130,18 +130,46 @@ knitr::include_graphics("https://github.com/therbootcamp/appliedML_2019Jan/blob/
 
 ]
 
+
+
 ---
 
-.pull-left6[
+.pull-left45[
 
-# What models are there?
+# What types of ML tasks are there?
+
+There are many types of of ML tasks
+
+In this course, you will learn 2 of the most popular
+
+|Model|Description | Example |
+|:----|:---- |:----|
+|<high>Regression</high> (supervised)|Predicting a number|Stock prices|
+|<high>Classification</high> (supervised)|Predicting a category, like whether|Whether someone will purchase a product or not|
+
+]
+
+.pull-right5[
+<br><br><br>
+
+```{r, echo = FALSE, fig.align = 'center', out.width = "100%"}
+knitr::include_graphics("https://github.com/therbootcamp/appliedML_2019Jan/blob/master/_sessions/Fitting/image/class_v_regression.jpg?raw=true")
+```
+
+
+]
+
+---
+
+.pull-left45[
+
+# What ML models are there?
 
 There are *thousands* of machine learning models
 
 No one could possibly know them all.
 
 In this course, you will learn 3 of the most popular:
-
 
 |Model|Description |
 |:----|:---- |
@@ -151,31 +179,16 @@ In this course, you will learn 3 of the most popular:
 
 ]
 
-.pull-right4[
-
+.pull-right5[
 
 ```{r, echo = FALSE, fig.align = 'center', out.width = "100%"}
 knitr::include_graphics("https://github.com/therbootcamp/appliedML_2019Jan/blob/master/_sessions/Fitting/image/three_models_vert.jpg?raw=true")
 ```
 
-
-
 ]
 
 
 
-
----
-
-.pull-left4[
-
-# What types of decision problems are there?
-
-]
-
-.pull-right6[
-
-]
 
 ---
 
