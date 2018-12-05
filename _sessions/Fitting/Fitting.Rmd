@@ -52,13 +52,87 @@ library(ggthemes)
 
 .pull-left4[
 
-# What is a model?
+# Where we are at
+
+- Have a business question
+    - How can I predict heart attacks?
+
+- Have data relevant to that question
+    - Records from 300 patients
+
+- Data is cleaned and in a dataframe
+    - `heartdisease.txt`
+
+## What's next?
+
+<high>Select</high> and <high>train</high> model(s)
 
 ]
 
 .pull-right6[
+<br><br><br>
+```{r, echo = FALSE, fig.align = 'center', out.width = "100%", fig.cap = "Source: Medium.com"}
+knitr::include_graphics("https://cdn-images-1.medium.com/max/1600/1*_QGyIwpgq831xI54cIe_GQ.jpeg")
+```
+
 
 ]
+
+
+---
+
+
+> #Why do we need a model at all?
+
+---
+
+# Why do we need a model at all??
+
+.pull-left6[
+
+
+### Theoretical
+
+Want to learn something about the data
+
+- Which features are most <high>important</high>?
+- What are the <high>relationship</high> between features and criterion?
+- How can I make <high>predictions</high> from new data?
+
+### Practical
+
+- Need a computational representation of the data that can be programmed
+
+
+]
+
+.pull-right35[
+
+]
+
+---
+
+.pull-left4[
+
+# Why do we nee
+
+What is the purpose of a model?
+
+Separating signal from noise.
+What is noise? Things you can't predict
+What is signal? Thanks you can predict.
+
+Trick: Don't trick yourself into thinking you can predict things you can't.
+
+]
+
+
+.pull-right55[
+
+
+]
+
+
 
 
 ---
@@ -72,6 +146,9 @@ library(ggthemes)
 .pull-right6[
 
 ]
+
+
+
 
 ---
 
@@ -100,7 +177,6 @@ library(ggthemes)
 
 
 ---
-
 
 .pull-left4[
 

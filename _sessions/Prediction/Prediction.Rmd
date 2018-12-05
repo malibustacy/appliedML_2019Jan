@@ -53,6 +53,13 @@ library(ggthemes)
 > # It's tough to make predictions, especially about the future
 > # ~ Yogi Berra
 
+
+---
+
+# Models of london temperature
+
+
+
 ---
 
 .pull-left4[
@@ -77,6 +84,32 @@ library(ggthemes)
 .pull-right6[
 
 ]
+
+
+
+---
+
+.pull-left4[
+
+# Why do we nee
+
+What is the purpose of a model?
+
+Separating signal from noise.
+What is noise? Things you can't predict
+What is signal? Thanks you can predict.
+
+Trick: Don't trick yourself into thinking you can predict things you can't.
+
+]
+
+
+.pull-right55[
+
+
+]
+
+
 
 
 ---
