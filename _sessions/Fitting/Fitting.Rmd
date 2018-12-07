@@ -156,7 +156,6 @@ In this course, you will learn 2 of the most popular
 knitr::include_graphics("https://github.com/therbootcamp/appliedML_2019Jan/blob/master/_sessions/Fitting/image/class_v_regression.jpg?raw=true")
 ```
 
-
 ]
 
 ---
@@ -187,19 +186,48 @@ knitr::include_graphics("https://github.com/therbootcamp/appliedML_2019Jan/blob/
 
 ]
 
-
-
-
 ---
 
+.pull-left6[
 
-.pull-left4[
+# Fitting model parameters
 
-# What does it mean to 'fit' a model?
+Every model has *parameters* that can be *fit* (aka adapt) to data
 
+These parameters *tune* a model to specific data
+
+> "Let me represent the data in the best way I can given how I work"
+> ~ Model during fitting
 ]
 
 .pull-right6[
+
+
+```{r}
+set.seed(100)
+x <- rnorm(20)
+y <- .7 * x + rnorm(20) + 10
+
+data <- data.frame(x, y)
+
+mod <- lm(y ~ x, data = data)
+
+library(tidyverse)
+
+ggplot(data, aes(x = x, y = y)) + geom_point() +
+  geom_abline(slope = 2, intercept = 8, col = "blue", size = 1) +
+  geom_abline(slope = .2, intercept = 11, col = "red", size = 1) +
+  geom_abline(slope = mod$coefficients[2], intercept = mod$coefficients[1], col = "green", size = 1) +
+  labs(title  = "Three different regression lines") +
+  theme_minimal()
+
+
+
+```
+
+
+
+
 
 ]
 
