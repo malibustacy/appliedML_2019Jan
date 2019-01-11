@@ -39,55 +39,232 @@ layout: true
 
 .pull-left4[
 
+# Where we are at
+
+- Have a business question
+    - How can I predict heart attacks?
+
+- Have data relevant to that question
+    - Records from 300 patients
+
+- Data is cleaned and in a dataframe
+    - `heartdisease.txt`
+
+## What's next?
+
+&lt;high&gt;Select&lt;/high&gt; and &lt;high&gt;train&lt;/high&gt; model(s)
+
+]
+
+.pull-right6[
+&lt;br&gt;&lt;br&gt;&lt;br&gt;
+&lt;div class="figure" style="text-align: center"&gt;
+&lt;img src="https://cdn-images-1.medium.com/max/1600/1*_QGyIwpgq831xI54cIe_GQ.jpeg" alt="Source: Medium.com" width="100%" /&gt;
+&lt;p class="caption"&gt;Source: Medium.com&lt;/p&gt;
+&lt;/div&gt;
+
+
+]
+
+
+
+---
+class: center, middle
+
 # What is a model?
 
+&lt;font size = 6, color = "white"&gt;.&lt;/font&gt;
+&lt;font size = 6, color = "white"&gt;.&lt;/font&gt;
+
+
+---
+class: center, middle
+
+# What is a model?
+
+&lt;font size = 6&gt;It's not magic.&lt;/font&gt;&lt;br&gt;
+
+
+---
+class: center, middle
+
+# What is a model?
+
+&lt;font size = 6&gt; A model is a mathematical representation of data.&lt;/font&gt;
+
+---
+class: center, middle
+
+# What is a model?
+
+&lt;font size = 6&gt; A model is a mathematical representation of data.&lt;/font&gt; &lt;br&gt;&lt;br&gt;
+&lt;font size = 6&gt;That can be programmed, and used to understand (and predict) relationships between data&lt;/font&gt;
+
+
+---
+class: center, middle
+
+
+
+
+
+
+
+---
+
+
+.pull-left6[
+
+# Why do we need a model at all?
+
 ]
 
-.pull-right6[
+.pull-right4[
+
+&lt;br&gt;
+
+&lt;img src="https://github.com/therbootcamp/appliedML_2019Jan/blob/master/_sessions/Fitting/image/data_to_ml.jpg?raw=true" width="100%" style="display: block; margin: auto;" /&gt;
+
+]
+
+---
+
+
+.pull-left6[
+
+# Why do we need a model at all?
+
+### Theoretical
+
+*To &lt;high&gt;learn something&lt;/high&gt; from the data*
+
+- Learn which features are most &lt;high&gt;important&lt;/high&gt; in predicting the criterion
+- Understand the &lt;high&gt;relationship&lt;/high&gt; between features and criterion.
+    - Strong? Weak? Postive? Negative?
+- Make &lt;high&gt;predictions&lt;/high&gt; for new data.
+    - I've got a new patient, how likely is it that (s)he is having a heart attack?
+
+### Practical
+
+- Need a computational / mathematical representation of the data that can be programmed and automated.
+
+
+&gt; Verbal descriptions of data are nice, but they aren't models.
+
+]
+
+.pull-right4[
+
+&lt;br&gt;
+
+&lt;img src="https://github.com/therbootcamp/appliedML_2019Jan/blob/master/_sessions/Fitting/image/data_to_ml.jpg?raw=true" width="100%" style="display: block; margin: auto;" /&gt;
+
+]
+
+
+
+---
+
+.pull-left45[
+
+# What types of ML tasks are there?
+
+There are many types of of ML tasks
+
+In this course, you will learn 2 of the most popular
+
+|Model|Description | Example |
+|:----|:---- |:----|
+|&lt;high&gt;Regression&lt;/high&gt; (supervised)|Predicting a number|Stock prices|
+|&lt;high&gt;Classification&lt;/high&gt; (supervised)|Predicting a category, like whether|Whether someone will purchase a product or not|
+
+]
+
+.pull-right5[
+&lt;br&gt;&lt;br&gt;&lt;br&gt;
+
+&lt;img src="https://github.com/therbootcamp/appliedML_2019Jan/blob/master/_sessions/Fitting/image/class_v_regression.jpg?raw=true" width="100%" style="display: block; margin: auto;" /&gt;
+
+]
+
+---
+
+.pull-left45[
+
+# What ML models are there?
+
+There are *thousands* of machine learning models
+
+No one could possibly know them all.
+
+In this course, you will learn 3 of the most popular:
+
+|Model|Description |
+|:----|:---- |
+|Regression|A weighted linear combination of features and weights|
+|Decision Tree|A series of heirarchical 'yes/no' decisions|
+|Random Forests|Combination of many decision trees|
+
+]
+
+.pull-right5[
+
+&lt;img src="https://github.com/therbootcamp/appliedML_2019Jan/blob/master/_sessions/Fitting/image/three_models_vert.jpg?raw=true" width="100%" style="display: block; margin: auto;" /&gt;
+
+]
+
+---
+
+.pull-left6[
+
+# Fitting model parameters
+
+Every model has *parameters* that can be *fit* (aka adapt) to data
+
+These parameters *tune* a model to specific data
+
+&gt; "Let me represent the data in the best way I can given how I work"
+&gt; ~ Model during fitting
+]
+
+.pull-right4[
+
+
+&lt;img src="Fitting_files/figure-html/unnamed-chunk-8-1.png" style="display: block; margin: auto;" /&gt;
+
 
 ]
 
 
 ---
 
-.pull-left4[
-
-# What models are there?
-
-]
-
-.pull-right6[
-
-]
-
----
-
-.pull-left4[
-
-# What types of decision problems are there?
-
-]
-
-.pull-right6[
-
-]
-
----
 
 
-.pull-left4[
 
-# What does it mean to 'fit' a model?
 
-]
 
-.pull-right6[
+# Fit your own linear model!
 
-]
+&lt;br&gt;
+&lt;img src="Fitting_files/figure-html/unnamed-chunk-10-1.png" width="85%" style="display: block; margin: auto;" /&gt;
 
 
 ---
 
+# Fit your own linear model!
+&lt;br&gt;
+&lt;img src="Fitting_files/figure-html/unnamed-chunk-11-1.png" width="85%" style="display: block; margin: auto;" /&gt;
+
+
+---
+
+# Fit your own linear model!
+&lt;br&gt;
+&lt;img src="Fitting_files/figure-html/unnamed-chunk-12-1.png" width="85%" style="display: block; margin: auto;" /&gt;
+
+
+
+---
 
 .pull-left4[
 
@@ -137,9 +314,11 @@ Classification
 
 .pull-right6[
 
-
 ]
 
+---
+
+# How do you know which features were important?
 
 ---
 # Caret

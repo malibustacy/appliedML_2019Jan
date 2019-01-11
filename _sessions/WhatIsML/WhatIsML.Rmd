@@ -24,7 +24,8 @@ layout: true
 </span></div> 
 
 ---
-  
+class: middle, center, question
+
 ```{r, eval = FALSE, echo = FALSE}
 # Code to knit slides
 xaringan::inf_mr('_sessions/D1S2_Wrangling/Wrangling.Rmd')
@@ -40,22 +41,19 @@ baselers <- read_csv("https://raw.githubusercontent.com/therbootcamp/baselers/ma
 ```
 
 
+# What do you think?
+
+<br><br><br>
+No Googling :)
+
+---
+
+
 .pull-left6[
 
 # What is Machine Learning?
 
->Machine learning (ML) is a field of artificial intelligence that uses statistical techniques to give computer systems the ability to "learn" (e.g., progressively improve performance on a specific task) from data, without being explicitly programmed.
->~ Wikipedia
-
-## What else?
-
-- Machine Learning is about making *data driven* decisions.
-
-- To do machine learning, you need data!
-
-- ML algorithms try to automatically figure out which information is important and which is not
-
-- Performance of an ML algorithm can always be defined by some accuracy or loss function.
+Machine learning (ML) is a <high>field of artificial intelligence</high> that uses <high>statistical techniques</high> to give computer systems the ability to <high>"learn"</high> (e.g., progressively improve <high>performance</high> on a specific task) <high>from data</high>, without being explicitly programmed. [Wikipedia](https://en.wikipedia.org/wiki/Machine_learning)
 
 
 ]
@@ -68,8 +66,38 @@ baselers <- read_csv("https://raw.githubusercontent.com/therbootcamp/baselers/ma
 knitr::include_graphics("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSXjr_if5M3PSjd7Im1cLUNjqwKNd3bxjL9ym_MrOND7HF3nd1Z8w")
 ```
 
+]
+
+---
+
+.pull-left6[
+
+# What is Machine Learning?
+
+Machine learning (ML) is a <high>field of artificial intelligence</high> that uses <high>statistical techniques</high> to give computer systems the ability to <high>"learn"</high> (e.g., progressively improve <high>performance</high> on a specific task) <high>from data</high>, without being explicitly programmed. [Wikipedia](https://en.wikipedia.org/wiki/Machine_learning)
+
+## What does this mean?
+
+- To do machine learning, you need (clean, relevant) data!
+
+- Machine Learning is about making *data driven* decisions.
+
+- ML algorithms try to automatically figure out which information is important and which is not.
+
+- ML algorithms are always guided by a *formal definition of performance*.
 
 ]
+
+.pull-right4[
+
+<br><br>
+
+```{r, echo = FALSE, fig.align = 'center', out.width = "90%", fig.cap = "Source: www.towardsdatascience.com"}
+knitr::include_graphics("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSXjr_if5M3PSjd7Im1cLUNjqwKNd3bxjL9ym_MrOND7HF3nd1Z8w")
+```
+
+]
+
 
 ---
 
@@ -114,12 +142,13 @@ knitr::include_graphics("https://static01.nyt.com/images/2018/09/03/business/03A
 
 .pull-left6[
 
-Many people  decide based an individual, or group's personal, intuitive judgment.
+Many people decide based an individual, or group's personal, intuitive judgment.
 
 - "I have a feeling this patient is having a heart attack"
-- "Put the ad in front of anyone who has made a purchase in the past 2 months. That's what they do in other industries"
+- "I know we should target millenials with ads, trust me on this"
 
-### What are potential problems with this?
+<br><br>
+## What are potential problems with intuition?
 
 ]
 
@@ -131,24 +160,24 @@ knitr::include_graphics("https://www.irishtimes.com/polopoly_fs/1.2457200.144948
 
 ]
 
+
 ---
 
 # Solution 1: Intuition
 
 .pull-left6[
 
-Many people decide based an individual, or group's personal, intuitive judgment.
+## What are potential problems with intuition?
 
-- "I have a feeling this patient is having a heart attack"
-- "Put the ad in front of anyone who has made a purchase in the past 2 months. That's what they do in other industries"
+- Might not tell you anything about *why* it makes a prediction.
 
-### What are potential problems with this?
+- Could be based on reasons other than accuracy (e.g.; self protection)
 
 - Without rigorous testing, impossible to know if <high>critical information is being ignored</high>.
 
 - If the decision isn't programmed, it might be <high>impossible to replicate</high> (and improve) in the future.
 
-- Intuition could be based on <high>biased processes</high>
+- When objectively wrong, intuition can always be defended 'in hindsight'.
 
 ]
 
@@ -166,19 +195,20 @@ knitr::include_graphics("https://www.irishtimes.com/polopoly_fs/1.2457200.144948
 
 .pull-left6[
 
-With machine learning, you can create an algorithm <high>optimised</high> to solve your task
+Here's how a data-driven, ML approach would look:
 
-- Based on <high>data from past patients at this hospital</high>, a <high>regression</high> model using the patient's <high>age, BMI, and health history</high>, predicts the probability that this patient is having a heart attack is only <high>20% </high>.
 
-- Based on <high>prior purchasing records</high>, a <high>decision tree</high> predicts that a <high>male, 20 year old Facebook user with at least 500 'friends'</high> has a <high>80% chance</high> of clicking the ad.
+```{r, echo = FALSE, out.width = "70%", fig.align='center'}
+knitr::include_graphics("image/heartdisease_data_ss.jpg")
+```
 
-### What are the benefits of ML?
 
-- Algorithms fit to your past data can tell you which variables are important an which are not.
+- Based on historical <high>data</high> from past patients at this hospital...
+- A <high>regression model</high> ...
+- Using the patient's <high>age, cholesterol level, and ecg</high>...
+- <high>Predicts</high> the probability that this patient is having a heart attack is only <high>20%</high>.
 
-- Many can give you probability estimates, rather than single decisions.
-
-]
+] 
 
 .pull-right35[
 
@@ -186,12 +216,47 @@ With machine learning, you can create an algorithm <high>optimised</high> to sol
 knitr::include_graphics("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS795QtyFgYH6vRDqhlhu9WtQKLJw11iNyAfGteNoiaTzZE3f-v")
 ```
 
+```{r, echo = FALSE, fig.align = 'center', out.width = "100%", fig.cap = "Source: WK Digital"}
+knitr::include_graphics("https://wkdigital.com.au/wp-content/uploads/2016/06/How-To-Profile-Your-Customer.jpg")
+```
+
+] 
+
+
+
+---
+
+# Solution 2: Data-Driven Machine Learning
+
+.pull-left6[
+
+### What are the benefits of ML?
+
+- Algorithms fit to your past data can tell you which variables are important an which are not.
+
+- Make explicit, quantitative predictions of variables of interest.
+
+- Many can give you probability estimates, and estimated errors, rather than single decisions or point estimates.
+
+- Can reveal novel insights about your data!
+
+- Can be programmed and automated.
+
+
+] 
+
+.pull-right35[
+
+```{r, echo = FALSE, fig.align = 'center', out.width = "100%", fig.cap = "Source: gstatic.com"}
+knitr::include_graphics("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS795QtyFgYH6vRDqhlhu9WtQKLJw11iNyAfGteNoiaTzZE3f-v")
+```
 
 ```{r, echo = FALSE, fig.align = 'center', out.width = "100%", fig.cap = "Source: WK Digital"}
 knitr::include_graphics("https://wkdigital.com.au/wp-content/uploads/2016/06/How-To-Profile-Your-Customer.jpg")
 ```
 
-]
+] 
+
 
 ---
 
@@ -204,10 +269,192 @@ knitr::include_graphics("https://cdn-images-1.medium.com/max/1600/1*_QGyIwpgq831
 
 ---
 
-# Practical
+# What types of machine learning tasks are there?
 
-<p>
-  <font size=6>
-    <a href="https://therbootcamp.github.io/Intro2DataScience_2018Oct/_sessions/Wrangling/Wrangling_practical.html"><b>Link to practical<b></a>
-  </font>
-</p>
+.pull-left4[
+
+There are many types of machine learning tasks, each of which call for different models
+
+Three general categories
+
+|Type|Example|
+|:----|:-----|
+|Unsupervised|Customer segmentation|
+|Supervised|Classification, regression|
+|Reinforcement Learning|[Robot navigation](https://www.youtube.com/watch?v=W_gxLKSsSIE) |
+
+In this course, we focus on <high>Supervised</high> tasks
+
+]
+
+.pull-right55[
+
+```{r, echo = FALSE, fig.align = 'center', out.width = "100%", fig.cap = "Source: Wordstream.com"}
+knitr::include_graphics("https://wordstream-files-prod.s3.amazonaws.com/s3fs-public/styles/simple_image/public/images/machine-learning1.png?SnePeroHk5B9yZaLY7peFkULrfW8Gtaf&itok=yjEJbEKD")
+```
+
+]
+
+
+---
+
+# What types of machine learning tasks are there?
+
+.pull-left4[
+
+There are many types of machine learning tasks, each of which call for different models
+
+Three general categories
+
+|Type|Example|
+|:----|:-----|
+|<high>Unsupervised</high>|Customer segmentation|
+|Supervised|Classification, regression|
+|Reinforcement Learning|[Robot navigation](https://www.youtube.com/watch?v=W_gxLKSsSIE) |
+
+In this course, we focus on <high>Supervised</high> tasks
+
+
+]
+
+.pull-right55[
+
+### Unsupervised
+```{r, echo = FALSE, fig.align = 'center', out.width = "100%", fig.cap = "Source: iotforall.com"}
+knitr::include_graphics("https://www.iotforall.com/wp-content/uploads/2018/01/Screen-Shot-2018-01-17-at-8.10.14-PM.png")
+```
+
+]
+
+---
+
+# What types of machine learning tasks are there?
+
+.pull-left4[
+
+There are many types of machine learning tasks, each of which call for different models
+
+Three general categories
+
+|Type|Example|
+|:----|:-----|
+|Unsupervised|Customer segmentation|
+|<high>Supervised</high>|Classification, regression|
+|Reinforcement Learning|[Robot navigation](https://www.youtube.com/watch?v=W_gxLKSsSIE) |
+
+In this course, we focus on <high>Supervised</high> tasks
+
+]
+
+.pull-right55[
+
+### Supervised
+
+```{r, echo = FALSE, fig.align = 'center', out.width = "100%", fig.cap = "Source: towardsdatascience.com"}
+knitr::include_graphics("https://cdn-images-1.medium.com/max/1600/1*ASYpFfDh7XnreU-ygqXonw.png")
+```
+
+]
+
+---
+class: center, middle
+
+# What is a model?
+
+<font size = 6, color = "white">.</font>
+<font size = 6, color = "white">.</font>
+
+
+---
+class: center, middle
+
+# What is a model?
+
+<font size = 6>It's not magic.</font><br>
+
+
+---
+class: center, middle
+
+# What is a model?
+
+<font size = 6>It's not magic.</font><br><br>
+
+<font size = 6> A model is a <high>mathematical</high> (computational) representation of data.</font>
+
+---
+class: center, middle
+
+# What is a model?
+
+<font size = 6>It's not magic.</font><br><br>
+
+<font size = 6>A model is a <high>athematical</high> (computational) representation of data.</font> <br><br>
+
+<font size = 6>That can be <high>programmed</high>, and used to understand, and <high>predict relationships</high> between data</font>
+
+---
+
+# Three of the models we will work with
+
+```{r, echo = FALSE}
+knitr::include_graphics("image/three_models.png")
+```
+
+---
+
+.pull-left6[
+
+# Why do we need a model at all?
+
+### Theoretical
+
+*To <high>learn something</high> from the data*
+
+- Learn which features are most <high>important</high> in predicting the criterion
+- Understand the <high>relationship</high> between features and criterion.
+    - Strong? Weak? Postive? Negative?
+- Make <high>predictions</high> for new data.
+    - I've got a new patient, how likely is it that (s)he is having a heart attack?
+
+### Practical
+
+- Need a computational / mathematical representation of the data that can be programmed and automated.
+
+
+> Verbal descriptions of data are nice, but they aren't models.
+
+]
+
+.pull-right4[
+
+<br>
+
+```{r, echo = FALSE, fig.align = 'center', out.width = "100%"}
+knitr::include_graphics("https://github.com/therbootcamp/appliedML_2019Jan/blob/master/_sessions/Fitting/image/data_to_ml.jpg?raw=true")
+```
+
+]
+
+---
+
+```{r, fig.align = 'center', out.width = "100%", echo = FALSE}
+knitr::include_graphics("image/trump_gut.jpg")
+```
+
+---
+
+```{r, fig.align = 'center', out.width = "100%", echo = FALSE}
+knitr::include_graphics("image/trump_gut_edited.jpg")
+```
+
+---
+class: middle, center, question
+
+<h1><a href=https://therbootcamp.github.io/appliedML_2019Jan/index.html>Schedule</a></h1>
+
+## Applied Machine Learning with R
+
+### January 2019
+
+

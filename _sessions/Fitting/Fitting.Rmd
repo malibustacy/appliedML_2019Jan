@@ -47,60 +47,316 @@ knitr::opts_chunk$set(comment=NA, fig.width=6, fig.height=6, echo = TRUE, eval =
 library(tidyverse)
 library(baselers)
 library(ggthemes)
+library(ggpubr)
 ```
 
 
 .pull-left4[
 
+# Where we are at
+
+- Have a business question
+    - How can I predict heart attacks?
+
+- Have data relevant to that question
+    - Records from 300 patients
+
+- Data is cleaned and in a dataframe
+    - `heartdisease.txt`
+
+## What's next?
+
+<high>Select</high> and <high>train</high> model(s)
+
+]
+
+.pull-right6[
+<br><br><br>
+```{r, echo = FALSE, fig.align = 'center', out.width = "100%", fig.cap = "Source: Medium.com"}
+knitr::include_graphics("https://cdn-images-1.medium.com/max/1600/1*_QGyIwpgq831xI54cIe_GQ.jpeg")
+```
+
+
+]
+
+
+
+---
+class: center, middle
+
 # What is a model?
 
+<font size = 6, color = "white">.</font>
+<font size = 6, color = "white">.</font>
+
+
+---
+class: center, middle
+
+# What is a model?
+
+<font size = 6>It's not magic.</font><br>
+
+
+---
+class: center, middle
+
+# What is a model?
+
+<font size = 6> A model is a mathematical representation of data.</font>
+
+---
+class: center, middle
+
+# What is a model?
+
+<font size = 6> A model is a mathematical representation of data.</font> <br><br>
+<font size = 6>That can be programmed, and used to understand (and predict) relationships between data</font>
+
+
+---
+class: center, middle
+
+
+
+
+
+
+
+---
+
+
+.pull-left6[
+
+# Why do we need a model at all?
+
 ]
 
-.pull-right6[
+.pull-right4[
+
+<br>
+
+```{r, echo = FALSE, fig.align = 'center', out.width = "100%"}
+knitr::include_graphics("https://github.com/therbootcamp/appliedML_2019Jan/blob/master/_sessions/Fitting/image/data_to_ml.jpg?raw=true")
+```
+
+]
+
+---
+
+
+.pull-left6[
+
+# Why do we need a model at all?
+
+### Theoretical
+
+*To <high>learn something</high> from the data*
+
+- Learn which features are most <high>important</high> in predicting the criterion
+- Understand the <high>relationship</high> between features and criterion.
+    - Strong? Weak? Postive? Negative?
+- Make <high>predictions</high> for new data.
+    - I've got a new patient, how likely is it that (s)he is having a heart attack?
+
+### Practical
+
+- Need a computational / mathematical representation of the data that can be programmed and automated.
+
+
+> Verbal descriptions of data are nice, but they aren't models.
+
+]
+
+.pull-right4[
+
+<br>
+
+```{r, echo = FALSE, fig.align = 'center', out.width = "100%"}
+knitr::include_graphics("https://github.com/therbootcamp/appliedML_2019Jan/blob/master/_sessions/Fitting/image/data_to_ml.jpg?raw=true")
+```
+
+]
+
+
+
+---
+
+.pull-left45[
+
+# What types of ML tasks are there?
+
+There are many types of of ML tasks
+
+In this course, you will learn 2 of the most popular
+
+|Model|Description | Example |
+|:----|:---- |:----|
+|<high>Regression</high> (supervised)|Predicting a number|Stock prices|
+|<high>Classification</high> (supervised)|Predicting a category, like whether|Whether someone will purchase a product or not|
+
+]
+
+.pull-right5[
+<br><br><br>
+
+```{r, echo = FALSE, fig.align = 'center', out.width = "100%"}
+knitr::include_graphics("https://github.com/therbootcamp/appliedML_2019Jan/blob/master/_sessions/Fitting/image/class_v_regression.jpg?raw=true")
+```
+
+]
+
+---
+
+.pull-left45[
+
+# What ML models are there?
+
+There are *thousands* of machine learning models
+
+No one could possibly know them all.
+
+In this course, you will learn 3 of the most popular:
+
+|Model|Description |
+|:----|:---- |
+|Regression|A weighted linear combination of features and weights|
+|Decision Tree|A series of heirarchical 'yes/no' decisions|
+|Random Forests|Combination of many decision trees|
+
+]
+
+.pull-right5[
+
+```{r, echo = FALSE, fig.align = 'center', out.width = "100%"}
+knitr::include_graphics("https://github.com/therbootcamp/appliedML_2019Jan/blob/master/_sessions/Fitting/image/three_models_vert.jpg?raw=true")
+```
+
+]
+
+---
+
+.pull-left6[
+
+# Fitting model parameters
+
+Every model has *parameters* that can be *fit* (aka adapt) to data
+
+These parameters *tune* a model to specific data
+
+> "Let me represent the data in the best way I can given how I work"
+> ~ Model during fitting
+]
+
+.pull-right4[
+
+
+```{r, echo = FALSE}
+set.seed(100)
+x <- rnorm(20)
+y <- .7 * x + rnorm(20) + 10
+
+data <- data.frame(x, y)
+
+mod <- lm(y ~ x, data = data)
+
+library(tidyverse)
+
+ggplot(data, aes(x = x, y = y)) + geom_point() +
+  geom_abline(slope = 2, intercept = 8, col = "blue", size = 1) +
+  geom_abline(slope = .2, intercept = 11, col = "red", size = 1) +
+  geom_abline(slope = mod$coefficients[2], intercept = mod$coefficients[1], col = "green", size = 1) +
+  labs(title  = "Three different regression lines") +
+  theme_minimal()
+
+
+
+```
+
 
 ]
 
 
 ---
 
-.pull-left4[
 
-# What models are there?
+```{r, echo = FALSE, eval = TRUE}
+set.seed(104)
 
-]
+N <- 10
 
-.pull-right6[
+x <- rnorm(n = N, mean = 10, sd = 2)
+y_1 <- x * 1.2 + rnorm(n = N, mean = 0, sd = .3)
+y_2 <-  x * 0 + rnorm(n = N, mean = 0, sd = 2.5) + 2
 
-]
+y_1_n <- x * 1.2 + rnorm(n = N, mean = 0, sd = .4)
+y_2_n <- x * 0 + rnorm(n = N, mean = 0, sd = 2.5) + 2
+
+
+data <- data.frame(x, y_1, y_2, y_1_n, y_2_n)
+
+
+plot1 <- ggplot(data = data,
+                aes(x = x, y = y_1)) +
+  geom_point(size = 5, col = "gray") + 
+  geom_point(size = 5, pch = 21) +
+  xlim(7, 13) + 
+  ylim(7, 15) + 
+  labs(title = "Dataset A") + theme_bw()
+
+plot2 <- ggplot(data = data,
+                aes(x = x, y = y_2)) +
+  geom_point(size = 5, col = "gray") + 
+  geom_point(size = 5, pch = 21) +
+  labs(title = "Dataset B") + theme_bw() +
+  ylim(-2, 5)
+
+
+plot1b <- plot1 + 
+  geom_point(aes(x = x, y = y_1_n), col = "violetred2", size = 5) +
+  geom_point(aes(x = x, y = y_1_n), pch = 21, size = 5) +
+  geom_abline(slope = 1.2, intercept = 0, size = 2, col = "green") +
+  stat_smooth(method="lm",fullrange=TRUE, se = FALSE)
+  
+plot2b <- plot2 + 
+  geom_point(aes(x = x, y = y_2_n), col = "violetred2", size = 5) +
+  geom_point(aes(x = x, y = y_2_n), pch = 21, size = 5)+
+  geom_abline(slope = 0, intercept = 2, size = 2, col = "green") +
+  stat_smooth(method="lm",fullrange=TRUE, se = FALSE)
+
+
+```
+
+
+
+# Fit your own linear model!
+
+<br>
+```{r, echo = FALSE, fig.width = 8, fig.height = 4, warning = FALSE, fig.align = 'center', out.width = "85%"}
+ggarrange(plot1, plot2)
+```
+
 
 ---
 
-.pull-left4[
-
-# What types of decision problems are there?
-
-]
-
-.pull-right6[
-
-]
-
----
-
-
-.pull-left4[
-
-# What does it mean to 'fit' a model?
-
-]
-
-.pull-right6[
-
-]
+# Fit your own linear model!
+<br>
+```{r, echo = FALSE, fig.width = 8, fig.height = 4, warning = FALSE, fig.align = 'center', out.width = "85%"}
+ggarrange(plot1b, plot2)
+```
 
 
 ---
 
+# Fit your own linear model!
+<br>
+```{r, echo = FALSE, fig.width = 8, fig.height = 4, warning = FALSE, fig.align = 'center', out.width = "85%"}
+ggarrange(plot1b, plot2b)
+```
+
+
+
+---
 
 .pull-left4[
 
@@ -150,9 +406,11 @@ Classification
 
 .pull-right6[
 
-
 ]
 
+---
+
+# How do you know which features were important?
 
 ---
 # Caret
