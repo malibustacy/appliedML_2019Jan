@@ -27,28 +27,26 @@ layout: true
 &lt;/span&gt;&lt;/div&gt; 
 
 ---
-  
+class: middle, center, question
 
 
 
+
+
+
+# What do you think?
+
+&lt;br&gt;&lt;br&gt;&lt;br&gt;
+No Googling :)
+
+---
 
 
 .pull-left6[
 
 # What is Machine Learning?
 
-&gt; Machine learning (ML) is a field of artificial intelligence that uses statistical techniques to give computer systems the ability to "learn" (e.g., progressively improve performance on a specific task) from data, without being explicitly programmed.
-&gt; ~ Wikipedia
-
-## What else?
-
-- Machine Learning is about making *data driven* decisions.
-
-- To do machine learning, you need data!
-
-- ML algorithms try to automatically figure out which information is important and which is not
-
-- Performance of an ML algorithm can always be defined by some accuracy or loss function.
+Machine learning (ML) is a &lt;high&gt;field of artificial intelligence&lt;/high&gt; that uses &lt;high&gt;statistical techniques&lt;/high&gt; to give computer systems the ability to &lt;high&gt;"learn"&lt;/high&gt; (e.g., progressively improve &lt;high&gt;performance&lt;/high&gt; on a specific task) &lt;high&gt;from data&lt;/high&gt;, without being explicitly programmed. [Wikipedia](https://en.wikipedia.org/wiki/Machine_learning)
 
 
 ]
@@ -63,6 +61,38 @@ layout: true
 &lt;/div&gt;
 
 ]
+
+---
+
+.pull-left6[
+
+# What is Machine Learning?
+
+Machine learning (ML) is a &lt;high&gt;field of artificial intelligence&lt;/high&gt; that uses &lt;high&gt;statistical techniques&lt;/high&gt; to give computer systems the ability to &lt;high&gt;"learn"&lt;/high&gt; (e.g., progressively improve &lt;high&gt;performance&lt;/high&gt; on a specific task) &lt;high&gt;from data&lt;/high&gt;, without being explicitly programmed. [Wikipedia](https://en.wikipedia.org/wiki/Machine_learning)
+
+## What does this mean?
+
+- To do machine learning, you need (clean, relevant) data!
+
+- Machine Learning is about making *data driven* decisions.
+
+- ML algorithms try to automatically figure out which information is important and which is not.
+
+- ML algorithms are always guided by a *formal definition of performance*.
+
+]
+
+.pull-right4[
+
+&lt;br&gt;&lt;br&gt;
+
+&lt;div class="figure" style="text-align: center"&gt;
+&lt;img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSXjr_if5M3PSjd7Im1cLUNjqwKNd3bxjL9ym_MrOND7HF3nd1Z8w" alt="Source: www.towardsdatascience.com" width="90%" /&gt;
+&lt;p class="caption"&gt;Source: www.towardsdatascience.com&lt;/p&gt;
+&lt;/div&gt;
+
+]
+
 
 ---
 
@@ -109,12 +139,13 @@ You can pay $0.05 to place a targeted ad for a in front of a potential customer.
 
 .pull-left6[
 
-Many people  decide based an individual, or group's personal, intuitive judgment.
+Many people decide based an individual, or group's personal, intuitive judgment.
 
 - "I have a feeling this patient is having a heart attack"
-- "Put the ad in front of anyone who has made a purchase in the past 2 months. That's what they do in other industries"
+- "I know we should target millenials with ads, trust me on this"
 
-### What are potential problems with this?
+&lt;br&gt;&lt;br&gt;
+## What are potential problems with intuition?
 
 ]
 
@@ -127,24 +158,24 @@ Many people  decide based an individual, or group's personal, intuitive judgment
 
 ]
 
+
 ---
 
 # Solution 1: Intuition
 
 .pull-left6[
 
-Many people decide based an individual, or group's personal, intuitive judgment.
+## What are potential problems with intuition?
 
-- "I have a feeling this patient is having a heart attack"
-- "Put the ad in front of anyone who has made a purchase in the past 2 months. That's what they do in other industries"
+- Might not tell you anything about *why* it makes a prediction.
 
-### What are potential problems with this?
+- Could be based on reasons other than accuracy (e.g.; self protection)
 
 - Without rigorous testing, impossible to know if &lt;high&gt;critical information is being ignored&lt;/high&gt;.
 
 - If the decision isn't programmed, it might be &lt;high&gt;impossible to replicate&lt;/high&gt; (and improve) in the future.
 
-- Intuition could be based on &lt;high&gt;biased processes&lt;/high&gt;
+- When objectively wrong, intuition can always be defended 'in hindsight'.
 
 ]
 
@@ -163,19 +194,18 @@ Many people decide based an individual, or group's personal, intuitive judgment.
 
 .pull-left6[
 
-With machine learning, you can create an algorithm &lt;high&gt;optimised&lt;/high&gt; to solve your task
+Here's how a data-driven, ML approach would look:
 
-- Based on &lt;high&gt;data from past patients at this hospital&lt;/high&gt;, a &lt;high&gt;regression&lt;/high&gt; model using the patient's &lt;high&gt;age, BMI, and health history&lt;/high&gt;, predicts the probability that this patient is having a heart attack is only &lt;high&gt;20% &lt;/high&gt;.
 
-- Based on &lt;high&gt;prior purchasing records&lt;/high&gt;, a &lt;high&gt;decision tree&lt;/high&gt; predicts that a &lt;high&gt;male, 20 year old Facebook user with at least 500 'friends'&lt;/high&gt; has a &lt;high&gt;80% chance&lt;/high&gt; of clicking the ad.
+&lt;img src="image/heartdisease_data_ss.jpg" width="70%" style="display: block; margin: auto;" /&gt;
 
-### What are the benefits of ML?
 
-- Algorithms fit to your past data can tell you which variables are important an which are not.
+- Based on historical &lt;high&gt;data&lt;/high&gt; from past patients at this hospital...
+- A &lt;high&gt;regression model&lt;/high&gt; ...
+- Using the patient's &lt;high&gt;age, cholesterol level, and ecg&lt;/high&gt;...
+- &lt;high&gt;Predicts&lt;/high&gt; the probability that this patient is having a heart attack is only &lt;high&gt;20%&lt;/high&gt;.
 
-- Many can give you probability estimates, rather than single decisions.
-
-]
+] 
 
 .pull-right35[
 
@@ -184,6 +214,42 @@ With machine learning, you can create an algorithm &lt;high&gt;optimised&lt;/hig
 &lt;p class="caption"&gt;Source: gstatic.com&lt;/p&gt;
 &lt;/div&gt;
 
+&lt;div class="figure" style="text-align: center"&gt;
+&lt;img src="https://wkdigital.com.au/wp-content/uploads/2016/06/How-To-Profile-Your-Customer.jpg" alt="Source: WK Digital" width="100%" /&gt;
+&lt;p class="caption"&gt;Source: WK Digital&lt;/p&gt;
+&lt;/div&gt;
+
+] 
+
+
+
+---
+
+# Solution 2: Data-Driven Machine Learning
+
+.pull-left6[
+
+### What are the benefits of ML?
+
+- Algorithms fit to your past data can tell you which variables are important an which are not.
+
+- Make explicit, quantitative predictions of variables of interest.
+
+- Many can give you probability estimates, and estimated errors, rather than single decisions or point estimates.
+
+- Can reveal novel insights about your data!
+
+- Can be programmed and automated.
+
+
+] 
+
+.pull-right35[
+
+&lt;div class="figure" style="text-align: center"&gt;
+&lt;img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS795QtyFgYH6vRDqhlhu9WtQKLJw11iNyAfGteNoiaTzZE3f-v" alt="Source: gstatic.com" width="100%" /&gt;
+&lt;p class="caption"&gt;Source: gstatic.com&lt;/p&gt;
+&lt;/div&gt;
 
 &lt;div class="figure" style="text-align: center"&gt;
 &lt;img src="https://wkdigital.com.au/wp-content/uploads/2016/06/How-To-Profile-Your-Customer.jpg" alt="Source: WK Digital" width="100%" /&gt;
@@ -191,6 +257,7 @@ With machine learning, you can create an algorithm &lt;high&gt;optimised&lt;/hig
 &lt;/div&gt;
 
 ] 
+
 
 ---
 
@@ -263,7 +330,6 @@ In this course, we focus on &lt;high&gt;Supervised&lt;/high&gt; tasks
 
 ]
 
-
 ---
 
 # What types of machine learning tasks are there?
@@ -296,22 +362,97 @@ In this course, we focus on &lt;high&gt;Supervised&lt;/high&gt; tasks
 ]
 
 ---
+class: center, middle
 
-# What models are out there?
+# What is a model?
 
-
-
+&lt;font size = 6, color = "white"&gt;.&lt;/font&gt;
+&lt;font size = 6, color = "white"&gt;.&lt;/font&gt;
 
 
 ---
+class: center, middle
 
-# Practical
+# What is a model?
 
-&lt;p&gt;
-  &lt;font size=6&gt;
-    &lt;a href="https://therbootcamp.github.io/Intro2DataScience_2018Oct/_sessions/Wrangling/Wrangling_practical.html"&gt;&lt;b&gt;Link to practical&lt;b&gt;&lt;/a&gt;
-  &lt;/font&gt;
-&lt;/p&gt;
+&lt;font size = 6&gt;It's not magic.&lt;/font&gt;&lt;br&gt;
+
+
+---
+class: center, middle
+
+# What is a model?
+
+&lt;font size = 6&gt;It's not magic.&lt;/font&gt;&lt;br&gt;&lt;br&gt;
+
+&lt;font size = 6&gt; A model is a &lt;high&gt;mathematical&lt;/high&gt; (computational) representation of data.&lt;/font&gt;
+
+---
+class: center, middle
+
+# What is a model?
+
+&lt;font size = 6&gt;It's not magic.&lt;/font&gt;&lt;br&gt;&lt;br&gt;
+
+&lt;font size = 6&gt;A model is a &lt;high&gt;athematical&lt;/high&gt; (computational) representation of data.&lt;/font&gt; &lt;br&gt;&lt;br&gt;
+
+&lt;font size = 6&gt;That can be &lt;high&gt;programmed&lt;/high&gt;, and used to understand, and &lt;high&gt;predict relationships&lt;/high&gt; between data&lt;/font&gt;
+
+---
+
+# Three of the models we will work with
+
+&lt;img src="image/three_models.png" width="4435" /&gt;
+
+---
+
+.pull-left6[
+
+# Why do we need a model at all?
+
+### Theoretical
+
+*To &lt;high&gt;learn something&lt;/high&gt; from the data*
+
+- Learn which features are most &lt;high&gt;important&lt;/high&gt; in predicting the criterion
+- Understand the &lt;high&gt;relationship&lt;/high&gt; between features and criterion.
+    - Strong? Weak? Postive? Negative?
+- Make &lt;high&gt;predictions&lt;/high&gt; for new data.
+    - I've got a new patient, how likely is it that (s)he is having a heart attack?
+
+### Practical
+
+- Need a computational / mathematical representation of the data that can be programmed and automated.
+
+
+&gt; Verbal descriptions of data are nice, but they aren't models.
+
+]
+
+.pull-right4[
+
+&lt;br&gt;
+
+&lt;img src="https://github.com/therbootcamp/appliedML_2019Jan/blob/master/_sessions/Fitting/image/data_to_ml.jpg?raw=true" width="100%" style="display: block; margin: auto;" /&gt;
+
+]
+
+---
+
+&lt;img src="image/trump_gut.jpg" width="100%" style="display: block; margin: auto;" /&gt;
+
+---
+
+&lt;img src="image/trump_gut_edited.jpg" width="100%" style="display: block; margin: auto;" /&gt;
+
+---
+class: middle, center, question
+
+&lt;h1&gt;&lt;a href=https://therbootcamp.github.io/appliedML_2019Jan/index.html&gt;Schedule&lt;/a&gt;&lt;/h1&gt;
+
+## Applied Machine Learning with R
+
+### January 2019
     </textarea>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
 <script>var slideshow = remark.create({

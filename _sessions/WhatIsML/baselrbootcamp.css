@@ -7,6 +7,27 @@
 
 /* Title */
 
+
+.question {
+	background-image: url(https://raw.githubusercontent.com/therbootcamp/therbootcamp.github.io/master/_sessions/_image/slide_background.png);
+	background-size: cover;}
+
+.question p{
+  color: white;
+}
+
+.question h1{
+  color: white;
+}
+
+.question h2{
+  color: white;
+}
+
+.question h3{
+  color: white;
+}
+
 .title-slide {
 	background-image: url(https://raw.githubusercontent.com/therbootcamp/therbootcamp.github.io/master/_sessions/_image/slide_background.png);
 	background-size: cover;
