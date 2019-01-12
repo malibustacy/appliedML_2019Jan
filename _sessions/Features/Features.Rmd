@@ -1,0 +1,191 @@
+---
+title: "Parameter Tuning"
+author: "Applied Machine Learning with R<br/><a href='https://therbootcamp.github.io'>www.therbootcamp.com</a><br/><a href='https://twitter.com/therbootcamp'>@therbootcamp</a>"
+date: "January 2019"
+output:
+  xaringan::moon_reader:
+    css: ["default", "baselrbootcamp.css"]
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+      ratio: '16:9'
+---
+
+layout: true
+
+<div class="my-footer"><span>
+<a href="https://therbootcamp.github.io/"><font color="#7E7E7E">Applied Machine Learning with R, January 2019</font></a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+<a href="https://therbootcamp.github.io/"><font color="#7E7E7E">www.therbootcamp.com</font></a>
+</span></div> 
+
+---
+
+```{r, eval = TRUE, echo = FALSE, warning=F,message=F}
+# Code to knit slides
+baselers <- readr::read_csv("../_data/baselers.csv")
+```
+
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+# see: https://github.com/yihui/xaringan
+# install.packages("xaringan")
+# see: 
+# https://github.com/yihui/xaringan/wiki
+# https://github.com/gnab/remark/wiki/Markdown
+options(width=110)
+options(digits = 4)
+```
+
+```{r, echo = FALSE ,message = FALSE, warning = FALSE}
+knitr::opts_chunk$set(comment=NA, fig.width=6, fig.height=6, echo = TRUE, eval = TRUE, 
+                      message = FALSE, warning = FALSE, fig.align = 'center', dpi = 200)
+library(tidyverse)
+library(baselers)
+library(ggthemes)
+```
+
+
+.pull-left4[
+
+# Recap: What are model tuning parameters?
+
+]
+
+.pull-right6[
+
+]
+
+
+---
+
+.pull-left4[
+
+# Why do we have tuning parameters
+
+- Regularisation
+- Complexity
+
+]
+
+.pull-right6[
+
+]
+
+
+---
+
+.pull-left4[
+
+# Bias-Variance Trade-off
+
+- A short introduction
+
+]
+
+.pull-right6[
+
+]
+
+
+---
+
+.pull-left4[
+
+# Regularisation / complexity controlling methods
+
+- Regression
+  - Ridge (L1 penalty), Lasso (L2 penalty)
+  
+- Trees
+  - Max depth, minimum elements per node
+  
+- KNN
+   - Just try different values of K
+
+]
+
+.pull-right6[
+
+]
+
+
+---
+
+.pull-left4[
+
+# How do you select best tuning parameters?
+
+- Crossvalidation
+
+]
+
+.pull-right6[
+
+]
+
+
+---
+
+.pull-left4[
+
+# Cross-Validation
+
+]
+
+.pull-right6[
+
+]
+
+---
+
+.pull-left4[
+
+# Estimating prediction accuracy with cross-validation
+
+]
+
+.pull-right6[
+
+]
+
+---
+
+.pull-left4[
+
+# Estimating True prediction accuracy
+
+
+- Hold out set
+- Why do we always use a holdout set?
+
+]
+
+.pull-right6[
+
+]
+
+
+---
+
+# Caret
+
+
+
+
+
+---
+
+
+# Practical
+
+<font size=6><b><a href="https://therbootcamp.github.io/Intro2DataScience_2018Oct/_sessions/Plotting/Plotting_practical.html">Link to practical</a>
+
+
+
+
+
+

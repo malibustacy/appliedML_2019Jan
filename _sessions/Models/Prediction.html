@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Parameter Tuning</title>
+    <title>Model Prediction</title>
     <meta charset="utf-8">
     <meta name="author" content="Applied Machine Learning with R www.therbootcamp.com @therbootcamp" />
     <link href="libs/remark-css/default.css" rel="stylesheet" />
@@ -11,7 +11,7 @@
     <textarea id="source">
 class: center, middle, inverse, title-slide
 
-# Parameter Tuning
+# Model Prediction
 ### Applied Machine Learning with R<br/><a href='https://therbootcamp.github.io'>www.therbootcamp.com</a><br/><a href='https://twitter.com/therbootcamp'><span class="citation">@therbootcamp</span></a>
 ### January 2019
 
@@ -38,7 +38,7 @@ layout: true
 
 .pull-left4[
 
-# Recap: What are model tuning parameters?
+# What does prediction mean?
 
 ]
 
@@ -51,10 +51,7 @@ layout: true
 
 .pull-left4[
 
-# Why do we have tuning parameters
-
-- Regularisation
-- Complexity
+# How do you measure prediction performance?
 
 ]
 
@@ -67,59 +64,7 @@ layout: true
 
 .pull-left4[
 
-# Bias-Variance Trade-off
-
-- A short introduction
-
-]
-
-.pull-right6[
-
-]
-
-
----
-
-.pull-left4[
-
-# Regularisation / complexity controlling methods
-
-- Regression
-  - Ridge (L1 penalty), Lasso (L2 penalty)
-  
-- Trees
-  - Max depth, minimum elements per node
-  
-- KNN
-   - Just try different values of K
-
-]
-
-.pull-right6[
-
-]
-
-
----
-
-.pull-left4[
-
-# How do you select best tuning parameters?
-
-- Crossvalidation
-
-]
-
-.pull-right6[
-
-]
-
-
----
-
-.pull-left4[
-
-# Cross-Validation
+# What are reasons why prediction performance can differ from training?
 
 ]
 
@@ -131,7 +76,24 @@ layout: true
 
 .pull-left4[
 
-# Estimating prediction accuracy with cross-validation
+# How do you know if a model's predictions are 'good'?
+
+- Compare to baseline models
+- Compare multiple models!
+- Define meaningful performance levels (aka, costs) *a priori* 
+
+]
+
+.pull-right6[
+
+]
+
+---
+
+
+.pull-left4[
+
+# What are good baseline models of performance?
 
 ]
 
@@ -143,11 +105,7 @@ layout: true
 
 .pull-left4[
 
-# Estimating True prediction accuracy
-
-
-- Hold out set
-- Why do we always use a holdout set?
+# What are reasons why prediction performance can differ from training?
 
 ]
 
@@ -159,8 +117,6 @@ layout: true
 ---
 
 # Caret
-
-
 
 
 
@@ -188,23 +144,12 @@ if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
   d.head.appendChild(s);
 })();</script>
 
-<script>
-(function() {
-  var i, text, code, codes = document.getElementsByTagName('code');
-  for (i = 0; i < codes.length;) {
-    code = codes[i];
-    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
-      text = code.textContent;
-      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
-          /^\$\$(.|\s)+\$\$$/.test(text) ||
-          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
-        code.outerHTML = code.innerHTML;  // remove <code></code>
-        continue;
-      }
-    }
-    i++;
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  tex2jax: {
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre']
   }
-})();
+});
 </script>
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>

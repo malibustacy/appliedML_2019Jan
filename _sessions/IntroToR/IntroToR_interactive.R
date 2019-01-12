@@ -29,13 +29,12 @@
 
 # Functions in R ----- 
 
-# 1 Create a numeric vector called age
-# 2. Ccalculate mean age (auto-complete)
-# 3. Store result
-# 4. Add NA to age
-# 5. Compute mean
-# 6. Check help
-# 7. Use n.rm argument
+# 1. Load Baselers
+# 2. Print & Inspect Baselers
+# 3. View Baselers
+# 4. Select variable
+# 5. Compute means of various variables
+# 6. Simple regression example
 
 # Close RStudio & Reopen ----
 
