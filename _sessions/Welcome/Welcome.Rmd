@@ -99,7 +99,7 @@ We have an <high>ambitious schedule</high>!
 
 - 2 days, 3 sessions per day, 1.5 - 2 hours per session, on a variety of topics.
 
-- Each session contains a slide-based <high>introduction</high> and a hands-on <high>programming practical</high>
+- Each session contains a slide-based <high>introduction</high> and a hands-on <high>programming interactive or practical</high>
 
 <br>
 
@@ -108,7 +108,7 @@ We have an <high>ambitious schedule</high>!
 
 .pull-right4[
 
-<img src="https://github.com/therbootcamp/therbootcamp.github.io/blob/master/_sessions/_image/schedule_2018Oct_Intro2DS.png?raw=true" height="550" align="center">
+<img src="https://github.com/therbootcamp/appliedML_2019Jan/blob/master/schedule_appliedML_2019Jan.png?raw=true" height="525" align="center">
 
 ]
 
@@ -118,7 +118,7 @@ We have an <high>ambitious schedule</high>!
 
 # Introduction
 
-<high>15 - 45 minutes</high> slide based introduction to help you understand the basic concepts, including:
+<high>30 - 60 minutes</high> slide based introduction to help you understand the basic concepts, including:
 <br><br>
 &emsp;&emsp;1 - Theory<br>
 &emsp;&emsp;2 - Code examples<br>
@@ -133,7 +133,7 @@ We have an <high>ambitious schedule</high>!
 <a href="https://therbootcamp.github.io/Intro2DataScience_2018Oct/">This is a Link to our materials</a>.
 <br><br>
 
-<high>Be interactive! Ask questions!</high>
+Be interactive! Ask questions!
 
 ]
 
@@ -159,15 +159,15 @@ knitr::include_graphics("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR
 
 <high>Write your own R scripts!</high>
 
-1 - Anywhere from 10 ~ 30 programming tasks.
+- Anywhere from 10 ~ 30 programming tasks.
 
-2 - Starts easy, gets progressively more challenging.
+- Starts easy, gets progressively more challenging.
 
-3 - Struggle, work together, and ask questions!
+- Struggle, work together, and ask questions!
 
-4 - Go at your own pace and finish as much as you can.
+- Go at your own pace and finish as much as you can.
 
-5 - We'll give you all the answers later
+- We'll give you all the answers later.
 
 ]
 
@@ -265,12 +265,12 @@ knitr::include_graphics("https://cdn.southampton.ac.uk/assets/imported/transform
 .pull-right6[
 
 
-```{r, echo = FALSE, out.width = "70%", fig.cap="Famous Oat Cookies!"}
+```{r, echo = FALSE, eval = FALSE, out.width = "70%", fig.cap="Famous Oat Cookies!"}
 knitr::include_graphics("https://image.migros.ch/2017-large/1106111ebe783b88f0f69e6305eb0f8cdfc35566/bio-hafercookies.jpg")
 ```
 
 
-```{r, echo = FALSE, out.width = "50%", fig.cap="Tibits"}
+```{r, echo = FALSE, out.width = "60%", fig.cap="Tibits"}
 knitr::include_graphics("https://raw.githubusercontent.com/therbootcamp/therbootcamp.github.io/master/_sessions/_image/tibits.jpg")
 ```
 
