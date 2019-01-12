@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>What is Machine Learning (ML)?</title>
+    <meta charset="utf-8">
+    <meta name="author" content="Applied Machine Learning with R www.therbootcamp.com @therbootcamp" />
+    <link href="libs/remark-css/default.css" rel="stylesheet" />
+    <link rel="stylesheet" href="baselrbootcamp.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# What is Machine Learning (ML)?
+### Applied Machine Learning with R<br/><a href='https://therbootcamp.github.io'>www.therbootcamp.com</a><br/><a href='https://twitter.com/therbootcamp'><span class="citation">@therbootcamp</span></a>
+### January 2019
+
+---
+
+
+layout: true
+
+&lt;div class="my-footer"&gt;&lt;span&gt;
+&lt;a href="https://therbootcamp.github.io/"&gt;&lt;font color="#7E7E7E"&gt;Applied Machine Learning with R, January 2019&lt;/font&gt;&lt;/a&gt;
+&amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp;
+&lt;a href="https://therbootcamp.github.io/"&gt;&lt;font color="#7E7E7E"&gt;www.therbootcamp.com&lt;/font&gt;&lt;/a&gt;
+&lt;/span&gt;&lt;/div&gt; 
+
+---
+class: middle, center, question
+
+
+
+
+
+
+# What do you think?
+
+&lt;br&gt;&lt;br&gt;&lt;br&gt;
+No Googling :)
+
+---
+
+
+.pull-left6[
+
+# What is Machine Learning?
+
+Machine learning (ML) is a &lt;high&gt;field of artificial intelligence&lt;/high&gt; that uses &lt;high&gt;statistical techniques&lt;/high&gt; to give computer systems the ability to &lt;high&gt;"learn"&lt;/high&gt; (e.g., progressively improve &lt;high&gt;performance&lt;/high&gt; on a specific task) &lt;high&gt;from data&lt;/high&gt;, without being explicitly programmed. [Wikipedia](https://en.wikipedia.org/wiki/Machine_learning)
+
+
+]
+
+.pull-right4[
+
+&lt;br&gt;&lt;br&gt;
+
+&lt;div class="figure" style="text-align: center"&gt;
+&lt;img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSXjr_if5M3PSjd7Im1cLUNjqwKNd3bxjL9ym_MrOND7HF3nd1Z8w" alt="&amp;lt;font size = 4&amp;gt;www.towardsdatascience.com&amp;lt;/font&amp;gt;" width="90%" /&gt;
+&lt;p class="caption"&gt;&lt;font size = 4&gt;www.towardsdatascience.com&lt;/font&gt;&lt;/p&gt;
+&lt;/div&gt;
+
+]
+
+---
+
+.pull-left6[
+
+# What is Machine Learning?
+
+Machine learning (ML) is a &lt;high&gt;field of artificial intelligence&lt;/high&gt; that uses &lt;high&gt;statistical techniques&lt;/high&gt; to give computer systems the ability to &lt;high&gt;"learn"&lt;/high&gt; (e.g., progressively improve &lt;high&gt;performance&lt;/high&gt; on a specific task) &lt;high&gt;from data&lt;/high&gt;, without being explicitly programmed. [Wikipedia](https://en.wikipedia.org/wiki/Machine_learning)
+
+## What does this mean?
+
+- Machine Learning is about making *data driven* decisions.
+
+- To do machine learning, you need (clean, relevant) data!
+
+- ML algorithms try to automatically figure out which information is important and which is not.
+
+- ML algorithms are always guided by a *formal definition of performance*.
+
+]
+
+.pull-right4[
+
+&lt;br&gt;&lt;br&gt;
+
+&lt;div class="figure" style="text-align: center"&gt;
+&lt;img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSXjr_if5M3PSjd7Im1cLUNjqwKNd3bxjL9ym_MrOND7HF3nd1Z8w" alt="&amp;lt;font size = 4&amp;gt;www.towardsdatascience.com&amp;lt;/font&amp;gt;" width="90%" /&gt;
+&lt;p class="caption"&gt;&lt;font size = 4&gt;www.towardsdatascience.com&lt;/font&gt;&lt;/p&gt;
+&lt;/div&gt;
+
+]
+
+
+---
+
+.pull-left6[
+
+# Examples
+
+### Predicting Heart Attacks
+
+You are a intake nurse at an emergency room.
+
+A patient comes in complaining of chest pain and thinks they are having a heart attack
+
+*How do you decide whether or not the patient is really having a heart attack?*
+
+### Predicting sales
+
+You are an analyst at a retail corporation.
+
+The executive team is considering whether or not to open a new retail location in Basel.
+
+*How can you predict what the sales of the new store would be?*
+
+]
+
+.pull-right35[
+
+&lt;br&gt;
+&lt;div class="figure" style="text-align: center"&gt;
+&lt;img src="https://www.ucsf.edu/sites/default/files/styles/2014_inline_5-col/public/fields/field_insert_file/news/Man-Chest-Pain-Doctor.jpg?itok=nRgCK8R_" alt="&amp;lt;font size = 4&amp;gt;www.ucsf.edu&amp;lt;/font&amp;gt;" width="70%" /&gt;
+&lt;p class="caption"&gt;&lt;font size = 4&gt;www.ucsf.edu&lt;/font&gt;&lt;/p&gt;
+&lt;/div&gt;
+
+&lt;div class="figure" style="text-align: center"&gt;
+&lt;img src="http://www.location.ch/assets/images/f/Basel_Freie_Strasse_1_900x600-8f38558f.jpg" alt="&amp;lt;font size = 4&amp;gt;location.ch&amp;lt;/font&amp;gt;" width="85%" /&gt;
+&lt;p class="caption"&gt;&lt;font size = 4&gt;location.ch&lt;/font&gt;&lt;/p&gt;
+&lt;/div&gt;
+
+]
+
+---
+
+
+.pull-left6[
+
+# Solution 1: Intuition
+
+
+### What are potential problems with intuition?
+
+Many decisions are based on an individual's intuitive 'gut' judgment.
+
+&gt; "I have a feeling this patient is having a heart attack" &lt;br&gt;
+
+&gt; "Sales will be at least 100,000 CHF per month, trust me on this."
+
+&lt;br&gt;&lt;br&gt;
+
+]
+
+.pull-right35[
+
+&lt;br&gt;
+&lt;div class="figure" style="text-align: center"&gt;
+&lt;img src="https://www.ucsf.edu/sites/default/files/styles/2014_inline_5-col/public/fields/field_insert_file/news/Man-Chest-Pain-Doctor.jpg?itok=nRgCK8R_" alt="&amp;lt;font size = 4&amp;gt;www.ucsf.edu&amp;lt;/font&amp;gt;" width="70%" /&gt;
+&lt;p class="caption"&gt;&lt;font size = 4&gt;www.ucsf.edu&lt;/font&gt;&lt;/p&gt;
+&lt;/div&gt;
+
+&lt;div class="figure" style="text-align: center"&gt;
+&lt;img src="http://www.location.ch/assets/images/f/Basel_Freie_Strasse_1_900x600-8f38558f.jpg" alt="&amp;lt;font size = 4&amp;gt;location.ch&amp;lt;/font&amp;gt;" width="85%" /&gt;
+&lt;p class="caption"&gt;&lt;font size = 4&gt;location.ch&lt;/font&gt;&lt;/p&gt;
+&lt;/div&gt;
+
+]
+
+---
+
+
+.pull-left6[
+
+# Solution 1: Intuition
+
+
+### What are potential problems with intuition?
+
+- Might not tell you anything about *why* it makes a prediction.
+
+- Could be based on reasons other than accuracy (e.g.; self protection)
+
+- Without rigorous testing, impossible to know if &lt;high&gt;critical information is being ignored&lt;/high&gt;.
+
+- If the decision isn't programmed, it might be &lt;high&gt;impossible to replicate&lt;/high&gt; (and improve) in the future.
+
+- When objectively wrong, intuition can always be defended 'in hindsight'.
+
+]
+
+.pull-right35[
+
+&lt;br&gt;
+&lt;div class="figure" style="text-align: center"&gt;
+&lt;img src="https://www.ucsf.edu/sites/default/files/styles/2014_inline_5-col/public/fields/field_insert_file/news/Man-Chest-Pain-Doctor.jpg?itok=nRgCK8R_" alt="&amp;lt;font size = 4&amp;gt;www.ucsf.edu&amp;lt;/font&amp;gt;" width="70%" /&gt;
+&lt;p class="caption"&gt;&lt;font size = 4&gt;www.ucsf.edu&lt;/font&gt;&lt;/p&gt;
+&lt;/div&gt;
+
+&lt;div class="figure" style="text-align: center"&gt;
+&lt;img src="http://www.location.ch/assets/images/f/Basel_Freie_Strasse_1_900x600-8f38558f.jpg" alt="&amp;lt;font size = 4&amp;gt;location.ch&amp;lt;/font&amp;gt;" width="85%" /&gt;
+&lt;p class="caption"&gt;&lt;font size = 4&gt;location.ch&lt;/font&gt;&lt;/p&gt;
+&lt;/div&gt;
+
+]
+
+
+---
+class: middle, center
+
+# One very influential world leader really trusts his intuition...
+
+---
+
+&lt;img src="image/trump_gut_blank.jpg" width="100%" style="display: block; margin: auto;" /&gt;
+
+---
+
+&lt;img src="image/trump_gut_statement.jpg" width="100%" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Solution 2: Data-Driven Machine Learning
+
+.pull-left6[
+
+Here's how a data-driven, ML approach would look:
+
+
+&lt;img src="image/heartdisease_data_ss.jpg" width="70%" style="display: block; margin: auto;" /&gt;
+
+
+- Based on historical &lt;high&gt;data&lt;/high&gt; from past patients &lt;high&gt;at this hospital&lt;/high&gt;...
+- A &lt;high&gt;regression model&lt;/high&gt; ...
+- Using the patient's &lt;high&gt;age, cholesterol level, and ecg&lt;/high&gt;...
+- &lt;high&gt;Predicts&lt;/high&gt; the probability that this patient is having a heart attack is only &lt;high&gt;20%&lt;/high&gt;.
+
+] 
+
+.pull-right35[
+
+&lt;div class="figure" style="text-align: center"&gt;
+&lt;img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS795QtyFgYH6vRDqhlhu9WtQKLJw11iNyAfGteNoiaTzZE3f-v" alt="&amp;lt;font size = 4&amp;gt;gstatic.com&amp;lt;/font&amp;gt;" width="100%" /&gt;
+&lt;p class="caption"&gt;&lt;font size = 4&gt;gstatic.com&lt;/font&gt;&lt;/p&gt;
+&lt;/div&gt;
+
+&lt;div class="figure" style="text-align: center"&gt;
+&lt;img src="https://wkdigital.com.au/wp-content/uploads/2016/06/How-To-Profile-Your-Customer.jpg" alt="&amp;lt;font size = 4&amp;gt;WK Digital&amp;lt;/font&amp;gt;" width="100%" /&gt;
+&lt;p class="caption"&gt;&lt;font size = 4&gt;WK Digital&lt;/font&gt;&lt;/p&gt;
+&lt;/div&gt;
+
+] 
+
+
+
+---
+
+# Solution 2: Data-Driven Machine Learning
+
+.pull-left6[
+
+### What are the benefits of ML?
+
+- Algorithms fit to your past data can tell you which variables are important an which are not.
+
+- Make explicit, quantitative predictions of variables of interest.
+
+- Many can give you probability estimates, and estimated errors, rather than single decisions or point estimates.
+
+- Can reveal novel insights about your data!
+
+- Can be programmed and automated.
+
+
+] 
+
+.pull-right35[
+
+&lt;div class="figure" style="text-align: center"&gt;
+&lt;img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS795QtyFgYH6vRDqhlhu9WtQKLJw11iNyAfGteNoiaTzZE3f-v" alt="&amp;lt;font size = 4&amp;gt;gstatic.com&amp;lt;font&amp;gt;" width="100%" /&gt;
+&lt;p class="caption"&gt;&lt;font size = 4&gt;gstatic.com&lt;font&gt;&lt;/p&gt;
+&lt;/div&gt;
+
+&lt;div class="figure" style="text-align: center"&gt;
+&lt;img src="https://wkdigital.com.au/wp-content/uploads/2016/06/How-To-Profile-Your-Customer.jpg" alt="&amp;lt;font size = 4&amp;gt;WK Digital&amp;lt;/font&amp;gt;" width="100%" /&gt;
+&lt;p class="caption"&gt;&lt;font size = 4&gt;WK Digital&lt;/font&gt;&lt;/p&gt;
+&lt;/div&gt;
+
+] 
+
+
+
+---
+
+&lt;img src="image/trump_gut_edited.jpg" width="100%" style="display: block; margin: auto;" /&gt;
+
+
+
+
+---
+
+
+.pull-left5[
+
+# Data Terminology
+
+
+|Term| Definition| Example|
+|:------|:-----|:------|
+|Data (Tidy)|Data represented in a rectangular format with rows and columns|Excel spreadsheet, .`csv`|
+|Case|A specific case of data|A patient, a site|
+|Feature|An individual, measurable property of cases|Age, temperature, country|
+|Criterion|Something you want to predict|Total sales, success (yes or no)|
+
+]
+
+
+.pull-right5[
+
+&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;
+&lt;img src="image/terminology_data.png" width="100%" style="display: block; margin: auto;" /&gt;
+
+
+]
+
+
+
+---
+
+# What are the steps of machine learning?
+
+&lt;div class="figure" style="text-align: center"&gt;
+&lt;img src="https://cdn-images-1.medium.com/max/1600/1*_QGyIwpgq831xI54cIe_GQ.jpeg" alt="&amp;lt;font size = 4&amp;gt;Medium.com&amp;lt;/font&amp;gt;" width="100%" /&gt;
+&lt;p class="caption"&gt;&lt;font size = 4&gt;Medium.com&lt;/font&gt;&lt;/p&gt;
+&lt;/div&gt;
+
+
+---
+
+# What types of machine learning tasks are there?
+
+.pull-left4[
+
+There are many types of machine learning tasks, each of which call for different models
+
+Three general categories
+
+|Type|Example|
+|:----|:-----|
+|Unsupervised|Customer segmentation|
+|Supervised|Classification, regression|
+|Reinforcement Learning|Robot navigation, game playing AI|
+
+In this course, we focus on &lt;high&gt;Supervised&lt;/high&gt; tasks
+
+]
+
+.pull-right55[
+
+&lt;div class="figure" style="text-align: center"&gt;
+&lt;img src="https://wordstream-files-prod.s3.amazonaws.com/s3fs-public/styles/simple_image/public/images/machine-learning1.png?SnePeroHk5B9yZaLY7peFkULrfW8Gtaf&amp;itok=yjEJbEKD" alt="&amp;lt;font size = 4&amp;gt;Wordstream.com&amp;lt;/font&amp;gt;" width="100%" /&gt;
+&lt;p class="caption"&gt;&lt;font size = 4&gt;Wordstream.com&lt;/font&gt;&lt;/p&gt;
+&lt;/div&gt;
+
+]
+
+
+---
+
+# What types of machine learning tasks are there?
+
+.pull-left4[
+
+There are many types of machine learning tasks, each of which call for different models
+
+Three general categories
+
+|Type|Example|
+|:----|:-----|
+|&lt;high&gt;Unsupervised&lt;/high&gt;|Customer segmentation|
+|Supervised|Classification, regression|
+|Reinforcement Learning|Robot navigation, game playing AI|
+
+In this course, we focus on &lt;high&gt;Supervised&lt;/high&gt; tasks
+
+
+]
+
+.pull-right55[
+
+### Unsupervised
+&lt;div class="figure" style="text-align: center"&gt;
+&lt;img src="https://www.iotforall.com/wp-content/uploads/2018/01/Screen-Shot-2018-01-17-at-8.10.14-PM.png" alt="&amp;lt;font size = 4&amp;gt;iotforall.com&amp;lt;/font&amp;gt;" width="100%" /&gt;
+&lt;p class="caption"&gt;&lt;font size = 4&gt;iotforall.com&lt;/font&gt;&lt;/p&gt;
+&lt;/div&gt;
+
+]
+
+---
+
+# What types of machine learning tasks are there?
+
+.pull-left4[
+
+There are many types of machine learning tasks, each of which call for different models
+
+Three general categories
+
+|Type|Example|
+|:----|:-----|
+|Unsupervised|Customer segmentation|
+|Supervised&lt;/high&gt;|Classification, regression|
+|&lt;high&gt;Reinforcement Learning&lt;/high&gt;|Robot navigation, game playing AI|
+
+In this course, we focus on &lt;high&gt;Supervised&lt;/high&gt; tasks
+
+]
+
+.pull-right55[
+
+### Reinforcement Learning
+
+&lt;div class="figure" style="text-align: center"&gt;
+&lt;img src="https://cdn-images-1.medium.com/max/1600/1*6sE---UY4iiCDPA2kdYQkg.gif" alt="&amp;lt;font size = 4&amp;gt;towardsdatascience.com&amp;lt;/font&amp;gt;" width="45%" /&gt;
+&lt;p class="caption"&gt;&lt;font size = 4&gt;towardsdatascience.com&lt;/font&gt;&lt;/p&gt;
+&lt;/div&gt;
+
+&lt;div class="figure" style="text-align: center"&gt;
+&lt;img src="https://cdn.technologyreview.com/i/images/alphagotopper2.jpg?sw=1200" alt="&amp;lt;font size = 4&amp;gt;MIT Technology Review&amp;lt;/font&amp;gt;" width="45%" /&gt;
+&lt;p class="caption"&gt;&lt;font size = 4&gt;MIT Technology Review&lt;/font&gt;&lt;/p&gt;
+&lt;/div&gt;
+
+
+
+]
+
+---
+class: center, middle
+
+# What is a model?
+
+&lt;font size = 6, color = "white"&gt;.&lt;/font&gt;
+&lt;font size = 6, color = "white"&gt;.&lt;/font&gt;
+
+
+---
+class: center, middle
+
+# What is a model?
+
+&lt;font size = 6&gt;It's not magic.&lt;/font&gt;&lt;br&gt;
+
+
+---
+class: center, middle
+
+# What is a model?
+
+&lt;font size = 6&gt;It's not magic.&lt;/font&gt;&lt;br&gt;&lt;br&gt;
+
+&lt;font size = 6&gt; A model is a &lt;high&gt;mathematical&lt;/high&gt; (computational) representation of data.&lt;/font&gt;
+
+---
+class: center, middle
+
+# What is a model?
+
+&lt;font size = 6&gt;It's not magic.&lt;/font&gt;&lt;br&gt;&lt;br&gt;
+
+&lt;font size = 6&gt;A model is a &lt;high&gt;mathematical&lt;/high&gt; (computational) representation of data.&lt;/font&gt; &lt;br&gt;&lt;br&gt;
+
+&lt;font size = 6&gt;That can be &lt;high&gt;programmed&lt;/high&gt;, and used to understand, and &lt;high&gt;predict relationships&lt;/high&gt; between data&lt;/font&gt;
+
+---
+
+# Three of the models we will work with
+
+&lt;img src="image/three_models.png" width="4435" /&gt;
+
+---
+
+.pull-left6[
+
+# Why do we need a model at all?
+
+### Theoretical
+
+*To &lt;high&gt;learn something&lt;/high&gt; from the data*
+
+- Which features are most &lt;high&gt;important&lt;/high&gt; in predicting the criterion and which can be safely ignored?
+- What is the &lt;high&gt;relationship&lt;/high&gt; between features and the criterion?
+    - Strong? Weak? Postive? Negative?
+- Make &lt;high&gt;predictions&lt;/high&gt; for new data.
+    - I've got a new patient, how likely is it that (s)he is having a heart attack?
+- Improve predictions over time with new data.
+
+### Practical
+
+- Need a computational / mathematical representation of the data that can be programmed and automated.
+
+&gt; Verbal descriptions of data are nice, but they aren't models.
+
+]
+
+.pull-right4[
+
+&lt;br&gt;
+
+&lt;img src="https://github.com/therbootcamp/appliedML_2019Jan/blob/master/_sessions/Fitting/image/data_to_ml.jpg?raw=true" width="100%" style="display: block; margin: auto;" /&gt;
+
+]
+
+
+
+---
+class: middle, center
+
+&lt;h1&gt;&lt;a href=https://therbootcamp.github.io/appliedML_2019Jan/index.html&gt;Schedule&lt;/a&gt;&lt;/h1&gt;
+    </textarea>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false,
+"ratio": "16:9"
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function() {
+  var d = document, s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})();</script>
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  tex2jax: {
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+  }
+});
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

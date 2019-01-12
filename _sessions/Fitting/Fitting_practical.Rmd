@@ -19,8 +19,8 @@ knitr::opts_chunk$set(comment = NA,
 options(digits = 3)
 ```
 
-```{r, echo = FALSE, fig.align = 'center', eval = TRUE, out.width = "70%", fig.cap="Source: Android Authority"}
-knitr::include_graphics("https://cdn57.androidauthority.net/wp-content/uploads/2018/01/machine-learning-algorithms-840x488.jpg")
+```{r, echo = FALSE, fig.align = 'center', eval = TRUE, out.width = "70%", fig.cap="Source: www.niche.com"}
+knitr::include_graphics("https://www.niche.com/blog/wp-content/uploads/2016/10/best-colleges-in-south-2000px.png")
 ```
 
 ## {.tabset}
@@ -38,7 +38,7 @@ By the end of this practical you will know how to:
 
 ### Datasets
 
-```{r, eval = TRUE, message = FALSE}
+```{r, eval = TRUE, message = FALSE, echo = FALSE}
 library(tidyverse)
 library(plotly)
 library(ggthemes)
@@ -46,7 +46,7 @@ library(ggthemes)
 
 |File  |Rows | Columns |
 |:----|:-----|:------|
-|[house_train.csv](https://raw.githubusercontent.com/therbootcamp/therbootcamp.github.io/master/_sessions/_data/house_train.csv)| 1000 | 21|
+|[college_train.csv](https://raw.githubusercontent.com/therbootcamp/appliedML_2019Jan/master/_sessions/_data/college_train.csv)| 1000 | 21|
 
 ### Glossary
 
@@ -70,17 +70,9 @@ library(ggthemes)
 |`randomForest`|`install.packages("randomForest")`|
 |`caret`|`install.packages("caret")`|
 
-
-
 ### Cheatsheet
 
-<figure>
-<center>
-<a href="https://www.rstudio.com/wp-content/uploads/2015/03/ggplot2-cheatsheet.pdf">
-  <img src="http://www.rstudio.com/wp-content/uploads/2015/03/ggplot2-cheatsheet.png" alt="Trulli" style="width:70%">
-  <figcaption>https://www.rstudio.com/wp-content/uploads/2015/03/ggplot2-cheatsheet.pdf</figcaption></a>
-</figure>
-
+*None*
 
 ### Examples
 
@@ -97,64 +89,63 @@ library(partykit)     # For nice decision trees
 
 # Step 1: Load Training data ----------------------
 
-house_train <- read_csv("1_Data/house_train.csv")
+college_train <- read_csv("1_Data/college_train.csv")
+
+# Convert character to factor
+
+college_train <- college_train %>%
+  mutate_if(is.character, factor)
 
 # Step 2: Explore training data -----------------------------
 
-View(house_train)
+View(college_train)
 
-# Our goal is to predict price.
-# We will do a log-transformation on price
+# Our goal is to predict Grad_Rate.
+# We will do a log-transformation on Grad_Rate
 #  because it is so heavily skewed
 
-# Log-transform price
-house_train <- house_train %>%
-  mutate(price = log(price))
-
-# Step 3: Fit models predicting price ------------------
+# Step 3: Fit models predicting Grad_Rate ------------------
 
 # Regression
-price_lm <- glm(formula = price ~ bedrooms + bathrooms + floors,
-                data = house_train)
+Grad_Rate_lm <- glm(formula = Grad_Rate ~ Private + Books + PhD,
+                data = college_train)
 
 # Decision Trees
-price_rpart <- rpart(formula = price ~ bedrooms + bathrooms + floors,
-                     data = house_train)
+Grad_Rate_rpart <- rpart(formula = Grad_Rate ~ Private + Books + PhD,
+                    data = college_train, 
+                    control = list(minbucket = 50))
 
 # Step 4: Explore models -------------------------------
 
 # Regression
-summary(price_lm)
+summary(Grad_Rate_lm)
 
 # Decision Trees
-price_rpart
-plot(price_rpart)
-text(price_rpart)
+Grad_Rate_rpart
+plot(Grad_Rate_rpart)
+text(Grad_Rate_rpart)
 
 # Nicer version!
-plot(as.party(price_rpart))
+plot(as.party(Grad_Rate_rpart))
 
 # Step 5: Assess fitting accuracy ----------------------------
 
 # Get fitted values
-lm_fit <- predict(price_lm, 
-                  newdata = house_train)
-
-rpart_fit <- predict(price_rpart, 
-                     newdata = house_train)
+lm_fit <- predict(Grad_Rate_lm)
+rpart_fit <- predict(Grad_Rate_rpart)
 
 # Regression Fitting Accuracy
 postResample(pred = lm_fit, 
-             obs = house_train$price)
+             obs = college_train$Grad_Rate)
 
 # Decision Tree Fitting Accuracy
 postResample(pred = rpart_fit, 
-             obs = house_train$price)
+             obs = college_train$Grad_Rate)
 
 # Step 6: Plot fitting accuracy -------------------------
 
 # Tidy competition results
-competition_results <- tibble(truth = house_train$price,
+competition_results <- tibble(truth = college_train$Grad_Rate,
                               Regression = lm_fit,
                               Decision_Trees = rpart_fit) %>%
                        gather(group, prediction, -truth)
@@ -164,7 +155,7 @@ ggplot(data = competition_results,
        aes(x = truth, y = prediction, col = group)) +
   geom_point(alpha = .2) +
   geom_abline(slope = 1, intercept = 0) +
-  labs(title = "Predicting housing prices",
+  labs(title = "Predicting College Graduation Rates",
        subtitle = "Regression versus decision trees")
 ```
 
@@ -200,35 +191,35 @@ library(caret)
 library(tidyverse)
 ```
 
-4. For this practical, we'll use a dataset related to the prices of houses in [King County Washington](https://en.wikipedia.org/wiki/King_County,_Washington) (which you have to thank for Starbucks). The data is stored in `house_train.csv`. Using the following template, load the dataset into R as `house_train`:
+4. For this practical, we'll use a dataset of 388 U.S. College.  The data is stored in `college_train.csv`. Using the following template, load the dataset into R as `college_train`:
 
 ```{r, echo = TRUE, eval = FALSE, message = FALSE, warning = FALSE}
-house_train <- read_csv(file = "1_Data/house_train.csv")
+college_train <- read_csv(file = "1_Data/college_train.csv")
 ```
 
 5. Take a look at the first few rows of the dataset by printing it to the console.
 
 ```{r}
-house_train
+college_train
 ```
 
 6. Print the numbers of rows and columns using the `dim()` function
 
 ```{r}
-dim(house_train)
+dim(college_train)
 ```
 
 7. Open the dataset in a new window using `View()`
 
 ```{r, eval = FALSE}
-View(house_train)
+View(college_train)
 ```
 
 ## B - Walking through the 7 steps
 
 1. Run Steps 0 through 4 in the Examples section above. Run each line of code individually and explore each object you create. Try to understand each of the steps! If you have trouble, ask for help!
 
-2. Which of the three features (bedrooms, bathrooms, floors) do the regression and decision tree models use? Do they treat the features equally?
+2. Which of the three features (Private, Books, PhD) do the regression and decision tree models use? Do they treat the features equally or do some look more important than others?
 
 3. Run Step 5. Look at the results. Which model has the best fitting performance?
 
@@ -240,31 +231,19 @@ View(house_train)
 # Just add the following:
 
 # randomForest
-price_rf <- randomForest(formula = price ~ bedrooms + bathrooms + floors,
-                         data = house_train)
-
-
-# Get fitted values
-rf_fit <- predict(price_rf, 
-                 newdata = house_train)
+Grad_Rate_rf <- randomForest(formula = Grad_Rate ~ Private + Books + PhD,
+                             data = college_train)
 
 # Get fitted values
-rf_pred <- predict(price_rf, 
-                 newdata = house_test)
+rf_fit <- predict(Grad_Rate_rf)
 
 
-# prediction acuracy
-postResample(pred = rf_pred, 
-             obs = house_test$price)
+# fitting acuracy
+postResample(pred = rf_fit, 
+             obs = college_train$Grad_Rate)
 ```
 
-2. How does the *fitting* performance of random forests compare to the other algorithms in training?
-
-```{r}
-# rf is better!
-```
-
-3. How does the *prediction* performance of random forests compare to the other algorithms in testing?
+2. How does the fitting performance of random forests compare to the other algorithms in training?
 
 ```{r}
 # rf is better!
@@ -272,31 +251,31 @@ postResample(pred = rf_pred,
 
 ## E - Include more features
 
-Until now, you've only been predicting price based on 3 features (bedrooms, bathrooms, and floors). Of course, you have access to lots more data to predict housing prices! Now it's time to try using more data to predict price.
+Until now, you've only been predicting Grad_Rate based on 3 features (bedrooms, bathrooms, and floors). Of course, you have access to lots more data to predict housing Grad_Rates! Now it's time to try using more data to predict Grad_Rate.
 
-1. Look closely again at the columns in the `house_train` data. There are two features in the data that you definitely *don't* want to include in your models. Which two are they?
+1. Look closely again at the columns in the `college_train` data. There are two features in the data that you definitely *don't* want to include in your models. Which two are they?
 
 2. Remove those two features from your training data using the following template:
 
 ```{r, eval = FALSE}
-# Remove two features (columns) from house_train
-house_train <- house_train %>%
+# Remove two features (columns) from college_train
+college_train <- college_train %>%
   select(-XX, -XX)
 ```
 
 
 ```{r}
-# Remove two features (columns) from house_train
-house_train <- house_train %>%
+# Remove two features (columns) from college_train
+college_train <- college_train %>%
   select(-id, -date)
 ```
 
-3. Re-run your models, but now predict price based on *all* of the features. To do this, use the formula short hand `formula = price ~ .`.
+3. Re-run your models, but now predict Grad_Rate based on *all* of the features. To do this, use the formula short hand `formula = Grad_Rate ~ .`.
 
 ```{r, echo = TRUE}
 # Regression example
-price_lm <- glm(formula = price ~.,
-                data = house_train)
+Grad_Rate_lm <- glm(formula = Grad_Rate ~.,
+                data = college_train)
 
 # Same with other models...
 ```
@@ -307,26 +286,16 @@ price_lm <- glm(formula = price ~.,
 # Yes each model improves!!
 ```
 
-## F - Predict the year a house was built
+## F - Predict a class
+
+Now it's time to do a classification problem. Now, we will try to predict whether or not a school's graduation rate is greater than 90%
 
 ```{r}
-# On your own!
+# Code to create factor
 ```
 
+```{r}
+# Code explaining how to measure accuracy in classification (using caret)
+```
 
-So far, we have predicted house prices based on many features. Now, see how well you can predict the *year* a house was built (`yr_built`) based on the following four features: bedrooms, bathrooms, condition, sqft_living.
-
-1. Go through Steps 0 through 4 using regression `glm()` and decision trees `rpart()` to build models predicting the year a house was built `yr_built` based on `bedrooms`, `bathrooms`, `condition`, `sqft_living`.
-
-2. Based on your model exploration (Step 4), which of the four features seem to be the most important in predicting the year a house was built?
-
-3. Complete Steps 5 through 7.
-
-4. Which of your three models is the best at predicting the year a house was built?
-
-# Additional reading
-
-- For more details check out `caret`'s vignette using `vignette("caret")`.
-
-- Also check out [Applied Predictive Modeling](https://www.amazon.com/dp/B005Z29QT4/ref=cm_sw_su_dp) Kuhn & Johnson.
-
+...

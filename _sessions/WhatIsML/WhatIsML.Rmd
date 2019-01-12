@@ -62,7 +62,7 @@ Machine learning (ML) is a <high>field of artificial intelligence</high> that us
 
 <br><br>
 
-```{r, echo = FALSE, fig.align = 'center', out.width = "90%", fig.cap = "Source: www.towardsdatascience.com"}
+```{r, echo = FALSE, fig.align = 'center', out.width = "90%", fig.cap = "<font size = 4>www.towardsdatascience.com</font>"}
 knitr::include_graphics("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSXjr_if5M3PSjd7Im1cLUNjqwKNd3bxjL9ym_MrOND7HF3nd1Z8w")
 ```
 
@@ -78,9 +78,9 @@ Machine learning (ML) is a <high>field of artificial intelligence</high> that us
 
 ## What does this mean?
 
-- To do machine learning, you need (clean, relevant) data!
-
 - Machine Learning is about making *data driven* decisions.
+
+- To do machine learning, you need (clean, relevant) data!
 
 - ML algorithms try to automatically figure out which information is important and which is not.
 
@@ -92,7 +92,7 @@ Machine learning (ML) is a <high>field of artificial intelligence</high> that us
 
 <br><br>
 
-```{r, echo = FALSE, fig.align = 'center', out.width = "90%", fig.cap = "Source: www.towardsdatascience.com"}
+```{r, echo = FALSE, fig.align = 'center', out.width = "90%", fig.cap = "<font size = 4>www.towardsdatascience.com</font>"}
 knitr::include_graphics("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSXjr_if5M3PSjd7Im1cLUNjqwKNd3bxjL9ym_MrOND7HF3nd1Z8w")
 ```
 
@@ -107,67 +107,77 @@ knitr::include_graphics("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS
 
 ### Predicting Heart Attacks
 
-You are a hospital administrator. 
+You are a intake nurse at an emergency room.
 
-Patients often come to the emergency room complaining of chest pain. Some are having heart attacks, many are not.
+A patient comes in complaining of chest pain and thinks they are having a heart attack
 
-*How do you know which patients are actually having heart attacks and which are not?*
+*How do you decide whether or not the patient is really having a heart attack?*
 
-### Predicting customer purchasing
+### Predicting sales
 
-You are an analyst at a marketing company.
+You are an analyst at a retail corporation.
 
-You can pay $0.05 to place a targeted ad for a in front of a potential customer.
+The executive team is considering whether or not to open a new retail location in Basel.
 
-*How do you know which customers are likely to click the ad and which are not?*
+*How can you predict what the sales of the new store would be?*
 
 ]
 
 .pull-right35[
 
 <br>
-```{r, echo = FALSE, fig.align = 'center', out.width = "70%", fig.cap = "<font size = 4>Source: www.ucsf.edu</font>"}
+```{r, echo = FALSE, fig.align = 'center', out.width = "70%", fig.cap = "<font size = 4>www.ucsf.edu</font>"}
 knitr::include_graphics("https://www.ucsf.edu/sites/default/files/styles/2014_inline_5-col/public/fields/field_insert_file/news/Man-Chest-Pain-Doctor.jpg?itok=nRgCK8R_")
 ```
 
-```{r, echo = FALSE, fig.align = 'center', out.width = "85%", fig.cap = "<font size = 4>Source: The New York Times</font>"}
-knitr::include_graphics("https://static01.nyt.com/images/2018/09/03/business/03AMAZONADS.illo/merlin_143075382_80b4a6c8-91f8-4a35-9d67-c3fa595b3154-articleLarge.jpg?quality=75&auto=webp&disable=upscale")
+```{r, echo = FALSE, fig.align = 'center', out.width = "85%", fig.cap = "<font size = 4>location.ch</font>"}
+knitr::include_graphics("http://www.location.ch/assets/images/f/Basel_Freie_Strasse_1_900x600-8f38558f.jpg")
 ```
 
 ]
 
 ---
 
-# Solution 1: Intuition
 
 .pull-left6[
 
-Many people decide based an individual, or group's personal, intuitive judgment.
+# Solution 1: Intuition
 
-- "I have a feeling this patient is having a heart attack"
-- "I know we should target millenials with ads, trust me on this"
+
+### What are potential problems with intuition?
+
+Many decisions are based on an individual's intuitive 'gut' judgment.
+
+> "I have a feeling this patient is having a heart attack" <br>
+
+> "Sales will be at least 100,000 CHF per month, trust me on this."
 
 <br><br>
-## What are potential problems with intuition?
 
 ]
 
 .pull-right35[
 
-```{r, echo = FALSE, fig.align = 'center', out.width = "90%", fig.cap = "Source: Irish Times"}
-knitr::include_graphics("https://www.irishtimes.com/polopoly_fs/1.2457200.1449486887!/image/image.jpg_gen/derivatives/ratio_1x1_w1200/image.jpg")
+<br>
+```{r, echo = FALSE, fig.align = 'center', out.width = "70%", fig.cap = "<font size = 4>www.ucsf.edu</font>"}
+knitr::include_graphics("https://www.ucsf.edu/sites/default/files/styles/2014_inline_5-col/public/fields/field_insert_file/news/Man-Chest-Pain-Doctor.jpg?itok=nRgCK8R_")
+```
+
+```{r, echo = FALSE, fig.align = 'center', out.width = "85%", fig.cap = "<font size = 4>location.ch</font>"}
+knitr::include_graphics("http://www.location.ch/assets/images/f/Basel_Freie_Strasse_1_900x600-8f38558f.jpg")
 ```
 
 ]
 
-
 ---
 
-# Solution 1: Intuition
 
 .pull-left6[
 
-## What are potential problems with intuition?
+# Solution 1: Intuition
+
+
+### What are potential problems with intuition?
 
 - Might not tell you anything about *why* it makes a prediction.
 
@@ -183,11 +193,34 @@ knitr::include_graphics("https://www.irishtimes.com/polopoly_fs/1.2457200.144948
 
 .pull-right35[
 
-```{r, echo = FALSE, fig.align = 'center', out.width = "90%", fig.cap = "Source: Irish Times"}
-knitr::include_graphics("https://www.irishtimes.com/polopoly_fs/1.2457200.1449486887!/image/image.jpg_gen/derivatives/ratio_1x1_w1200/image.jpg")
+<br>
+```{r, echo = FALSE, fig.align = 'center', out.width = "70%", fig.cap = "<font size = 4>www.ucsf.edu</font>"}
+knitr::include_graphics("https://www.ucsf.edu/sites/default/files/styles/2014_inline_5-col/public/fields/field_insert_file/news/Man-Chest-Pain-Doctor.jpg?itok=nRgCK8R_")
+```
+
+```{r, echo = FALSE, fig.align = 'center', out.width = "85%", fig.cap = "<font size = 4>location.ch</font>"}
+knitr::include_graphics("http://www.location.ch/assets/images/f/Basel_Freie_Strasse_1_900x600-8f38558f.jpg")
 ```
 
 ]
+
+
+---
+class: middle, center
+
+# One very influential world leader really trusts his intuition...
+
+---
+
+```{r, fig.align = 'center', out.width = "100%", echo = FALSE}
+knitr::include_graphics("image/trump_gut_blank.jpg")
+```
+
+---
+
+```{r, fig.align = 'center', out.width = "100%", echo = FALSE}
+knitr::include_graphics("image/trump_gut_statement.jpg")
+```
 
 ---
 
@@ -203,7 +236,7 @@ knitr::include_graphics("image/heartdisease_data_ss.jpg")
 ```
 
 
-- Based on historical <high>data</high> from past patients at this hospital...
+- Based on historical <high>data</high> from past patients <high>at this hospital</high>...
 - A <high>regression model</high> ...
 - Using the patient's <high>age, cholesterol level, and ecg</high>...
 - <high>Predicts</high> the probability that this patient is having a heart attack is only <high>20%</high>.
@@ -212,11 +245,11 @@ knitr::include_graphics("image/heartdisease_data_ss.jpg")
 
 .pull-right35[
 
-```{r, echo = FALSE, fig.align = 'center', out.width = "100%", fig.cap = "Source: gstatic.com"}
+```{r, echo = FALSE, fig.align = 'center', out.width = "100%", fig.cap = "<font size = 4>gstatic.com</font>"}
 knitr::include_graphics("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS795QtyFgYH6vRDqhlhu9WtQKLJw11iNyAfGteNoiaTzZE3f-v")
 ```
 
-```{r, echo = FALSE, fig.align = 'center', out.width = "100%", fig.cap = "Source: WK Digital"}
+```{r, echo = FALSE, fig.align = 'center', out.width = "100%", fig.cap = "<font size = 4>WK Digital</font>"}
 knitr::include_graphics("https://wkdigital.com.au/wp-content/uploads/2016/06/How-To-Profile-Your-Customer.jpg")
 ```
 
@@ -247,22 +280,62 @@ knitr::include_graphics("https://wkdigital.com.au/wp-content/uploads/2016/06/How
 
 .pull-right35[
 
-```{r, echo = FALSE, fig.align = 'center', out.width = "100%", fig.cap = "Source: gstatic.com"}
+```{r, echo = FALSE, fig.align = 'center', out.width = "100%", fig.cap = "<font size = 4>gstatic.com<font>"}
 knitr::include_graphics("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS795QtyFgYH6vRDqhlhu9WtQKLJw11iNyAfGteNoiaTzZE3f-v")
 ```
 
-```{r, echo = FALSE, fig.align = 'center', out.width = "100%", fig.cap = "Source: WK Digital"}
+```{r, echo = FALSE, fig.align = 'center', out.width = "100%", fig.cap = "<font size = 4>WK Digital</font>"}
 knitr::include_graphics("https://wkdigital.com.au/wp-content/uploads/2016/06/How-To-Profile-Your-Customer.jpg")
 ```
 
 ] 
 
 
+
+---
+
+```{r, fig.align = 'center', out.width = "100%", echo = FALSE}
+knitr::include_graphics("image/trump_gut_edited.jpg")
+```
+
+
+
+
+---
+
+
+.pull-left5[
+
+# Data Terminology
+
+
+|Term| Definition| Example|
+|:------|:-----|:------|
+|Data (Tidy)|Data represented in a rectangular format with rows and columns|Excel spreadsheet, .`csv`|
+|Case|A specific case of data|A patient, a site|
+|Feature|An individual, measurable property of cases|Age, temperature, country|
+|Criterion|Something you want to predict|Total sales, success (yes or no)|
+
+]
+
+
+.pull-right5[
+
+<br><br><br><br>
+```{r, echo = FALSE, fig.align = 'center', out.width = "100%"}
+knitr::include_graphics("image/terminology_data.png")
+```
+
+
+]
+
+
+
 ---
 
 # What are the steps of machine learning?
 
-```{r, echo = FALSE, fig.align = 'center', out.width = "100%", fig.cap = "Source: Medium.com"}
+```{r, echo = FALSE, fig.align = 'center', out.width = "100%", fig.cap = "<font size = 4>Medium.com</font>"}
 knitr::include_graphics("https://cdn-images-1.medium.com/max/1600/1*_QGyIwpgq831xI54cIe_GQ.jpeg")
 ```
 
@@ -281,7 +354,7 @@ Three general categories
 |:----|:-----|
 |Unsupervised|Customer segmentation|
 |Supervised|Classification, regression|
-|Reinforcement Learning|[Robot navigation](https://www.youtube.com/watch?v=W_gxLKSsSIE) |
+|Reinforcement Learning|Robot navigation, game playing AI|
 
 In this course, we focus on <high>Supervised</high> tasks
 
@@ -289,7 +362,7 @@ In this course, we focus on <high>Supervised</high> tasks
 
 .pull-right55[
 
-```{r, echo = FALSE, fig.align = 'center', out.width = "100%", fig.cap = "Source: Wordstream.com"}
+```{r, echo = FALSE, fig.align = 'center', out.width = "100%", fig.cap = "<font size = 4>Wordstream.com</font>"}
 knitr::include_graphics("https://wordstream-files-prod.s3.amazonaws.com/s3fs-public/styles/simple_image/public/images/machine-learning1.png?SnePeroHk5B9yZaLY7peFkULrfW8Gtaf&itok=yjEJbEKD")
 ```
 
@@ -310,7 +383,7 @@ Three general categories
 |:----|:-----|
 |<high>Unsupervised</high>|Customer segmentation|
 |Supervised|Classification, regression|
-|Reinforcement Learning|[Robot navigation](https://www.youtube.com/watch?v=W_gxLKSsSIE) |
+|Reinforcement Learning|Robot navigation, game playing AI|
 
 In this course, we focus on <high>Supervised</high> tasks
 
@@ -320,7 +393,7 @@ In this course, we focus on <high>Supervised</high> tasks
 .pull-right55[
 
 ### Unsupervised
-```{r, echo = FALSE, fig.align = 'center', out.width = "100%", fig.cap = "Source: iotforall.com"}
+```{r, echo = FALSE, fig.align = 'center', out.width = "100%", fig.cap = "<font size = 4>iotforall.com</font>"}
 knitr::include_graphics("https://www.iotforall.com/wp-content/uploads/2018/01/Screen-Shot-2018-01-17-at-8.10.14-PM.png")
 ```
 
@@ -339,8 +412,8 @@ Three general categories
 |Type|Example|
 |:----|:-----|
 |Unsupervised|Customer segmentation|
-|<high>Supervised</high>|Classification, regression|
-|Reinforcement Learning|[Robot navigation](https://www.youtube.com/watch?v=W_gxLKSsSIE) |
+|Supervised</high>|Classification, regression|
+|<high>Reinforcement Learning</high>|Robot navigation, game playing AI|
 
 In this course, we focus on <high>Supervised</high> tasks
 
@@ -348,11 +421,17 @@ In this course, we focus on <high>Supervised</high> tasks
 
 .pull-right55[
 
-### Supervised
+### Reinforcement Learning
 
-```{r, echo = FALSE, fig.align = 'center', out.width = "100%", fig.cap = "Source: towardsdatascience.com"}
-knitr::include_graphics("https://cdn-images-1.medium.com/max/1600/1*ASYpFfDh7XnreU-ygqXonw.png")
+```{r, echo = FALSE, fig.align = 'center', out.width = "45%", fig.cap = "<font size = 4>towardsdatascience.com</font>"}
+knitr::include_graphics("https://cdn-images-1.medium.com/max/1600/1*6sE---UY4iiCDPA2kdYQkg.gif")
 ```
+
+```{r, echo = FALSE, fig.align = 'center', out.width = "45%", fig.cap = "<font size = 4>MIT Technology Review</font>"}
+knitr::include_graphics("https://cdn.technologyreview.com/i/images/alphagotopper2.jpg?sw=1200")
+```
+
+
 
 ]
 
@@ -389,7 +468,7 @@ class: center, middle
 
 <font size = 6>It's not magic.</font><br><br>
 
-<font size = 6>A model is a <high>athematical</high> (computational) representation of data.</font> <br><br>
+<font size = 6>A model is a <high>mathematical</high> (computational) representation of data.</font> <br><br>
 
 <font size = 6>That can be <high>programmed</high>, and used to understand, and <high>predict relationships</high> between data</font>
 
@@ -411,16 +490,16 @@ knitr::include_graphics("image/three_models.png")
 
 *To <high>learn something</high> from the data*
 
-- Learn which features are most <high>important</high> in predicting the criterion
-- Understand the <high>relationship</high> between features and criterion.
+- Which features are most <high>important</high> in predicting the criterion and which can be safely ignored?
+- What is the <high>relationship</high> between features and the criterion?
     - Strong? Weak? Postive? Negative?
 - Make <high>predictions</high> for new data.
     - I've got a new patient, how likely is it that (s)he is having a heart attack?
+- Improve predictions over time with new data.
 
 ### Practical
 
 - Need a computational / mathematical representation of the data that can be programmed and automated.
-
 
 > Verbal descriptions of data are nice, but they aren't models.
 
@@ -436,25 +515,11 @@ knitr::include_graphics("https://github.com/therbootcamp/appliedML_2019Jan/blob/
 
 ]
 
----
 
-```{r, fig.align = 'center', out.width = "100%", echo = FALSE}
-knitr::include_graphics("image/trump_gut.jpg")
-```
 
 ---
-
-```{r, fig.align = 'center', out.width = "100%", echo = FALSE}
-knitr::include_graphics("image/trump_gut_edited.jpg")
-```
-
----
-class: middle, center, question
+class: middle, center
 
 <h1><a href=https://therbootcamp.github.io/appliedML_2019Jan/index.html>Schedule</a></h1>
-
-## Applied Machine Learning with R
-
-### January 2019
 
 
