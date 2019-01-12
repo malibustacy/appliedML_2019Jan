@@ -29,4 +29,4 @@ output: html_document
 ## Schedule
 
 <p align="center"><br>
-    <a href="https://therbootcamp.github.io/Intro2DataScience_2018Oct/index.html"><img border="0" alt="Oct2018Schedule" src="https://github.com/therbootcamp/therbootcamp.github.io/blob/master/_sessions/_image/schedule_2018Oct_Intro2DS.png?raw=true" style="width:450px"></a><br>
+    <a href="https://therbootcamp.github.io/Intro2DataScience_2018Oct/index.html"><img border="0" alt="Jan2019Schedule" src="schedule_appliedML_2019Jan.png" style="width:450px"></a><br>

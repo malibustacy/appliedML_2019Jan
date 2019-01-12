@@ -324,3 +324,7 @@ high {
   color: #EA4B68;
   font-weight: 700; 
 }
+
+font.hfont {
+	font-family: 'Yanone Kaffeesatz'
+}
