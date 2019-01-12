@@ -67,102 +67,6 @@ layout: true
 ]
 
 
-
----
-class: center, middle
-
-# What is a model?
-
-&lt;font size = 6, color = "white"&gt;.&lt;/font&gt;
-&lt;font size = 6, color = "white"&gt;.&lt;/font&gt;
-
-
----
-class: center, middle
-
-# What is a model?
-
-&lt;font size = 6&gt;It's not magic.&lt;/font&gt;&lt;br&gt;
-
-
----
-class: center, middle
-
-# What is a model?
-
-&lt;font size = 6&gt; A model is a mathematical representation of data.&lt;/font&gt;
-
----
-class: center, middle
-
-# What is a model?
-
-&lt;font size = 6&gt; A model is a mathematical representation of data.&lt;/font&gt; &lt;br&gt;&lt;br&gt;
-&lt;font size = 6&gt;That can be programmed, and used to understand (and predict) relationships between data&lt;/font&gt;
-
-
----
-class: center, middle
-
-
-
-
-
-
-
----
-
-
-.pull-left6[
-
-# Why do we need a model at all?
-
-]
-
-.pull-right4[
-
-&lt;br&gt;
-
-&lt;img src="https://github.com/therbootcamp/appliedML_2019Jan/blob/master/_sessions/Fitting/image/data_to_ml.jpg?raw=true" width="100%" style="display: block; margin: auto;" /&gt;
-
-]
-
----
-
-
-.pull-left6[
-
-# Why do we need a model at all?
-
-### Theoretical
-
-*To &lt;high&gt;learn something&lt;/high&gt; from the data*
-
-- Learn which features are most &lt;high&gt;important&lt;/high&gt; in predicting the criterion
-- Understand the &lt;high&gt;relationship&lt;/high&gt; between features and criterion.
-    - Strong? Weak? Postive? Negative?
-- Make &lt;high&gt;predictions&lt;/high&gt; for new data.
-    - I've got a new patient, how likely is it that (s)he is having a heart attack?
-
-### Practical
-
-- Need a computational / mathematical representation of the data that can be programmed and automated.
-
-
-&gt; Verbal descriptions of data are nice, but they aren't models.
-
-]
-
-.pull-right4[
-
-&lt;br&gt;
-
-&lt;img src="https://github.com/therbootcamp/appliedML_2019Jan/blob/master/_sessions/Fitting/image/data_to_ml.jpg?raw=true" width="100%" style="display: block; margin: auto;" /&gt;
-
-]
-
-
-
 ---
 
 .pull-left45[
@@ -230,7 +134,7 @@ These parameters *tune* a model to specific data
 .pull-right4[
 
 
-&lt;img src="Fitting_files/figure-html/unnamed-chunk-8-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="Fitting_files/figure-html/unnamed-chunk-6-1.png" style="display: block; margin: auto;" /&gt;
 
 
 ]
@@ -246,21 +150,21 @@ These parameters *tune* a model to specific data
 # Fit your own linear model!
 
 &lt;br&gt;
+&lt;img src="Fitting_files/figure-html/unnamed-chunk-8-1.png" width="85%" style="display: block; margin: auto;" /&gt;
+
+
+---
+
+# Fit your own linear model!
+&lt;br&gt;
+&lt;img src="Fitting_files/figure-html/unnamed-chunk-9-1.png" width="85%" style="display: block; margin: auto;" /&gt;
+
+
+---
+
+# Fit your own linear model!
+&lt;br&gt;
 &lt;img src="Fitting_files/figure-html/unnamed-chunk-10-1.png" width="85%" style="display: block; margin: auto;" /&gt;
-
-
----
-
-# Fit your own linear model!
-&lt;br&gt;
-&lt;img src="Fitting_files/figure-html/unnamed-chunk-11-1.png" width="85%" style="display: block; margin: auto;" /&gt;
-
-
----
-
-# Fit your own linear model!
-&lt;br&gt;
-&lt;img src="Fitting_files/figure-html/unnamed-chunk-12-1.png" width="85%" style="display: block; margin: auto;" /&gt;
 
 
 
@@ -352,23 +256,12 @@ if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
   d.head.appendChild(s);
 })();</script>
 
-<script>
-(function() {
-  var i, text, code, codes = document.getElementsByTagName('code');
-  for (i = 0; i < codes.length;) {
-    code = codes[i];
-    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
-      text = code.textContent;
-      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
-          /^\$\$(.|\s)+\$\$$/.test(text) ||
-          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
-        code.outerHTML = code.innerHTML;  // remove <code></code>
-        continue;
-      }
-    }
-    i++;
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  tex2jax: {
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre']
   }
-})();
+});
 </script>
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>

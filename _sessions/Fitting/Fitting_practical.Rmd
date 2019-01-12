@@ -1,6 +1,6 @@
 ---
-title: "Plotting"
-author: "Introduction to Data Science with R<br/><a href='https://therbootcamp.github.io'>www.therbootcamp.com</a><br/><a href='https://twitter.com/therbootcamp'>@therbootcamp</a>"
+title: "Fitting"
+author: "Applied Machine Learning with R<br/><a href='https://therbootcamp.github.io'>www.therbootcamp.com</a><br/><a href='https://twitter.com/therbootcamp'>@therbootcamp</a>"
 output:
   html_document:
     css: practical.css
@@ -12,667 +12,290 @@ knitr::opts_chunk$set(comment = NA,
                       fig.height = 6,
                       fig.align = 'center',
                       echo = TRUE, 
-                      eval = TRUE, 
+                      eval = FALSE, 
                       warning = FALSE,
                       message = FALSE)
 
 options(digits = 3)
 ```
 
-<figure>
-<center>
-  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4d/Cheeseburger.jpg/2560px-Cheeseburger.jpg" alt="Trulli" style="width:60%">
-  <figcaption>Wikipedia</figcaption>
-</figure>
+```{r, echo = FALSE, fig.align = 'center', eval = TRUE, out.width = "70%", fig.cap="Source: www.niche.com"}
+knitr::include_graphics("https://www.niche.com/blog/wp-content/uploads/2016/10/best-colleges-in-south-2000px.png")
+```
 
 ## {.tabset}
 
 ### Overview
 
-In this practical you'll practice plotting data with the amazing `ggplot2` package. 
+In this practical you'll practice the basics of fitting three different machine learning models in R
+
+By the end of this practical you will know how to:
+
+1. Fit regression, decision trees, and random forests to training data.
+2. Explore each object with generic functions.
+3. Evaluate a model's fitting performance.
+4. Compare different models fitting performance.
 
 ### Datasets
 
-```{r, eval = TRUE, message = FALSE}
+```{r, eval = TRUE, message = FALSE, echo = FALSE}
 library(tidyverse)
 library(plotly)
 library(ggthemes)
-mcdonalds <- read_csv("https://raw.githubusercontent.com/therbootcamp/BaselRBootcamp_2018July/master/_sessions/_data/baselrbootcamp_data/mcdonalds.csv")
-kc_house <- read_csv("https://raw.githubusercontent.com/therbootcamp/BaselRBootcamp_2018July/master/_sessions/_data/baselrbootcamp_data/kc_house.csv")
 ```
 
 |File  |Rows | Columns |
 |:----|:-----|:------|
-|[mcdonalds.csv](https://raw.githubusercontent.com/therbootcamp/BaselRBootcamp_2018July/master/_sessions/_data/complete/mcdonalds.csv)| 260 | 24 |
+|[college_train.csv](https://raw.githubusercontent.com/therbootcamp/appliedML_2019Jan/master/_sessions/_data/college_train.csv)| 1000 | 21|
+
+### Glossary
+
+| Function| Package | Description |
+|:---|:------|:---------------------------------------------|
+| `summary()`|`base`|    Get summary information from an R object| 
+| `names()`|`base`|    See the named elements of a list| 
+| `LIST$NAME()`|`base`|    Get the named element `NAME` from a list `OBJECT`| 
+| `predict(object, newdata)`|`base`|    Predict the criterion values of `newdata` based on `object`|
 
 ### Packages
 
 |Package| Installation|
 |:------|:------|
 |`tidyverse`|`install.packages("tidyverse")`|
-|`ggthemes`|`install.packages("ggthemes")`|
-|`plotly`|`install.packages("plotly")`|
-
+|`broom`|`install.packages("broom")`|
+|`rpart`|`install.packages("rpart")`|
+|`FFTrees`|`install.packages("FFTrees")`|
+|`partykit`|`install.packages("partykit")`|
+|`party`|`install.packages("party")`|
+|`randomForest`|`install.packages("randomForest")`|
+|`caret`|`install.packages("caret")`|
 
 ### Cheatsheet
 
-<figure>
-<center>
-<a href="https://www.rstudio.com/wp-content/uploads/2015/03/ggplot2-cheatsheet.pdf">
-  <img src="http://www.rstudio.com/wp-content/uploads/2015/03/ggplot2-cheatsheet.png" alt="Trulli" style="width:70%">
-  <figcaption>https://www.rstudio.com/wp-content/uploads/2015/03/ggplot2-cheatsheet.pdf</figcaption></a>
-</figure>
+*None*
 
 ### Examples
 
-The following examples will take you through the steps of creating both simple and complex plots with `ggplot2`. Try to go through each line of code and see how it works!
-
 ```{r, eval = FALSE, echo = TRUE}
-# -----------------------------------------------
-# Examples of using ggplot2 on the mpg data
-# ------------------------------------------------
+# Machine learning basics ------------------------------------
 
-library(tidyverse)         # Load tidyverse (which contains ggplot2!)
+# Step 0: Load packages-----------
 
-mpg # Look at the mpg data
+library(tidyverse)    # Load tidyverse for dplyr and tidyr
+library(rpart)        # For rpart()
+library(broom)        # For tidy()
+library(caret)        # For resamp 
+library(partykit)     # For nice decision trees
 
-# Just a blank space without any aesthetic mappings
-ggplot(data = mpg)
+# Step 1: Load Training data ----------------------
 
-# Now add a mapping where engine displacement (displ) and highway miles per gallon (hwy) are
-# mapped to the x and y aesthetics
-ggplot(data = mpg, 
-       mapping = aes(x = displ, y = hwy))   # Map displ to x-axis and hwy to y-axis
+college_train <- read_csv("1_Data/college_train.csv")
 
-#  Add points with geom_point()
-ggplot(data = mpg, 
-       mapping = aes(x = displ, y = hwy)) +
-       geom_point()     
+# Convert character to factor
 
-#  Add points with geom_count()
-ggplot(data = mpg, 
-       mapping = aes(x = displ, y = hwy)) +
-       geom_count()   
+college_train <- college_train %>%
+  mutate_if(is.character, factor)
 
-# Again, but with some additional arguments
-# Also using a new theme temporarily
+# Step 2: Explore training data -----------------------------
 
-ggplot(data = mpg, 
-       mapping = aes(x = displ, y = hwy)) +
-       geom_point(col = "red",                  # Red points
-                  size = 3,                     # Larger size
-                  alpha = .5,                   # Transparent points
-                  position = "jitter") +        # Jitter the points         
-         scale_x_continuous(limits = c(1, 15)) +  # Axis limits
-         scale_y_continuous(limits = c(0, 50)) +
-  theme_minimal()
+View(college_train)
 
+# Our goal is to predict Grad_Rate.
+# We will do a log-transformation on Grad_Rate
+#  because it is so heavily skewed
 
-# Assign class to the color aesthetic and add labels with labs()
+# Step 3: Fit models predicting Grad_Rate ------------------
 
-ggplot(data = mpg, 
-  mapping = aes(x = displ, y = hwy, col = class)) +  # Change color based on class column
-  geom_point(size = 3, position = 'jitter') +
-  labs(x = "Engine Displacement in Liters",
-       y = "Highway miles per gallon",
-       title = "MPG data",
-       subtitle = "Cars with higher engine displacement tend to have lower highway mpg",
-       caption = "Source: mpg data in ggplot2")
-  
+# Regression
+Grad_Rate_lm <- glm(formula = Grad_Rate ~ Private + Books + PhD,
+                data = college_train)
 
-# Add a regression line for each class
+# Decision Trees
+Grad_Rate_rpart <- rpart(formula = Grad_Rate ~ Private + Books + PhD,
+                    data = college_train, 
+                    control = list(minbucket = 50))
 
-ggplot(data = mpg, 
-       mapping = aes(x = displ, y = hwy, color = class)) +
-  geom_point(size = 3, alpha = .9) + 
-  geom_smooth(method = "lm")
+# Step 4: Explore models -------------------------------
 
-# Add a regression line for all classes
+# Regression
+summary(Grad_Rate_lm)
 
-ggplot(data = mpg, 
-       mapping = aes(x = displ, y = hwy, color = class)) +
-  geom_point(size = 3, alpha = .9) + 
-  geom_smooth(col = "blue", method = "lm")
+# Decision Trees
+Grad_Rate_rpart
+plot(Grad_Rate_rpart)
+text(Grad_Rate_rpart)
 
+# Nicer version!
+plot(as.party(Grad_Rate_rpart))
 
-# Facet by class
-ggplot(data = mpg,
-       mapping = aes(x = displ, 
-                     y = hwy, 
-                     color = factor(cyl))) + 
-  geom_point() +
-  facet_wrap(~ class) 
+# Step 5: Assess fitting accuracy ----------------------------
 
+# Get fitted values
+lm_fit <- predict(Grad_Rate_lm)
+rpart_fit <- predict(Grad_Rate_rpart)
 
-# Another fancier example
+# Regression Fitting Accuracy
+postResample(pred = lm_fit, 
+             obs = college_train$Grad_Rate)
 
-ggplot(data = mpg, 
-       mapping = aes(x = cty, y = hwy)) + 
-       geom_count(aes(color = manufacturer)) +     # Add count geom (see ?geom_count)
-       geom_smooth() +                   # smoothed line without confidence interval
-       geom_text(data = filter(mpg, cty > 25), 
-                 aes(x = cty,y = hwy, 
-                     label = rownames(filter(mpg, cty > 25))),
-                     position = position_nudge(y = -1), 
-                                check_overlap = TRUE, 
-                     size = 5) + 
-       labs(x = "City miles per gallon", 
-            y = "Highway miles per gallon",
-            title = "City and Highway miles per gallon", 
-            subtitle = "Numbers indicate cars with highway mpg > 25",
-            caption = "Source: mpg data in ggplot2",
-            color = "Manufacturer", 
-            size = "Counts")
+# Decision Tree Fitting Accuracy
+postResample(pred = rpart_fit, 
+             obs = college_train$Grad_Rate)
+
+# Step 6: Plot fitting accuracy -------------------------
+
+# Tidy competition results
+competition_results <- tibble(truth = college_train$Grad_Rate,
+                              Regression = lm_fit,
+                              Decision_Trees = rpart_fit) %>%
+                       gather(group, prediction, -truth)
+
+# Plot!
+ggplot(data = competition_results,
+       aes(x = truth, y = prediction, col = group)) +
+  geom_point(alpha = .2) +
+  geom_abline(slope = 1, intercept = 0) +
+  labs(title = "Predicting College Graduation Rates",
+       subtitle = "Regression versus decision trees")
 ```
 
-
-### References
-
-- The main `ggplot2` webpage at [http://ggplot2.tidyverse.org/](http://ggplot2.tidyverse.org/) has great tutorials and examples.
-
-- Check out Selva Prabhakaran's website for a nice gallery of ggplot2 graphics [http://r-statistics.co/Top50-Ggplot2-Visualizations-MasterList-R-Code.html](http://r-statistics.co/Top50-Ggplot2-Visualizations-MasterList-R-Code.html)
-
-- `ggplot2` is also great for making maps. For examples, check out Eric Anderson's page at [http://eriqande.github.io/rep-res-web/lectures/making-maps-with-R.html](http://eriqande.github.io/rep-res-web/lectures/making-maps-with-R.html)
-
-## Tasks
+# Tasks
 
 ## A - Setup
 
-1. Open your `baselrbootcamp` R project. It should already have the folders `1_Data` and `2_Code`. Make sure that the data files listed in the `Datasets` section above are in your `1_Data` folder.
+1. Open your `baselrbootcamp` R project. It should already have the folders `1_Data` and `2_Code`. Make sure that the data files listed in the `Datasets` section above are in your `1_Data` folder
 
 ```{r}
 # Done!
 ```
 
-2. Open a new R script. At the top of the script, using comments, write your name and the date. Save it as a new file called `plotting_practical.R` in the `2_Code` folder.  
+2. Open a new R script. At the top of the script, using comments, write your name and the date. Save it as a new file called `fitting_practical.R` in the `2_Code` folder.  
 
 3. Using `library()` load the set of packages for this practical listed in the packages section above.
 
 ```{r, eval = FALSE, echo = TRUE}
 ## NAME
 ## DATE
-## Plotting Practical
+## Fitting Practical
 
-library(XX)     
-library(XX)
-#...
+library(tidyverse)
+library(broom)
+library(rpart)
+library(partykit)
+library(part)
+library(randomForest)
+library(caret)
 ```
 
-```{r}
+```{r, message = FALSE, warning = FALSE, echo = FALSE, eval = TRUE}
 library(tidyverse)
 ```
 
-4. For this practical, we'll use the `mcondalds.csv` data set, which contains nutrition information about items from McDonalds. Using `read_csv()`, load the data into R and store it as a new object called `mcdonalds`.
+4. For this practical, we'll use a dataset of 388 U.S. College.  The data is stored in `college_train.csv`. Using the following template, load the dataset into R as `college_train`:
+
+```{r, echo = TRUE, eval = FALSE, message = FALSE, warning = FALSE}
+college_train <- read_csv(file = "1_Data/college_train.csv")
+```
+
+5. Take a look at the first few rows of the dataset by printing it to the console.
 
 ```{r}
-mcdonalds <- read_csv("1_Data/mcdonalds.csv")
+college_train
 ```
 
-5. Take a look at the first few rows of the dataset(s) by printing them to the console.
+6. Print the numbers of rows and columns using the `dim()` function
 
 ```{r}
-mcdonalds
+dim(college_train)
 ```
 
-6. You'll notice that the `mcdonalds` data frame has many column names with spaces and 'bad' characters like parentheses. Run the following code to fix that!
+7. Open the dataset in a new window using `View()`
 
-```{r, echo = TRUE, eval = FALSE}
-# Clean up the names of mcdonalds
-mcdonalds <- mcdonalds %>%
-  select(-contains("% Daily Value")) %>%  # Remove all '% Daily Value' columns
-  rename_all(.funs = ~ gsub(" ", "", .))  # no more spaces!
+```{r, eval = FALSE}
+View(college_train)
 ```
 
-```{r, echo = FALSE, eval = TRUE}
-# Clean up the names of mcdonalds
-mcdonalds <- mcdonalds %>%
-  select(-contains("% Daily Value")) %>%  # Remove all '% Daily Value' columns
-  rename_all(.funs = ~ gsub(" ", "", .))  # no more spaces!
+## B - Walking through the 7 steps
+
+1. Run Steps 0 through 4 in the Examples section above. Run each line of code individually and explore each object you create. Try to understand each of the steps! If you have trouble, ask for help!
+
+2. Which of the three features (Private, Books, PhD) do the regression and decision tree models use? Do they treat the features equally or do some look more important than others?
+
+3. Run Step 5. Look at the results. Which model has the best fitting performance?
+
+## D - Include random forests
+
+1. Random forests are much more complex than regression and decision trees. Try including Random forests in your analyses as a new competitor. You can use the `randomForest()` function from the `randomForest` package to fit your model!
+
+```{r, eval = FALSE, echo = TRUE}
+# Just add the following:
+
+# randomForest
+Grad_Rate_rf <- randomForest(formula = Grad_Rate ~ Private + Books + PhD,
+                             data = college_train)
+
+# Get fitted values
+rf_fit <- predict(Grad_Rate_rf)
+
+
+# fitting acuracy
+postResample(pred = rf_fit, 
+             obs = college_train$Grad_Rate)
 ```
 
-7. Now print the dataset again, do the names look better?
+2. How does the fitting performance of random forests compare to the other algorithms in training?
 
 ```{r}
-mcdonalds
+# rf is better!
 ```
 
-### B - Building a plot step-by-step
+## E - Include more features
 
-In this section, you'll build the following plot step by step.
+Until now, you've only been predicting Grad_Rate based on 3 features (bedrooms, bathrooms, and floors). Of course, you have access to lots more data to predict housing Grad_Rates! Now it's time to try using more data to predict Grad_Rate.
 
-```{r, echo = FALSE, eval = TRUE, fig.width = 7, fig.height = 4}
-ggplot(mcdonalds, aes(x = Calories, y = SaturatedFat, col = Category)) +
-  geom_point() +
-  geom_smooth(col = "black") +
-  labs(title = "McDonalds Nutrition",
-       subtitle = "Each point is a menu item",
-       caption = "Source: Kaggle.com") +
-  xlim(0, 1250) +
-  theme_minimal()
-```
+1. Look closely again at the columns in the `college_train` data. There are two features in the data that you definitely *don't* want to include in your models. Which two are they?
 
-1. Using `ggplot()`, create the following blank plot using the `data` and `mapping` arguments (but no geom). Use `calories` for the x aesthetic and `SaturatedFat` for the y aesthetic
+2. Remove those two features from your training data using the following template:
 
-```{r, echo = TRUE, eval = FALSE, fig.width = 6, fig.height = 4}
-ggplot(data = mcdonalds, 
-       mapping = aes(x = XX, y = XX))
-```
-
-```{r, fig.width = 7, fig.height = 4}
-ggplot(mcdonalds, aes(x = Calories, y = SaturatedFat))
-```
-
-2. Using `geom_point()`, add points to the plot
-
-```{r, echo = TRUE, eval = FALSE, fig.width = 6, fig.height = 4}
-ggplot(data = mcdonalds, 
-       mapping = aes(x = XX, y = XX)) +
-  geom_point()
-```
-
-```{r, fig.width = 7, fig.height = 4}
-ggplot(mcdonalds, aes(x = Calories, y = SaturatedFat)) +
-  geom_point()
-```
-
-3. Using the `color` aesthetic mapping, color the points by their `Category`.
-
-```{r, echo = TRUE, eval = FALSE, fig.width = 6, fig.height = 4}
-ggplot(mcdonalds, aes(x = XX, y = XX, col = XX)) +
-  geom_point() 
-```
-
-```{r, fig.width = 7, fig.height = 4}
-ggplot(mcdonalds, aes(x = Calories, y = SaturatedFat, col = Category)) +
-  geom_point()
-```
-
-4. Add a smoothed average line using `geom_smooth()`.
-
-```{r, echo = TRUE, eval = FALSE, fig.width = 6, fig.height = 4}
-ggplot(mcdonalds, aes(x = XX, y = XX, col = XX)) +
-  geom_point() +
-  geom_smooth() 
-```
-
-```{r, fig.width = 7, fig.height = 4}
-ggplot(mcdonalds, aes(x = Calories, y = SaturatedFat, col = Category)) +
-  geom_point() +
-  geom_smooth()
-```
-
-5. Oops! Did you get several smoothed lines instead of just one? Fix this by specifying that the line should have one color: `"black"`. When you do, you should then only see one line.
-
-```{r, echo = TRUE, eval = FALSE, fig.width = 6, fig.height = 4}
-ggplot(mcdonalds, aes(x = XX, y = XX, col = XX)) +
-  geom_point() +
-  geom_smooth(col = "XX") 
-```
-
-```{r, fig.width = 7, fig.height = 4}
-ggplot(mcdonalds, aes(x = Calories, y = SaturatedFat, col = Category)) +
-  geom_point() +
-  geom_smooth(col = "black")
-```
-
-6. Add appropriate labels using the `labs()` function.
-
-```{r, echo = TRUE, eval = FALSE, fig.width = 8, fig.height = 2}
-ggplot(mcdonalds, aes(x = XX, y = XX, col = XX)) +
-  geom_point() +
-  geom_smooth(col = "XX") +
-  labs(title = "XX",
-       subtitle = "XX",
-       caption = "XX")
-```
-
-```{r, fig.width = 7, fig.height = 4}
-ggplot(mcdonalds, aes(x = Calories, y = SaturatedFat, col = Category)) +
-  geom_point() +
-  geom_smooth(col = "black") +
-  labs(title = "McDonalds Nutrition",
-       subtitle = "Each point is a menu item",
-       caption = "Source: Kaggle.com")
-```
-
-7. Set the limits of the x-axis to `0` and `1250` using `xlim()`.
-
-```{r, echo = TRUE, eval = FALSE, fig.width = 8, fig.height = 2}
-ggplot(mcdonalds, aes(x = XX, y = XX, col = XX)) +
-  geom_point() +
-  geom_smooth(col = "XX") +
-  labs(title = "XX",
-       subtitle = "XX",
-       caption = "XX") +
-  xlim(XX, XX)
-```
-
-```{r, fig.width = 7, fig.height = 4}
-ggplot(mcdonalds, aes(x = Calories, y = SaturatedFat, col = Category)) +
-  geom_point() +
-  geom_smooth(col = "black") +
-  labs(title = "McDonalds Nutrition",
-       subtitle = "Each point is a menu item",
-       caption = "Source: Kaggle.com") +
-  xlim(0, 1250)
-```
-
-8. Finally, set the plotting theme to `theme_minimal()`. You should now have the final plot!
-
-```{r, echo = TRUE, eval = FALSE, fig.width = 8, fig.height = 2}
-ggplot(mcdonalds, aes(x = XX, y = XX, col = XX)) +
-  geom_point() +
-  geom_smooth(col = "XX") +
-  labs(title = "XX",
-       subtitle = "XX",
-       caption = "XX")+
-  xlim(XX, XX) +
-  theme_minimal()
-```
-
-```{r, fig.width = 7, fig.height = 4}
-ggplot(mcdonalds, aes(x = Calories, y = SaturatedFat, col = Category)) +
-  geom_point() +
-  geom_smooth(col = "black") +
-  labs(title = "McDonalds Nutrition",
-       subtitle = "Each point is a menu item",
-       caption = "Source: Kaggle.com") +
-  xlim(0, 1250) +
-  theme_minimal()
+```{r, eval = FALSE}
+# Remove two features (columns) from college_train
+college_train <- college_train %>%
+  select(-XX, -XX)
 ```
 
 
-### C - Adding multiple geoms
-
-1. Create the following plot showing the relationship between menu category and calories
-
-```{r, eval = FALSE, echo = TRUE, fig.width = 8, fig.height = 3}
-ggplot(data = mcdonalds, aes(x = XX, y = XX, fill = XX)) +
-  geom_violin() +
-  guides(fill = FALSE) +
-  labs(title = "XX",
-       subtitle = "XX")
+```{r}
+# Remove two features (columns) from college_train
+college_train <- college_train %>%
+  select(-id, -date)
 ```
 
+3. Re-run your models, but now predict Grad_Rate based on *all* of the features. To do this, use the formula short hand `formula = Grad_Rate ~ .`.
 
-```{r, eval = TRUE, echo = FALSE, fig.width = 8, fig.height = 3}
-ggplot(data = mcdonalds, aes(x = Category, y = Calories, fill = Category)) +
-  geom_violin() +
-  guides(fill = FALSE) +
-  labs(title = "McDonalds",
-       subtitle = "Calorie distribution by menu category")
+```{r, echo = TRUE}
+# Regression example
+Grad_Rate_lm <- glm(formula = Grad_Rate ~.,
+                data = college_train)
+
+# Same with other models...
 ```
 
+4. How does the overall fitting and prediction performance of the models compare to when you only used three features? Did each model improve?
 
-2. Include the additional argument `+ stat_summary(fun.y = "mean", geom = "point", col = "white", size = 4)` to include points showing the mean of each distribution
-
-```{r, fig.width = 8, fig.height = 3}
-ggplot(data = mcdonalds, aes(x = Category, y = Calories, fill = Category)) +
-  geom_violin() +
-  guides(fill = FALSE) +
-  stat_summary(fun.y = "mean", geom = "point", col = "white", size = 4) +
-  labs(title = "McDonalds",
-       subtitle = "Calorie distribution by menu category")
+```{r}
+# Yes each model improves!!
 ```
 
-3. Now add `+ geom_jitter(width = .1, alpha = .5)` to your plot, what do you see?
+## F - Predict a class
 
-```{r, fig.width = 8, fig.height = 3}
-ggplot(data = mcdonalds, aes(x = Category, y = Calories, fill = Category)) +
-  geom_violin() +
-  geom_jitter(width = .1, alpha = .5) +
-  guides(fill = FALSE) +
-  stat_summary(fun.y = "mean", geom = "point", col = "white", size = 4) +
-  labs(title = "McDonalds",
-       subtitle = "Calorie distribution by menu category")
+Now it's time to do a classification problem. Now, we will try to predict whether or not a school's graduation rate is greater than 90%
+
+```{r}
+# Code to create factor
 ```
 
-4. Play around with your plotting arguments to see how the results change! Each time you make a change, run the plot again to see your new output!
-
-- Change the summary function in `stat_summary()` from `"mean"` to `"median"`.
-- Change the size of the points in `stat_summary()` to something much bigger (or smaller).
-- Change the `width` argument in `geom_jitter()` to `width = 0`.
-- Instead of using `geom_violin()`, try `geom_boxplot()`.
-- Remove the `fill = Category` aesthetic entirely.
-
-### D - Using facets
-
-1. Create the following plot showing the relationship between `Sodium` and `Calories`.
-
-```{r, eval = FALSE, echo = TRUE}
-ggplot(XX, aes(x = XX, y = XX)) +
-  geom_point(alpha = .2) +
-  facet_wrap(~ XX) +
-  labs(title = "XX",
-       subtitle = "XX") +
-  theme_minimal()
+```{r}
+# Code explaining how to measure accuracy in classification (using caret)
 ```
 
-```{r, }
-ggplot(mcdonalds, aes(x = Sodium, y = Calories)) +
-  geom_point(alpha = .2) +
-  facet_wrap(~Category) +
-  labs(title = "McDonales",
-       subtitle = "Sodium vs. Calories") +
-  theme_minimal()
-```
-
-
-2. Try the following ways to customise your plot:
-
-- Color the points by `Category`.
-- Add a smoothed line to each plot with `geom_smooth()`.
-
-
-### E - Adjusting colors
-
-```{r, echo = FALSE, eval = TRUE, fig.width=6, fig.height = 4}
-ggplot(mcdonalds, aes(x = Cholesterol,
-                      y = Protein, 
-                      col = Calories)) + 
-  geom_point() +
-  scale_colour_gradient(low = "blue", high = "red") +
-  labs(title = "Playing with colors in ggplot",
-       subtitle = "Using scale_colour_gradient()")
-```
-
-1. Create a scatterplot showing the relationship between `Cholesterol` and `Protein` .
-
-2. Color the points according to their Calories by specifying the `col` aesthetic.
-
-3. Change the colors by including the additional argument ` + scale_colour_gradient(low = "blue", high = "red")`.
-
-4. Use a gray color palette by using `scale_color_grey()` instead of `scale_colour_gradient()`.
-
-5. Customize! Look at all of the named colors in R by running `colors()`. Then, use two new colors in your plot.
- 
-
-### F - Summary statistics
-
-1. Create the following plot showing the mean number of calories for each menu category using the following template:
-
-```{r, eval = FALSE, echo = TRUE}
-ggplot(XX, aes(x = XX, y = X)) +
-  stat_summary(geom = "bar", 
-               fun.y = "mean") +
-  labs(title = "XX",
-       subtitle = "XX")
-```
-
-```{r, eval = TRUE, fig.width = 10, fig.height = 4}
-ggplot(mcdonalds, aes(x = Category, y = Calories)) +
-  stat_summary(geom = "bar", 
-               fun.y = "mean") +
-  labs(title = "Calories by McDonalds menu category",
-       subtitle = "Bars represent means")
-```
-
-2. Customize your plot!
-
-- Instead of showing the `"mean"`, show the `"median"`.
-- Give each bar a different color.
-- Add overlapping points showing the individual items using `geom_point()`, `geom_count()` or `geom_jitter()`.
-
-
-### G - Saving plots
-
-1. It's time to save your favorite plot to an image file! Pick your favorite plot you've created so far. Then, assign the plot to a new object called `mcdonalds_gg` using `mcdonalds_gg <- ggplot(...)`
-
-```{r, eval = FALSE, echo = TRUE}
-mcdonalds_gg <- ggplot(...) + ... # Include your plotting code here
-```
-
-2. Evaluate your `mcdonalds_gg` object to see that it does indeed contain your plot.
-
-3. Save your plot to a .pdf-file called `mcdonalds.pdf` using `ggsave()`. When you finish, find your plot in `3_Figures` and open it to see how it looks! 
-
-```{r, echo = TRUE, eval = FALSE}
-# Save mcdonalds_gg to a pdf file
-ggsave(filename = "3_Figures/mcdonalds", 
-       device = "pdf", 
-       plot = mcdonalds_gg,
-       width = 4, 
-       height = 4, 
-       units = "in")
-```
-
-4. Play around with the `width` and `height` arguments to change the dimensions of the plot.
-
-5. Customize your code to create a jpeg image called `mcdonalds.jpeg`
-
-
-### H - Adding labels
-
-Let's create the following plot with additional point labels using `geom_text()`:
-
-```{r, echo = FALSE, eval = TRUE, fig.width = 8, fig.height = 4}
-ggplot(mcdonalds, aes(x = Sugars, 
-                      y = Calories, 
-                      col = Category, 
-                      label = Item)) +
-  geom_point() +
-  geom_text(data = mcdonalds %>% 
-            filter(Calories > 1100),
-            col = "black", 
-            check_overlap = TRUE, 
-            hjust = "left") +
-  xlim(0, 150) +
-  ylim(0, 2000) +
-  theme_minimal() +
-  labs(title = "Adding labels to a plot with geom_text()")
-```
-
-1. Start with the following template
-
-```{r, echo = TRUE, eval = FALSE}
-ggplot(mcdonalds, aes(x = XX, 
-                      y = XX, 
-                      col = XX)) +
-  geom_point() +
-  xlim(XX, XX) +
-  ylim(XX, XX) +
-  theme_minimal() +
-  labs(title = "XX")
-```
-
-2. Try adding labels to the plot indicating which item each point represents by adding `+ geom_text()`.
-
-3. Where are the labels? Ah, we didn't tell `ggplot` which column in the data represents the item descriptions. Fix this by specifying the `label` aesthetic in your first call to the `aes()` function. That is, include `label = Item` underneath the line `col = XX`. Now you should see lots of labels!
-
-4. Customize your `geom_text()` by including the arguments: `geom_text(col = "black", check_overlap = TRUE, hjust = "left")`.
-
-5. Using the `data` argument in `geom_text()`, specify that the labels should only apply to items over 1100 calories (hint: `geom_text(data = mcdonalds %>% filter(XX > XX))`)
-
-6. Play around! 
-
-- Specify that the size of the points should correspond to their Calories. Do this with the `size` aesthetic.
-- Instead of mapping `Category` to the `color` aesthetic, try creating different facets for each `Category` with `facet_wrap(~ Category)`.
-- Try using a different plotting theme. For example, you can try `theme_excel()` included in the `ggthemes` package.
-
-### I - Make your plots interactive with `plotly::ggplotly()`
-
-1. With the `ggplotly()`-function from the `plotly` package, you can turn any `ggplot` object into an interactive plot like the one below! Run the following code to see it in action.
-
-```{r, echo = TRUE, eval = TRUE, fig.width = 8, fig.height = 4}
-# Create a standard ggplot object
-MyPlot <- ggplot(data = mcdonalds,
-                 aes(x = Calories, y = TotalFat, col = Category)) + 
-  geom_point()
-
-
-# Make it interactive with ggplotly()!
-library(plotly)
-ggplotly(MyPlot)
-```
-
-2. Play around with your plot! See what happens when you hover over the points with your mouse. You can even zoom in by dragging your mouse.
-
-3. Try turning one of your favorite previous plots into an interactive `plotly` plot using the `ggplotly()` function!
-
-### X - Challenges
-
-For these challenges, use the `kc_house` dataset. Load the data as `kc_house`
-
-1. Make this plot
-- Hint: use `scale_color_gradient(low = "green", high = "red") `)
-
-```{r, echo = FALSE, eval = TRUE, fig.width = 7, fig.height = 4}
-ggplot(data = kc_house,
-       aes(x = bedrooms, y = bathrooms, col = price)) +
-  geom_count() +
-  labs(title = "King County Housing Prices",
-       subtitle = "Lighter color = higher price",
-       x = "# of Bedrooms",
-       y = "# of Bathrooms") +
-scale_color_gradient(low = "green", high = "red") +
-  xlim(c(0, 12)) +
-  theme_bw()
-```
-
-2. Make this plot 
-- Hint: take the log of price with `log(price)`
-
-```{r, echo = FALSE, eval = TRUE, fig.width = 7, fig.height = 4}
-ggplot(data = kc_house,
-       aes(x = yr_built, y = log(price))) +
-  geom_count(alpha = .01) +
-  geom_smooth() +
-  stat_summary(size = .1) +
-  guides(size = FALSE) +
-  ylim(c(11, 15)) +
-  labs(x = "Year Built",
-       y = "Price (log-scale)",
-       title = "Selling Seattle price of houses by year",
-       subtitle = "Points indicate mean by year",
-       caption = 'Line created by gam()') +
-  theme_minimal()
-```
-
-3. Make this plot
-- Hint: Start by creating an aggregated dataset with median home prices of the top 20 zipcodes. Then, use this dataset in ggplot!
-
-```{r, eval = TRUE, echo = FALSE, fig.height = 3, fig.width = 5.5}
-agg <- kc_house %>%
-  group_by(zipcode) %>%
-  summarise(price_median = median(price)) %>%
-  arrange(desc(price_median)) %>%
-  mutate(zipcode = factor(zipcode, levels = zipcode, ordered = TRUE)) %>%
-  slice(1:20) %>%
-  mutate(rank = 1:20)
-
-ggplot(agg,
-       aes(x = rank, y = price_median, label = zipcode, size = price_median, alpha = price_median)) +
-  geom_point(col = "skyblue") +
-  geom_text(aes(x = rank, y = price_median), nudge_x = .7, nudge_y = 200000, angle = 45, size = 3, col = "black") +
-  labs(y = "Median Home Price",
-       x = "Rank",
-       title = "Top 10 Most Expensive King County Zipcodes") +
-  scale_x_continuous(breaks = 1:20) +
-  ylim(c(0, 2300000)) +
-    guides(size = FALSE, alpha = FALSE) +
-  theme_minimal() +
-  theme(panel.grid.major.x = element_blank(),
-        panel.grid.minor.x = element_blank())
-```
-
-
+...
