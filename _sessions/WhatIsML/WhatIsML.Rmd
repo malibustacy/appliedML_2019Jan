@@ -187,7 +187,7 @@ knitr::include_graphics("http://www.location.ch/assets/images/f/Basel_Freie_Stra
 
 - If the decision isn't programmed, it might be <high>impossible to replicate</high> (and improve) in the future.
 
-- When objectively wrong, intuition can always be defended 'in hindsight'.
+- Intuition is rarely consistently tracked and evaluated. When wrong, intuition can always be defended 'in hindsight' (ML too!).
 
 ]
 
@@ -340,6 +340,9 @@ knitr::include_graphics("https://cdn-images-1.medium.com/max/1600/1*_QGyIwpgq831
 ```
 
 
+
+
+
 ---
 
 # What types of machine learning tasks are there?
@@ -352,9 +355,9 @@ Three general categories
 
 |Type|Example|
 |:----|:-----|
+|Reinforcement Learning|Robot navigation, game playing AI|
 |Unsupervised|Customer segmentation|
 |Supervised|Classification, regression|
-|Reinforcement Learning|Robot navigation, game playing AI|
 
 In this course, we focus on <high>Supervised</high> tasks
 
@@ -369,35 +372,6 @@ knitr::include_graphics("https://wordstream-files-prod.s3.amazonaws.com/s3fs-pub
 ]
 
 
----
-
-# What types of machine learning tasks are there?
-
-.pull-left4[
-
-There are many types of machine learning tasks, each of which call for different models
-
-Three general categories
-
-|Type|Example|
-|:----|:-----|
-|<high>Unsupervised</high>|Customer segmentation|
-|Supervised|Classification, regression|
-|Reinforcement Learning|Robot navigation, game playing AI|
-
-In this course, we focus on <high>Supervised</high> tasks
-
-
-]
-
-.pull-right55[
-
-### Unsupervised
-```{r, echo = FALSE, fig.align = 'center', out.width = "100%", fig.cap = "<font size = 4>iotforall.com</font>"}
-knitr::include_graphics("https://www.iotforall.com/wp-content/uploads/2018/01/Screen-Shot-2018-01-17-at-8.10.14-PM.png")
-```
-
-]
 
 ---
 
@@ -411,9 +385,9 @@ Three general categories
 
 |Type|Example|
 |:----|:-----|
-|Unsupervised|Customer segmentation|
-|Supervised</high>|Classification, regression|
 |<high>Reinforcement Learning</high>|Robot navigation, game playing AI|
+|Unsupervised|Customer segmentation|
+|Supervised|Classification, regression|
 
 In this course, we focus on <high>Supervised</high> tasks
 
@@ -431,7 +405,133 @@ knitr::include_graphics("https://cdn-images-1.medium.com/max/1600/1*6sE---UY4iiC
 knitr::include_graphics("https://cdn.technologyreview.com/i/images/alphagotopper2.jpg?sw=1200")
 ```
 
+]
 
+---
+
+# What types of machine learning tasks are there?
+
+.pull-left4[
+
+There are many types of machine learning tasks, each of which call for different models
+
+Three general categories
+
+|Type|Example|
+|:----|:-----|
+|Reinforcement Learning|Robot navigation, game playing AI|
+|<high>Unsupervised</high>|Customer segmentation|
+|Supervised|Classification, regression|
+
+In this course, we focus on <high>Supervised</high> tasks
+
+
+]
+
+.pull-right55[
+
+### Unsupervised
+```{r, echo = FALSE, fig.align = 'center', out.width = "100%", fig.cap = "<font size = 4>iotforall.com</font>"}
+knitr::include_graphics("https://www.iotforall.com/wp-content/uploads/2018/01/Screen-Shot-2018-01-17-at-8.10.14-PM.png")
+```
+
+]
+
+
+
+
+---
+
+# What types of machine learning tasks are there?
+
+.pull-left4[
+
+There are many types of machine learning tasks, each of which call for different models
+
+Three general categories
+
+|Type|Example|
+|:----|:-----|
+|Reinforcement Learning|Robot navigation, game playing AI|
+|Unsupervised|Customer segmentation|
+|<high>Supervised</high>|Classification, regression|
+
+In this course, we focus on <high>Supervised</high> tasks
+
+
+]
+
+.pull-right55[
+
+### Supervised
+
+```{r, echo = FALSE, fig.cap = "<font size = 4>medium.com</font>"}
+knitr::include_graphics("https://cdn-images-1.medium.com/max/1600/1*ASYpFfDh7XnreU-ygqXonw.png")
+```
+
+]
+
+
+
+---
+
+# What types of machine learning tasks are there?
+
+.pull-left4[
+
+There are many types of machine learning tasks, each of which call for different models
+
+Three general categories
+
+|Type|Example|
+|:----|:-----|
+|Reinforcement Learning|Robot navigation, game playing AI|
+|Unsupervised|Customer segmentation|
+|<high>Supervised</high>|Classification, regression|
+
+In this course, we focus on <high>Supervised</high> tasks
+
+
+]
+
+.pull-right55[
+
+### Unsupervised vs. Supervised
+
+```{r, echo = FALSE}
+knitr::include_graphics("https://leonardoaraujosantos.gitbooks.io/artificial-inteligence/content/Images/supervised_unsupervised.png")
+```
+<font size = 4>leonardoaraujosantos.gitbooks.io</font>
+]
+
+---
+
+# What types of machine learning tasks are there?
+
+.pull-left4[
+
+There are many types of machine learning tasks, each of which call for different models
+
+Three general categories
+
+|Type|Example|
+|:----|:-----|
+|Reinforcement Learning|Robot navigation, game playing AI|
+|Unsupervised|Customer segmentation|
+|<high>Supervised</high>|Classification, regression|
+
+In this course, we focus on <high>Supervised</high> tasks
+
+
+]
+
+.pull-right55[
+
+### Unsupervised vs. Supervised
+
+```{r, echo = FALSE, fig.cap = "<font size = 4>Western Digital (adapted)</font>"}
+knitr::include_graphics("image/unsup_vs_sup.png")
+```
 
 ]
 
@@ -519,6 +619,8 @@ knitr::include_graphics("https://github.com/therbootcamp/appliedML_2019Jan/blob/
 
 ---
 class: middle, center
+
+<h1>R you ready?</h1>
 
 <h1><a href=https://therbootcamp.github.io/appliedML_2019Jan/index.html>Schedule</a></h1>
 
