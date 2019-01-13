@@ -221,7 +221,7 @@ knitr::include_graphics("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR
 .pull-right5[
 <br>
 
-  <iframe src="https://therbootcamp.github.io/appliedML_2019Jan/_sessions/Fitting/Fitting.html" height="480px" width = "500px"></iframe>
+  <iframe src="https://therbootcamp.github.io/appliedML_2019Jan/_sessions/Fitting/Fitting_practical.html" height="480px" width = "500px"></iframe>
 
   Example:<a href="https://therbootcamp.github.io/appliedML_2019Jan/_sessions/Fitting/Fitting_practical.html">Fitting Practical </a>
 
@@ -286,11 +286,9 @@ knitr::include_graphics("https://cdn.southampton.ac.uk/assets/imported/transform
   </td>
 
 
-
   </tr>
 </table>
 <br>
-
 
 
 ---
