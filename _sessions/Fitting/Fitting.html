@@ -47,12 +47,14 @@ layout: true
 - Have data relevant to that question
     - Records from 300 patients
 
-- Data is cleaned and in a dataframe
-    - `heartdisease.txt`
+- Data is cleaned and in a tidy, rectangular format
+    - Database, .csv,
 
 ## What's next?
 
-&lt;high&gt;Select&lt;/high&gt; and &lt;high&gt;train&lt;/high&gt; model(s)
+&lt;high&gt;Select&lt;/high&gt; and &lt;high&gt;train&lt;/high&gt; model(s) depending on the &lt;high&gt;type of task&lt;/high&gt;
+
+
 
 ]
 
@@ -63,15 +65,13 @@ layout: true
 &lt;p class="caption"&gt;Source: Medium.com&lt;/p&gt;
 &lt;/div&gt;
 
-
 ]
-
 
 ---
 
 .pull-left45[
 
-# What types of ML tasks are there?
+# Types of ML tasks
 
 There are many types of of ML tasks
 
@@ -103,11 +103,13 @@ No one could possibly know them all.
 
 In this course, you will learn 3 of the most popular:
 
-|Model|Description |
+|Model|Description|
 |:----|:---- |
 |Regression|A weighted linear combination of features and weights|
 |Decision Tree|A series of heirarchical 'yes/no' decisions|
 |Random Forests|Combination of many decision trees|
+
+*In the Models session, you'll learn about many more!*
 
 ]
 
@@ -119,22 +121,258 @@ In this course, you will learn 3 of the most popular:
 
 ---
 
-.pull-left6[
 
-# Fitting model parameters
+.pull-left5[
 
-Every model has *parameters* that can be *fit* (aka adapt) to data
+# What does "Fitting" mean?
 
-These parameters *tune* a model to specific data
+For any model class, there is no "One" single model.
 
-&gt; "Let me represent the data in the best way I can given how I work"
-&gt; ~ Model during fitting
+&gt; How many possible Regression models are there?
+
+
+Any machine learning model can be 'fit' (aka 'trained') on a specific dataset of interest.
+
+
+Fitting means finding the "best" version of a model for a specific dataset.
+
+&gt; "Let me represent the data in the best way I can given how I work"&lt;br&gt;
+&gt;~ Model during fitting
+
+
+The "best" model is usually defined as a combination of &lt;high&gt;accuracy&lt;/high&gt; (higher better!) and &lt;high&gt;complexity&lt;/high&gt; (lower better!)
+
+
 ]
 
-.pull-right4[
+.pull-right45[
 
 
-&lt;img src="Fitting_files/figure-html/unnamed-chunk-6-1.png" style="display: block; margin: auto;" /&gt;
+
+
+&lt;br&gt;&lt;br&gt;
+### How do I fit a model to these data??
+
+&lt;img src="Fitting_files/figure-html/unnamed-chunk-7-1.png" width="80%" style="display: block; margin: auto;" /&gt;
+
+
+]
+
+
+
+
+
+
+
+
+---
+
+.pull-left45[
+&lt;br&gt;&lt;br&gt;&lt;br&gt;
+# Defining Accuracy (or Error)
+
+To train (fit) a model to a dataset, we need to &lt;high&gt;mathematically define Accuracy&lt;/high&gt;
+
+Alternatively, we can define a model's &lt;high&gt;Error&lt;/high&gt;
+
+There is &lt;high&gt;no 'correct'&lt;/high&gt; definition of error, it depends on &lt;high&gt;what's important to you&lt;/high&gt; as the decision maker!
+
+Once accuracy (or error) is defined, a model can be trained to maximise (or minimise) it!
+
+The model that minimises error (or maximises accuracy) is the final &lt;high&gt;Training model&lt;/high&gt;
+
+]
+
+.pull-right45[
+
+&lt;br&gt;&lt;br&gt;
+### How do I fit a model to these data??
+
+&lt;img src="Fitting_files/figure-html/unnamed-chunk-9-1.png" width="80%" style="display: block; margin: auto;" /&gt;
+]
+
+---
+
+# Which of these models is better? Why?
+
+&lt;img src="Fitting_files/figure-html/unnamed-chunk-10-1.png" width="90%" style="display: block; margin: auto;" /&gt;
+
+
+---
+
+# Which of these models is better? Why?
+
+&lt;img src="Fitting_files/figure-html/unnamed-chunk-11-1.png" width="90%" style="display: block; margin: auto;" /&gt;
+
+
+
+
+---
+
+.pull-left45[
+
+# Regression Error
+
+### MAE: Mean Absolute Error
+
+`$$\large MSE = \frac{1}{n}\sum_{i=1}^{n} \lvert Prediction_{i} - Truth_{i} \rvert$$`
+
+&gt; On average, how far are predictions away from true values?
+
+### MSE: Mean Squared Error
+
+`$$\large MSE = \frac{1}{n}\sum_{i=1}^{n}(Prediction_{i} - Truth_{i})^{2}$$`
+&gt; On average, how far are predictions away from true values (squared!)?
+
+
+]
+
+.pull-right5[
+
+&lt;img src="Fitting_files/figure-html/unnamed-chunk-12-1.png" style="display: block; margin: auto;" /&gt;
+
+]
+
+
+
+
+
+
+---
+
+.pull-left45[
+
+# Classification Accuracy
+
+Classification accuracy measures all come from the &lt;high&gt; "confusion matrix"&lt;/high&gt;
+
+The confusion matrix is a cross tabulation table showing predictions versus true classses.
+
+### Confusion Matrix
+
+|    |      Y is Positive      | Y is Negative |
+|----------|:-------------:|:------:|
+| Predict &lt;br&gt;"Positive"| &lt;font color = "green"&gt;TP&lt;br&gt; True Positive&lt;/font&gt;| &lt;font color = "red"&gt;FP &lt;br&gt; False Positive&lt;/font&gt; |
+| Predict &lt;br&gt;"Negative"|    &lt;font color = "red"&gt;FN&lt;br&gt; False Negative&lt;/font&gt;   |  &lt;font color = "green"&gt;TN &lt;br&gt; True Negative&lt;/font&gt;|
+
+Green cells are &lt;font color = "green"&gt;correct decisions&lt;/font&gt; while Red cells are &lt;font color = "red"&gt;incorrect decisions&lt;/font&gt;
+
+
+]
+
+.pull-right5[
+
+### Data
+
+||X1|X2|X3|Prediction|Truth|Outcome|
+|:---|:----|:----|:----|:----|:----|:----|
+|1|.|.|.|"Default"|Default|&lt;font color = "green"&gt;TP&lt;/font&gt;|
+|2|.|.|.|"Default"|Default|&lt;font color = "green"&gt;TP&lt;/font&gt;|
+|3|.|.|.|"Repay"|Repay|&lt;font color = "green"&gt;TN&lt;/font&gt;|
+|4|.|.|.|"Default"|Repay|&lt;font color = "red"&gt;FP&lt;/font&gt;|
+|5|.|.|.|"Repay"|Default|&lt;font color = "red"&gt;FN&lt;/font&gt;|
+|6|.|.|.|"Default"|Default|&lt;font color = "green"&gt;TP&lt;/font&gt;|
+|7|.|.|.|"Repay"|Repay|&lt;font color = "green"&gt;TN&lt;/font&gt;|
+
+### Confusion Matrix
+
+|    |      True Default      | True Repay  |
+|----------|:-------------:|:------:|
+| Predict &lt;br&gt;"Default"| &lt;font color = "green"&gt;3&lt;/font&gt;| &lt;font color = "red"&gt;1 &lt;/font&gt; |
+| Predict &lt;br&gt;"Repay"|    &lt;font color = "red"&gt;1&lt;/font&gt;   |  &lt;font color = "green"&gt; 2&lt;/font&gt;|
+
+]
+
+---
+
+.pull-left45[
+
+# Classification Accuracy
+
+Classification accuracy measures all come from the &lt;high&gt; "confusion matrix"&lt;/high&gt;
+
+The confusion matrix is a cross tabulation table showing predictions versus true classses.
+
+### Confusion Matrix
+
+|    |      Y is Positive      | Y is Negative |
+|----------|:-------------:|:------:|
+| Predict &lt;br&gt;"Positive"| &lt;font color = "green"&gt;TP&lt;br&gt; True Positive&lt;/font&gt;| &lt;font color = "red"&gt;FP &lt;br&gt; False Positive&lt;/font&gt; |
+| Predict &lt;br&gt;"Negative"|    &lt;font color = "red"&gt;FN&lt;br&gt; False Negative&lt;/font&gt;   |  &lt;font color = "green"&gt;TN &lt;br&gt; True Negative&lt;/font&gt;|
+
+Green cells are &lt;font color = "green"&gt;correct decisions&lt;/font&gt; while Red cells are &lt;font color = "red"&gt;incorrect decisions&lt;/font&gt;
+
+
+]
+
+.pull-right5[
+
+
+### Overall Accuracy
+
+&gt; What percent of my predictions are correct?
+
+`$$\large Overall \; Accuracy = \frac{TP + TN}{ TP + TN + FN + FP}$$`
+
+### Sensitivity
+
+&gt; &lt;i&gt;Of the truly Positive cases&lt;/i&gt;, what percent of predictions are correct?
+
+
+`$$\large Sensitivity = \frac{TP}{ TP +FN }$$`
+### Specificity
+
+&gt; &lt;i&gt;Of the truly Negative cases&lt;/i&gt;, what percent of predictions are correct?
+
+
+`$$\large Specificity = \frac{TN}{ TN + FP }$$`
+
+
+]
+
+
+
+---
+
+.pull-left45[
+
+# Classification Accuracy
+
+### Example: Loan default
+
+Imagine we use a model (e.g. a decision tree) to predict whether or not each of 7 customers will default on their loan.
+
+After the loan period is over, we obtain the final confusion matrix comparing our predictions to the truth:
+
+### Confusion Matrix
+
+|    |      True Default      | True Repay  |
+|----------|:-------------:|:------:|
+| Predict &lt;br&gt;"Default"| &lt;font color = "green"&gt;TP &lt;br&gt;3&lt;/font&gt;| &lt;font color = "red"&gt;FP &lt;br&gt;1 &lt;/font&gt; |
+| Predict &lt;br&gt;"Repay"|    &lt;font color = "red"&gt;FN&lt;br&gt;1&lt;/font&gt;   |  &lt;font color = "green"&gt;TN &lt;br&gt; 2&lt;/font&gt;|
+
+]
+
+.pull-right5[
+
+
+### Overall Accuracy
+
+Across all customers, our model has an accuracy of 71%
+
+`$$\large Overall \; Accuracy = \frac{3 + 2}{3 + 2 + 1 + 1} = 0.71$$`
+
+### Sensitivity
+
+Our model is 75% accurate in catching true defaults
+
+`$$\large Sensitivity = \frac{3}{3 + 4} = .75$$`
+### Specificity
+
+Our model is 67% accurate in catching true repayments
+
+
+`$$\large Specificity = \frac{2}{ 2 + 1 }= 0.67$$`
 
 
 ]
@@ -142,83 +380,177 @@ These parameters *tune* a model to specific data
 
 ---
 
+.pull-left45[
+
+# Ready to fit!
+
+Now we're ready to fit models to data!
+
+We will cover three commonly used models, Regression, Decision Trees, and Random Forest
+
+These models can be used across both regression and classification tasks
+
+As you'll see, they differ in complexity (intepretability, computational demands)
+
+|Model|Complexity|
+|:----|:---- |
+|Regression|&lt;font color = "orange"&gt;Medium&lt;/font&gt;|
+|Decision Tree|&lt;font color = "green"&gt;Low&lt;/font&gt;(usually)|
+|Random Forests|&lt;font color = "red"&gt;High&lt;/font&gt;|
 
 
+]
 
+.pull-right5[
 
+&lt;img src="https://github.com/therbootcamp/appliedML_2019Jan/blob/master/_sessions/Fitting/image/three_models_vert.jpg?raw=true" width="100%" style="display: block; margin: auto;" /&gt;
 
-# Fit your own linear model!
-
-&lt;br&gt;
-&lt;img src="Fitting_files/figure-html/unnamed-chunk-8-1.png" width="85%" style="display: block; margin: auto;" /&gt;
-
+]
 
 ---
 
-# Fit your own linear model!
-&lt;br&gt;
-&lt;img src="Fitting_files/figure-html/unnamed-chunk-9-1.png" width="85%" style="display: block; margin: auto;" /&gt;
+.pull-left4[
 
+# Regression
+
+In [regression](https://en.wikipedia.org/wiki/Regression_analysis), the criterion Y is modeled as the &lt;high&gt;sum&lt;/high&gt; of &lt;high&gt;predictors times weights&lt;/high&gt; `\(\beta_{1}\)`, `\(\beta_{2}\)`&lt;/high&gt;.
+
+`$$\hat{Y} =  \beta_{0} + X1 \times \beta_{X1} + X2 \times \beta_{X2} + ...$$`
+
+
+&lt;div class="figure" style="text-align: center"&gt;
+&lt;img src="image/regression_ISLR.jpg" alt="&amp;lt;font size = 4&amp;gt;James et al., Introduction to SL&amp;lt;/font&amp;gt;" width="100%" /&gt;
+&lt;p class="caption"&gt;&lt;font size = 4&gt;James et al., Introduction to SL&lt;/font&gt;&lt;/p&gt;
+&lt;/div&gt;
+
+
+
+]
+
+.pull-right55[
+
+### Fitting
+
+Estimate parameters `\(\beta_{0}\)`, `\(\beta_{X1}\)`, ... that minimise error (e.g.; Mean Squared Error)
+
+`$$\large MSE = \frac{1}{n}\sum_{t=1}^{n}(obs - Y)^{2}$$`
+
+### R Method
+
+Common methods of estimating regression models:
+
+| Tuning | Description| Caret |
+|:-----|:------|:---|
+|Standard |Estimates coefficients using raw MSE| `"glm"`|
+|Ridge | 'Shrinks' coefficients *towards* 0| `"ridge"`|
+|Lasso | 'Shrinks' many coefficients down to *exactly* 0|`"lasso"`|
+
+]
 
 ---
 
-# Fit your own linear model!
-&lt;br&gt;
-&lt;img src="Fitting_files/figure-html/unnamed-chunk-10-1.png" width="85%" style="display: block; margin: auto;" /&gt;
+.pull-left4[
 
+# Regression
+
+In [regression](https://en.wikipedia.org/wiki/Regression_analysis), the criterion Y is modeled as the &lt;high&gt;sum&lt;/high&gt; of &lt;high&gt;predictors times weights&lt;/high&gt; `\(\beta_{1}\)`, `\(\beta_{2}\)`&lt;/high&gt;.
+
+`$$\hat{Y} =  \beta_{0} + X1 \times \beta_{X1} + X2 \times \beta_{X2} + ...$$`
+&lt;div class="figure" style="text-align: center"&gt;
+&lt;img src="image/regression_ISLR.jpg" alt="&amp;lt;font size = 4&amp;gt;James et al., Introduction to SL&amp;lt;/font&amp;gt;" width="100%" /&gt;
+&lt;p class="caption"&gt;&lt;font size = 4&gt;James et al., Introduction to SL&lt;/font&gt;&lt;/p&gt;
+&lt;/div&gt;
+
+]
+
+.pull-right55[
+
+## Sales Example
+
+&lt;img src="image/Carseats_ss.jpg" width="100%" style="display: block; margin: auto;" /&gt;
+
+
+#### Regression Model
+
+`$$\large Sales =  \beta_{0} + CompPrice \times \beta_{CompPrice} + Income \times \beta_{Income} + ...$$`
+#### Example coefficients
+
+|Parameter| `\(\beta_{0}\)`| `\(\beta_{CompPrice}\)` | `\(\beta_{Income}\)` | `\(\beta_{Advertising}\)` |
+|:-----|:-----|:-----|:----|:----|
+| Estimate| 10 | 5.4 | 1.3 |2.4 |
+
+]
 
 
 ---
 
 .pull-left4[
 
-# 3 models
+# Decision Trees
 
-- Regression
-- Tree Based
-    - Decision Trees
-    - Random Forests
-- KNN
+In [decision trees](https://en.wikipedia.org/wiki/Decision_tree), the criterion is modeled as a &lt;high&gt;sequence of logical YES or NO questions&lt;/high&gt;.
+&lt;br&gt;&lt;br&gt;
 
-]
-
-.pull-right6[
+&lt;u&gt;Loan example&lt;/u&gt;&lt;br&gt;
+&lt;p align="center"&gt;
+  &lt;img src="https://raw.githubusercontent.com/therbootcamp/therbootcamp.github.io/master/_sessions/_image/defaulttree.png" height="250px"&gt;
+&lt;/p&gt;
 
 ]
 
+.pull-right55[
+
+### Fitting
+
+Goal: Maximise accuracy by define splits that maximise *Node Purity*
+
+&lt;img src="image/tree_purity_example.png" width="100%" style="display: block; margin: auto;" /&gt;
+
+### R Method
+
+| Variant | Description| Caret |
+|:-----|:------|:---|
+|rpart |Recursive Partitioning| `"rpart"`|
+
+]
 
 ---
 
 .pull-left4[
 
-# Quantifying performance
+# Random Forest
 
-Regression - Mean Squared error
+In [Random Forest](https://en.wikipedia.org/wiki/Random_forest), the criterion is models as the &lt;high&gt;aggregate prediction of a large number of decision trees&lt;/high&gt; each based on different features.
+&lt;br&gt;
+
+&lt;p align="center"&gt;
+  &lt;img src="https://raw.githubusercontent.com/therbootcamp/Erfurt_2018June/master/_sessions/_image/randomforest_diagram.png" height="285px"&gt;&lt;br&gt;
+  &lt;a href="https://medium.com/@williamkoehrsen"&gt;Source&lt;/a&gt;
+&lt;/p&gt;
 
 ]
 
-.pull-right6[
+.pull-right55[
 
+### Fitting
+
+Goal: Create a large set of diverse trees that can be aggregated into one *Wisdom of Crowds* judgment
+
+&lt;img src="image/tree_crowd.png" width="60%" style="display: block; margin: auto;" /&gt;
+
+### R Method
+
+| Variant | Description| Caret |
+|:-----|:------|:---|
+|Random Forests |"Classic" random forests| `"rf"`|
 
 ]
 
 ---
 
-.pull-left4[
 
-# Quantifying performance
 
-Classification
 
-- Absolute classification error
-- Balanced Accuracy
-- AUC
-
-]
-
-.pull-right6[
-
-]
 
 ---
 
