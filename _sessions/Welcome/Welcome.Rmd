@@ -207,9 +207,11 @@ knitr::include_graphics("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR
 
 - Starts easy, gets progressively more challenging.
 
-- Struggle, work together, and ask questions!
-
 - Go at your own pace and finish as much as you can.
+
+    - We have a diverse group with different backgrounds and interests, we love that!
+
+- Be active! Ask questions!
 
 - We'll give you all the answers later.
 
@@ -307,7 +309,7 @@ knitr::include_graphics("https://cdn.southampton.ac.uk/assets/imported/transform
 ]
 
 .pull-right6[
-
+<br><br>
 
 ```{r, echo = FALSE, eval = FALSE, out.width = "70%", fig.cap="Famous Oat Cookies!"}
 knitr::include_graphics("https://image.migros.ch/2017-large/1106111ebe783b88f0f69e6305eb0f8cdfc35566/bio-hafercookies.jpg")
