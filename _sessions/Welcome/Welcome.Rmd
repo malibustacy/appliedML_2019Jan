@@ -79,7 +79,7 @@ Click the "Bootcamp running" link on our homepage!
 # Aim
 
 
->###The aim of this workshop is enable you to thoughtfully impliment machine learning methods, using R, to make data--driven decisions.
+>###The aim of this workshop is enable you to thoughtfully implement machine learning methods, using R, to make data--driven decisions.
 
 ]
 
@@ -216,7 +216,6 @@ knitr::include_graphics("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR
 - We'll give you all the answers later.
 
 ]
-
 
 .pull-right5[
 <br>

@@ -592,7 +592,7 @@ knitr::include_graphics("image/three_models.png")
 
 - Which features are most <high>important</high> in predicting the criterion and which can be safely ignored?
 - What is the <high>relationship</high> between features and the criterion?
-    - Strong? Weak? Postive? Negative?
+    - Strong? Weak? Positive? Negative?
 - Make <high>predictions</high> for new data.
     - I've got a new patient, how likely is it that (s)he is having a heart attack?
 - Improve predictions over time with new data.

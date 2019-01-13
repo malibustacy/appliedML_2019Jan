@@ -19,7 +19,7 @@ knitr::opts_chunk$set(comment = NA,
 options(digits = 3)
 ```
 
-```{r, echo = FALSE, fig.align = 'center', eval = TRUE, out.width = "70%", fig.cap="Source: wikipedi"}
+```{r, echo = FALSE, fig.align = 'center', eval = TRUE, out.width = "70%", fig.cap="Source: wikipedia"}
 knitr::include_graphics("https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/Linear_regression.svg/1200px-Linear_regression.svg.png")
 ```
 
@@ -327,7 +327,7 @@ ggplot(data = competition_results,
   ylim(0, 120)
 ```
 
-9. Look at the plot, how do you interpret this? Do you think the model did well or not in fiting graduation rates?
+9. Look at the plot, how do you interpret this? Do you think the model did well or not in fitting graduation rates?
 
 10. Now it's time to quantify our model's fitting results. To do this, we'll use the `postResample()` function, with the fitted values as the prediction, and the truth as the observed values
 
@@ -354,7 +354,7 @@ Grad_Rate_rpart <- train(Grad_Rate ~ .,
                          tuneGrid = expand.grid(cp = .05))  # Fix cp to 0.05
 ```
 
-2. The nice thing about decision trees is we can visualise them! Visualise your decision tree using the following code. Can you interpret the results?
+2. The nice thing about decision trees is we can visualize them! Visualize your decision tree using the following code. Can you interpret the results?
 
 ```{r}
 # Visualise your tree
@@ -407,7 +407,7 @@ ggplot(data = competition_results,
   ylim(0, 120)
 ```
 
-8. Look at the plot, how do you interpret this? Do you find anything strange about the fits of decision trees versus regression? Do you think the model did well or not in fiting graduation rates?
+8. Look at the plot, how do you interpret this? Do you find anything strange about the fits of decision trees versus regression? Do you think the model did well or not in fitting graduation rates?
 
 9. Now it's time to quantify our model's fitting results. Using the `postResample()` function, compare the predicted values `rpart_fit` to the true values as follows:
 
@@ -477,7 +477,7 @@ ggplot(data = competition_results,
   ylim(0, 120)
 ```
 
-7. Look at the plot, how do you interpret this? Do you think the model did well or not in fiting graduation rates?
+7. Look at the plot, how do you interpret this? Do you think the model did well or not in fitting graduation rates?
 
 8. Now it's time to quantify our model's fitting results. Using the `postResample()` function, compare the predicted values `rpart_fit` to the true values as follows:
 
@@ -729,7 +729,7 @@ Grad_Rate_rf$finalModel$ntree
 Grad_Rate_rf$finalModel$mtry
 ```
 
-3. Try repeating your modelling procedure with a new criterion. For example, for regression you could predict the percet of alumni who donate (`perc.alumni`), for classification, you could predict whether or not a school is 'hot' -- where a 'hot' school is one that receives at least 10,000 applications (Hint: use the code below to create the `hot` variable)
+3. Try repeating your modelling procedure with a new criterion. For example, for regression you could predict the percent of alumni who donate (`perc.alumni`), for classification, you could predict whether or not a school is 'hot' -- where a 'hot' school is one that receives at least 10,000 applications (Hint: use the code below to create the `hot` variable)
 
 ```{r, eval = FALSE, echo = TRUE}
 # Add a new factor criterion 'hot' which indicates whether or not a schol receives at least 10,000 applications
