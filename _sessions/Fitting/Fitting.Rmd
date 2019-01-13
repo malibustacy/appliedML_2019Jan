@@ -27,6 +27,7 @@ layout: true
 ```{r, eval = TRUE, echo = FALSE, warning=F,message=F}
 # Code to knit slides
 baselers <- readr::read_csv("../_data/baselers.csv")
+
 ```
 
 
@@ -48,6 +49,8 @@ library(tidyverse)
 library(baselers)
 library(ggthemes)
 library(ggpubr)
+library(caret)
+library(ISLR)
 ```
 
 
@@ -56,10 +59,10 @@ library(ggpubr)
 # Where we are at
 
 - Have a business question
-    - How can I predict heart attacks?
+    - How can I predict loan default?
 
 - Have data relevant to that question
-    - Records from 300 patients
+    - Records from 300 historical customers
 
 - Data is cleaned and in a tidy, rectangular format
     - Database, .csv,
@@ -67,8 +70,6 @@ library(ggpubr)
 ## What's next?
 
 <high>Select</high> and <high>train</high> model(s) depending on the <high>type of task</high>
-
-
 
 ]
 
@@ -80,15 +81,16 @@ knitr::include_graphics("https://cdn-images-1.medium.com/max/1600/1*_QGyIwpgq831
 
 ]
 
+
 ---
 
 .pull-left45[
 
-# Types of ML tasks
+# What type of task do you have?
 
-There are many types of of ML tasks
+There are many types of of ML tasks.
 
-In this course, you will learn 2 of the most popular
+In this course, we will focus on 2 of the most popular
 
 |Model|Description | Example |
 |:----|:---- |:----|
@@ -114,14 +116,12 @@ knitr::include_graphics("https://github.com/therbootcamp/appliedML_2019Jan/blob/
 
 There are *thousands* of machine learning models
 
-No one could possibly know them all.
-
 In this course, you will learn 3 of the most popular:
 
 |Model|Description|
 |:----|:---- |
 |Regression|A weighted linear combination of features and weights|
-|Decision Tree|A series of heirarchical 'yes/no' decisions|
+|Decision Tree|A series of hierarchical 'yes/no' decisions|
 |Random Forests|Combination of many decision trees|
 
 *In the Models session, you'll learn about many more!*
@@ -135,6 +135,18 @@ knitr::include_graphics("https://github.com/therbootcamp/appliedML_2019Jan/blob/
 ```
 
 ]
+
+---
+class: center, middle
+
+## Once you have a model you need to "Fit" (aka, "Train") it to data
+
+```{r, echo = FALSE, out.width = "50%", fig.cap = "<font size = 4>James et al., Introduction to SL</font>"}
+knitr::include_graphics("image/regression_ISLR.jpg")
+```
+
+## What does that mean?
+
 
 ---
 
@@ -287,9 +299,9 @@ Alternatively, we can define a model's <high>Error</high>
 
 There is <high>no 'correct'</high> definition of error, it depends on <high>what's important to you</high> as the decision maker!
 
-Once accuracy (or error) is defined, a model can be trained to maximise (or minimise) it!
+Once accuracy (or error) is defined, a model can be trained to maximize (or minimize) it!
 
-The model that minimises error (or maximises accuracy) is the final <high>Training model</high>
+The model that minimizes error (or maximizes accuracy) is the final <high>Training model</high>
 
 ]
 
@@ -365,7 +377,7 @@ bad_err +
 
 Classification accuracy measures all come from the <high> "confusion matrix"</high>
 
-The confusion matrix is a cross tabulation table showing predictions versus true classses.
+The confusion matrix is a cross tabulation table showing predictions versus true classes.
 
 ### Confusion Matrix
 
@@ -410,7 +422,7 @@ Green cells are <font color = "green">correct decisions</font> while Red cells a
 
 Classification accuracy measures all come from the <high> "confusion matrix"</high>
 
-The confusion matrix is a cross tabulation table showing predictions versus true classses.
+The confusion matrix is a cross tabulation table showing predictions versus true classes.
 
 ### Confusion Matrix
 
@@ -509,7 +521,7 @@ We will cover three commonly used models, Regression, Decision Trees, and Random
 
 These models can be used in both regression and classification tasks.
 
-As you'll see, they differ in complexity (intepretability, computational demands)
+As you'll see, they differ in complexity (interpretability, computational demands)
 
 |Model|Complexity|
 |:----|:---- |
@@ -550,7 +562,7 @@ knitr::include_graphics("image/regression_ISLR.jpg")
 
 ### Fitting
 
-Estimate parameters $\beta_{0}$, $\beta_{X1}$, ... that minimise error (e.g.; Mean Squared Error)
+Estimate parameters $\beta_{0}$, $\beta_{X1}$, ... that minimize error (e.g.; Mean Squared Error)
 
 $$\large MSE = \frac{1}{n}\sum_{t=1}^{n}(obs - Y)^{2}$$
 
@@ -611,7 +623,6 @@ $$\large Sales =  \beta_{0} + CompPrice \times \beta_{CompPrice} + Income \times
 In [decision trees](https://en.wikipedia.org/wiki/Decision_tree), the criterion is modeled as a <high>sequence of logical YES or NO questions</high>.
 <br><br>
 
-<u>Loan example</u><br>
 <p align="center">
   <img src="https://raw.githubusercontent.com/therbootcamp/therbootcamp.github.io/master/_sessions/_image/defaulttree.png" height="250px">
 </p>
@@ -622,7 +633,7 @@ In [decision trees](https://en.wikipedia.org/wiki/Decision_tree), the criterion 
 
 ### Fitting
 
-Goal: Maximise accuracy by define splits that maximise *Node Purity*
+Goal: Maximize accuracy by define splits that maximize *Node Purity*
 
 ```{r, echo = FALSE, out.width = "100%"}
 knitr::include_graphics("image/tree_purity_example.png")
@@ -673,29 +684,350 @@ knitr::include_graphics("image/tree_crowd.png")
 ---
 
 
+---
+class: center,  middle
 
+<br><br>
+
+# How to fit models with caret!
+
+```{r, echo = FALSE, out.width = "70%"}
+knitr::include_graphics("https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/09/Caret-package-in-R.png")
+```
+
+
+```{r, echo = FALSE}
+library(caret)
+data(cars)
+```
+
+---
+
+.pull-left55[
+
+# `caret`
+
+Here are the <high>main functions</high> we will cover from the `caret` package.
+
+| Function| Purpose|
+|--------|----------|
+| [trainControl()](http://topepo.github.io/caret/model-training-and-tuning.html#basic-parameter-tuning) | Determine how training (in general) will be done|
+| [train()](http://topepo.github.io/caret/model-training-and-tuning.html#model-training-and-parameter-tuning) | Specify a model and find *best* parameters|
+| [varImp()](http://topepo.github.io/caret/variable-importance.html) | Determine variable importance |
+| predict() | Predict values (either fitted values or predictions for new data)|
+| [postResample()](http://topepo.github.io/caret/measuring-performance.html) | Evaluate model performance (fitting or prediction)|
+
+]
+
+.pull-right4[
+
+The `caret` package has some of the *best* documentation (vignettes) you'll ever see...
+
+<iframe src="https://therbootcamp.github.io/appliedML_2019Jan/_sessions/Fitting/Fitting_practical.html" height="480px" width = "500px"></iframe>
+
+]
+
+---
+
+.pull-left55[
+
+## trainControl()
+
+Use `trainControl()` to define how `carat` should <high>select the best parameters</high> for a ML model.
+
+Here you can tell caret to do things like repeated <high>cross validation</high>. Many other methods are available via the `method` argument (see `?trainControl`)
+
+For now in the practical, we'll set `method = "none"` to keep things simple. This means "fit the model without advanced parameter tuning"
+
+```{r}
+# Fit the model without any 
+#  advanced parameter tuning
+
+ctrl <- trainControl(method = "none")
+```
+
+
+]
+
+.pull-right4[
+
+<br><br><br>
+### Method arguments in caret
+
+|method|Description|
+|:----|:----|
+|`"repeatedcv"` | Repeated cross-validation|
+|`"LOOCV"`| Leave one out cross-validation|
+|`"none"` | Fit one model without tuning|
+
+]
 
 
 ---
 
-# How do you know which features were important?
+# `train`
+
+.pull-left6[
+
+Use `train()` to <high>fit</high> 280+ models using <high>optimal parameters</high>.
+
+```{r, echo = TRUE, out.width = "90%", eval = TRUE, warning = FALSE}
+glm_train <- train(form = Price ~ .,  
+                   data = cars,
+                   method = "glm", # Model!
+                   trControl = ctrl)
+```
+
+
+<p align="center"><u>train()-function arguments</u></p>
+
+|Argument|Description|
+|:-----|:----|
+|`form`|Formula specifying criterion|
+|`data`|Training data|
+|`method`| Model|
+|`trControl`| Control parameters|
+]
+
+
+.pull-right35[
+
+Find all 280+ models [here](http://topepo.github.io/caret/available-models.html)
+
+<p align="center">
+  <img src="caret_models.jpg" height="350px">
+</p>
+
+
+]
 
 ---
-# Caret
+
+# `train()`
+
+.pull-left6[
+
+<high>Classification tasks</high> require the <high>criterion to be factor</high>, while regression tasks require it to be numeric.
 
 
+```{r, eval = FALSE}
+# Will be a regression model
+reg_mod <- train(form = Saab ~ .,
+                 data = cars,
+                 method = "glm")
+```
+
+<font color='red' size = 3>Warning messages:...Are you sure you wanted to do regression?</font>
+
+Use `factor()` to <high>convert your criterion</high> to a factor, now you are doing classification!
+
+```{r, eval = FALSE}
+# Use factor() to specify a classification model
+class_mod <- train(form = factor(Saab) ~ .,
+                   data = cars,
+                   method = "glm")
+```
+
+]
+
+.pull-right35[
+
+Find all 280+ models [here](http://topepo.github.io/caret/available-models.html)
+
+<p align="center">
+  <img src="caret_models.jpg" height="350px">
+</p>
+
+]
+
+---
+
+# Explore the `train` object
+
+.pull-left4[
+
+The final model is stored in `.$finalModel`
+
+```{r, echo = TRUE, out.width = "90%", eval = TRUE, warning = FALSE}
+# Show the final model
+glm_train$finalModel
+```
+
+]
 
 
+.pull-right55[
+
+See all of the named objects with `names()`
+
+```{r, fig.align = 'center', fig.height = 6}
+names(glm_train)
+```
+
+]
+
+
+.pull-left5[
+
+# Feature importance
+
+Regardless of the model you use, you will often want to know <high>which features are important</high> in predicting the criterion.
+
+Often displayed on a *relative* scale from 0 to 100
+
+Every model has their own definition of importance (see [the caret documentation](http://topepo.github.io/caret/variable-importance.html) for details).
+
+Different models can give you different importance rankings (ML is fun!)
+
+```{r, echo = FALSE, out.width = "40%"}
+knitr::include_graphics("http://worldartsme.com/images/scale-clipart-1.jpg")
+```
+
+
+]
+
+.pull-right45[
+
+### Variable importance plot
+
+Here's an example variable importance plot from R
+
+```{r, echo = FALSE, out.width = "100%"}
+knitr::include_graphics("http://mgel2011-kvm.env.duke.edu/mget/files/2012/07/RandomForestImportance.png")
+```
+
+]
+
+---
+
+.pull-left5[
+
+# `varImp()`
+
+
+Use `varImp()` to extract <high>variable importance</high> from a model
+
+
+```{r}
+# Get veriable importance from glm_train
+varImp(glm_train)
+```    
+    
+  
+]
+
+.pull-right45[
+<br><br><br>
+You can also plot the results using `plot()`
+
+```{r, fig.width = 3, fig.height = 5, out.width = "50%"}
+# Plot variable importance
+
+plot(varImp(glm_train))
+```
+
+
+]
 
 
 ---
 
+.pull-left5[
 
-# Practical
+## `predict()`
 
-<font size=6><b><a href="https://therbootcamp.github.io/Intro2DataScience_2018Oct/_sessions/Plotting/Plotting_practical.html">Link to practical</a>
+The `predict()` function is a generic function in R for returning predictions from a model.
+
+Put your model object as the first argument. If you don't specify a new dataset with `newdata`, the function returns *fitted values from training*
 
 
+```{r}
+# Get fitted values
+glm_fits <- predict(object = glm_train)
+```
+
+The result is a vector
+
+```{r}
+# Result is a vector of fits
+glm_fits[1:5]
+```
+
+You can use this vector to compare the model fits to the true values (see plot to right)
+
+]
+
+.pull-right45[
+
+### Plot of fits versus Truth
+
+If the model was perfect, all points would be on diagonal
+
+*Code Hidden*
+
+
+```{r, fig.width = 4, fig.height = 3, fig.align = 'center', echo = FALSE}
+# Plot fits versus truth
+tibble(fits = glm_fits,
+       truth = cars$Price) %>%
+ggplot(aes(x = fits, y = truth)) + 
+  geom_abline(slope = 1, intercept = 0) +
+  geom_point(alpha = .1) +
+  theme_bw()
+```
+
+
+]
+
+---
+
+.pull-left5[
+
+## `postResample()`
+
+To calculate aggregate model performance, use `postResample()`
+
+```{r}
+# Assess performance with postResample()
+
+postResample(pred = glm_fits,   # Predictions 
+             obs = cars$Price)  # True values
+```
+
+```{r, echo = FALSE, eval = TRUE}
+x <- postResample(pred = glm_fits, 
+             obs = cars$Price)
+```
+
+Here, this tells us that the Mean Absolute Error (MAE) of the model in fitting was `r round(x[3], 2)`
+
+]
+
+.pull-right45[
+
+### Plot of fits versus Truth
+
+Red lines indicate absolute error(s)
+
+*Code Hidden*
+
+```{r, fig.width = 4, fig.height = 3, fig.align = 'center', echo = FALSE}
+tibble(fits = glm_fits,
+       truth = cars$Price) %>%
+ggplot(aes(x = fits, y = truth)) + 
+    geom_point(alpha = .2) +
+geom_linerange(aes(x = fits, ymin = fits, ymax = truth), col = "red") +
+  geom_abline(slope = 1, intercept = 0) +
+  theme_bw()
+```
+
+]
+
+---
+
+class: middle, center
+
+<h1><a href=https://therbootcamp.github.io/appliedML_2019Jan/_sessions/Fitting/Fitting_practical.html>Practical</a></h1>
 
 
 
