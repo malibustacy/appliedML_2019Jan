@@ -107,7 +107,7 @@ knitr::include_graphics("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS
 
 ### Predicting Heart Attacks
 
-You are a intake nurse at an emergency room.
+You are an intake nurse at an emergency room.
 
 A patient comes in complaining of chest pain and thinks they are having a heart attack
 
