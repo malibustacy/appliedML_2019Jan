@@ -852,7 +852,6 @@ glm_train$finalModel
 
 ]
 
-
 .pull-right55[
 
 See all of the named objects with `names()`
@@ -863,6 +862,7 @@ names(glm_train)
 
 ]
 
+---
 
 .pull-left5[
 
