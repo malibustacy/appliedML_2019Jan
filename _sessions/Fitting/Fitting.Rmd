@@ -682,14 +682,11 @@ knitr::include_graphics("image/tree_crowd.png")
 ]
 
 ---
-
-
----
 class: center,  middle
 
 <br><br>
 
-# How to fit models with caret!
+# Let's fit models with caret!
 
 ```{r, echo = FALSE, out.width = "70%"}
 knitr::include_graphics("https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/09/Caret-package-in-R.png")
@@ -765,7 +762,7 @@ ctrl <- trainControl(method = "none")
 
 ---
 
-# `train`
+# `train()`
 
 .pull-left6[
 
@@ -902,7 +899,7 @@ knitr::include_graphics("http://mgel2011-kvm.env.duke.edu/mget/files/2012/07/Ran
 
 .pull-left5[
 
-# `varImp()`
+## `varImp()`
 
 
 Use `varImp()` to extract <high>variable importance</high> from a model
