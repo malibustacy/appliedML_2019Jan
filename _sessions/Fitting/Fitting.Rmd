@@ -720,7 +720,7 @@ Here are the <high>main functions</high> we will cover from the `caret` package.
 
 The `caret` package has some of the *best* documentation (vignettes) you'll ever see...
 
-<iframe src="https://therbootcamp.github.io/appliedML_2019Jan/_sessions/Fitting/Fitting_practical.html" height="480px" width = "500px"></iframe>
+<iframe src="http://topepo.github.io/caret/variable-importance.html" height="480px" width = "500px"></iframe>
 
 ]
 
@@ -762,9 +762,11 @@ ctrl <- trainControl(method = "none")
 
 ---
 
-# `train()`
 
 .pull-left6[
+
+## `train()`
+
 
 Use `train()` to <high>fit</high> 280+ models using <high>optimal parameters</high>.
 
@@ -791,18 +793,20 @@ glm_train <- train(form = Price ~ .,
 
 Find all 280+ models [here](http://topepo.github.io/caret/available-models.html)
 
-<p align="center">
-  <img src="caret_models.jpg" height="350px">
-</p>
+```{r, echo = FALSE}
+knitr::include_graphics("image/caret_models_ss.jpg")
+```
 
 
 ]
 
 ---
 
-# `train()`
 
 .pull-left6[
+
+## `train()`
+
 
 <high>Classification tasks</high> require the <high>criterion to be factor</high>, while regression tasks require it to be numeric.
 
@@ -829,11 +833,15 @@ class_mod <- train(form = factor(Saab) ~ .,
 
 .pull-right35[
 
+
 Find all 280+ models [here](http://topepo.github.io/caret/available-models.html)
 
-<p align="center">
-  <img src="caret_models.jpg" height="350px">
-</p>
+
+```{r, echo = FALSE}
+knitr::include_graphics("image/caret_models_ss.jpg")
+```
+
+
 
 ]
 

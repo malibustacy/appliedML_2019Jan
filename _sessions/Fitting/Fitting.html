@@ -588,7 +588,7 @@ Here are the &lt;high&gt;main functions&lt;/high&gt; we will cover from the `car
 
 The `caret` package has some of the *best* documentation (vignettes) you'll ever see...
 
-&lt;iframe src="https://therbootcamp.github.io/appliedML_2019Jan/_sessions/Fitting/Fitting_practical.html" height="480px" width = "500px"&gt;&lt;/iframe&gt;
+&lt;iframe src="http://topepo.github.io/caret/variable-importance.html" height="480px" width = "500px"&gt;&lt;/iframe&gt;
 
 ]
 
@@ -631,9 +631,11 @@ ctrl &lt;- trainControl(method = "none")
 
 ---
 
-# `train()`
 
 .pull-left6[
+
+## `train()`
+
 
 Use `train()` to &lt;high&gt;fit&lt;/high&gt; 280+ models using &lt;high&gt;optimal parameters&lt;/high&gt;.
 
@@ -661,18 +663,18 @@ glm_train &lt;- train(form = Price ~ .,
 
 Find all 280+ models [here](http://topepo.github.io/caret/available-models.html)
 
-&lt;p align="center"&gt;
-  &lt;img src="caret_models.jpg" height="350px"&gt;
-&lt;/p&gt;
+&lt;img src="image/caret_models_ss.jpg" width="362" style="display: block; margin: auto;" /&gt;
 
 
 ]
 
 ---
 
-# `train()`
 
 .pull-left6[
+
+## `train()`
+
 
 &lt;high&gt;Classification tasks&lt;/high&gt; require the &lt;high&gt;criterion to be factor&lt;/high&gt;, while regression tasks require it to be numeric.
 
@@ -701,11 +703,13 @@ class_mod &lt;- train(form = factor(Saab) ~ .,
 
 .pull-right35[
 
+
 Find all 280+ models [here](http://topepo.github.io/caret/available-models.html)
 
-&lt;p align="center"&gt;
-  &lt;img src="caret_models.jpg" height="350px"&gt;
-&lt;/p&gt;
+
+&lt;img src="image/caret_models_ss.jpg" width="362" style="display: block; margin: auto;" /&gt;
+
+
 
 ]
 
@@ -741,7 +745,6 @@ Residual Deviance: 6.66e+09 	AIC: 15100
 ```
 
 ]
-
 
 .pull-right55[
 
@@ -840,7 +843,7 @@ You can also plot the results using `plot()`
 plot(varImp(glm_train))
 ```
 
-&lt;img src="Fitting_files/figure-html/unnamed-chunk-31-1.png" width="50%" style="display: block; margin: auto;" /&gt;
+&lt;img src="Fitting_files/figure-html/unnamed-chunk-33-1.png" width="50%" style="display: block; margin: auto;" /&gt;
 
 
 ]
@@ -889,7 +892,7 @@ If the model was perfect, all points would be on diagonal
 *Code Hidden*
 
 
-&lt;img src="Fitting_files/figure-html/unnamed-chunk-34-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="Fitting_files/figure-html/unnamed-chunk-36-1.png" style="display: block; margin: auto;" /&gt;
 
 
 ]
@@ -929,7 +932,7 @@ Red lines indicate absolute error(s)
 
 *Code Hidden*
 
-&lt;img src="Fitting_files/figure-html/unnamed-chunk-37-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="Fitting_files/figure-html/unnamed-chunk-39-1.png" style="display: block; margin: auto;" /&gt;
 
 ]
 
