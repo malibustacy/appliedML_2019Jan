@@ -808,7 +808,7 @@ knitr::include_graphics("image/caret_models_ss.jpg")
 ## `train()`
 
 
-<high>Classification tasks</high> require the <high>criterion to be factor</high>, while regression tasks require it to be numeric.
+<high>Classification tasks</high> require the <high>criterion to be a factor</high>, while regression tasks require it to be numeric.
 
 
 ```{r, eval = FALSE}
