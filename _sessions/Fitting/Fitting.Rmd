@@ -26,7 +26,7 @@ layout: true
 
 ```{r, eval = TRUE, echo = FALSE, warning=F,message=F}
 # Code to knit slides
-baselers <- readr::read_csv("../_data/baselers.csv")
+baselers <- readr::read_csv("../Data//1_Data/baselers.csv")
 
 ```
 
@@ -92,7 +92,7 @@ There are many types of of ML tasks.
 
 In this course, we will focus on 2 of the most popular
 
-|Model|Description | Example |
+|Type|Description | Example |
 |:----|:---- |:----|
 |<high>Regression</high> (supervised)|Predicting a number|Stock prices|
 |<high>Classification</high> (supervised)|Predicting a category, like whether|Whether someone will purchase a product or not|
@@ -730,7 +730,7 @@ The `caret` package has some of the *best* documentation (vignettes) you'll ever
 
 ## trainControl()
 
-Use `trainControl()` to define how `carat` should <high>select the best parameters</high> for a ML model.
+Use `trainControl()` to define how `caret` should <high>select the best parameters</high> for an ML model.
 
 Here you can tell caret to do things like repeated <high>cross validation</high>. Many other methods are available via the `method` argument (see `?trainControl`)
 
@@ -808,7 +808,7 @@ knitr::include_graphics("image/caret_models_ss.jpg")
 ## `train()`
 
 
-<high>Classification tasks</high> require the <high>criterion to be factor</high>, while regression tasks require it to be numeric.
+<high>Classification tasks</high> require the <high>criterion to be a factor</high>, while regression tasks require it to be numeric.
 
 
 ```{r, eval = FALSE}
@@ -840,7 +840,6 @@ Find all 280+ models [here](http://topepo.github.io/caret/available-models.html)
 ```{r, echo = FALSE}
 knitr::include_graphics("image/caret_models_ss.jpg")
 ```
-
 
 
 ]

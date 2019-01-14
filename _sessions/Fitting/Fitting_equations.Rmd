@@ -7,4 +7,4 @@ output: html_document
 
 
 
-$$MSE = \frac{1}{n}\sum_{t=1}^{n}(obs - Y)^{2}$$
+$$\large MSE = \frac{1}{n}\sum_{t=1}^{n}(obs - Y)^{2}$$

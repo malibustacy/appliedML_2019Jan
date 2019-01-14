@@ -125,10 +125,10 @@ It's slow, but...
 
 .pull-left55[
 
-The &lt;high&gt;C&lt;/high&gt;lassification &lt;high&gt;A&lt;/high&gt;nd &lt;high&gt;RE&lt;/high&gt;gression &lt;high&gt;T&lt;/high&gt;raining package is a meta-package to streamline the applicaton of R's best machine learning tools.  
+The &lt;high&gt;C&lt;/high&gt;lassification &lt;high&gt;A&lt;/high&gt;nd &lt;high&gt;RE&lt;/high&gt;gression &lt;high&gt;T&lt;/high&gt;raining package is a meta-package to streamline the application of R's best machine learning tools.  
 
 `caret` facilitates...&lt;br&gt;&lt;br&gt;
-&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;1) &lt;high&gt;data preprocessing&lt;/high&gt;&lt;br&gt;&lt;br&gt;
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;1) &lt;high&gt;data pre-processing&lt;/high&gt;&lt;br&gt;&lt;br&gt;
 &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;2) &lt;high&gt;feature selection&lt;/high&gt;&lt;br&gt;&lt;br&gt;
 &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;3) &lt;high&gt;fitting, tuning, &amp; model prediction&lt;/high&gt;&lt;br&gt;&lt;br&gt;
 
@@ -451,7 +451,7 @@ print(baselers)
 ```
 ## # A tibble: 10,000 x 20
 ##       id sex     age height weight income
-##    &lt;int&gt; &lt;chr&gt; &lt;int&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;
+##    &lt;dbl&gt; &lt;chr&gt; &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;
 ##  1     1 male     44   174.  113.    6300
 ##  2     2 male     65   180.   75.2  10900
 ##  3     3 fema…    31   168.   55.5   5100
@@ -462,8 +462,7 @@ print(baselers)
 ##  8     8 fema…    41   156.   67.8   7600
 ##  9     9 male     43   176.   69.3   8500
 ## 10    10 fema…    31   166.   66.3   6100
-## # ... with 9,990 more rows, and 14 more
-## #   variables
+## # … with 9,990 more rows, and 14 more variables
 ```
 ]
 
@@ -650,7 +649,7 @@ my_lm &lt;- lm(formula = income ~ .,
             data = baselers)
 ```
 
-&lt;high&gt;Substract variables&lt;/high&gt; using `-`
+&lt;high&gt;Subtract variables&lt;/high&gt; using `-`
 
 
 ```r
@@ -875,23 +874,12 @@ if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
   d.head.appendChild(s);
 })();</script>
 
-<script>
-(function() {
-  var i, text, code, codes = document.getElementsByTagName('code');
-  for (i = 0; i < codes.length;) {
-    code = codes[i];
-    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
-      text = code.textContent;
-      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
-          /^\$\$(.|\s)+\$\$$/.test(text) ||
-          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
-        code.outerHTML = code.innerHTML;  // remove <code></code>
-        continue;
-      }
-    }
-    i++;
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  tex2jax: {
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre']
   }
-})();
+});
 </script>
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>
