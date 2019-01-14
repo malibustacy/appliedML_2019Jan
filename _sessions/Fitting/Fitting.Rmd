@@ -842,7 +842,6 @@ knitr::include_graphics("image/caret_models_ss.jpg")
 ```
 
 
-
 ]
 
 ---

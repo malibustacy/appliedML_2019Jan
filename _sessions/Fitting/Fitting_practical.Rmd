@@ -1,5 +1,6 @@
 ---
 title: "Fitting"
+subtitle: "Parameter estimation and fitting statistics with regression"
 author: "Applied Machine Learning with R<br/><a href='https://therbootcamp.github.io'>www.therbootcamp.com</a><br/><a href='https://twitter.com/therbootcamp'>@therbootcamp</a>"
 output:
   html_document:
@@ -27,20 +28,19 @@ knitr::include_graphics("https://upload.wikimedia.org/wikipedia/commons/thumb/3/
 
 ### Overview
 
-In this practical you'll practice the basics of fitting three different machine learning models in R
+In this practical you'll practice the basics of fitting and exploring regression models in R.
 
 By the end of this practical you will know how to:
 
-1. Fit regression, decision trees, and random forests to training data.
-2. Explore each object with generic functions.
-3. Evaluate a model's fitting performance.
-4. Compare different models fitting performance.
+1. Fit regression to training data.
+2. Explore your object with generic functions.
+3. Evaluate its fitting performance using accuracy measures such as MSE and MAE.
+4. Explore the effects of adding additional features.
 
 ### Datasets
 
 ```{r, eval = TRUE, message = FALSE, echo = FALSE}
 library(tidyverse)
-library(plotly)
 library(ggthemes)
 ```
 
