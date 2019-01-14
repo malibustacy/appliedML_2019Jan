@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Intro to R</title>
+    <title>R for ML</title>
     <meta charset="utf-8">
     <meta name="author" content="Applied Machine Learning with R www.therbootcamp.com @therbootcamp" />
     <link href="libs/remark-css/default.css" rel="stylesheet" />
@@ -11,7 +11,7 @@
     <textarea id="source">
 class: center, middle, inverse, title-slide
 
-# Intro to R
+# R for ML
 ### Applied Machine Learning with R<br/><a href='https://therbootcamp.github.io'>www.therbootcamp.com</a><br/><a href='https://twitter.com/therbootcamp'><span class="citation">@therbootcamp</span></a>
 ### January 2019
 
@@ -112,18 +112,44 @@ It's slow, but...
 
 
 ---
-&lt;div class="center_text"&gt;
-  &lt;span&gt;
-  The 2&lt;sup&gt;4&lt;/sup&gt; R Basics for Machine Learning
-  &lt;/span&gt;
-&lt;/div&gt; 
-
----
 
 # R is great for ML
 
-dwefwe
+...because of high-performance R packages (extensions) downloaded and used millions of times.
 
+&lt;p align="center"&gt;&lt;img src="image/ml_package_dl.png" width="620"&gt;&lt;/p&gt;
+
+---
+
+# `caret`
+
+.pull-left55[
+
+The &lt;high&gt;C&lt;/high&gt;lassification &lt;high&gt;A&lt;/high&gt;nd &lt;high&gt;RE&lt;/high&gt;gression &lt;high&gt;T&lt;/high&gt;raining package is a meta-package to streamline the applicaton of R's best machine learning tools.  
+
+`caret` facilitates...&lt;br&gt;&lt;br&gt;
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;1) &lt;high&gt;data preprocessing&lt;/high&gt;&lt;br&gt;&lt;br&gt;
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;2) &lt;high&gt;feature selection&lt;/high&gt;&lt;br&gt;&lt;br&gt;
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;3) &lt;high&gt;fitting, tuning, &amp; model prediction&lt;/high&gt;&lt;br&gt;&lt;br&gt;
+
+Includes dozens of algorithms/models including...
+
+&lt;high&gt;regression&lt;/high&gt;, &lt;high&gt;decision trees&lt;/high&gt;, &lt;high&gt;random forests&lt;/high&gt;, neural nets, AdaBoost, elastic nets, lasso &amp; ridge regression, support vector machines, etc.
+
+]
+
+.pull-right4[
+&lt;p align="center"&gt;&lt;img src="image/caret.png"&gt;&lt;/p&gt;
+&lt;p align="center"&gt;&lt;img src="image/caret.png"&gt;&lt;/p&gt;
+&lt;p align="center"&gt;&lt;img src="image/caret.png"&gt;&lt;/p&gt;
+]
+---
+
+&lt;div class="center_text"&gt;
+  &lt;span&gt;
+  The 2&lt;sup&gt;4&lt;/sup&gt; 10 basic R lessons
+  &lt;/span&gt;
+&lt;/div&gt; 
 
 ---
 
@@ -131,13 +157,13 @@ dwefwe
 
 .pull-left4[
 1. Everything is an object
-2. `&lt;-` creates/changes objects
+2. &lt;mono&gt;&lt;-&lt;/mono&gt; creates/changes objects
 3. Everything happens through functions
 4. Functions have (default) arguments
-5. View help files using `?`
-6. 3 object types
-7. Data lives in data frames
-8. 4 data types
+5. Find help with &lt;mono&gt;?&lt;/mono&gt;
+6. Data lives in data frames
+7. 3 data types + factors
+8. `formula` and `data` specify a model 
 9. Use RStudio and projects
 10. Use editor, shortcuts, auto-complete
 ]
@@ -148,13 +174,13 @@ dwefwe
 
 .pull-left4[
 1. &lt;high&gt;Everything is an object&lt;/high&gt;
-2. &lt;high&gt;`&lt;-` creates/changes objects&lt;/high&gt;
+2. &lt;high&gt;&lt;mono&gt;&lt;-&lt;/mono&gt; creates/changes objects&lt;/high&gt;
 3. Everything happens through functions
 4. Functions have (default) arguments
-5. View help files using `?`
-6. 3 object types
-7. Data lives in data frames
-8. 4 data types
+5. Find help with &lt;mono&gt;?&lt;/mono&gt;
+6. Data lives in data frames
+7. 3 data types + factors
+8. `formula` and `data` specify a model 
 9. Use RStudio and projects
 10. Use editor, shortcuts, auto-complete
 ]
@@ -202,13 +228,13 @@ some_name
 
 .pull-left4[
 1. Everything is an object
-2. `&lt;-` creates/changes objects
+2. &lt;mono&gt;&lt;-&lt;/mono&gt; creates/changes objects
 3. &lt;high&gt;Everything happens through functions&lt;/high&gt;
 4. Functions have (default) arguments
-5. View help files using `?`
-6. 3 object types
-7. Data lives in data frames
-8. 4 data types
+5. Find help with &lt;mono&gt;?&lt;/mono&gt;
+6. Data lives in data frames
+7. 3 data types + factors
+8. `formula` and `data` specify a model 
 9. Use RStudio and projects
 10. Use editor, shortcuts, auto-complete
 ]
@@ -252,13 +278,13 @@ mean(some_name)
 
 .pull-left4[
 1. Everything is an object
-2. `&lt;-` creates/changes objects
+2. &lt;mono&gt;&lt;-&lt;/mono&gt; creates/changes objects
 3. Everything happens through functions
 4. &lt;high&gt;Functions have (default) arguments&lt;/high&gt;
-5. View help files using `?`
-6. 3 object types
-7. Data lives in data frames
-8. 4 data types
+5. Find help with &lt;mono&gt;?&lt;/mono&gt;
+6. Data lives in data frames
+7. 3 data types + factors
+8. `formula` and `data` specify a model 
 9. Use RStudio and projects
 10. Use editor, shortcuts, auto-complete
 ]
@@ -308,13 +334,13 @@ mean(x = c(1, 2, 3, NA), na.rm = TRUE)
 
 .pull-left4[
 1. Everything is an object
-2. `&lt;-` creates/changes objects
+2. &lt;mono&gt;&lt;-&lt;/mono&gt; creates/changes objects
 3. Everything happens through functions
 4. Functions have (default) arguments
-5. &lt;high&gt;View help files using `?`&lt;/high&gt;
-6. 3 object types
-7. Data lives in data frames
-8. 4 data types
+5. &lt;high&gt;Find help with &lt;mono&gt;?&lt;/mono&gt;&lt;/high&gt;
+6. Data lives in data frames
+7. 3 data types + factors
+8. `formula` and `data` specify a model 
 9. Use RStudio and projects
 10. Use editor, shortcuts, auto-complete
 ]
@@ -333,13 +359,13 @@ mean(x = c(1, 2, 3, NA), na.rm = TRUE)
 
 .pull-left4[
 1. Everything is an object
-2. `&lt;-` creates/changes objects
+2. &lt;mono&gt;&lt;-&lt;/mono&gt; creates/changes objects
 3. Everything happens through functions
 4. Functions have (default) arguments
-5. &lt;high&gt;View help files using `?`&lt;/high&gt;
-6. 3 object types
-7. Data lives in data frames
-8. 4 data types
+5. &lt;high&gt;Find help with &lt;mono&gt;?&lt;/mono&gt;&lt;/high&gt;
+6. Data lives in data frames
+7. 3 data types + factors
+8. `formula` and `data` specify a model 
 9. Use RStudio and projects
 10. Use editor, shortcuts, auto-complete
 ]
@@ -358,13 +384,13 @@ mean(x = c(1, 2, 3, NA), na.rm = TRUE)
 
 .pull-left4[
 1. Everything is an object
-2. `&lt;-` creates/changes objects
+2. &lt;mono&gt;&lt;-&lt;/mono&gt; creates/changes objects
 3. Everything happens through functions
 4. Functions have (default) arguments
-5. View help files using `?`
-6. &lt;high&gt;3 object types&lt;high&gt;
-7. Data lives in data frames
-8. 4 data types
+5. Find help with &lt;mono&gt;?&lt;/mono&gt;
+6. &lt;high&gt;Data lives in data frames&lt;/high&gt;
+7. 3 data types + factors
+8. `formula` and `data` specify a model 
 9. Use RStudio and projects
 10. Use editor, shortcuts, auto-complete
 ]
@@ -379,13 +405,36 @@ mean(x = c(1, 2, 3, NA), na.rm = TRUE)
 
 .pull-left4[
 1. Everything is an object
-2. `&lt;-` creates/changes objects
+2. &lt;mono&gt;&lt;-&lt;/mono&gt; creates/changes objects
 3. Everything happens through functions
 4. Functions have (default) arguments
-5. View help files using `?`&lt;/high&gt;
-6. 3 object types
-7. &lt;high&gt;Data lives in data frames&lt;/high&gt;
-8. 4 data types
+5. Find help with &lt;mono&gt;?&lt;/mono&gt;
+6. Data lives in data frames
+7. &lt;high&gt;3 data types + factors&lt;/high&gt;
+8. `formula` and `data` specify a model 
+9. Use RStudio and projects
+10. Use editor, shortcuts, auto-complete
+]
+
+
+.pull-right5[
+&lt;img src="https://raw.githubusercontent.com/therbootcamp/therbootcamp.github.io/master/_sessions/_image/vector_types.png"&gt;&lt;/img&gt;
+]
+
+
+---
+
+# Essentials: 10 basic R lessons 
+
+.pull-left4[
+1. Everything is an object
+2. &lt;mono&gt;&lt;-&lt;/mono&gt; creates/changes objects
+3. Everything happens through functions
+4. Functions have (default) arguments
+5. Find help with &lt;mono&gt;?&lt;/mono&gt;
+6. Data lives in data frames
+7. &lt;high&gt;3 data types + factors&lt;/high&gt;
+8. `formula` and `data` specify a model 
 9. Use RStudio and projects
 10. Use editor, shortcuts, auto-complete
 ]
@@ -424,13 +473,13 @@ print(baselers)
 
 .pull-left4[
 1. Everything is an object
-2. `&lt;-` creates/changes objects
+2. &lt;mono&gt;&lt;-&lt;/mono&gt; creates/changes objects
 3. Everything happens through functions
 4. Functions have (default) arguments
-5. View help files using `?`&lt;/high&gt;
-6. 3 object types
-7. &lt;high&gt;Data lives in data frames&lt;/high&gt;
-8. 4 data types
+5. Find help with &lt;mono&gt;?&lt;/mono&gt;
+6. Data lives in data frames
+7. &lt;high&gt;3 data types + factors&lt;/high&gt;
+8. `formula` and `data` specify a model 
 9. Use RStudio and projects
 10. Use editor, shortcuts, auto-complete
 ]
@@ -480,13 +529,151 @@ baselers[[2]]
 
 .pull-left4[
 1. Everything is an object
-2. `&lt;-` creates/changes objects
+2. &lt;mono&gt;&lt;-&lt;/mono&gt; creates/changes objects
 3. Everything happens through functions
 4. Functions have (default) arguments
-5. View help files using `?`&lt;/high&gt;
-6. 3 object types
-7. Data lives in data frames
-8. 4 data types
+5. Find help with &lt;mono&gt;?&lt;/mono&gt;
+6. Data lives in data frames
+7. &lt;high&gt;3 data types + factors&lt;/high&gt;
+8. `formula` and `data` specify a model 
+9. Use RStudio and projects
+10. Use editor, shortcuts, auto-complete
+]
+
+
+.pull-right5[
+
+
+
+```r
+# original sex vector
+baselers$sex
+```
+
+```
+## [1] "male"   "male"   "female" "male"   "male"  
+## [6] "male"  
+##  [ reached getOption("max.print") -- omitted 9994 entries ]
+```
+
+```r
+# original sex vector
+as.factor(baselers$sex)
+```
+
+```
+## [1] male   male   female male   male   male  
+##  [ reached getOption("max.print") -- omitted 9994 entries ]
+## Levels: female male
+```
+
+```r
+# original sex vector
+as.factor(baselers$weight)
+```
+
+```
+## [1] 113.4 75.2  55.5  93.8  &lt;NA&gt;  67.4 
+##  [ reached getOption("max.print") -- omitted 9994 entries ]
+## 719 Levels: 37.9 38.3 39.2 39.6 40.3 ... 125.4
+```
+
+
+]
+
+---
+
+# Essentials: 10 basic R lessons 
+
+.pull-left4[
+1. Everything is an object
+2. &lt;mono&gt;&lt;-&lt;/mono&gt; creates/changes objects
+3. Everything happens through functions
+4. Functions have (default) arguments
+5. Find help with &lt;mono&gt;?&lt;/mono&gt;
+6. Data lives in data frames
+7. 3 data types + factors
+8. &lt;high&gt;&lt;mono&gt;formula&lt;/mono&gt; and &lt;mono&gt;data&lt;/mono&gt; specify a model&lt;/high&gt;
+9. Use RStudio and projects
+10. Use editor, shortcuts, auto-complete
+]
+
+
+
+.pull-right5[
+
+
+```r
+# Run a regression and store result in my_lm
+my_lm &lt;- lm(formula = income ~ age + height,
+            data = baselers)
+```
+&lt;br&gt;
+&lt;img src="https://raw.githubusercontent.com/therbootcamp/Erfurt_2018June/master/_sessions/_image/formula_description.png"&gt;&lt;/img&gt;
+]
+
+
+---
+
+# Essentials: 10 basic R lessons 
+
+.pull-left4[
+1. Everything is an object
+2. &lt;mono&gt;&lt;-&lt;/mono&gt; creates/changes objects
+3. Everything happens through functions
+4. Functions have (default) arguments
+5. Find help with &lt;mono&gt;?&lt;/mono&gt;
+6. Data lives in data frames
+7. 3 data types + factors
+8. &lt;high&gt;&lt;mono&gt;formula&lt;/mono&gt; and &lt;mono&gt;data&lt;/mono&gt; specify a model&lt;/high&gt;
+9. Use RStudio and projects
+10. Use editor, shortcuts, auto-complete
+]
+
+
+.pull-right5[
+&lt;high&gt;Add variables&lt;/high&gt; using `+` 
+
+
+```r
+# Include multiple terms with +
+my_lm &lt;- lm(formula = income ~ age + height,
+            data = baselers)
+```
+
+&lt;high&gt;Include all variables&lt;/high&gt; using `formula = y ~ .`
+
+
+```r
+# Use  y ~ . to include ALL variables
+my_lm &lt;- lm(formula = income ~ .,
+            data = baselers)
+```
+
+&lt;high&gt;Substract variables&lt;/high&gt; using `-`
+
+
+```r
+# Use  y ~ . to include ALL variables
+my_lm &lt;- lm(formula = income ~ . - id,
+            data = baselers)
+```
+
+]
+
+---
+
+# Essentials: 10 basic R lessons 
+
+.pull-left4[
+1. Everything is an object
+2. &lt;mono&gt;&lt;-&lt;/mono&gt; creates/changes objects
+3. Everything happens through functions
+4. Functions have (default) arguments
+5. Find help with &lt;mono&gt;?&lt;/mono&gt;
+6. Data lives in data frames
+7. 4 types of data
+8. `formula` and `data` specify a model 
 9. &lt;high&gt;Use RStudio and projects&lt;/high&gt;
 10. Use editor, shortcuts, auto-complete
 ]
@@ -503,13 +690,13 @@ save workspace and history &amp;#9679; set project specific options &amp;#9679; 
 
 .pull-left4[
 1. Everything is an object
-2. `&lt;-` creates/changes objects
+2. &lt;mono&gt;&lt;-&lt;/mono&gt; creates/changes objects
 3. Everything happens through functions
 4. Functions have (default) arguments
-5. View help files using `?`&lt;/high&gt;
-6. 3 object types
-7. Data lives in data frames
-8. 4 data types
+5. Find help with &lt;mono&gt;?&lt;/mono&gt;
+6. Data lives in data frames
+7. 4 types of data
+8. `formula` and `data` specify a model 
 9. &lt;high&gt;Use RStudio and projects&lt;/high&gt;
 10. Use editor, shortcuts, auto-complete
 ]
@@ -530,13 +717,13 @@ Complement projects by a &lt;high&gt;folder structure&lt;/high&gt; appropriate f
 
 .pull-left4[
 1. Everything is an object
-2. `&lt;-` creates/changes objects
+2. &lt;mono&gt;&lt;-&lt;/mono&gt; creates/changes objects
 3. Everything happens through functions
 4. Functions have (default) arguments
-5. View help files using `?`&lt;/high&gt;
-6. 3 object types
-7. Data lives in data frames
-8. 4 data types
+5. Find help with &lt;mono&gt;?&lt;/mono&gt;
+6. Data lives in data frames
+7. 4 types of data
+8. `formula` and `data` specify a model 
 9. Use RStudio and projects
 10. &lt;high&gt;Use editor, shortcuts, auto-complete&lt;/high&gt;
 ]
@@ -557,13 +744,13 @@ Shortcut to &lt;high&gt;rerun chunk&lt;/high&gt;:&lt;br&gt;&lt;br2&gt;&lt;font s
 
 .pull-left4[
 1. Everything is an object
-2. `&lt;-` creates/changes objects
+2. &lt;mono&gt;&lt;-&lt;/mono&gt; creates/changes objects
 3. Everything happens through functions
 4. Functions have (default) arguments
-5. View help files using `?`&lt;/high&gt;
-6. 3 object types
-7. Data lives in data frames
-8. 4 data types
+5. Find help with &lt;mono&gt;?&lt;/mono&gt;
+6. Data lives in data frames
+7. 4 types of data
+8. `formula` and `data` specify a model 
 9. Use RStudio and projects
 10. &lt;high&gt;Use editor, shortcuts, auto-complete&lt;/high&gt;
 ]
@@ -582,6 +769,7 @@ library(lme4)
 baselers &lt;- read_delim("baselers.txt",
                        delim = '\t')
 ```
+]
 
 ---
 
@@ -589,13 +777,13 @@ baselers &lt;- read_delim("baselers.txt",
 
 .pull-left4[
 1. Everything is an object
-2. `&lt;-` creates/changes objects
+2. &lt;mono&gt;&lt;-&lt;/mono&gt; creates/changes objects
 3. Everything happens through functions
 4. Functions have (default) arguments
-5. View help files using `?`&lt;/high&gt;
-6. 3 object types
-7. Data lives in data frames
-8. 4 data types
+5. Find help with &lt;mono&gt;?&lt;/mono&gt;&lt;/high&gt;
+6. Data lives in data frames
+7. 4 types of data
+8. `formula` and `data` specify a model 
 9. Use RStudio and projects
 10. &lt;high&gt;Use editor, shortcuts, auto-complete&lt;/high&gt;
 ]
@@ -612,13 +800,13 @@ baselers &lt;- read_delim("baselers.txt",
 
 .pull-left4[
 1. Everything is an object
-2. `&lt;-` creates/changes objects
+2. &lt;mono&gt;&lt;-&lt;/mono&gt; creates/changes objects
 3. Everything happens through functions
 4. Functions have (default) arguments
-5. View help files using `?`&lt;/high&gt;
-6. 3 object types
-7. Data lives in data frames
-8. 4 data types
+5. Find help with &lt;mono&gt;?&lt;/mono&gt;
+6. Data lives in data frames
+7. 4 types of data
+8. `formula` and `data` specify a model 
 9. Use RStudio and projects
 10. &lt;high&gt;Use editor, shortcuts, auto-complete&lt;/high&gt;
 ]
@@ -635,13 +823,13 @@ baselers &lt;- read_delim("baselers.txt",
 
 .pull-left4[
 1. Everything is an object
-2. `&lt;-` creates/changes objects
+2. &lt;mono&gt;&lt;-&lt;/mono&gt; creates/changes objects
 3. Everything happens through functions
 4. Functions have (default) arguments
-5. View help files using `?`&lt;/high&gt;
-6. 3 object types
-7. Data lives in data frames
-8. 4 data types
+5. Find help with &lt;mono&gt;?&lt;/mono&gt;
+6. Data lives in data frames
+7. 4 types of data
+8. `formula` and `data` specify a model 
 9. Use RStudio and projects
 10. &lt;high&gt;Use editor, shortcuts, auto-complete&lt;/high&gt;
 ]
@@ -651,6 +839,7 @@ baselers &lt;- read_delim("baselers.txt",
 &lt;img src="https://raw.githubusercontent.com/therbootcamp/therbootcamp.github.io/master/_sessions/_image/auto_complete_3.png"&gt;&lt;/img&gt;
 
 ]
+
 
 ---
 
@@ -663,9 +852,11 @@ baselers &lt;- read_delim("baselers.txt",
 # CHECK CHECK CHECK
 ---
 
-# Interactive session
-
-&lt;font size=6&gt;&lt;high&gt;Open up Rstudio...&lt;/high&gt;&lt;/font&gt;
+&lt;div class="center_text_2"&gt;
+  &lt;span&gt;
+  Interactive
+  &lt;/span&gt;
+&lt;/div&gt;
     </textarea>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
 <script>var slideshow = remark.create({
