@@ -107,7 +107,7 @@ knitr::include_graphics("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS
 
 ### Predicting Heart Attacks
 
-You are a intake nurse at an emergency room.
+You are an intake nurse at an emergency room.
 
 A patient comes in complaining of chest pain and thinks they are having a heart attack
 
@@ -265,7 +265,7 @@ knitr::include_graphics("https://wkdigital.com.au/wp-content/uploads/2016/06/How
 
 ### What are the benefits of ML?
 
-- Algorithms fit to your past data can tell you which variables are important an which are not.
+- Algorithms fit to your past data can tell you which variables are important and which are not.
 
 - Make explicit, quantitative predictions of variables of interest.
 
@@ -592,7 +592,7 @@ knitr::include_graphics("image/three_models.png")
 
 - Which features are most <high>important</high> in predicting the criterion and which can be safely ignored?
 - What is the <high>relationship</high> between features and the criterion?
-    - Strong? Weak? Postive? Negative?
+    - Strong? Weak? Positive? Negative?
 - Make <high>predictions</high> for new data.
     - I've got a new patient, how likely is it that (s)he is having a heart attack?
 - Improve predictions over time with new data.
@@ -619,6 +619,8 @@ knitr::include_graphics("https://github.com/therbootcamp/appliedML_2019Jan/blob/
 
 ---
 class: middle, center
+
+<h1> Questions? Comments?</h1>
 
 <h1>R you ready?</h1>
 

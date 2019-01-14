@@ -79,7 +79,7 @@ Click the "Bootcamp running" link on our homepage!
 # Aim
 
 
->###The aim of this workshop is enable you to thoughtfully use the R language to make data-driven decisions using machine learning methods.
+>###The aim of this workshop is enable you to thoughtfully implement machine learning methods, using R, to make data--driven decisions.
 
 ]
 
@@ -89,6 +89,50 @@ Click the "Bootcamp running" link on our homepage!
 <p align="center"><img src="https://raw.githubusercontent.com/therbootcamp/therbootcamp.github.io/master/_sessions/_image/target.png" height="350"></p>
 
 ]
+
+
+---
+
+
+.pull-left45[
+# Setting expectations
+
+
+<h2>What we <i>will</i> cover</h2>
+
+- Intro to the fundamentals of ML
+- Intro to using R for ML
+- Intro to common ML models
+- Opportunity to learn by doing
+- Opportunity to discuss and share knowledge.
+
+<h2>What we will <i>NOT</i> cover</h2>
+
+- In depth, advanced discussions of any of these topics.
+
+]
+
+
+.pull-right45[
+<br><br>
+
+```{r, echo = FALSE, out.width = "80%", fig.cap = "<font size = 4>blog.usejournal.com</font>"}
+knitr::include_graphics("https://cdn-images-1.medium.com/max/1200/1*zkCV5S7wgkghdp0r5DNWLw.png")
+```
+
+
+
+```{r, echo = FALSE, out.width = "80%", fig.cap = "<font size = 4>RIVS.com</font>"}
+knitr::include_graphics("https://www.rivs.com/wp-content/uploads/sites/8/2013/05/Interview-Expectations.jpg")
+```
+
+
+
+
+
+]
+
+
 
 ---
 <br><br>
@@ -112,6 +156,7 @@ We have an <high>ambitious schedule</high>!
 
 ]
 
+
 ---
 
 .pull-left45[
@@ -124,7 +169,6 @@ We have an <high>ambitious schedule</high>!
 &emsp;&emsp;2 - Code examples<br>
 &emsp;&emsp;3 - Live demonstrations<br> 
 <br><br>
-
 
 
 <high>All available online</high>. Follow along, and don't worry about memorizing
@@ -163,21 +207,22 @@ knitr::include_graphics("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR
 
 - Starts easy, gets progressively more challenging.
 
-- Struggle, work together, and ask questions!
-
 - Go at your own pace and finish as much as you can.
+
+    - We have a diverse group with different backgrounds and interests, we love that!
+
+- Be active! Ask questions!
 
 - We'll give you all the answers later.
 
 ]
 
-
 .pull-right5[
 <br>
 
-  <iframe src="https://therbootcamp.github.io/Intro2DataScience_2018Oct/_sessions/Data/Data_practical.html" height="480px" width = "500px"></iframe>
+  <iframe src="https://therbootcamp.github.io/appliedML_2019Jan/_sessions/Fitting/Fitting_practical.html" height="480px" width = "500px"></iframe>
 
-  Example:<a href="https://therbootcamp.github.io/Intro2DataScience_2018Oct/_sessions/Data/Data_practical.html"> Data practical </a>
+  Example:<a href="https://therbootcamp.github.io/appliedML_2019Jan/_sessions/Fitting/Fitting_practical.html">Fitting Practical </a>
 
 ]
 
@@ -240,11 +285,9 @@ knitr::include_graphics("https://cdn.southampton.ac.uk/assets/imported/transform
   </td>
 
 
-
   </tr>
 </table>
 <br>
-
 
 
 ---
@@ -263,7 +306,7 @@ knitr::include_graphics("https://cdn.southampton.ac.uk/assets/imported/transform
 ]
 
 .pull-right6[
-
+<br><br>
 
 ```{r, echo = FALSE, eval = FALSE, out.width = "70%", fig.cap="Famous Oat Cookies!"}
 knitr::include_graphics("https://image.migros.ch/2017-large/1106111ebe783b88f0f69e6305eb0f8cdfc35566/bio-hafercookies.jpg")

@@ -42,17 +42,17 @@ layout: true
 # Where we are at
 
 - Have a business question
-    - How can I predict heart attacks?
+    - How can I predict loan default?
 
 - Have data relevant to that question
-    - Records from 300 patients
+    - Records from 300 historical customers
 
-- Data is cleaned and in a dataframe
-    - `heartdisease.txt`
+- Data is cleaned and in a tidy, rectangular format
+    - Database, .csv,
 
 ## What's next?
 
-&lt;high&gt;Select&lt;/high&gt; and &lt;high&gt;train&lt;/high&gt; model(s)
+&lt;high&gt;Select&lt;/high&gt; and &lt;high&gt;train&lt;/high&gt; model(s) depending on the &lt;high&gt;type of task&lt;/high&gt;
 
 ]
 
@@ -63,7 +63,6 @@ layout: true
 &lt;p class="caption"&gt;Source: Medium.com&lt;/p&gt;
 &lt;/div&gt;
 
-
 ]
 
 
@@ -71,11 +70,11 @@ layout: true
 
 .pull-left45[
 
-# What types of ML tasks are there?
+# What type of task do you have?
 
-There are many types of of ML tasks
+There are many types of of ML tasks.
 
-In this course, you will learn 2 of the most popular
+In this course, we will focus on 2 of the most popular
 
 |Model|Description | Example |
 |:----|:---- |:----|
@@ -99,15 +98,315 @@ In this course, you will learn 2 of the most popular
 
 There are *thousands* of machine learning models
 
-No one could possibly know them all.
-
 In this course, you will learn 3 of the most popular:
 
-|Model|Description |
+|Model|Description|
 |:----|:---- |
 |Regression|A weighted linear combination of features and weights|
-|Decision Tree|A series of heirarchical 'yes/no' decisions|
+|Decision Tree|A series of hierarchical 'yes/no' decisions|
 |Random Forests|Combination of many decision trees|
+
+*In the Models session, you'll learn about many more!*
+
+]
+
+.pull-right5[
+
+&lt;img src="https://github.com/therbootcamp/appliedML_2019Jan/blob/master/_sessions/Fitting/image/three_models_vert.jpg?raw=true" width="100%" style="display: block; margin: auto;" /&gt;
+
+]
+
+---
+class: center, middle
+
+## Once you have a model you need to "Fit" (aka, "Train") it to data
+
+&lt;div class="figure" style="text-align: center"&gt;
+&lt;img src="image/regression_ISLR.jpg" alt="&amp;lt;font size = 4&amp;gt;James et al., Introduction to SL&amp;lt;/font&amp;gt;" width="50%" /&gt;
+&lt;p class="caption"&gt;&lt;font size = 4&gt;James et al., Introduction to SL&lt;/font&gt;&lt;/p&gt;
+&lt;/div&gt;
+
+## What does that mean?
+
+
+---
+
+
+.pull-left5[
+
+# What does "Fitting" mean?
+
+For any model class, there is no "One" single model.
+
+&gt; How many possible Regression models are there?
+
+
+Any machine learning model can be 'fit' (aka 'trained') on a specific dataset of interest.
+
+
+Fitting means finding the "best" version of a model for a specific dataset.
+
+&gt; "Let me represent the data in the best way I can given how I work"&lt;br&gt;
+&gt;~ Model during fitting
+
+
+The "best" model is usually defined as a combination of &lt;high&gt;accuracy&lt;/high&gt; (higher better!) and &lt;high&gt;complexity&lt;/high&gt; (lower better!)
+
+
+]
+
+.pull-right45[
+
+
+
+
+&lt;br&gt;&lt;br&gt;
+### How do I fit a model to these data??
+
+&lt;img src="Fitting_files/figure-html/unnamed-chunk-8-1.png" width="80%" style="display: block; margin: auto;" /&gt;
+
+
+]
+
+
+
+
+
+
+
+
+---
+
+.pull-left45[
+&lt;br&gt;&lt;br&gt;&lt;br&gt;
+# Defining Accuracy (or Error)
+
+To train (fit) a model to a dataset, we need to &lt;high&gt;mathematically define Accuracy&lt;/high&gt;
+
+Alternatively, we can define a model's &lt;high&gt;Error&lt;/high&gt;
+
+There is &lt;high&gt;no 'correct'&lt;/high&gt; definition of error, it depends on &lt;high&gt;what's important to you&lt;/high&gt; as the decision maker!
+
+Once accuracy (or error) is defined, a model can be trained to maximize (or minimize) it!
+
+The model that minimizes error (or maximizes accuracy) is the final &lt;high&gt;Training model&lt;/high&gt;
+
+]
+
+.pull-right45[
+
+&lt;br&gt;&lt;br&gt;
+### How do I fit a model to these data??
+
+&lt;img src="Fitting_files/figure-html/unnamed-chunk-10-1.png" width="80%" style="display: block; margin: auto;" /&gt;
+]
+
+---
+
+# Which of these models is better? Why?
+
+&lt;img src="Fitting_files/figure-html/unnamed-chunk-11-1.png" width="90%" style="display: block; margin: auto;" /&gt;
+
+
+---
+
+# Which of these models is better? Why?
+
+&lt;img src="Fitting_files/figure-html/unnamed-chunk-12-1.png" width="90%" style="display: block; margin: auto;" /&gt;
+
+
+
+
+---
+
+.pull-left45[
+
+# Regression Error
+
+### MAE: Mean Absolute Error
+
+`$$\large MSE = \frac{1}{n}\sum_{i=1}^{n} \lvert Prediction_{i} - Truth_{i} \rvert$$`
+
+&gt; On average, how far are predictions away from true values?
+
+### MSE: Mean Squared Error
+
+`$$\large MSE = \frac{1}{n}\sum_{i=1}^{n}(Prediction_{i} - Truth_{i})^{2}$$`
+&gt; On average, how far are predictions away from true values (squared!)?
+
+
+]
+
+.pull-right5[
+
+&lt;img src="Fitting_files/figure-html/unnamed-chunk-13-1.png" style="display: block; margin: auto;" /&gt;
+
+]
+
+
+
+
+
+
+---
+
+.pull-left45[
+
+# Classification Accuracy
+
+Classification accuracy measures all come from the &lt;high&gt; "confusion matrix"&lt;/high&gt;
+
+The confusion matrix is a cross tabulation table showing predictions versus true classes.
+
+### Confusion Matrix
+
+|    |      Y is Positive      | Y is Negative |
+|----------|:-------------:|:------:|
+| Predict &lt;br&gt;"Positive"| &lt;font color = "green"&gt;TP&lt;br&gt; True Positive&lt;/font&gt;| &lt;font color = "red"&gt;FP &lt;br&gt; False Positive&lt;/font&gt; |
+| Predict &lt;br&gt;"Negative"|    &lt;font color = "red"&gt;FN&lt;br&gt; False Negative&lt;/font&gt;   |  &lt;font color = "green"&gt;TN &lt;br&gt; True Negative&lt;/font&gt;|
+
+Green cells are &lt;font color = "green"&gt;correct decisions&lt;/font&gt; while Red cells are &lt;font color = "red"&gt;incorrect decisions&lt;/font&gt;
+
+
+]
+
+.pull-right5[
+
+### Data
+
+||X1|X2|X3|Prediction|Truth|Outcome|
+|:---|:----|:----|:----|:----|:----|:----|
+|1|.|.|.|"Default"|Default|&lt;font color = "green"&gt;TP&lt;/font&gt;|
+|2|.|.|.|"Default"|Default|&lt;font color = "green"&gt;TP&lt;/font&gt;|
+|3|.|.|.|"Repay"|Repay|&lt;font color = "green"&gt;TN&lt;/font&gt;|
+|4|.|.|.|"Default"|Repay|&lt;font color = "red"&gt;FP&lt;/font&gt;|
+|5|.|.|.|"Repay"|Default|&lt;font color = "red"&gt;FN&lt;/font&gt;|
+|6|.|.|.|"Default"|Default|&lt;font color = "green"&gt;TP&lt;/font&gt;|
+|7|.|.|.|"Repay"|Repay|&lt;font color = "green"&gt;TN&lt;/font&gt;|
+
+### Confusion Matrix
+
+|    |      True Default      | True Repay  |
+|----------|:-------------:|:------:|
+| Predict &lt;br&gt;"Default"| &lt;font color = "green"&gt;3&lt;/font&gt;| &lt;font color = "red"&gt;1 &lt;/font&gt; |
+| Predict &lt;br&gt;"Repay"|    &lt;font color = "red"&gt;1&lt;/font&gt;   |  &lt;font color = "green"&gt; 2&lt;/font&gt;|
+
+]
+
+---
+
+.pull-left45[
+
+# Classification Accuracy
+
+Classification accuracy measures all come from the &lt;high&gt; "confusion matrix"&lt;/high&gt;
+
+The confusion matrix is a cross tabulation table showing predictions versus true classes.
+
+### Confusion Matrix
+
+|    |      Y is Positive      | Y is Negative |
+|----------|:-------------:|:------:|
+| Predict &lt;br&gt;"Positive"| &lt;font color = "green"&gt;TP&lt;br&gt; True Positive&lt;/font&gt;| &lt;font color = "red"&gt;FP &lt;br&gt; False Positive&lt;/font&gt; |
+| Predict &lt;br&gt;"Negative"|    &lt;font color = "red"&gt;FN&lt;br&gt; False Negative&lt;/font&gt;   |  &lt;font color = "green"&gt;TN &lt;br&gt; True Negative&lt;/font&gt;|
+
+Green cells are &lt;font color = "green"&gt;correct decisions&lt;/font&gt; while Red cells are &lt;font color = "red"&gt;incorrect decisions&lt;/font&gt;
+
+
+]
+
+.pull-right5[
+
+
+### Overall Accuracy
+
+&gt; What percent of my predictions are correct?
+
+`$$\large Overall \; Accuracy = \frac{TP + TN}{ TP + TN + FN + FP}$$`
+
+### Sensitivity
+
+&gt; &lt;i&gt;Of the truly Positive cases&lt;/i&gt;, what percent of predictions are correct?
+
+
+`$$\large Sensitivity = \frac{TP}{ TP +FN }$$`
+### Specificity
+
+&gt; &lt;i&gt;Of the truly Negative cases&lt;/i&gt;, what percent of predictions are correct?
+
+
+`$$\large Specificity = \frac{TN}{ TN + FP }$$`
+
+
+]
+
+
+
+---
+
+.pull-left45[
+
+# Classification Accuracy
+
+### Example: Loan default
+
+Imagine we use a model (e.g. a decision tree) to predict whether or not each of 7 customers will default on their loan.
+
+After the loan period is over, we obtain the final confusion matrix comparing our predictions to the truth:
+
+### Confusion Matrix
+
+|    |      True Default      | True Repay  |
+|----------|:-------------:|:------:|
+| Predict &lt;br&gt;"Default"| &lt;font color = "green"&gt;TP &lt;br&gt;3&lt;/font&gt;| &lt;font color = "red"&gt;FP &lt;br&gt;1 &lt;/font&gt; |
+| Predict &lt;br&gt;"Repay"|    &lt;font color = "red"&gt;FN&lt;br&gt;1&lt;/font&gt;   |  &lt;font color = "green"&gt;TN &lt;br&gt; 2&lt;/font&gt;|
+
+]
+
+.pull-right5[
+
+
+### Overall Accuracy
+
+Across all customers, our model has an accuracy of 71%
+
+`$$\large Overall \; Accuracy = \frac{3 + 2}{3 + 2 + 1 + 1} = 0.71$$`
+
+### Sensitivity
+
+Our model is 75% accurate in catching true defaults
+
+`$$\large Sensitivity = \frac{3}{3 + 4} = .75$$`
+### Specificity
+
+Our model is 67% accurate in catching true repayments
+
+
+`$$\large Specificity = \frac{2}{ 2 + 1 }= 0.67$$`
+
+
+]
+
+
+---
+
+.pull-left45[
+
+# Ready to fit!
+
+Now we're ready to fit models to data!
+
+We will cover three commonly used models, Regression, Decision Trees, and Random Forest
+
+These models can be used in both regression and classification tasks.
+
+As you'll see, they differ in complexity (interpretability, computational demands)
+
+|Model|Complexity|
+|:----|:---- |
+|Regression|&lt;font color = "orange"&gt;Medium&lt;/font&gt;|
+|Decision Tree|&lt;font color = "green"&gt;Low&lt;/font&gt; (usually)|
+|Random Forests|&lt;font color = "red"&gt;High&lt;/font&gt;|
 
 ]
 
@@ -119,23 +418,213 @@ In this course, you will learn 3 of the most popular:
 
 ---
 
-.pull-left6[
+.pull-left4[
 
-# Fitting model parameters
+# Regression
 
-Every model has *parameters* that can be *fit* (aka adapt) to data
+In [regression](https://en.wikipedia.org/wiki/Regression_analysis), the criterion Y is modeled as the &lt;high&gt;sum&lt;/high&gt; of &lt;high&gt;predictors times weights&lt;/high&gt; `\(\beta_{1}\)`, `\(\beta_{2}\)`&lt;/high&gt;.
 
-These parameters *tune* a model to specific data
+`$$\hat{Y} =  \beta_{0} + X1 \times \beta_{X1} + X2 \times \beta_{X2} + ...$$`
 
-&gt; "Let me represent the data in the best way I can given how I work"
-&gt; ~ Model during fitting
+
+&lt;div class="figure" style="text-align: center"&gt;
+&lt;img src="image/regression_ISLR.jpg" alt="&amp;lt;font size = 4&amp;gt;James et al., Introduction to SL&amp;lt;/font&amp;gt;" width="100%" /&gt;
+&lt;p class="caption"&gt;&lt;font size = 4&gt;James et al., Introduction to SL&lt;/font&gt;&lt;/p&gt;
+&lt;/div&gt;
+
+
+
+]
+
+.pull-right55[
+
+### Fitting
+
+Estimate parameters `\(\beta_{0}\)`, `\(\beta_{X1}\)`, ... that minimize error (e.g.; Mean Squared Error)
+
+`$$\large MSE = \frac{1}{n}\sum_{t=1}^{n}(obs - Y)^{2}$$`
+
+### R Method
+
+Common methods of estimating regression models:
+
+| Tuning | Description| Caret |
+|:-----|:------|:---|
+|Standard |Estimates coefficients using raw MSE| `"glm"`|
+|Ridge | 'Shrinks' coefficients *towards* 0| `"ridge"`|
+|Lasso | 'Shrinks' many coefficients down to *exactly* 0|`"lasso"`|
+
+]
+
+---
+
+.pull-left4[
+
+# Regression
+
+In [regression](https://en.wikipedia.org/wiki/Regression_analysis), the criterion Y is modeled as the &lt;high&gt;sum&lt;/high&gt; of &lt;high&gt;predictors times weights&lt;/high&gt; `\(\beta_{1}\)`, `\(\beta_{2}\)`&lt;/high&gt;.
+
+`$$\hat{Y} =  \beta_{0} + X1 \times \beta_{X1} + X2 \times \beta_{X2} + ...$$`
+&lt;div class="figure" style="text-align: center"&gt;
+&lt;img src="image/regression_ISLR.jpg" alt="&amp;lt;font size = 4&amp;gt;James et al., Introduction to SL&amp;lt;/font&amp;gt;" width="100%" /&gt;
+&lt;p class="caption"&gt;&lt;font size = 4&gt;James et al., Introduction to SL&lt;/font&gt;&lt;/p&gt;
+&lt;/div&gt;
+
+]
+
+.pull-right55[
+
+## Sales Example
+
+&lt;img src="image/Carseats_ss.jpg" width="100%" style="display: block; margin: auto;" /&gt;
+
+
+#### Regression Model
+
+`$$\large Sales =  \beta_{0} + CompPrice \times \beta_{CompPrice} + Income \times \beta_{Income} + ...$$`
+#### Example coefficients
+
+|Parameter| `\(\beta_{0}\)`| `\(\beta_{CompPrice}\)` | `\(\beta_{Income}\)` | `\(\beta_{Advertising}\)` |
+|:-----|:-----|:-----|:----|:----|
+| Estimate| 10 | 5.4 | 1.3 |2.4 |
+
+]
+
+
+---
+
+.pull-left4[
+
+# Decision Trees
+
+In [decision trees](https://en.wikipedia.org/wiki/Decision_tree), the criterion is modeled as a &lt;high&gt;sequence of logical YES or NO questions&lt;/high&gt;.
+&lt;br&gt;&lt;br&gt;
+
+&lt;p align="center"&gt;
+  &lt;img src="https://raw.githubusercontent.com/therbootcamp/therbootcamp.github.io/master/_sessions/_image/defaulttree.png" height="250px"&gt;
+&lt;/p&gt;
+
+]
+
+.pull-right55[
+
+### Fitting
+
+Goal: Maximize accuracy by define splits that maximize *Node Purity*
+
+&lt;img src="image/tree_purity_example.png" width="100%" style="display: block; margin: auto;" /&gt;
+
+### R Method
+
+| Variant | Description| Caret |
+|:-----|:------|:---|
+|rpart |Recursive Partitioning| `"rpart"`|
+
+]
+
+---
+
+.pull-left4[
+
+# Random Forest
+
+In [Random Forest](https://en.wikipedia.org/wiki/Random_forest), the criterion is models as the &lt;high&gt;aggregate prediction of a large number of decision trees&lt;/high&gt; each based on different features.
+&lt;br&gt;
+
+&lt;p align="center"&gt;
+  &lt;img src="https://raw.githubusercontent.com/therbootcamp/Erfurt_2018June/master/_sessions/_image/randomforest_diagram.png" height="285px"&gt;&lt;br&gt;
+  &lt;a href="https://medium.com/@williamkoehrsen"&gt;Source&lt;/a&gt;
+&lt;/p&gt;
+
+]
+
+.pull-right55[
+
+### Fitting
+
+Goal: Create a large set of diverse trees that can be aggregated into one *Wisdom of Crowds* judgment
+
+&lt;img src="image/tree_crowd.png" width="60%" style="display: block; margin: auto;" /&gt;
+
+### R Method
+
+| Variant | Description| Caret |
+|:-----|:------|:---|
+|Random Forests |"Classic" random forests| `"rf"`|
+
+]
+
+---
+class: center,  middle
+
+&lt;br&gt;&lt;br&gt;
+
+# Let's fit models with caret!
+
+&lt;img src="https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/09/Caret-package-in-R.png" width="70%" style="display: block; margin: auto;" /&gt;
+
+
+
+
+---
+
+.pull-left55[
+
+# `caret`
+
+Here are the &lt;high&gt;main functions&lt;/high&gt; we will cover from the `caret` package.
+
+| Function| Purpose|
+|--------|----------|
+| [trainControl()](http://topepo.github.io/caret/model-training-and-tuning.html#basic-parameter-tuning) | Determine how training (in general) will be done|
+| [train()](http://topepo.github.io/caret/model-training-and-tuning.html#model-training-and-parameter-tuning) | Specify a model and find *best* parameters|
+| [varImp()](http://topepo.github.io/caret/variable-importance.html) | Determine variable importance |
+| predict() | Predict values (either fitted values or predictions for new data)|
+| [postResample()](http://topepo.github.io/caret/measuring-performance.html) | Evaluate model performance (fitting or prediction)|
+
 ]
 
 .pull-right4[
 
+The `caret` package has some of the *best* documentation (vignettes) you'll ever see...
 
-&lt;img src="Fitting_files/figure-html/unnamed-chunk-6-1.png" style="display: block; margin: auto;" /&gt;
+&lt;iframe src="http://topepo.github.io/caret/variable-importance.html" height="480px" width = "500px"&gt;&lt;/iframe&gt;
 
+]
+
+---
+
+.pull-left55[
+
+## trainControl()
+
+Use `trainControl()` to define how `carat` should &lt;high&gt;select the best parameters&lt;/high&gt; for a ML model.
+
+Here you can tell caret to do things like repeated &lt;high&gt;cross validation&lt;/high&gt;. Many other methods are available via the `method` argument (see `?trainControl`)
+
+For now in the practical, we'll set `method = "none"` to keep things simple. This means "fit the model without advanced parameter tuning"
+
+
+```r
+# Fit the model without any 
+#  advanced parameter tuning
+
+ctrl &lt;- trainControl(method = "none")
+```
+
+
+]
+
+.pull-right4[
+
+&lt;br&gt;&lt;br&gt;&lt;br&gt;
+### Method arguments in caret
+
+|method|Description|
+|:----|:----|
+|`"repeatedcv"` | Repeated cross-validation|
+|`"LOOCV"`| Leave one out cross-validation|
+|`"none"` | Fit one model without tuning|
 
 ]
 
@@ -143,101 +632,315 @@ These parameters *tune* a model to specific data
 ---
 
 
+.pull-left6[
+
+## `train()`
 
 
+Use `train()` to &lt;high&gt;fit&lt;/high&gt; 280+ models using &lt;high&gt;optimal parameters&lt;/high&gt;.
 
 
-# Fit your own linear model!
+```r
+glm_train &lt;- train(form = Price ~ .,  
+                   data = cars,
+                   method = "glm", # Model!
+                   trControl = ctrl)
+```
 
-&lt;br&gt;
-&lt;img src="Fitting_files/figure-html/unnamed-chunk-8-1.png" width="85%" style="display: block; margin: auto;" /&gt;
 
+&lt;p align="center"&gt;&lt;u&gt;train()-function arguments&lt;/u&gt;&lt;/p&gt;
+
+|Argument|Description|
+|:-----|:----|
+|`form`|Formula specifying criterion|
+|`data`|Training data|
+|`method`| Model|
+|`trControl`| Control parameters|
+]
+
+
+.pull-right35[
+
+Find all 280+ models [here](http://topepo.github.io/caret/available-models.html)
+
+&lt;img src="image/caret_models_ss.jpg" width="362" style="display: block; margin: auto;" /&gt;
+
+
+]
 
 ---
 
-# Fit your own linear model!
-&lt;br&gt;
-&lt;img src="Fitting_files/figure-html/unnamed-chunk-9-1.png" width="85%" style="display: block; margin: auto;" /&gt;
 
+.pull-left6[
+
+## `train()`
+
+
+&lt;high&gt;Classification tasks&lt;/high&gt; require the &lt;high&gt;criterion to be factor&lt;/high&gt;, while regression tasks require it to be numeric.
+
+
+
+```r
+# Will be a regression model
+reg_mod &lt;- train(form = Saab ~ .,
+                 data = cars,
+                 method = "glm")
+```
+
+&lt;font color='red' size = 3&gt;Warning messages:...Are you sure you wanted to do regression?&lt;/font&gt;
+
+Use `factor()` to &lt;high&gt;convert your criterion&lt;/high&gt; to a factor, now you are doing classification!
+
+
+```r
+# Use factor() to specify a classification model
+class_mod &lt;- train(form = factor(Saab) ~ .,
+                   data = cars,
+                   method = "glm")
+```
+
+]
+
+.pull-right35[
+
+
+Find all 280+ models [here](http://topepo.github.io/caret/available-models.html)
+
+
+&lt;img src="image/caret_models_ss.jpg" width="362" style="display: block; margin: auto;" /&gt;
+
+
+
+]
 
 ---
 
-# Fit your own linear model!
-&lt;br&gt;
-&lt;img src="Fitting_files/figure-html/unnamed-chunk-10-1.png" width="85%" style="display: block; margin: auto;" /&gt;
-
-
-
----
+# Explore the `train` object
 
 .pull-left4[
 
-# 3 models
+The final model is stored in `.$finalModel`
 
-- Regression
-- Tree Based
-    - Decision Trees
-    - Random Forests
-- KNN
+
+```r
+# Show the final model
+glm_train$finalModel
+```
+
+```
+
+Call:  NULL
+
+Coefficients:
+(Intercept)      Mileage     Cylinder        Doors       Cruise        Sound      Leather        Buick  
+  -1124.196       -0.184     3659.454     1567.072      340.869      440.917      790.822      947.705  
+   Cadillac        Chevy      Pontiac         Saab       Saturn  convertible        coupe    hatchback  
+  13362.376     -549.206    -1399.883    12278.203           NA    11022.587           NA    -6361.960  
+      sedan        wagon  
+  -4449.358           NA  
+
+Degrees of Freedom: 803 Total (i.e. Null);  789 Residual
+Null Deviance:	    7.85e+10 
+Residual Deviance: 6.66e+09 	AIC: 15100
+```
 
 ]
 
-.pull-right6[
+.pull-right55[
+
+See all of the named objects with `names()`
+
+
+```r
+names(glm_train)
+```
+
+```
+ [1] "method"       "modelInfo"    "modelType"    "results"      "pred"         "bestTune"     "call"        
+ [8] "dots"         "metric"       "control"      "finalModel"   "preProcess"   "trainingData" "resample"    
+[15] "resampledCM"  "perfNames"    "maximize"     "yLimits"      "times"        "levels"       "terms"       
+[22] "coefnames"    "xlevels"     
+```
+
+]
+
+---
+
+.pull-left5[
+
+# Feature importance
+
+Regardless of the model you use, you will often want to know &lt;high&gt;which features are important&lt;/high&gt; in predicting the criterion.
+
+Often displayed on a *relative* scale from 0 to 100
+
+Every model has their own definition of importance (see [the caret documentation](http://topepo.github.io/caret/variable-importance.html) for details).
+
+Different models can give you different importance rankings (ML is fun!)
+
+&lt;img src="http://worldartsme.com/images/scale-clipart-1.jpg" width="40%" style="display: block; margin: auto;" /&gt;
+
+
+]
+
+.pull-right45[
+
+### Variable importance plot
+
+Here's an example variable importance plot from R
+
+&lt;img src="http://mgel2011-kvm.env.duke.edu/mget/files/2012/07/RandomForestImportance.png" width="100%" style="display: block; margin: auto;" /&gt;
+
+]
+
+---
+
+.pull-left5[
+
+## `varImp()`
+
+
+Use `varImp()` to extract &lt;high&gt;variable importance&lt;/high&gt; from a model
+
+
+
+```r
+# Get veriable importance from glm_train
+varImp(glm_train)
+```
+
+```
+glm variable importance
+
+            Overall
+Cylinder    100.000
+Saab         67.408
+Cadillac     64.991
+convertible  61.632
+Mileage      43.401
+hatchback    29.776
+sedan        28.321
+Doors        15.740
+Leather       6.471
+Pontiac       5.536
+Sound         2.340
+Buick         1.810
+Chevy         0.312
+Cruise        0.000
+```
+    
+  
+]
+
+.pull-right45[
+&lt;br&gt;&lt;br&gt;&lt;br&gt;
+You can also plot the results using `plot()`
+
+
+```r
+# Plot variable importance
+
+plot(varImp(glm_train))
+```
+
+&lt;img src="Fitting_files/figure-html/unnamed-chunk-33-1.png" width="50%" style="display: block; margin: auto;" /&gt;
+
 
 ]
 
 
 ---
 
-.pull-left4[
+.pull-left5[
 
-# Quantifying performance
+## `predict()`
 
-Regression - Mean Squared error
+The `predict()` function is a generic function in R for returning predictions from a model.
+
+Put your model object as the first argument. If you don't specify a new dataset with `newdata`, the function returns *fitted values from training*
+
+
+
+```r
+# Get fitted values
+glm_fits &lt;- predict(object = glm_train)
+```
+
+The result is a vector
+
+
+```r
+# Result is a vector of fits
+glm_fits[1:5]
+```
+
+```
+    1     2     3     4     5 
+20237 21720 35690 36149 38281 
+```
+
+You can use this vector to compare the model fits to the true values (see plot to right)
 
 ]
 
-.pull-right6[
+.pull-right45[
+
+### Plot of fits versus Truth
+
+If the model was perfect, all points would be on diagonal
+
+*Code Hidden*
+
+
+&lt;img src="Fitting_files/figure-html/unnamed-chunk-36-1.png" style="display: block; margin: auto;" /&gt;
 
 
 ]
 
 ---
 
-.pull-left4[
+.pull-left5[
 
-# Quantifying performance
+## `postResample()`
 
-Classification
+To calculate aggregate model performance, use `postResample()`
 
-- Absolute classification error
-- Balanced Accuracy
-- AUC
+
+```r
+# Assess performance with postResample()
+
+postResample(pred = glm_fits,   # Predictions 
+             obs = cars$Price)  # True values
+```
+
+```
+     RMSE  Rsquared       MAE 
+2878.9552    0.9151 2092.5427 
+```
+
+
+
+Here, this tells us that the Mean Absolute Error (MAE) of the model in fitting was 2092.54
 
 ]
 
-.pull-right6[
+.pull-right45[
+
+### Plot of fits versus Truth
+
+Red lines indicate absolute error(s)
+
+*Code Hidden*
+
+&lt;img src="Fitting_files/figure-html/unnamed-chunk-39-1.png" style="display: block; margin: auto;" /&gt;
 
 ]
 
 ---
 
-# How do you know which features were important?
+class: middle, center
 
----
-# Caret
-
-
-
-
-
-
----
-
-
-# Practical
-
-&lt;font size=6&gt;&lt;b&gt;&lt;a href="https://therbootcamp.github.io/Intro2DataScience_2018Oct/_sessions/Plotting/Plotting_practical.html"&gt;Link to practical&lt;/a&gt;
+&lt;h1&gt;&lt;a href=https://therbootcamp.github.io/appliedML_2019Jan/_sessions/Fitting/Fitting_practical.html&gt;Practical&lt;/a&gt;&lt;/h1&gt;
     </textarea>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
 <script>var slideshow = remark.create({
