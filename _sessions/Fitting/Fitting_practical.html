@@ -880,7 +880,7 @@ $(document).ready(function () {
 
 
 <h1 class="title toc-ignore">Fitting</h1>
-<h3 class="subtitle"><em>Parameter estimation and fitting statistics with regression</em></h3>
+<h3 class="subtitle"><em>Model fitting with regression</em></h3>
 <h4 class="author"><em>Applied Machine Learning with R<br /><a href="https://therbootcamp.github.io">www.therbootcamp.com</a><br /><a href="https://twitter.com/therbootcamp"><span class="citation">@therbootcamp</span></a></em></h4>
 
 </div>
@@ -896,13 +896,13 @@ Source: wikipedia
 <h2></h2>
 <div id="overview" class="section level3">
 <h3>Overview</h3>
-<p>In this practical you’ll practice the basics of fitting three different machine learning models in R</p>
+<p>In this practical you’ll practice the basics of fitting and exploring regression models in R.</p>
 <p>By the end of this practical you will know how to:</p>
 <ol style="list-style-type: decimal">
-<li>Fit regression, decision trees, and random forests to training data.</li>
-<li>Explore each object with generic functions.</li>
-<li>Evaluate a model’s fitting performance.</li>
-<li>Compare different models fitting performance.</li>
+<li>Fit regression to training data.</li>
+<li>Explore your object with generic functions.</li>
+<li>Evaluate its fitting performance using accuracy measures such as MSE and MAE.</li>
+<li>Explore the effects of adding additional features.</li>
 </ol>
 </div>
 <div id="datasets" class="section level3">
@@ -978,30 +978,6 @@ Source: wikipedia
 <td align="left"><code>install.packages(&quot;tidyverse&quot;)</code></td>
 </tr>
 <tr class="even">
-<td align="left"><code>broom</code></td>
-<td align="left"><code>install.packages(&quot;broom&quot;)</code></td>
-</tr>
-<tr class="odd">
-<td align="left"><code>rpart</code></td>
-<td align="left"><code>install.packages(&quot;rpart&quot;)</code></td>
-</tr>
-<tr class="even">
-<td align="left"><code>FFTrees</code></td>
-<td align="left"><code>install.packages(&quot;FFTrees&quot;)</code></td>
-</tr>
-<tr class="odd">
-<td align="left"><code>partykit</code></td>
-<td align="left"><code>install.packages(&quot;partykit&quot;)</code></td>
-</tr>
-<tr class="even">
-<td align="left"><code>party</code></td>
-<td align="left"><code>install.packages(&quot;party&quot;)</code></td>
-</tr>
-<tr class="odd">
-<td align="left"><code>randomForest</code></td>
-<td align="left"><code>install.packages(&quot;randomForest&quot;)</code></td>
-</tr>
-<tr class="even">
 <td align="left"><code>caret</code></td>
 <td align="left"><code>install.packages(&quot;caret&quot;)</code></td>
 </tr>
@@ -1014,98 +990,113 @@ Source: wikipedia
 </div>
 <div id="examples" class="section level3">
 <h3>Examples</h3>
-<pre class="r"><code># Machine learning basics ------------------------------------
+<pre class="r"><code># Fitting and evaluating a regression model ------------------------------------
 
 # Step 0: Load packages-----------
 
 library(tidyverse)    # Load tidyverse for dplyr and tidyr
-library(rpart)        # For rpart()
-library(caret)        # For resamp 
-library(partykit)     # For nice decision trees
+library(caret)        # For ML mastery 
 
-# Load  and Clean Training data ----------------------
+# Step 1: Load and Clean, and Explore Training data ----------------------
 
 # I'll use the mpg dataset from the dplyr package in this example
 #  no need to load an external dataset
 
-data_train &lt;- mpg
+data_train &lt;- read_csv(&quot;1_Data/mpg_train.csv&quot;)
 
-# Convert character to factor
+# Convert all characters to factor
+#  Some ML models require factors
 
 data_train &lt;- data_train %&gt;%
   mutate_if(is.character, factor)
 
-# Explore training data -----------------------------
+# Explore training data
 
-View(data_train)
+data_train        # Print the dataset
+View(data_train)  # Open in a new spreadsheet-like window 
+dim(data_train)   # Print dimensions
+names(data_train) # Print the names
 
-# Our goal is to predict hwy
+# Step 2: Define training control parameters -------------
 
-# Define training control parameters
-# In this case, I will fit to the entire dataset without any sampling
+# In this case, I will set method = &quot;none&quot; to fit to 
+#  the entire dataset without any fancy methods
 
 train_control &lt;- trainControl(method = &quot;none&quot;) 
 
-# Fit models predicting hwy ------------------
+# Step 3: Train model: -----------------------------
+#   Criterion: hwy
+#   Features: year, cyl, displ, trans
 
 # Regression
 
-hwy_glm &lt;- train(hwy ~ .,
+hwy_glm &lt;- train(form = hwy ~ year + cyl + displ + trans,
                  data = data_train,
                  method = &quot;glm&quot;,
-                 trControl = fitControl)
-
-# Decision Tree
-
-hwy_rpart &lt;- train(hwy ~ .,
-                   data = data_train,
-                   method = &quot;rpart&quot;,
-                   trControl = fitControl,
-                   tuneGrid = expand.grid(cp = .05))   # Need to define cp
+                 trControl = train_control)
 
 # Look at summary information
 summary(hwy_glm)
-summary(hwy_rpart)
+
+# Step 4: Access fit ------------------------------
 
 # Save fitted values
 glm_fit &lt;- predict(hwy_glm)
-rpart_fit &lt;- predict(hwy_rpart)
 
-# Regression Fitting Accuracy
-
-# Define truth
+# Define truth as the true criterion
 truth &lt;- data_train$hwy
 
+# Regression Fitting Accuracy
 postResample(pred = glm_fit, 
              obs = truth)
 
-#      RMSE  Rsquared       MAE 
-# 0.8233526 0.9807992 0.6307284 
+#     RMSE Rsquared      MAE 
+# 3.825010 0.622349 2.767995 
 
-#   rpart fit accuracy
-postResample(pred = rpart_fit, 
-             obs = truth)
+# On average, the model fits are 2.8 away from the true
+#  criterion values
 
-#      RMSE  Rsquared       MAE 
-# 2.7507442 0.7856868 2.0901933 
-
-# Conclusion: Fit for regression is better in all measures
-
-# Step 6: Plot fitting accuracy -------------------------
+# Step 5: Visualise Accuracy -------------------------
 
 # Tidy competition results
-competition_results &lt;- tibble(truth = truth,
-                              Regression = glm_fit,
-                              DecisionTrees = rpart_fit) %&gt;%
-                       gather(group, prediction, -truth)
+accuracy &lt;- tibble(truth = truth,
+                   Regression = glm_fit) %&gt;%
+               gather(model, prediction, -truth) %&gt;%
+  
+  # Add error measures
+  mutate(se = prediction - truth,
+         ae = abs(prediction - truth))
 
-# Plot!
-ggplot(data = competition_results,
-       aes(x = truth, y = prediction, col = group)) +
+
+# Calculate summaries
+accuracy_agg &lt;- accuracy %&gt;%
+                  group_by(model) %&gt;%
+                  summarise(mae = mean(ae))   # Calculate MAE (mean absolute error)
+
+# Plot A) Scatterplot of truth versus predictions
+
+ggplot(data = accuracy,
+       aes(x = truth, y = prediction, col = model)) +
   geom_point(alpha = .2) +
   geom_abline(slope = 1, intercept = 0) +
-  labs(title = &quot;Predicting car mileage&quot;,
-       subtitle = &quot;Regression versus decision trees&quot;)</code></pre>
+  labs(title = &quot;Predicting mpg$hwy&quot;,
+       subtitle = &quot;Black line indicates perfect performance&quot;)
+
+# Plot B) Violin plot of absolute errors
+
+ggplot(data = accuracy, 
+       aes(x = model, y = ae, fill = model)) + 
+  geom_violin() + 
+  geom_jitter(width = .05, alpha = .2) +
+  labs(title = &quot;Distributions of Fitting Absolute Errors&quot;,
+       subtitle = &quot;Numbers indicate means&quot;,
+       x = &quot;Model&quot;,
+       y = &quot;Absolute Error&quot;) +
+  guides(fill = FALSE) +
+  annotate(geom = &quot;label&quot;, 
+           x = accuracy_agg$model, 
+           y = accuracy_agg$mae, 
+           label = round(accuracy_agg$mae, 2))</code></pre>
 </div>
 </div>
 <div id="tasks" class="section level1">
@@ -1113,11 +1104,9 @@ ggplot(data = competition_results,
 <div id="a---setup" class="section level2">
 <h2>A - Setup</h2>
 <ol style="list-style-type: decimal">
-<li>Open your <code>baselrbootcamp</code> R project. It should already have the folders <code>1_Data</code> and <code>2_Code</code>. Make sure that the data file(s) listed in the <code>Datasets</code> section above are in your <code>1_Data</code> folder</li>
-</ol>
-<pre class="r"><code># Done!</code></pre>
-<ol start="2" style="list-style-type: decimal">
-<li><p>Open a new R script. At the top of the script, using comments, write your name and the date. Save it as a new file called <code>fitting_practical.R</code> in the <code>2_Code</code> folder.</p></li>
+<li><p>Open your <code>BaselRBootcamp</code> R project. It should already have the folders <code>1_Data</code> and <code>2_Code</code>. Make sure that the data file(s) listed in the <code>Datasets</code> section above are in your <code>1_Data</code> folder</p></li>
+<li>Open a new R script. At the top of the script, using comments, write your name and the date. Save it as a new file called <code>Fitting_practical.R</code> in the <code>2_Code</code> folder.<br />
+</li>
 <li><p>Using <code>library()</code> load the set of packages for this practical listed in the packages section above.</p></li>
 </ol>
 <pre class="r"><code>## NAME
@@ -1125,15 +1114,13 @@ ggplot(data = competition_results,
 ## Fitting Practical
 
 library(tidyverse)
-library(rpart)
-library(partykit)
-library(part)
-library(randomForest)
 library(caret)</code></pre>
 <ol start="4" style="list-style-type: decimal">
-<li>For this practical, we’ll use a dataset of 388 U.S. College. The data is stored in <code>college_train.csv</code>. Using the following template, load the dataset into R as <code>college_train</code>:</li>
+<li>For this practical, we’ll use a dataset of 388 U.S. Colleges.The data is stored in <code>college_train.csv</code>. Using the following template, load the dataset into R as <code>college_train</code>:</li>
 </ol>
-<pre class="r"><code>college_train &lt;- read_csv(file = &quot;1_Data/college_train.csv&quot;)</code></pre>
+<pre class="r"><code># Load in college_train.csv data as college_train
+
+college_train &lt;- read_csv(file = &quot;1_Data/college_train.csv&quot;)</code></pre>
 <ol start="5" style="list-style-type: decimal">
 <li>Take a look at the first few rows of the dataset by printing it to the console.</li>
 </ol>
@@ -1141,19 +1128,24 @@ library(caret)</code></pre>
 <ol start="6" style="list-style-type: decimal">
 <li>Print the numbers of rows and columns using the <code>dim()</code> function</li>
 </ol>
-<pre class="r"><code>dim(college_train)</code></pre>
+<pre class="r"><code># Print number of rows and columns of college_train
+
+dim(college_train)</code></pre>
 <ol start="7" style="list-style-type: decimal">
-<li>Open the dataset in a new window using <code>View()</code></li>
+<li>Look at the names of the dataframe with the <code>names()</code> function</li>
+</ol>
+<pre class="r"><code>names(college_train)</code></pre>
+<ol start="8" style="list-style-type: decimal">
+<li>Open the dataset in a new window using <code>View()</code>. How does it look?</li>
 </ol>
 <pre class="r"><code>View(college_train)</code></pre>
-<ol start="8" style="list-style-type: decimal">
-<li>We need to do a little bit of data cleaning before starting. Specifically, we need to convert all columns to factors, and remove the column <code>college_name</code>: Do this by running the following code:</li>
+<ol start="9" style="list-style-type: decimal">
+<li>We need to do a little bit of data cleaning before starting. Specifically, we need to convert all columns to factors: Do this by running the following code:</li>
 </ol>
 <pre class="r"><code># Convert character to factor and remove college_name
 
 college_train &lt;- college_train %&gt;%
-          mutate_if(is.character, factor) %&gt;%
-  select(-college_name)</code></pre>
+          mutate_if(is.character, factor)</code></pre>
 </div>
 <div id="b---determine-sampling-procedure" class="section level2">
 <h2>B - Determine sampling procedure</h2>
@@ -1163,17 +1155,19 @@ college_train &lt;- college_train %&gt;%
 
 ctrl &lt;- trainControl(method = &quot;none&quot;) </code></pre>
 </div>
-<div id="b---linear-model-regression" class="section level2">
-<h2>B - Linear Model, Regression</h2>
+<div id="c---fitting-a-regression-model" class="section level2">
+<h2>C - Fitting a regression model</h2>
 <ol style="list-style-type: decimal">
-<li>Using the code below, fit a linear model predicting graduation rate (<code>Grad_Rate</code>) as a function of three features, <code>Private</code> (whether the college is private or public), Books (estimated book costs), and PhD (percent of faculty with Ph.Ds). Save the result as an object <code>Grad_Rate_glm</code></li>
+<li>Using the code below, fit a regression model predicting graduation rate (<code>Grad_Rate</code>) as a function of one feature <code>PhD</code>, the percent of faculty with Ph.Ds). Save the result as an object <code>Grad_Rate_glm</code></li>
 </ol>
-<pre class="r"><code># Fit a standard linear regression model predicting Grad_Rate
+<pre class="r"><code># Grad_Rate_glm: Regression Model
+#   Criterion: Grad_Rate
+#   Features: PhD
 
-Grad_Rate_glm &lt;- train(Grad_Rate ~ .,
-                      data = college_train,
-                      method = &quot;glm&quot;,
-                      trControl = ctrl)</code></pre>
+Grad_Rate_glm &lt;- train(form = Grad_Rate ~ PhD,
+                       data = college_train,
+                       method = &quot;glm&quot;,
+                       trControl = ctrl)</code></pre>
 <ol start="2" style="list-style-type: decimal">
 <li>Explore the model using the <code>summary()</code> function.</li>
 </ol>
@@ -1181,224 +1175,78 @@ Grad_Rate_glm &lt;- train(Grad_Rate ~ .,
 
 summary(Grad_Rate_glm)</code></pre>
 <ol start="3" style="list-style-type: decimal">
-<li><p>Look at the results, how do you interpret the regression coefficients? which features seem important in predicting graduation rate?</p></li>
-<li><p>Using <code>varImp()</code>, determine feature importance, which features were most important according to random forests?</p></li>
-</ol>
-<pre class="r"><code>varImp(Grad_Rate_glm)</code></pre>
-<ol start="5" style="list-style-type: decimal">
-<li>Now it’s time to save the model fits! Do this by running the following code to save the fitted values as <code>glm_fit</code></li>
+<li><p>Look at the results, how do you interpret the regression coefficients? What is the general relationship between PhD and graduation rates? Does this make sense?</p></li>
+<li><p>Now it’s time to save the model fits! Do this by running the following code to save the fitted values as <code>glm_fit</code></p></li>
 </ol>
 <pre class="r"><code># Get fitted values from the model and save as glm_fit
 
 glm_fit &lt;- predict(Grad_Rate_glm)</code></pre>
-<ol start="6" style="list-style-type: decimal">
-<li>Print your <code>glm_fit</code> object - what are these values? Do they look reasonable?</li>
+<ol start="5" style="list-style-type: decimal">
+<li>Print your <code>glm_fit</code> object - what are these values? Do they look reasonable? That is, are they in the range of what you expect the criterion to be?</li>
 </ol>
 <pre class="r"><code># Print glm_fit
 
 glm_fit</code></pre>
-<ol start="7" style="list-style-type: decimal">
+</div>
+<div id="d---evaluating-accuracy" class="section level2">
+<h2>D - Evaluating accuracy</h2>
+<ol style="list-style-type: decimal">
 <li>Now it’s time to compare your model fits to the true values, we’ll start by defining a vector called <code>truth</code>!</li>
 </ol>
 <pre class="r"><code># Define Grad_Rate as the 'truth'
 
 truth &lt;- college_train$Grad_Rate</code></pre>
-<ol start="8" style="list-style-type: decimal">
-<li>Now let’s plot the results! We’ll plot the relationship between the truth and the regression fitted values <code>glm_fit</code></li>
+<ol start="2" style="list-style-type: decimal">
+<li>Let’s quantify our model’s fitting results. To do this, we’ll use the <code>postResample()</code> function, with the fitted values as the prediction, and the truth as the observed values:</li>
 </ol>
-<pre class="r"><code># Tidy up the results
-competition_results &lt;- tibble(truth = truth,
-                              Regression = glm_fit) %&gt;%
-                       gather(group, prediction, -truth)
+<pre class="r"><code># Regression Fitting Accuracy
 
-# Plot!
+postResample(pred = glm_fit,   # Fitted values 
+             obs = truth)      # True values</code></pre>
+<ol start="3" style="list-style-type: decimal">
+<li><p>You’ll see three values here, the easiest to understand is MAE which stands for “Mean Absolute Error” – in other words, “oh average how far are the predictions from the true values?”. A value of 0 means perfect prediction, so small values are good! How do you interpret these results?</p></li>
+<li>Now we’re ready to do some plotting. But first, we need to re-organise the data a bit. We’ll create two dataframes</li>
+</ol>
+<ul>
+<li><code>accuracy</code>: Raw absolute errors</li>
+<li><code>accuracy_agg</code> Aggregate (i.e.; mean) absolute errors</li>
+</ul>
+<pre class="r"><code># accuracy: a dataframe of raw absolute errors
+accuracy &lt;- tibble(truth = truth,
+                   Regression = glm_fit) %&gt;%
+                gather(model, prediction, -truth) %&gt;%
+  
+  # Add error measures
+  mutate(ae = abs(prediction - truth))
 
-ggplot(data = competition_results,
+# accuracy_agg: Dataframe of aggregate errors
+accuracy_agg &lt;- accuracy %&gt;%
+                  group_by(model) %&gt;%
+                  summarise(mae = mean(ae))   # Calculate MAE (mean absolute error)</code></pre>
+<ol start="5" style="list-style-type: decimal">
+<li><p>Print the <code>accuracy</code> and <code>accuracy_agg</code> objects to see how they look.</p></li>
+<li><p>Using the code below, create a scatterplot showing the relationship between the true criterion values and the model fits</p></li>
+</ol>
+<pre class="r"><code># Plot A) Scatterplot of truth versus predictions
+
+ggplot(data = accuracy,
        aes(x = truth, y = prediction)) +
   geom_point(alpha = .2) +
   geom_abline(slope = 1, intercept = 0) +
-  labs(title = &quot;Predicting College Graduation Rates with Regression&quot;,
+  labs(title = &quot;Regression: One Feature&quot;,
        subtitle = &quot;Line indicates perfect performance&quot;,
        x = &quot;True Graduation Rates&quot;,
        y = &quot;Fitted Graduation Rates&quot;) +
   xlim(0, 120) + 
   ylim(0, 120)</code></pre>
-<ol start="9" style="list-style-type: decimal">
-<li><p>Look at the plot, how do you interpret this? Do you think the model did well or not in fitting graduation rates?</p></li>
-<li><p>Now it’s time to quantify our model’s fitting results. To do this, we’ll use the <code>postResample()</code> function, with the fitted values as the prediction, and the truth as the observed values</p></li>
-</ol>
-<pre class="r"><code># Regression Fitting Accuracy
-
-postResample(pred = glm_fit, 
-             obs = truth)</code></pre>
-<ol start="11" style="list-style-type: decimal">
-<li>You’ll see three values here, the easiest to understand is MAE which stands for “Mean Absolute Error” – in other words, “oh average how far are the predictions from the true values?”. Small values of this are good! A value of 0 means perfect prediction. How do you interpret these results? What was the mean absolute error of the model?</li>
-</ol>
-</div>
-<div id="c---decision-tree-regression" class="section level2">
-<h2>C - Decision Tree, Regression</h2>
-<ol style="list-style-type: decimal">
-<li>Time to fit some decision trees! To do this, we’ll use <code>&quot;rpart&quot;</code> model. Run the following code to create your decision tree object <code>Grad_Rate_rpart</code>. The basic procedure is the same as fitting linear regression, however, we need to add one key argument. Because we set <code>method = &quot;none&quot;</code> in the train control arguments, we need to tell the model which value of the cost complexity parameter <code>cp</code> to use.</li>
-</ol>
-<pre class="r"><code># Create decision trees predicting graduation rate
-
-Grad_Rate_rpart &lt;- train(Grad_Rate ~ .,
-                         method = &quot;rpart&quot;,       # Fit decision trees
-                         data = college_train, 
-                         trControl = fitControl,
-                         tuneGrid = expand.grid(cp = .05))  # Fix cp to 0.05</code></pre>
-<ol start="2" style="list-style-type: decimal">
-<li>The nice thing about decision trees is we can visualize them! Visualize your decision tree using the following code. Can you interpret the results?</li>
-</ol>
-<pre class="r"><code># Visualise your tree
-
-plot(as.party(Grad_Rate_rpart$finalModel))</code></pre>
-<ol start="3" style="list-style-type: decimal">
-<li><p>Which features did your decision trees use? How do they compare to your regression model?</p></li>
-<li><p>Using <code>varImp()</code>, determine feature importance, which features were most important according to random forests?</p></li>
-</ol>
-<pre class="r"><code>varImp(Grad_Rate_rpart)</code></pre>
-<ol start="5" style="list-style-type: decimal">
-<li>Let’s see how well your decision trees did in fitting graduation rates. Get this by using the <code>predict()</code> function just like we did with regression:</li>
-</ol>
-<pre class="r"><code># Save fitted values from decision tree object as rpart_fit
-
-rpart_fit &lt;- predict(Grad_Rate_rpart)</code></pre>
-<ol start="6" style="list-style-type: decimal">
-<li>Print your <code>rpart_fit</code> object - what are these values? Do they look reasonable?</li>
-</ol>
-<pre class="r"><code># Print rpart_fit
-
-rpart_fit</code></pre>
-<ol start="7" style="list-style-type: decimal">
-<li>Now it’s time to compare your model fits to the true values, we’ll start by plotting them like we did with regression:</li>
-</ol>
-<pre class="r"><code># Tidy up the results
-competition_results &lt;- tibble(truth = truth,
-                              Decision_Trees = rpart_fit) %&gt;%
-                       gather(group, prediction, -truth)
-
-# Plot!
-
-ggplot(data = competition_results,
-       aes(x = truth, y = prediction)) +
-  geom_point(alpha = .2) +
-  geom_abline(slope = 1, intercept = 0) +
-  labs(title = &quot;Predicting College Graduation Rates with Regression&quot;,
-       x = &quot;True Graduation Rates&quot;,
-       y = &quot;Fitted Graduation Rates&quot;) +
-  xlim(0, 120) + 
-  ylim(0, 120)</code></pre>
-<ol start="8" style="list-style-type: decimal">
-<li><p>Look at the plot, how do you interpret this? Do you find anything strange about the fits of decision trees versus regression? Do you think the model did well or not in fitting graduation rates?</p></li>
-<li><p>Now it’s time to quantify our model’s fitting results. Using the <code>postResample()</code> function, compare the predicted values <code>rpart_fit</code> to the true values as follows:</p></li>
-</ol>
-<pre class="r"><code># Regression Fitting Accuracy
-
-postResample(pred = rpart_fit, 
-             obs = truth)</code></pre>
-<ol start="10" style="list-style-type: decimal">
-<li>How do you interpret these results? What was the mean absolute error of your decision tree model? How do you interpret this?</li>
-</ol>
-</div>
-<div id="g---random-forests-regression" class="section level2">
-<h2>G - Random Forests, Regression</h2>
-<ol style="list-style-type: decimal">
-<li>Now it’s time to add random forests! We’ll go through the same procedure as last time. However, we’ll also add the argument <code>importance = TRUE</code> which, for some reason, is necessary to save variable importance values for random forests:</li>
-</ol>
-<pre class="r"><code># Create random forests predicting graduation rate
-
-Grad_Rate_rf &lt;- train(Grad_Rate ~ .,
-                      method = &quot;rf&quot;, 
-                      data = college_train, 
-                      trControl = fitControl,
-                      importance = TRUE)</code></pre>
-<ol start="2" style="list-style-type: decimal">
-<li>Using <code>varImp()</code>, determine feature importance, which features were most important according to random forests?</li>
-</ol>
-<pre class="r"><code>varImp(Grad_Rate_rf)</code></pre>
-<ol start="3" style="list-style-type: decimal">
-<li>Let’s see how well your random forest model did in fitting graduation rates. Get this by using the <code>predict()</code> function just like we did with regression:</li>
-</ol>
-<pre class="r"><code># Save fitted values from random forest object as rf_fit
-
-rf_fit &lt;- predict(Grad_Rate_rf)</code></pre>
-<ol start="5" style="list-style-type: decimal">
-<li>Print your <code>rpart_fit</code> object - what are these values? Do they look reasonable?</li>
-</ol>
-<pre class="r"><code># Print rf_fit
-
-rf_fit</code></pre>
-<ol start="6" style="list-style-type: decimal">
-<li>Now it’s time to compare your model fits to the true values, we’ll start by plotting them.</li>
-</ol>
-<pre class="r"><code># Tidy up the results
-competition_results &lt;- tibble(truth = truth,
-                              Decision_Trees = rf_fit) %&gt;%
-                       gather(group, prediction, -truth)
-
-# Plot!
-
-ggplot(data = competition_results,
-       aes(x = truth, y = prediction)) +
-  geom_point(alpha = .2) +
-  geom_abline(slope = 1, intercept = 0) +
-  labs(title = &quot;Predicting College Graduation Rates with Regression&quot;,
-       x = &quot;True Graduation Rates&quot;,
-       y = &quot;Fitted Graduation Rates&quot;) +
-  xlim(0, 120) + 
-  ylim(0, 120)</code></pre>
 <ol start="7" style="list-style-type: decimal">
 <li><p>Look at the plot, how do you interpret this? Do you think the model did well or not in fitting graduation rates?</p></li>
-<li><p>Now it’s time to quantify our model’s fitting results. Using the <code>postResample()</code> function, compare the predicted values <code>rpart_fit</code> to the true values as follows:</p></li>
+<li><p>Let’s create a new violin plot showing the distribution of absolute errors of the model:</p></li>
 </ol>
-<pre class="r"><code># Regression Fitting Accuracy
+<pre class="r"><code># Plot B) Violin plot of absolute errors
 
-postResample(pred = rf_fit, 
-             obs = truth)</code></pre>
-<ol start="9" style="list-style-type: decimal">
-<li>How do you interpret these results? What was the mean absolute error of the random forest model?</li>
-</ol>
-</div>
-<div id="h---comparing-the-three-models" class="section level2">
-<h2>H - Comparing the three models</h2>
-<ol style="list-style-type: decimal">
-<li>Using the following code, create a plot showing the fits of the three different models:</li>
-</ol>
-<pre class="r"><code># Tidy competition results
-competition_results &lt;- tibble(truth = truth,
-                              Regression = glm_fit,
-                              DecisionTrees = rpart_fit,
-                              RandomForest = rf_fit) %&gt;%
-                       gather(group, prediction, -truth)
-
-# Plot!
-ggplot(data = competition_results,
-       aes(x = truth, y = prediction, col = group)) +
-  geom_point(alpha = .2) +
-  geom_abline(slope = 1, intercept = 0) +
-  labs(title = &quot;Predicting College Graduation Rates&quot;,
-       subtitle = &quot;Comparing three models&quot;) +
-  xlim(0, 120) + 
-  ylim(0, 120)</code></pre>
-<ol start="2" style="list-style-type: decimal">
-<li><p>What does the plot tell you about how well the three models could fit the training data?</p></li>
-<li><p>Now let’s look at the model performance in another way – by looking at their distributions of absolute errors. Using the code below, create distributions of the absolute errors</p></li>
-</ol>
-<pre class="r"><code># Combine the absolute errors of each model
-competition_results &lt;- tibble(Regression = abs(glm_fit - truth),
-                              DecisionTrees = abs(rpart_fit - truth),
-                              RandomForest = abs(rf_fit - truth)) %&gt;%
-                       gather(model, absolute_error)
-
-# Calculate summaries
-summaries &lt;- competition_results %&gt;%
-  group_by(model) %&gt;%
-  summarise(mae = mean(absolute_error))
-
-# Create plot!
-ggplot(data = competition_results, 
-       aes(x = model, y = absolute_error, fill = model)) + 
+ggplot(data = accuracy, 
+       aes(x = model, y = ae, fill = model)) + 
   geom_violin() + 
   geom_jitter(width = .05, alpha = .2) +
   labs(title = &quot;Distributions of Fitting Absolute Errors&quot;,
@@ -1407,178 +1255,132 @@ ggplot(data = competition_results,
        y = &quot;Absolute Error&quot;) +
   guides(fill = FALSE) +
   annotate(geom = &quot;label&quot;, 
-           x = summaries$model, 
-           y = summaries$mae, 
-           label = round(summaries$mae, 2))</code></pre>
-<ol start="2" style="list-style-type: decimal">
-<li>Based on MAE, Which of your models, seemed to fit the data the best?</li>
+           x = accuracy_agg$model, 
+           y = accuracy_agg$mae, 
+           label = round(accuracy_agg$mae, 2))</code></pre>
+<ol start="9" style="list-style-type: decimal">
+<li>What does the plot show you about the model fits? On average, how far away were the model fits from the true values?</li>
 </ol>
 </div>
-<div id="classification" class="section level2">
-<h2>Classification</h2>
+<div id="f---add-more-features" class="section level2">
+<h2>F - Add more features</h2>
+<p>So far we have only used one feature (<code>PhD</code>), to predict <code>Grad_Rate</code>. Let’s try again, but now we’ll use a total of four features: - <code>PhD</code>: The percent of faculty with a PhD - <code>Room.Board</code>: Room and board costs - <code>Terminal</code>: Percent of faculty with a terminal degree - <code>S.F.Ratio</code>: Student to faculty ratio</p>
+<ol style="list-style-type: decimal">
+<li><p>Using the same steps as above, create a regression model <code>Grad_Rate_glm</code> which predicts <code>Grad_Rate</code> using all 4 features (you can also call it something else if you want to save your original model!).</p></li>
+<li><p>Explore your model using <code>summary()</code>, which features seem to be important?</p></li>
+<li><p>What is the Mean Absolute Error (MAE) of your new model that uses 4 features? How does this compare to your previous model that only used 1 feature?</p></li>
+<li><p>Create a scatterplot showing the relationship between your new model fits and the true values. How does this plot compare to your previous one?</p></li>
+<li><p>Create a violin plot showing the distribution of absolute errors. How does this compare to your previous one?</p></li>
+</ol>
+</div>
+<div id="f---use-almost-all-features" class="section level2">
+<h2>F - Use (almost) all features</h2>
+<p>Alright now it’s time to use all features available!</p>
+<ol style="list-style-type: decimal">
+<li><p>Before we run the model, we need to make sure there aren’t any features we <em>don’t</em> want to include. Look at the <code>college_train</code> dataframe again – do you see the one feature that we definitely don’t want to include in the model?</p></li>
+<li><p>Using the same steps as above, create a regression model <code>glm_fit</code> which predicts <code>Grad_Rate</code> using all features <em>except</em> for that one we don’t want (remember, use Y ~ . - XXX to remove a feature XXX)</p></li>
+</ol>
+<pre class="r"><code>Grad_Rate_glm &lt;- train(form = Grad_Rate ~ . - XXX,   # Get rid of that one feature!
+                       data = college_train,
+                       method = &quot;glm&quot;,
+                       trControl = ctrl)</code></pre>
+<ol start="3" style="list-style-type: decimal">
+<li><p>Explore your model using <code>summary()</code>, which features seem to be important?</p></li>
+<li><p>What is the Mean Absolute Error (MAE) of your new model that uses 6 features? How does this compare to your previous model that only used 1 feature?</p></li>
+<li><p>Create a scatterplot showing the relationship between your new model fits and the true values. How does this plot compare to your previous one?</p></li>
+<li><p>Create a violin plot showing the distribution of absolute errors. How does this compare to your previous one?</p></li>
+</ol>
+</div>
+</div>
+<div id="classification" class="section level1">
+<h1>Classification</h1>
+<div id="g---make-sure-your-criterion-is-a-factor" class="section level2">
+<h2>G - Make sure your criterion is a factor!</h2>
 <p>Now it’s time to do a classification task! Recall that in a classification task, we are predicting a category, not a continuous number. In this task, we’ll predict whether or not a college is Private or Public, this is stored as the variable <code>college_train$Private</code></p>
-<p>In order to do classification training with <code>caret</code>, all you need to do is make sure that the criterion is coded as a factor. To see that is coded as a factor, just print the object as follows:</p>
-<pre class="r"><code># Print the variable Private, should be a factor!
+<ol style="list-style-type: decimal">
+<li>In order to do classification training with <code>caret</code>, all you need to do is make sure that the criterion is coded as a factor. To see that is coded as a factor, you can look at its class as follows:</li>
+</ol>
+<pre class="r"><code># Look at the class of the variable Private, should be a factor!
 
-college_train$Private</code></pre>
-<p>Now, we’ll save this as a new object called <code>truth</code></p>
+class(college_train$Private)</code></pre>
+<ol start="2" style="list-style-type: decimal">
+<li>Now, we’ll save the Private column as a new object called <code>truth</code></li>
+</ol>
 <pre class="r"><code># Define the truth as college_train$Private
 
 truth &lt;- college_train$Private</code></pre>
 </div>
-<div id="i---linear-model-classification" class="section level2">
-<h2>I - Linear Model, Classification</h2>
+<div id="h---fit-a-classification-model" class="section level2">
+<h2>H - Fit a classification model</h2>
 <ol style="list-style-type: decimal">
-<li>Using <code>train()</code>, create <code>Private_glm()</code>, a regression model predicting the variable <code>Private</code></li>
-</ol>
-<pre class="r"><code># Fit regression model predicting private
-Private_glm &lt;- train(Private ~ .,
-                     data = college_train,
-                     method = &quot;glm&quot;,
-                     trControl = fitControl)</code></pre>
-<ol start="2" style="list-style-type: decimal">
-<li>Explore the model using the <code>summary()</code> function.</li>
+<li><p>Using <code>train()</code>, create <code>Private_glm()</code>, a regression model predicting the variable <code>Private</code> (Don’t forget to ignore that one variable we don’t want to use!)</p></li>
+<li><p>Explore the model using the <code>summary()</code> function.</p></li>
 </ol>
 <pre class="r"><code># Show summary information from the regression model
 
 summary(Private_glm)</code></pre>
 <ol start="3" style="list-style-type: decimal">
-<li><p>Look at the results, how do you interpret the regression coefficients? Which features seem important in predicting graduation rate?</p></li>
-<li><p>Now it’s time to save the model fits! Do this by running the following code to save the fitted values as <code>glm_fit</code></p></li>
+<li>Look at the results, how do you interpret the regression coefficients? Which features seem important in predicting whether a school is private or not?</li>
+</ol>
+</div>
+<div id="i---access-classification-model-accuracy" class="section level2">
+<h2>I - Access classification model accuracy</h2>
+<ol style="list-style-type: decimal">
+<li>Now it’s time to save the model fits! Do this by running the following code to save the fitted values as <code>glm_fit</code></li>
 </ol>
 <pre class="r"><code># Get fitted values
 
 glm_fit &lt;- predict(Private_glm)</code></pre>
-<ol start="5" style="list-style-type: decimal">
+<ol start="2" style="list-style-type: decimal">
 <li>Print your <code>glm_fit</code> object - what are these values? Do they look reasonable?</li>
 </ol>
 <pre class="r"><code># Print glm_fit
 
 glm_fit</code></pre>
-<ol start="6" style="list-style-type: decimal">
+<ol start="3" style="list-style-type: decimal">
 <li>Now it’s time to calculate model accuracy, to do this, we will use a new function called <code>confusionMatrix()</code>. This function compares model predictions to a ‘reference’ (in our case, the truth, and returns several summary statistics). In the code below, we’ll use <code>glm_fit</code> as the model predictions, and</li>
 </ol>
 <pre class="r"><code># Show accuracy of glm_fit versus the true values
 
 confusionMatrix(data = glm_fit,                   # This is the prediction!
                 reference = college_train$Private) # This is the truth!</code></pre>
-<ol start="7" style="list-style-type: decimal">
-<li>Look at the results, what is the overall accuracy of the model?</li>
-</ol>
-</div>
-<div id="j---decision-trees-classification" class="section level2">
-<h2>J - Decision Trees, Classification</h2>
-<ol style="list-style-type: decimal">
-<li>Using <code>train()</code>, create <code>Private_rpart()</code>, a decision tree model predicting the variable <code>Private</code></li>
-</ol>
-<pre class="r"><code># Fit regression model predicting private
-Private_rpart &lt;- train(Private ~ .,
-                       data = college_train,
-                       method = &quot;rpart&quot;,
-                       trControl = fitControl, 
-                       tuneGrid = expand.grid(cp = .05))</code></pre>
-<ol start="2" style="list-style-type: decimal">
-<li>Using the code below, plot the decision tree</li>
-</ol>
-<pre class="r"><code>plot(as.party(Private_rpart$finalModel))</code></pre>
 <ol start="4" style="list-style-type: decimal">
-<li>Save the model fits as <code>rpart_fit</code></li>
+<li><p>Look at the results, what is the overall accuracy of the model? How do you interpret this?</p></li>
+<li><p>What is the sensitivity? How do you interpret this number?</p></li>
+<li><p>What is the specificity? How do you interpret this number?</p></li>
+<li><p>To visualise the accuracy of your classification models, use the following code to create a barplot:</p></li>
 </ol>
-<pre class="r"><code># Get fitted values
-
-rpart_fit &lt;- predict(Private_rpart)</code></pre>
-<ol start="5" style="list-style-type: decimal">
-<li>Print your <code>rpart_fit</code> object - what are these values? Do they look reasonable?</li>
-</ol>
-<pre class="r"><code># Print rpart_fit
-
-rpart_fit</code></pre>
-<ol start="6" style="list-style-type: decimal">
-<li>Now it’s time to calculate model accuracy, to do this, we will use <code>confusionMatrix()</code>.</li>
-</ol>
-<pre class="r"><code># Show accuracy of glm_fit versus the true values
-
-confusionMatrix(data = rpart_fit,  # This is the prediction!
-                reference = truth) # This is the truth!</code></pre>
-<ol start="7" style="list-style-type: decimal">
-<li>Look at the results, what is the overall accuracy of the model?</li>
-</ol>
-</div>
-<div id="k---random-forests-classification" class="section level2">
-<h2>K - Random Forests, Classification</h2>
-<ol style="list-style-type: decimal">
-<li><p>Repeat steps E: 1-7 above to get the accuracy of random forests in classification.</p></li>
-<li><p>What is the final overall accuracy of random forests in predicting whether a school is private or public?</p></li>
-</ol>
-</div>
-<div id="g---compare-results" class="section level2">
-<h2>G - Compare results</h2>
-<ol style="list-style-type: decimal">
-<li>To compare the accuracy of your classification models, use the following code:</li>
-</ol>
-<pre class="r"><code># Get overall accuracy from decision trees
-rpart_accuracy &lt;- confusionMatrix(data = rpart_fit,  
-                                  reference = truth)$overall[1]
-
-# Get overall accuracy from regression
+<pre class="r"><code># Get overall accuracy from regression model
 glm_accuracy &lt;- confusionMatrix(data =  glm_fit,  
-                                  reference = truth)$overall[1]
-
-# Get overall accuracy from random forests
-rf_accuracy &lt;- confusionMatrix(data =  rf_fit,  
-                               reference = truth)$overall[1]
+                                reference = truth)$overall[1]
 
 # Combine results into one table
-competition_results &lt;- tibble(DecisionTrees = rpart_accuracy,
-                              Regression = glm_accuracy,
-                              RandomForests = glm_accuracy) %&gt;%
-  gather(model, accuracy)
+accuracy &lt;- tibble(Regression = glm_accuracy) %&gt;%
+              gather(model, accuracy)
 
 
 # Plot the results!
-ggplot(competition_results, aes(x = model, y = accuracy, fill = model)) + 
+ggplot(accuracy, aes(x = model, y = accuracy, fill = model)) + 
   geom_bar(stat = &quot;identity&quot;) +
   labs(title = &quot;Is a college private or public?&quot;,
-       subtitle = &quot;Fitting classification accuracy&quot;) +
+       subtitle = &quot;Fitting classification accuracy&quot;,
+       y = &quot;Overall Accuracy&quot;) +
   ylim(c(0, 1)) +
   annotate(geom = &quot;label&quot;, 
-           x = competition_results$model, 
-           y = competition_results$accuracy, 
-           label = round(competition_results$accuracy, 2))</code></pre>
+           x = accuracy$model, 
+           y = accuracy$accuracy, 
+           label = round(accuracy$accuracy, 2))</code></pre>
 </div>
-<div id="h---challenges" class="section level2">
-<h2>H - Challenges</h2>
+<div id="z---challenges" class="section level2">
+<h2>Z - Challenges</h2>
 <ol style="list-style-type: decimal">
-<li><p>In fitting the decision trees, we always set the complexity parameter to .05. Try setting it to either a smaller (e.g.; .01), or larger (e.g.; .10) value. How does this change the trees? Do they become simpler or more complex? Does their fitting accuracy increase or decrease?</p></li>
-<li><p>There is lots of interesting information hidden in each of your model objects which are stored as <code>X$finalModel</code> in your fitting objects. Using the following code to get your started, try exploring your randomforest object. What else can you find in it? Look at the help menu with <code>?randomForest</code> to see definitions for all of the outputs.</p></li>
-</ol>
-<pre class="r"><code># Print my random forest model
-Grad_Rate_rf$finalModel
-
-# Show names of all elements in the object
-names(Grad_Rate_rf$finalModel)
-
-# Feature importance
-Grad_Rate_rf$finalModel$importance
-
-# Number of trees used
-Grad_Rate_rf$finalModel$ntree
-
-# Number of variables randomly sampled at each splyt
-Grad_Rate_rf$finalModel$mtry</code></pre>
-<ol start="3" style="list-style-type: decimal">
-<li>Try repeating your modelling procedure with a new criterion. For example, for regression you could predict the percent of alumni who donate (<code>perc.alumni</code>), for classification, you could predict whether or not a school is ‘hot’ – where a ‘hot’ school is one that receives at least 10,000 applications (Hint: use the code below to create the <code>hot</code> variable)</li>
+<li><p>Conduct a regression analysis predicting the percent of alumni who donate to the college (<code>perc.alumni</code>). How good can your regression model fit this criterion?</p></li>
+<li><p>Conduct a classification analysis predictingn whether or not a school is ‘hot’ – where a ‘hot’ school is one that receives at least 10,000 applications (Hint: use the code below to create the <code>hot</code> variable). How good can your regression model predict whether or not a school is ‘hot’?</p></li>
 </ol>
 <pre class="r"><code># Add a new factor criterion 'hot' which indicates whether or not a schol receives at least 10,000 applications
 
 college_train &lt;- college_train %&gt;%
-  mutate(hot = factor(Apps &gt;= 10000))
-
-# You may also wish to remove the original Apps variable when modelling as this variable
-#  could perfectly predict 'hot'!
-
-college_train &lt;- college_train %&gt;%
-  select(-Apps)</code></pre>
+  mutate(hot = factor(Apps &gt;= 10000))</code></pre>
 </div>
 </div>
 
