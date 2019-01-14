@@ -136,10 +136,10 @@ It's slow, but...
 
 .pull-left55[
 
-The <high>C</high>lassification <high>A</high>nd <high>RE</high>gression <high>T</high>raining package is a meta-package to streamline the applicaton of R's best machine learning tools.  
+The <high>C</high>lassification <high>A</high>nd <high>RE</high>gression <high>T</high>raining package is a meta-package to streamline the application of R's best machine learning tools.  
 
 `caret` facilitates...<br><br>
-&nbsp;&nbsp;&nbsp;&nbsp;1) <high>data preprocessing</high><br><br>
+&nbsp;&nbsp;&nbsp;&nbsp;1) <high>data pre-processing</high><br><br>
 &nbsp;&nbsp;&nbsp;&nbsp;2) <high>feature selection</high><br><br>
 &nbsp;&nbsp;&nbsp;&nbsp;3) <high>fitting, tuning, & model prediction</high><br><br>
 
@@ -547,7 +547,7 @@ my_lm <- lm(formula = income ~ .,
             data = baselers)
 ```
 
-<high>Substract variables</high> using `-`
+<high>Subtract variables</high> using `-`
 
 ```{r}
 # Use  y ~ . to include ALL variables

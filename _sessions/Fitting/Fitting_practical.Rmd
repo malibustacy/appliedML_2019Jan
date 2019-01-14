@@ -82,93 +82,108 @@ library(ggthemes)
 # Step 0: Load packages-----------
 
 library(tidyverse)    # Load tidyverse for dplyr and tidyr
-library(rpart)        # For rpart()
-library(caret)        # For resamp 
-library(partykit)     # For nice decision trees
+library(caret)        # For ML mastery 
 
-# Load  and Clean Training data ----------------------
+# Step 1: Load and Clean Training data ----------------------
 
 # I'll use the mpg dataset from the dplyr package in this example
 #  no need to load an external dataset
 
-data_train <- mpg
+data_train <- read_csv("1_Data/mpg_train.csv")
 
-# Convert character to factor
+# Convert all characters to factor
 
 data_train <- data_train %>%
   mutate_if(is.character, factor)
 
 # Explore training data -----------------------------
 
+data_train
 View(data_train)
+dim(data_train)
 
-# Our goal is to predict hwy
 
-# Define training control parameters
-# In this case, I will fit to the entire dataset without any sampling
+# Define training control parameters -------------
+
+# In this case, I will set method = "none" to fit to 
+#  the entire dataset without any fancy methods
 
 train_control <- trainControl(method = "none") 
 
-# Fit models predicting hwy ------------------
+
+# Train model: -----------------------------
+#   Criterion: hwy
+#   Features: year, cyl, displ, trans
 
 # Regression
 
-hwy_glm <- train(hwy ~ .,
+hwy_glm <- train(form = hwy ~ year + cyl + displ + trans,
                  data = data_train,
                  method = "glm",
-                 trControl = fitControl)
-
-# Decision Tree
-
-hwy_rpart <- train(hwy ~ .,
-                   data = data_train,
-                   method = "rpart",
-                   trControl = fitControl,
-                   tuneGrid = expand.grid(cp = .05))   # Need to define cp
+                 trControl = train_control)
 
 # Look at summary information
 summary(hwy_glm)
-summary(hwy_rpart)
+
+# Access fit ------------------------------
 
 # Save fitted values
 glm_fit <- predict(hwy_glm)
-rpart_fit <- predict(hwy_rpart)
 
-# Regression Fitting Accuracy
-
-# Define truth
+# Define truth as the true criterion
 truth <- data_train$hwy
 
+# Regression Fitting Accuracy
 postResample(pred = glm_fit, 
              obs = truth)
 
-#      RMSE  Rsquared       MAE 
-# 0.8233526 0.9807992 0.6307284 
+#     RMSE Rsquared      MAE 
+# 3.825010 0.622349 2.767995 
 
-#   rpart fit accuracy
-postResample(pred = rpart_fit, 
-             obs = truth)
+# On average, the model fits are 2.8 away from the true
+#  criterion values
 
-#      RMSE  Rsquared       MAE 
-# 2.7507442 0.7856868 2.0901933 
-
-# Conclusion: Fit for regression is better in all measures
-
-# Step 6: Plot fitting accuracy -------------------------
+# Visualise Accuracy -------------------------
 
 # Tidy competition results
-competition_results <- tibble(truth = truth,
-                              Regression = glm_fit,
-                              DecisionTrees = rpart_fit) %>%
-                       gather(group, prediction, -truth)
+competition_raw <- tibble(truth = truth,
+                          Regression = glm_fit) %>%
+                    gather(model, prediction, -truth) %>%
+  
+  # Add error measures
+  mutate(se = prediction - truth,
+         ae = abs(prediction - truth))
 
-# Plot!
-ggplot(data = competition_results,
-       aes(x = truth, y = prediction, col = group)) +
+
+# Calculate summaries
+competition_agg <- competition_raw %>%
+  group_by(model) %>%
+  summarise(mae = mean(ae))   # Calculate MAE (mean absolute error)
+
+# Plot A) Scatterplot of truth versus predictions
+
+ggplot(data = competition_raw,
+       aes(x = truth, y = prediction, col = model)) +
   geom_point(alpha = .2) +
   geom_abline(slope = 1, intercept = 0) +
-  labs(title = "Predicting car mileage",
-       subtitle = "Regression versus decision trees")
+  labs(title = "Predicting mpg$hwy",
+       subtitle = "Black line indicates perfect performance")
+
+# Plot B) Violin plot of absolute errors
+
+ggplot(data = competition_raw, 
+       aes(x = model, y = ae, fill = model)) + 
+  geom_violin() + 
+  geom_jitter(width = .05, alpha = .2) +
+  labs(title = "Distributions of Fitting Absolute Errors",
+       subtitle = "Numbers indicate means",
+       x = "Model",
+       y = "Absolute Error") +
+  guides(fill = FALSE) +
+  annotate(geom = "label", 
+           x = competition_agg$model, 
+           y = competition_agg$mae, 
+           label = round(competition_agg$mae, 2))
 ```
 
 # Tasks
