@@ -76,7 +76,7 @@ There are many types of of ML tasks.
 
 In this course, we will focus on 2 of the most popular
 
-|Model|Description | Example |
+|Type|Description | Example |
 |:----|:---- |:----|
 |&lt;high&gt;Regression&lt;/high&gt; (supervised)|Predicting a number|Stock prices|
 |&lt;high&gt;Classification&lt;/high&gt; (supervised)|Predicting a category, like whether|Whether someone will purchase a product or not|
@@ -598,7 +598,7 @@ The `caret` package has some of the *best* documentation (vignettes) you'll ever
 
 ## trainControl()
 
-Use `trainControl()` to define how `carat` should &lt;high&gt;select the best parameters&lt;/high&gt; for a ML model.
+Use `trainControl()` to define how `caret` should &lt;high&gt;select the best parameters&lt;/high&gt; for an ML model.
 
 Here you can tell caret to do things like repeated &lt;high&gt;cross validation&lt;/high&gt;. Many other methods are available via the `method` argument (see `?trainControl`)
 
@@ -676,7 +676,7 @@ Find all 280+ models [here](http://topepo.github.io/caret/available-models.html)
 ## `train()`
 
 
-&lt;high&gt;Classification tasks&lt;/high&gt; require the &lt;high&gt;criterion to be factor&lt;/high&gt;, while regression tasks require it to be numeric.
+&lt;high&gt;Classification tasks&lt;/high&gt; require the &lt;high&gt;criterion to be a factor&lt;/high&gt;, while regression tasks require it to be numeric.
 
 
 
@@ -708,7 +708,6 @@ Find all 280+ models [here](http://topepo.github.io/caret/available-models.html)
 
 
 &lt;img src="image/caret_models_ss.jpg" width="362" style="display: block; margin: auto;" /&gt;
-
 
 
 ]
@@ -764,90 +763,6 @@ names(glm_train)
 
 ]
 
----
-
-.pull-left5[
-
-# Feature importance
-
-Regardless of the model you use, you will often want to know &lt;high&gt;which features are important&lt;/high&gt; in predicting the criterion.
-
-Often displayed on a *relative* scale from 0 to 100
-
-Every model has their own definition of importance (see [the caret documentation](http://topepo.github.io/caret/variable-importance.html) for details).
-
-Different models can give you different importance rankings (ML is fun!)
-
-&lt;img src="http://worldartsme.com/images/scale-clipart-1.jpg" width="40%" style="display: block; margin: auto;" /&gt;
-
-
-]
-
-.pull-right45[
-
-### Variable importance plot
-
-Here's an example variable importance plot from R
-
-&lt;img src="http://mgel2011-kvm.env.duke.edu/mget/files/2012/07/RandomForestImportance.png" width="100%" style="display: block; margin: auto;" /&gt;
-
-]
-
----
-
-.pull-left5[
-
-## `varImp()`
-
-
-Use `varImp()` to extract &lt;high&gt;variable importance&lt;/high&gt; from a model
-
-
-
-```r
-# Get veriable importance from glm_train
-varImp(glm_train)
-```
-
-```
-glm variable importance
-
-            Overall
-Cylinder    100.000
-Saab         67.408
-Cadillac     64.991
-convertible  61.632
-Mileage      43.401
-hatchback    29.776
-sedan        28.321
-Doors        15.740
-Leather       6.471
-Pontiac       5.536
-Sound         2.340
-Buick         1.810
-Chevy         0.312
-Cruise        0.000
-```
-    
-  
-]
-
-.pull-right45[
-&lt;br&gt;&lt;br&gt;&lt;br&gt;
-You can also plot the results using `plot()`
-
-
-```r
-# Plot variable importance
-
-plot(varImp(glm_train))
-```
-
-&lt;img src="Fitting_files/figure-html/unnamed-chunk-33-1.png" width="50%" style="display: block; margin: auto;" /&gt;
-
-
-]
-
 
 ---
 
@@ -892,7 +807,7 @@ If the model was perfect, all points would be on diagonal
 *Code Hidden*
 
 
-&lt;img src="Fitting_files/figure-html/unnamed-chunk-36-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="Fitting_files/figure-html/unnamed-chunk-32-1.png" style="display: block; margin: auto;" /&gt;
 
 
 ]
@@ -932,7 +847,7 @@ Red lines indicate absolute error(s)
 
 *Code Hidden*
 
-&lt;img src="Fitting_files/figure-html/unnamed-chunk-39-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="Fitting_files/figure-html/unnamed-chunk-35-1.png" style="display: block; margin: auto;" /&gt;
 
 ]
 
@@ -959,19 +874,30 @@ if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
   d.head.appendChild(s);
 })();</script>
 
-<script type="text/x-mathjax-config">
-MathJax.Hub.Config({
-  tex2jax: {
-    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+<script>
+(function() {
+  var i, text, code, codes = document.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
   }
-});
+})();
 </script>
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>
 (function () {
   var script = document.createElement('script');
   script.type = 'text/javascript';
-  script.src  = 'https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
   if (location.protocol !== 'file:' && /^https?:/.test(script.src))
     script.src  = script.src.replace(/^https?:/, '');
   document.getElementsByTagName('head')[0].appendChild(script);
