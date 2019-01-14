@@ -35,6 +35,8 @@
 # 4. Select variable
 # 5. Compute means of various variables
 # 6. Simple regression example
+# 7. Customize the formula
+# 8. Explore results
 
 # Close RStudio & Reopen ----
 

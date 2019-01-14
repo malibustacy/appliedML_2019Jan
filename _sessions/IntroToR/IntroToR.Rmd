@@ -158,7 +158,7 @@ Includes dozens of algorithms/models including...
 
 <div class="center_text">
   <span>
-  The 2<sup>4</sup> 10 basic R lessons
+  10 basic R lessons
   </span>
 </div> 
 
