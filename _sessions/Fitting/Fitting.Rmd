@@ -730,7 +730,7 @@ The `caret` package has some of the *best* documentation (vignettes) you'll ever
 
 ## trainControl()
 
-Use `trainControl()` to define how `caret` should <high>select the best parameters</high> for a ML model.
+Use `trainControl()` to define how `caret` should <high>select the best parameters</high> for an ML model.
 
 Here you can tell caret to do things like repeated <high>cross validation</high>. Many other methods are available via the `method` argument (see `?trainControl`)
 
