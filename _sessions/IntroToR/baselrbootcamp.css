@@ -35,7 +35,7 @@
 
 a {
 color: #6ABA9A;
-font-weight: 700; 
+font-weight: 700;
 }
 
 /* Footer */
@@ -322,5 +322,15 @@ br2 {
 
 high {
   color: #EA4B68;
-  font-weight: 700; 
+  font-weight: 700;
+}
+
+mono {
+	font-family: monospace;
+}
+
+highm {
+	color: #EA4B68;
+  font-weight: 700;
+	font-family: monospace;
 }

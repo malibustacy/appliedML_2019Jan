@@ -1,5 +1,5 @@
 ---
-title: "Parameter Tuning"
+title: "Features"
 author: "Applied Machine Learning with R<br/><a href='https://therbootcamp.github.io'>www.therbootcamp.com</a><br/><a href='https://twitter.com/therbootcamp'>@therbootcamp</a>"
 date: "January 2019"
 output:
@@ -49,9 +49,22 @@ library(ggthemes)
 ```
 
 
+---
+
+# Problems
+
+Too many features -> curse of dimensionality
+
+Wrong features 
+  in face of truth -> feature generation
+  in face of data -> reverse engineering (black vs. white box)
+
+Psychology
+  
+
 .pull-left4[
 
-# Recap: What are model tuning parameters?
+#  
 
 ]
 
@@ -60,11 +73,13 @@ library(ggthemes)
 ]
 
 
+
+
 ---
 
 .pull-left4[
 
-# Why do we have tuning parameters
+# Neural Networks
 
 - Regularisation
 - Complexity
@@ -74,118 +89,4 @@ library(ggthemes)
 .pull-right6[
 
 ]
-
-
----
-
-.pull-left4[
-
-# Bias-Variance Trade-off
-
-- A short introduction
-
-]
-
-.pull-right6[
-
-]
-
-
----
-
-.pull-left4[
-
-# Regularisation / complexity controlling methods
-
-- Regression
-  - Ridge (L1 penalty), Lasso (L2 penalty)
-  
-- Trees
-  - Max depth, minimum elements per node
-  
-- KNN
-   - Just try different values of K
-
-]
-
-.pull-right6[
-
-]
-
-
----
-
-.pull-left4[
-
-# How do you select best tuning parameters?
-
-- Crossvalidation
-
-]
-
-.pull-right6[
-
-]
-
-
----
-
-.pull-left4[
-
-# Cross-Validation
-
-]
-
-.pull-right6[
-
-]
-
----
-
-.pull-left4[
-
-# Estimating prediction accuracy with cross-validation
-
-]
-
-.pull-right6[
-
-]
-
----
-
-.pull-left4[
-
-# Estimating True prediction accuracy
-
-
-- Hold out set
-- Why do we always use a holdout set?
-
-]
-
-.pull-right6[
-
-]
-
-
----
-
-# Caret
-
-
-
-
-
----
-
-
-# Practical
-
-<font size=6><b><a href="https://therbootcamp.github.io/Intro2DataScience_2018Oct/_sessions/Plotting/Plotting_practical.html">Link to practical</a>
-
-
-
-
-
 
