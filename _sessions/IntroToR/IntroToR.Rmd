@@ -123,23 +123,44 @@ It's slow, but...
 
 
 ---
-<div class="center_text">
-  <span>
-  The 2<sup>4</sup> R Basics for Machine Learning
-  </span>
-</div> 
-
----
 
 # R is great for ML
 
-dwefwe
+...because of high-performance R packages (extensions) downloaded and used millions of times.
+
+<p align="center"><img src="image/ml_package_dl.png" width="620"></p>
 
 ---
 
-# Caret
+# `caret`
 
-dwefwe
+.pull-left55[
+
+The <high>C</high>lassification <high>A</high>nd <high>RE</high>gression <high>T</high>raining package is a meta-package to streamline the applicaton of R's best machine learning tools.  
+
+`caret` facilitates...<br><br>
+&nbsp;&nbsp;&nbsp;&nbsp;1) <high>data preprocessing</high><br><br>
+&nbsp;&nbsp;&nbsp;&nbsp;2) <high>feature selection</high><br><br>
+&nbsp;&nbsp;&nbsp;&nbsp;3) <high>fitting, tuning, & model prediction</high><br><br>
+
+Includes dozens of algorithms/models including...
+
+<high>regression</high>, <high>decision trees</high>, <high>random forests</high>, neural nets, AdaBoost, elastic nets, lasso & ridge regression, support vector machines, etc.
+
+]
+
+.pull-right4[
+<p align="center"><img src="image/caret.png"></p>
+<p align="center"><img src="image/caret.png"></p>
+<p align="center"><img src="image/caret.png"></p>
+]
+---
+
+<div class="center_text">
+  <span>
+  The 2<sup>4</sup> 10 basic R lessons
+  </span>
+</div> 
 
 ---
 
