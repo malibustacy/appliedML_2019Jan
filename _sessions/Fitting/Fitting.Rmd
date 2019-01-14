@@ -26,7 +26,7 @@ layout: true
 
 ```{r, eval = TRUE, echo = FALSE, warning=F,message=F}
 # Code to knit slides
-baselers <- readr::read_csv("../_data/baselers.csv")
+baselers <- readr::read_csv("../Data//1_Data/baselers.csv")
 
 ```
 
@@ -92,7 +92,7 @@ There are many types of of ML tasks.
 
 In this course, we will focus on 2 of the most popular
 
-|Model|Description | Example |
+|Type|Description | Example |
 |:----|:---- |:----|
 |<high>Regression</high> (supervised)|Predicting a number|Stock prices|
 |<high>Classification</high> (supervised)|Predicting a category, like whether|Whether someone will purchase a product or not|
