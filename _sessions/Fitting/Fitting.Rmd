@@ -24,13 +24,6 @@ layout: true
 ---
 
 
-```{r, eval = TRUE, echo = FALSE, warning=F,message=F}
-# Code to knit slides
-baselers <- readr::read_csv("../Data//1_Data/baselers.csv")
-
-```
-
-
 ```{r setup, include=FALSE}
 options(htmltools.dir.version = FALSE)
 # see: https://github.com/yihui/xaringan
@@ -642,19 +635,19 @@ library(caret)
 data(cars)
 ```
 
+
 ---
 
 .pull-left55[
 
 # `caret`
 
-Here are the <high>main functions</high> we will cover from the `caret` package.
+Main caret fitting functions:
 
 | Function| Purpose|
 |--------|----------|
 | [trainControl()](http://topepo.github.io/caret/model-training-and-tuning.html#basic-parameter-tuning) | Determine how training (in general) will be done|
 | [train()](http://topepo.github.io/caret/model-training-and-tuning.html#model-training-and-parameter-tuning) | Specify a model and find *best* parameters|
-| [varImp()](http://topepo.github.io/caret/variable-importance.html) | Determine variable importance |
 | predict() | Predict values (either fitted values or predictions for new data)|
 | [postResample()](http://topepo.github.io/caret/measuring-performance.html) | Evaluate model performance (fitting or prediction)|
 
@@ -662,9 +655,41 @@ Here are the <high>main functions</high> we will cover from the `caret` package.
 
 .pull-right4[
 
-The `caret` package has some of the *best* documentation (vignettes) you'll ever see...
 
-<iframe src="http://topepo.github.io/caret/variable-importance.html" height="480px" width = "500px"></iframe>
+```{r, eval = FALSE}
+# Step 1: Load data
+#   read_csv()
+
+data_train <- read_csv(...)
+
+# Step 2: Define control parameters
+#   trainControl()
+
+ctrl <- trainControl(...) 
+
+# Step 3: Train and explore model
+#   train()
+
+mod <- train(...)
+summary(mod)
+mod
+
+# Step 4: Assess fit
+#   predict(), postResample()
+
+fit <- predict()
+postResample(fit, truth)
+
+# Step 5: Visualise results
+
+ggplot(...)
+```
+
+
+
+<!-- Caret documentation: [http://topepo.github.io/caret/](http://topepo.github.io/caret/) -->
+
+<!-- <iframe src="http://topepo.github.io/caret/" height="480px" width = "500px"></iframe> -->
 
 ]
 
@@ -674,32 +699,79 @@ The `caret` package has some of the *best* documentation (vignettes) you'll ever
 
 ## trainControl()
 
-Use `trainControl()` to define how `caret` should <high>select the best parameters</high> for an ML model.
+Use `trainControl()` to define how `caret` should, generally, <high>select the best parameters</high> for an ML model.
 
-Here you can tell caret to do things like repeated <high>cross validation</high>. Many other methods are available via the `method` argument (see `?trainControl`)
+Here you can tell `caret` to do things like repeated <high>cross validation</high> (which we will learn about later).
 
-For now in the practical, we'll set `method = "none"` to keep things simple. This means "fit the model without advanced parameter tuning"
+|Argument|Description|
+|:-----|:----|
+|`method`|How should fitting be done?|
+
+For now, we'll set `method = "none"` to keep things simple. 
+
+This means "Fit the model without advanced parameter tuning"
 
 ```{r}
 # Fit the model without any 
-#  advanced parameter tuning
+#  advanced parameter tuning methods
 
 ctrl <- trainControl(method = "none")
 ```
 
-
 ]
 
 .pull-right4[
+<br><br>
+Help menu for `?trainControl()`
+
+```{r, echo = FALSE, out.width = "100%"}
+knitr::include_graphics("image/traincontrol_help.jpg")
+```
+
+]
+
+---
+
+
+.pull-left4[
+
+## `train()`
+
+`train()` is the workhorse fitting function of `caret`.
+
+With just this one function, you can <high>fit any of 200+ models</high>...
+
+...just by changing the <high>method</high> argument!
+
+### train() Arguments
+
+
+|Argument|Description|
+|:-----|:----|
+|`form`|Formula specifying criterion|
+|`data`|Training data|
+|`method`| Model|
+|`trControl`| Control parameters|
+
+]
+
+
+.pull-right55[
 
 <br><br><br>
-### Method arguments in caret
+### Train a Regression model
 
-|method|Description|
-|:----|:----|
-|`"repeatedcv"` | Repeated cross-validation|
-|`"LOOCV"`| Leave one out cross-validation|
-|`"none"` | Fit one model without tuning|
+Regression: `method = "glm"`
+
+```{r, echo = TRUE, out.width = "90%", eval = TRUE, warning = FALSE}
+# Fit a regression model predicting Price
+
+mod <- train(form = Price ~ .,  # Formula
+             data = cars,       # Training data
+             method = "glm",    # Regression
+             trControl = ctrl)  # Control Parameters
+```
+
 
 ]
 
@@ -707,22 +779,18 @@ ctrl <- trainControl(method = "none")
 ---
 
 
-.pull-left6[
+.pull-left4[
 
 ## `train()`
 
+`train()` is the workhorse fitting function of `caret`.
 
-Use `train()` to <high>fit</high> 280+ models using <high>optimal parameters</high>.
+With just this one function, you can <high>fit any of 200+ models</high>...
 
-```{r, echo = TRUE, out.width = "90%", eval = TRUE, warning = FALSE}
-glm_train <- train(form = Price ~ .,  
-                   data = cars,
-                   method = "glm", # Model!
-                   trControl = ctrl)
-```
+...just by changing the <high>method</high> argument!
 
+### train() Arguments
 
-<p align="center"><u>train()-function arguments</u></p>
 
 |Argument|Description|
 |:-----|:----|
@@ -733,11 +801,56 @@ glm_train <- train(form = Price ~ .,
 ]
 
 
-.pull-right35[
+.pull-right55[
+
+<br><br><br>
+
+### Train a Random Forest model
+
+Random Forest: `method = "rf"`
+
+```{r, echo = TRUE, out.width = "90%", eval = TRUE, warning = FALSE}
+# Fit a Random Forest model predicting Price
+
+mod <- train(form = Price ~ .,  # Formula
+             data = cars,       # Training data
+             method = "rf",     # Random Forests
+             trControl = ctrl)  # Control Parameters
+```
+
+]
+
+
+---
+
+.pull-left4[
+
+## `train()`
+
+`train()` is the workhorse fitting function of `caret`.
+
+With just this one function, you can <high>fit any of 200+ models</high>...
+
+...just by changing the <high>method</high> argument!
+
+### train() Arguments
+
+
+|Argument|Description|
+|:-----|:----|
+|`form`|Formula specifying criterion|
+|`data`|Training data|
+|`method`| Model|
+|`trControl`| Control parameters|
+
+]
+
+
+.pull-right55[
 
 Find all 280+ models [here](http://topepo.github.io/caret/available-models.html)
 
-```{r, echo = FALSE}
+```{r, echo = FALSE, out.width = "80%"}
 knitr::include_graphics("image/caret_models_ss.jpg")
 ```
 
@@ -746,20 +859,46 @@ knitr::include_graphics("image/caret_models_ss.jpg")
 
 ---
 
-
-.pull-left6[
+.pull-left4[
 
 ## `train()`
 
+Make sure your criterion is the correct class for your type of modelling task
 
-<high>Classification tasks</high> require the <high>criterion to be a factor</high>, while regression tasks require it to be numeric.
-
+- Numeric criterion = Regression Task
+- Factor criterion = Classification Task
 
 ```{r, eval = FALSE}
-# Will be a regression model
-reg_mod <- train(form = Saab ~ .,
-                 data = cars,
-                 method = "glm")
+# My training data
+Loans
+```
+
+```{r, echo = FALSE}
+Loans <- tibble::tibble(Default = c(0, 1, 0, 1, 1),
+              Age = c(45, 36, 76, 25, 36),
+             Gender = c("M", "F", "F", "M", "F"),
+             Cards = c(3, 2, 5, 2, 3),
+             Education = c(11, 14, 12, 17, 12)
+             )
+
+Loans
+```
+
+See that the column Default is 0's and 1's, but is coded as numeric.
+
+]
+
+.pull-right55[
+
+<br><br>
+This code will think that Default is a continuous number, not a category (probably not what you want)
+
+```{r, eval = FALSE}
+# Will be a regression task if Default is numeric
+
+mod <- train(form = Default ~ .,
+             data = Loans,
+             method = "glm")
 ```
 
 <font color='red' size = 3>Warning messages:...Are you sure you wanted to do regression?</font>
@@ -767,52 +906,14 @@ reg_mod <- train(form = Saab ~ .,
 Use `factor()` to <high>convert your criterion</high> to a factor, now you are doing classification!
 
 ```{r, eval = FALSE}
-# Use factor() to specify a classification model
-class_mod <- train(form = factor(Saab) ~ .,
-                   data = cars,
-                   method = "glm")
+# Will be a classification task
+
+mod <- train(form = factor(Default) ~ .,
+             data = Loans,
+             method = "glm")
 ```
 
 ]
-
-.pull-right35[
-
-
-Find all 280+ models [here](http://topepo.github.io/caret/available-models.html)
-
-
-```{r, echo = FALSE}
-knitr::include_graphics("image/caret_models_ss.jpg")
-```
-
-
-]
-
----
-
-# Explore the `train` object
-
-.pull-left4[
-
-The final model is stored in `.$finalModel`
-
-```{r, echo = TRUE, out.width = "90%", eval = TRUE, warning = FALSE}
-# Show the final model
-glm_train$finalModel
-```
-
-]
-
-.pull-right55[
-
-See all of the named objects with `names()`
-
-```{r, fig.align = 'center', fig.height = 6}
-names(glm_train)
-```
-
-]
-
 
 ---
 
@@ -827,7 +928,7 @@ Put your model object as the first argument. If you don't specify a new dataset 
 
 ```{r}
 # Get fitted values
-glm_fits <- predict(object = glm_train)
+glm_fits <- predict(object = mod)
 ```
 
 The result is a vector
@@ -871,6 +972,11 @@ ggplot(aes(x = fits, y = truth)) +
 
 To calculate aggregate model performance, use `postResample()`
 
+|Argument|Description|
+|:----|:----|
+|pred|Model predictions (or fits)|
+|obs|The observed (true) values|
+
 ```{r}
 # Assess performance with postResample()
 
@@ -907,14 +1013,18 @@ geom_linerange(aes(x = fits, ymin = fits, ymax = truth), col = "red") +
 
 ]
 
+
+---
+
+
+
+
+
 ---
 
 class: middle, center
 
 <h1><a href=https://therbootcamp.github.io/appliedML_2019Jan/_sessions/Fitting/Fitting_practical.html>Practical</a></h1>
-
-
-
 
 
 ---
