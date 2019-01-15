@@ -32,8 +32,8 @@ In this practical you'll practice the basics of model fitting and prediction wit
 
 By the end of this practical you will know how to:
 
-1. Fit regression and decision trees to training data
-2. Evaluate model fitting and prediction performance
+1. Fit regression, decision trees and random forests to training data
+2. Evaluate modelfitting and prediction performance
 3. Compare the fitting and prediction performance of two models
 4. Explore the effects of features on model predictions
 
@@ -94,6 +94,8 @@ The `house_train` and `house_test` data come from [https://www.kaggle.com/harlfo
 
 library(tidyverse)    # Load tidyverse for dplyr and tidyr
 library(caret)        # For ML mastery 
+library(partykit)     # For decision trees
+library(party)        # For decision trees
 
 # Step 1: Load and Clean, and Explore Training data ----------------------
 
@@ -128,47 +130,69 @@ train_control <- trainControl(method = "none")
 
 # Step 3: Train model: -----------------------------
 #   Criterion: hwy
-#   Features: year, cyl, displ, trans
+#   Features: year, cyl, displ
 
 # Regression
 
-hwy_glm <- train(form = hwy ~ year + cyl + displ + trans,
+hwy_glm <- train(form = hwy ~ year + cyl + displ,
                  data = data_train,
                  method = "glm",
                  trControl = train_control)
 
 # Look at summary information
+hwy_glm$finalModel
 summary(hwy_glm)
+
+# Decision Trees
+
+hwy_dt <- train(form = hwy ~ year + cyl + displ,
+                data = data_train,
+                method = "rpart",
+                trControl = train_control,
+                tuneGrid = expand.grid(cp = .001))   # Set complexity parameter
+
+# Look at summary information
+hwy_dt$finalModel
+plot(as.party(hwy_dt$finalModel))   # Visualise your trees
+
+# Random Forests
+
+hwy_rf <- train(form = hwy ~ year + cyl + displ,
+                data = data_train,
+                method = "rf",
+                trControl = train_control,
+                tuneGrid = expand.grid(mtry = 2))   # Set mtry
+
+# Look at summary information
+hwy_rf$finalModel
 
 # Step 4: Access fit ------------------------------
 
 # Save fitted values
 glm_fit <- predict(hwy_glm)
+dt_fit <- predict(hwy_dt)
+rf_fit <- predict(hwy_rf)
 
-# Define truth as the criterion
-criterion <- data_train$hwy
+# Define criterion_train
+criterion_train <- data_train$hwy
 
-# Regression Fitting Accuracy
-postResample(pred = glm_fit, 
-             obs = criterion)
+#  Calculate fitting accuracies
+postResample(pred = glm_fit, obs = criterion_train)
+postResample(pred = dt_fit, obs = criterion_train)
+postResample(pred = rf_fit, obs = criterion_train)
 
-#     RMSE Rsquared      MAE 
-# 3.825010 0.622349 2.767995 
-
-# On average, the model fits are 2.8 away from the true
-#  criterion values
-
-# Step 5: Visualise Accuracy -------------------------
+# Visualise Accuracy -------------------------
 
 # Tidy competition results
-accuracy <- tibble(criterion = criterion,
-                   Regression = glm_fit) %>%
-               gather(model, prediction, -criterion) %>%
+accuracy <- tibble(criterion_train = criterion_train,
+                   Regression = glm_fit,
+                   DecisionTrees = dt_fit,
+                   RandomForest = rf_fit) %>%
+               gather(model, prediction, -criterion_train) %>%
   
   # Add error measures
-  mutate(se = prediction - criterion,
-         ae = abs(prediction - criterion))
-
+  mutate(se = prediction - criterion_train,
+         ae = abs(prediction - criterion_train))
 
 # Calculate summaries
 accuracy_agg <- accuracy %>%
@@ -178,7 +202,7 @@ accuracy_agg <- accuracy %>%
 # Plot A) Scatterplot of truth versus predictions
 
 ggplot(data = accuracy,
-       aes(x = criterion, y = prediction, col = model)) +
+       aes(x = criterion_train, y = prediction, col = model)) +
   geom_point(alpha = .2) +
   geom_abline(slope = 1, intercept = 0) +
   labs(title = "Predicting mpg$hwy",
@@ -190,7 +214,7 @@ ggplot(data = accuracy,
        aes(x = model, y = ae, fill = model)) + 
   geom_violin() + 
   geom_jitter(width = .05, alpha = .2) +
-  labs(title = "Distributions of Fitting Absolute Errors",
+  labs(title = "Fitting Absolute Errors",
        subtitle = "Numbers indicate means",
        x = "Model",
        y = "Absolute Error") +
@@ -199,6 +223,66 @@ ggplot(data = accuracy,
            x = accuracy_agg$model, 
            y = accuracy_agg$mae, 
            label = round(accuracy_agg$mae, 2))
+
+# Step 5: Access prediction ------------------------------
+
+# Save predicted values
+glm_pred <- predict(hwy_glm, newdata = data_test)
+dt_pred <- predict(hwy_dt, newdata = data_test)
+rf_pred <- predict(hwy_rf, newdata = data_test)
+
+# Define criterion_train
+criterion_test <- data_test$hwy
+
+#  Calculate fitting accuracies
+postResample(pred = glm_pred, obs = criterion_test)
+postResample(pred = dt_pred, obs = criterion_test)
+postResample(pred = rf_pred, obs = criterion_test)
+
+# Visualise Accuracy -------------------------
+
+# Tidy competition results
+accuracy <- tibble(criterion_test = criterion_test,
+                   Regression = glm_pred,
+                   DecisionTrees = dt_pred,
+                   RandomForest = rf_pred) %>%
+               gather(model, prediction, -criterion_test) %>%
+  
+  # Add error measures
+  mutate(se = prediction - criterion_test,
+         ae = abs(prediction - criterion_test))
+
+# Calculate summaries
+accuracy_agg <- accuracy %>%
+                  group_by(model) %>%
+                  summarise(mae = mean(ae))   # Calculate MAE (mean absolute error)
+
+# Plot A) Scatterplot of truth versus predictions
+
+ggplot(data = accuracy,
+       aes(x = criterion_test, y = prediction, col = model)) +
+  geom_point(alpha = .2) +
+  geom_abline(slope = 1, intercept = 0) +
+  labs(title = "Predicting mpg$hwy",
+       subtitle = "Black line indicates perfect performance")
+
+# Plot B) Violin plot of absolute errors
+
+ggplot(data = accuracy, 
+       aes(x = model, y = ae, fill = model)) + 
+  geom_violin() + 
+  geom_jitter(width = .05, alpha = .2) +
+  labs(title = "Prediction Absolute Errors",
+       subtitle = "Numbers indicate means",
+       x = "Model",
+       y = "Absolute Error") +
+  guides(fill = FALSE) +
+  annotate(geom = "label", 
+           x = accuracy_agg$model, 
+           y = accuracy_agg$mae, 
+           label = round(accuracy_agg$mae, 2))
+
+
 ```
 
 # Tasks
