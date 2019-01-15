@@ -52,10 +52,10 @@ library(ggthemes)
 
 | Function| Package | Description |
 |:---|:------|:---------------------------------------------|
-| `summary()`|`base`|    Get summary information from an R object| 
-| `names()`|`base`|    See the named elements of a list| 
-| `LIST$NAME()`|`base`|    Get the named element `NAME` from a list `OBJECT`| 
+| `trainControl()`|`caret`|    Define modelling control parameters| 
+| `train()`|`caret`|    Train a model|
 | `predict(object, newdata)`|`base`|    Predict the criterion values of `newdata` based on `object`|
+| `postResample()`|`caret`|   Calculate aggregate model performance| 
 
 ### Packages
 
@@ -66,7 +66,12 @@ library(ggthemes)
 
 ### Cheatsheet
 
-*None*
+<figure>
+<center>
+<a href="https://github.com/rstudio/cheatsheets/raw/master/caret.pdf">
+  <img src="https://www.rstudio.com/wp-content/uploads/2015/01/caret-cheatsheet-200x155@2x.png" alt="Trulli" style="width:70%">
+  <figcaption>hhttps://github.com/rstudio/cheatsheets/raw/master/caret.pdf</figcaption></a>
+</figure>
 
 ### Examples
 
