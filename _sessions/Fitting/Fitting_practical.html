@@ -958,7 +958,12 @@ Source: wikipedia
 <tr class="even">
 <td align="left"><code>postResample()</code></td>
 <td align="left"><code>caret</code></td>
-<td align="left">Calculate aggregate model performance</td>
+<td align="left">Calculate aggregate model performance in regression tasks</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>confusionMatrix()</code></td>
+<td align="left"><code>caret</code></td>
+<td align="left">Calculate aggregate model performance in classification tasks</td>
 </tr>
 </tbody>
 </table>
@@ -1156,14 +1161,14 @@ college_train &lt;- college_train %&gt;%
 </div>
 <div id="b---determine-sampling-procedure" class="section level2">
 <h2>B - Determine sampling procedure</h2>
-<p>In <code>caret</code>, we always need to define computational nuances of training using the <code>trainControl()</code> function. Because we’re learning the basics of fitting, we’ll set <code>method = &quot;none&quot;</code> (note that you would almost never do this for a real prediction task!)</p>
+<p>In <code>caret</code>, we always need to define computational nuances of training using the <code>trainControl()</code> function. Because we’re learning the basics of fitting, we’ll set <code>method = &quot;none&quot;</code> (Note that you would almost never do this for a real prediction task, you’ll see why later!)</p>
 <pre class="r"><code># Set training resampling method to &quot;none&quot; to keep everything super simple
 #   for demonstration purposes
 
-ctrl &lt;- trainControl(method = &quot;none&quot;) </code></pre>
+ctrl_none &lt;- trainControl(method = &quot;none&quot;) </code></pre>
 </div>
-<div id="c---fitting-a-regression-model" class="section level2">
-<h2>C - Fitting a regression model</h2>
+<div id="c---fit-a-regression-model" class="section level2">
+<h2>C - Fit a regression model</h2>
 <ol style="list-style-type: decimal">
 <li>Using the code below, fit a regression model predicting graduation rate (<code>Grad_Rate</code>) as a function of one feature <code>PhD</code>, the percent of faculty with Ph.Ds). Save the result as an object <code>Grad_Rate_glm</code></li>
 </ol>
@@ -1174,7 +1179,7 @@ ctrl &lt;- trainControl(method = &quot;none&quot;) </code></pre>
 Grad_Rate_glm &lt;- train(form = Grad_Rate ~ PhD,
                        data = college_train,
                        method = &quot;glm&quot;,
-                       trControl = ctrl)</code></pre>
+                       trControl = ctrl_none)</code></pre>
 <ol start="2" style="list-style-type: decimal">
 <li>Explore the model using the <code>summary()</code> function.</li>
 </ol>
@@ -1195,8 +1200,8 @@ glm_fit &lt;- predict(Grad_Rate_glm)</code></pre>
 
 glm_fit</code></pre>
 </div>
-<div id="d---evaluating-accuracy" class="section level2">
-<h2>D - Evaluating accuracy</h2>
+<div id="d---evaluate-accuracy" class="section level2">
+<h2>D - Evaluate accuracy</h2>
 <ol style="list-style-type: decimal">
 <li>Now it’s time to compare your model fits to the true values, we’ll start by defining the vector <code>criterion</code> as the graduation rates.</li>
 </ol>
@@ -1290,7 +1295,7 @@ ggplot(data = accuracy,
 <pre class="r"><code>Grad_Rate_glm &lt;- train(form = Grad_Rate ~ . - XXX,   # Get rid of that one feature!
                        data = college_train,
                        method = &quot;glm&quot;,
-                       trControl = ctrl)</code></pre>
+                       trControl = ctrl_none)</code></pre>
 <ol start="3" style="list-style-type: decimal">
 <li><p>Explore your model using <code>summary()</code>, which features seem to be important?</p></li>
 <li><p>What is the Mean Absolute Error (MAE) of your new model that uses 6 features? How does this compare to your previous model that only used 1 feature?</p></li>

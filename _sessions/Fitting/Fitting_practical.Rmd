@@ -55,7 +55,8 @@ library(ggthemes)
 | `trainControl()`|`caret`|    Define modelling control parameters| 
 | `train()`|`caret`|    Train a model|
 | `predict(object, newdata)`|`base`|    Predict the criterion values of `newdata` based on `object`|
-| `postResample()`|`caret`|   Calculate aggregate model performance| 
+| `postResample()`|`caret`|   Calculate aggregate model performance in regression tasks|
+| `confusionMatrix()`|`caret`|   Calculate aggregate model performance in classification tasks| 
 
 ### Packages
 
@@ -252,16 +253,16 @@ college_train <- college_train %>%
 
 ## B - Determine sampling procedure
 
-In `caret`, we always need to define computational nuances of training using the `trainControl()` function. Because we're learning the basics of fitting, we'll set `method = "none"` (note that you would almost never do this for a real prediction task!)
+In `caret`, we always need to define computational nuances of training using the `trainControl()` function. Because we're learning the basics of fitting, we'll set `method = "none"` (Note that you would almost never do this for a real prediction task, you'll see why later!)
 
 ```{r}
 # Set training resampling method to "none" to keep everything super simple
 #   for demonstration purposes
 
-ctrl <- trainControl(method = "none") 
+ctrl_none <- trainControl(method = "none") 
 ```
 
-## C - Fitting a regression model
+## C - Fit a regression model
 
 1. Using the code below, fit a regression model predicting graduation rate (`Grad_Rate`) as a function of one feature `PhD`, the percent of faculty with Ph.Ds). Save the result as an object `Grad_Rate_glm`
 
@@ -273,7 +274,7 @@ ctrl <- trainControl(method = "none")
 Grad_Rate_glm <- train(form = Grad_Rate ~ PhD,
                        data = college_train,
                        method = "glm",
-                       trControl = ctrl)
+                       trControl = ctrl_none)
 ```
 
 2. Explore the model using the `summary()` function.
@@ -302,7 +303,7 @@ glm_fit <- predict(Grad_Rate_glm)
 glm_fit
 ```
 
-## D - Evaluating accuracy
+## D - Evaluate accuracy
 
 1. Now it's time to compare your model fits to the true values, we'll start by defining the vector `criterion` as the graduation rates.
 
@@ -416,7 +417,7 @@ Alright now it's time to use all features available!
 Grad_Rate_glm <- train(form = Grad_Rate ~ . - XXX,   # Get rid of that one feature!
                        data = college_train,
                        method = "glm",
-                       trControl = ctrl)
+                       trControl = ctrl_none)
 ```
 
 3. Explore your model using `summary()`, which features seem to be important?
@@ -458,7 +459,7 @@ criterion <- college_train$Private
 Private_glm <- train(form = Private ~ . -college_name,
                      data = college_train,
                      method = "glm",
-                     trControl = ctrl)
+                     trControl = ctrl_none)
 ```
 
 2. Explore the model using the `summary()` function.
