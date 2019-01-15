@@ -84,7 +84,9 @@ library(ISLR)   # Load ISLR package
 | `trainControl()`|`caret`|    Define modelling control parameters| 
 | `train()`|`caret`|    Train a model|
 | `predict(object, newdata)`|`base`|    Predict the criterion values of `newdata` based on `object`|
-| `postResample()`|`caret`|   Calculate aggregate model performance| 
+| `postResample()`|`caret`|   Calculate aggregate model performance in regression tasks|
+| `confusionMatrix()`|`caret`|   Calculate aggregate model performance in classification tasks| 
+
 
 ### Packages
 
