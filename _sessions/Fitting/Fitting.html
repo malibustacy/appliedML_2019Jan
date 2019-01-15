@@ -149,8 +149,7 @@ Fitting means finding the "best" version of a model for a specific dataset.
 &gt; "Let me represent the data in the best way I can given how I work"&lt;br&gt;
 &gt;~ Model during fitting
 
-
-The "best" model is usually defined as a combination of &lt;high&gt;accuracy&lt;/high&gt; (higher better!) and &lt;high&gt;complexity&lt;/high&gt; (lower better!)
+The "best" model is usually defined as a combination of &lt;high&gt;accuracy&lt;/high&gt; (higher better!) and &lt;high&gt;complexity&lt;/high&gt; (simpler is better!)
 
 
 ]
@@ -396,7 +395,7 @@ Our model is 67% accurate in catching true repayments
 
 Now we're ready to fit models to data!
 
-We will cover three commonly used models, Regression, Decision Trees, and Random Forest
+In this course will cover three commonly used models, Regression, Decision Trees, and Random Forest
 
 These models can be used in both regression and classification tasks.
 
@@ -417,15 +416,23 @@ As you'll see, they differ in complexity (interpretability, computational demand
 ]
 
 ---
+class: middle, center
+
+
+
+# Regression
+
+Undoubtedly the most widely used machine learning algorithm
+
+&lt;img src="https://www.rmurphyknives.com/store/media/Cooking/ChefsSelect/Chef8/CH8CIIHO2500x1667.jpg" width="60%" style="display: block; margin: auto;" /&gt;
+
+---
 
 .pull-left4[
 
 # Regression
 
-In [regression](https://en.wikipedia.org/wiki/Regression_analysis), the criterion Y is modeled as the &lt;high&gt;sum&lt;/high&gt; of &lt;high&gt;predictors times weights&lt;/high&gt; `\(\beta_{1}\)`, `\(\beta_{2}\)`&lt;/high&gt;.
-
-`$$\hat{Y} =  \beta_{0} + X1 \times \beta_{X1} + X2 \times \beta_{X2} + ...$$`
-
+`$$\large \hat{Y} =  \beta_{0} + X1 \times \beta_{X1} + X2 \times \beta_{X2} + ...$$`
 
 &lt;div class="figure" style="text-align: center"&gt;
 &lt;img src="image/regression_ISLR.jpg" alt="&amp;lt;font size = 4&amp;gt;James et al., Introduction to SL&amp;lt;/font&amp;gt;" width="100%" /&gt;
@@ -438,21 +445,22 @@ In [regression](https://en.wikipedia.org/wiki/Regression_analysis), the criterio
 
 .pull-right55[
 
-### Fitting
+&lt;br&gt;&lt;br&gt;
 
-Estimate parameters `\(\beta_{0}\)`, `\(\beta_{X1}\)`, ... that minimize error (e.g.; Mean Squared Error)
+### Interpretation
 
-`$$\large MSE = \frac{1}{n}\sum_{t=1}^{n}(obs - Y)^{2}$$`
+In [regression](https://en.wikipedia.org/wiki/Regression_analysis), the criterion Y is modeled as the &lt;high&gt;sum&lt;/high&gt; of &lt;high&gt;predictors times weights&lt;/high&gt; `\(\beta_{1}\)`, `\(\beta_{2}\)`&lt;/high&gt;.
 
-### R Method
+Often called a 'weighted additive model'
 
-Common methods of estimating regression models:
+`$$\LARGE \hat{Y} =  \beta_{0} + X1 \times \beta_{X1} + X2 \times \beta_{X2} + ...$$`
 
-| Tuning | Description| Caret |
-|:-----|:------|:---|
-|Standard |Estimates coefficients using raw MSE| `"glm"`|
-|Ridge | 'Shrinks' coefficients *towards* 0| `"ridge"`|
-|Lasso | 'Shrinks' many coefficients down to *exactly* 0|`"lasso"`|
+Each beta weight `\(\beta\)` can be interpreted as:
+
+
+&gt; As the value of X increases by 1, how does the criterion Y change?
+
+
 
 ]
 
@@ -491,68 +499,6 @@ In [regression](https://en.wikipedia.org/wiki/Regression_analysis), the criterio
 ]
 
 
----
-
-.pull-left4[
-
-# Decision Trees
-
-In [decision trees](https://en.wikipedia.org/wiki/Decision_tree), the criterion is modeled as a &lt;high&gt;sequence of logical YES or NO questions&lt;/high&gt;.
-&lt;br&gt;&lt;br&gt;
-
-&lt;p align="center"&gt;
-  &lt;img src="https://raw.githubusercontent.com/therbootcamp/therbootcamp.github.io/master/_sessions/_image/defaulttree.png" height="250px"&gt;
-&lt;/p&gt;
-
-]
-
-.pull-right55[
-
-### Fitting
-
-Goal: Maximize accuracy by define splits that maximize *Node Purity*
-
-&lt;img src="image/tree_purity_example.png" width="100%" style="display: block; margin: auto;" /&gt;
-
-### R Method
-
-| Variant | Description| Caret |
-|:-----|:------|:---|
-|rpart |Recursive Partitioning| `"rpart"`|
-
-]
-
----
-
-.pull-left4[
-
-# Random Forest
-
-In [Random Forest](https://en.wikipedia.org/wiki/Random_forest), the criterion is models as the &lt;high&gt;aggregate prediction of a large number of decision trees&lt;/high&gt; each based on different features.
-&lt;br&gt;
-
-&lt;p align="center"&gt;
-  &lt;img src="https://raw.githubusercontent.com/therbootcamp/Erfurt_2018June/master/_sessions/_image/randomforest_diagram.png" height="285px"&gt;&lt;br&gt;
-  &lt;a href="https://medium.com/@williamkoehrsen"&gt;Source&lt;/a&gt;
-&lt;/p&gt;
-
-]
-
-.pull-right55[
-
-### Fitting
-
-Goal: Create a large set of diverse trees that can be aggregated into one *Wisdom of Crowds* judgment
-
-&lt;img src="image/tree_crowd.png" width="60%" style="display: block; margin: auto;" /&gt;
-
-### R Method
-
-| Variant | Description| Caret |
-|:-----|:------|:---|
-|Random Forests |"Classic" random forests| `"rf"`|
-
-]
 
 ---
 class: center,  middle
@@ -807,7 +753,7 @@ If the model was perfect, all points would be on diagonal
 *Code Hidden*
 
 
-&lt;img src="Fitting_files/figure-html/unnamed-chunk-32-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="Fitting_files/figure-html/unnamed-chunk-31-1.png" style="display: block; margin: auto;" /&gt;
 
 
 ]
@@ -847,7 +793,7 @@ Red lines indicate absolute error(s)
 
 *Code Hidden*
 
-&lt;img src="Fitting_files/figure-html/unnamed-chunk-35-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="Fitting_files/figure-html/unnamed-chunk-34-1.png" style="display: block; margin: auto;" /&gt;
 
 ]
 
@@ -856,6 +802,73 @@ Red lines indicate absolute error(s)
 class: middle, center
 
 &lt;h1&gt;&lt;a href=https://therbootcamp.github.io/appliedML_2019Jan/_sessions/Fitting/Fitting_practical.html&gt;Practical&lt;/a&gt;&lt;/h1&gt;
+
+
+
+
+
+---
+
+.pull-left4[
+
+# Decision Trees
+
+In [decision trees](https://en.wikipedia.org/wiki/Decision_tree), the criterion is modeled as a &lt;high&gt;sequence of logical YES or NO questions&lt;/high&gt;.
+&lt;br&gt;&lt;br&gt;
+
+&lt;p align="center"&gt;
+  &lt;img src="https://raw.githubusercontent.com/therbootcamp/therbootcamp.github.io/master/_sessions/_image/defaulttree.png" height="250px"&gt;
+&lt;/p&gt;
+
+]
+
+.pull-right55[
+
+### Fitting
+
+Goal: Maximize accuracy by define splits that maximize *Node Purity*
+
+&lt;img src="image/tree_purity_example.png" width="100%" style="display: block; margin: auto;" /&gt;
+
+### R Method
+
+| Variant | Description| Caret |
+|:-----|:------|:---|
+|rpart |Recursive Partitioning| `"rpart"`|
+
+]
+
+---
+
+.pull-left4[
+
+# Random Forest
+
+In [Random Forest](https://en.wikipedia.org/wiki/Random_forest), the criterion is models as the &lt;high&gt;aggregate prediction of a large number of decision trees&lt;/high&gt; each based on different features.
+&lt;br&gt;
+
+&lt;p align="center"&gt;
+  &lt;img src="https://raw.githubusercontent.com/therbootcamp/Erfurt_2018June/master/_sessions/_image/randomforest_diagram.png" height="285px"&gt;&lt;br&gt;
+  &lt;a href="https://medium.com/@williamkoehrsen"&gt;Source&lt;/a&gt;
+&lt;/p&gt;
+
+]
+
+.pull-right55[
+
+### Fitting
+
+Goal: Create a large set of diverse trees that can be aggregated into one *Wisdom of Crowds* judgment
+
+&lt;img src="image/tree_crowd.png" width="60%" style="display: block; margin: auto;" /&gt;
+
+### R Method
+
+| Variant | Description| Caret |
+|:-----|:------|:---|
+|Random Forests |"Classic" random forests| `"rf"`|
+
+]
     </textarea>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
 <script>var slideshow = remark.create({
@@ -874,30 +887,19 @@ if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
   d.head.appendChild(s);
 })();</script>
 
-<script>
-(function() {
-  var i, text, code, codes = document.getElementsByTagName('code');
-  for (i = 0; i < codes.length;) {
-    code = codes[i];
-    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
-      text = code.textContent;
-      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
-          /^\$\$(.|\s)+\$\$$/.test(text) ||
-          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
-        code.outerHTML = code.innerHTML;  // remove <code></code>
-        continue;
-      }
-    }
-    i++;
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  tex2jax: {
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre']
   }
-})();
+});
 </script>
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>
 (function () {
   var script = document.createElement('script');
   script.type = 'text/javascript';
-  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  script.src  = 'https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML';
   if (location.protocol !== 'file:' && /^https?:/.test(script.src))
     script.src  = script.src.replace(/^https?:/, '');
   document.getElementsByTagName('head')[0].appendChild(script);

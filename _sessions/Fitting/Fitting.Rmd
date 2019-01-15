@@ -168,8 +168,7 @@ Fitting means finding the "best" version of a model for a specific dataset.
 > "Let me represent the data in the best way I can given how I work"<br>
 >~ Model during fitting
 
-
-The "best" model is usually defined as a combination of <high>accuracy</high> (higher better!) and <high>complexity</high> (lower better!)
+The "best" model is usually defined as a combination of <high>accuracy</high> (higher better!) and <high>complexity</high> (simpler is better!)
 
 
 ]
@@ -517,7 +516,7 @@ $$\large Specificity = \frac{2}{ 2 + 1 }= 0.67$$
 
 Now we're ready to fit models to data!
 
-We will cover three commonly used models, Regression, Decision Trees, and Random Forest
+In this course will cover three commonly used models, Regression, Decision Trees, and Random Forest
 
 These models can be used in both regression and classification tasks.
 
@@ -540,15 +539,25 @@ knitr::include_graphics("https://github.com/therbootcamp/appliedML_2019Jan/blob/
 ]
 
 ---
+class: middle, center
+
+
+
+# Regression
+
+Undoubtedly the most widely used machine learning algorithm
+
+```{r, echo = FALSE, out.width = "60%"}
+knitr::include_graphics("https://www.rmurphyknives.com/store/media/Cooking/ChefsSelect/Chef8/CH8CIIHO2500x1667.jpg")
+```
+
+---
 
 .pull-left4[
 
 # Regression
 
-In [regression](https://en.wikipedia.org/wiki/Regression_analysis), the criterion Y is modeled as the <high>sum</high> of <high>predictors times weights</high> $\beta_{1}$, $\beta_{2}$</high>.
-
-$$\hat{Y} =  \beta_{0} + X1 \times \beta_{X1} + X2 \times \beta_{X2} + ...$$
-
+$$\large \hat{Y} =  \beta_{0} + X1 \times \beta_{X1} + X2 \times \beta_{X2} + ...$$
 
 ```{r, echo = FALSE, out.width = "100%", fig.cap = "<font size = 4>James et al., Introduction to SL</font>"}
 knitr::include_graphics("image/regression_ISLR.jpg")
@@ -560,21 +569,22 @@ knitr::include_graphics("image/regression_ISLR.jpg")
 
 .pull-right55[
 
-### Fitting
+<br><br>
 
-Estimate parameters $\beta_{0}$, $\beta_{X1}$, ... that minimize error (e.g.; Mean Squared Error)
+### Interpretation
 
-$$\large MSE = \frac{1}{n}\sum_{t=1}^{n}(obs - Y)^{2}$$
+In [regression](https://en.wikipedia.org/wiki/Regression_analysis), the criterion Y is modeled as the <high>sum</high> of <high>predictors times weights</high> $\beta_{1}$, $\beta_{2}$</high>.
 
-### R Method
+Often called a 'weighted additive model'
 
-Common methods of estimating regression models:
+$$\LARGE \hat{Y} =  \beta_{0} + X1 \times \beta_{X1} + X2 \times \beta_{X2} + ...$$
 
-| Tuning | Description| Caret |
-|:-----|:------|:---|
-|Standard |Estimates coefficients using raw MSE| `"glm"`|
-|Ridge | 'Shrinks' coefficients *towards* 0| `"ridge"`|
-|Lasso | 'Shrinks' many coefficients down to *exactly* 0|`"lasso"`|
+Each beta weight $\beta$ can be interpreted as:
+
+
+> As the value of X increases by 1, how does the criterion Y change?
+
+
 
 ]
 
@@ -614,72 +624,6 @@ $$\large Sales =  \beta_{0} + CompPrice \times \beta_{CompPrice} + Income \times
 ]
 
 
----
-
-.pull-left4[
-
-# Decision Trees
-
-In [decision trees](https://en.wikipedia.org/wiki/Decision_tree), the criterion is modeled as a <high>sequence of logical YES or NO questions</high>.
-<br><br>
-
-<p align="center">
-  <img src="https://raw.githubusercontent.com/therbootcamp/therbootcamp.github.io/master/_sessions/_image/defaulttree.png" height="250px">
-</p>
-
-]
-
-.pull-right55[
-
-### Fitting
-
-Goal: Maximize accuracy by define splits that maximize *Node Purity*
-
-```{r, echo = FALSE, out.width = "100%"}
-knitr::include_graphics("image/tree_purity_example.png")
-```
-
-### R Method
-
-| Variant | Description| Caret |
-|:-----|:------|:---|
-|rpart |Recursive Partitioning| `"rpart"`|
-
-]
-
----
-
-.pull-left4[
-
-# Random Forest
-
-In [Random Forest](https://en.wikipedia.org/wiki/Random_forest), the criterion is models as the <high>aggregate prediction of a large number of decision trees</high> each based on different features.
-<br>
-
-<p align="center">
-  <img src="https://raw.githubusercontent.com/therbootcamp/Erfurt_2018June/master/_sessions/_image/randomforest_diagram.png" height="285px"><br>
-  <a href="https://medium.com/@williamkoehrsen">Source</a>
-</p>
-
-]
-
-.pull-right55[
-
-### Fitting
-
-Goal: Create a large set of diverse trees that can be aggregated into one *Wisdom of Crowds* judgment
-
-```{r, echo = FALSE, out.width = "60%"}
-knitr::include_graphics("image/tree_crowd.png")
-```
-
-### R Method
-
-| Variant | Description| Caret |
-|:-----|:------|:---|
-|Random Forests |"Classic" random forests| `"rf"`|
-
-]
 
 ---
 class: center,  middle
@@ -971,4 +915,72 @@ class: middle, center
 
 
 
+
+
+---
+
+.pull-left4[
+
+# Decision Trees
+
+In [decision trees](https://en.wikipedia.org/wiki/Decision_tree), the criterion is modeled as a <high>sequence of logical YES or NO questions</high>.
+<br><br>
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/therbootcamp/therbootcamp.github.io/master/_sessions/_image/defaulttree.png" height="250px">
+</p>
+
+]
+
+.pull-right55[
+
+### Fitting
+
+Goal: Maximize accuracy by define splits that maximize *Node Purity*
+
+```{r, echo = FALSE, out.width = "100%"}
+knitr::include_graphics("image/tree_purity_example.png")
+```
+
+### R Method
+
+| Variant | Description| Caret |
+|:-----|:------|:---|
+|rpart |Recursive Partitioning| `"rpart"`|
+
+]
+
+---
+
+.pull-left4[
+
+# Random Forest
+
+In [Random Forest](https://en.wikipedia.org/wiki/Random_forest), the criterion is models as the <high>aggregate prediction of a large number of decision trees</high> each based on different features.
+<br>
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/therbootcamp/Erfurt_2018June/master/_sessions/_image/randomforest_diagram.png" height="285px"><br>
+  <a href="https://medium.com/@williamkoehrsen">Source</a>
+</p>
+
+]
+
+.pull-right55[
+
+### Fitting
+
+Goal: Create a large set of diverse trees that can be aggregated into one *Wisdom of Crowds* judgment
+
+```{r, echo = FALSE, out.width = "60%"}
+knitr::include_graphics("image/tree_crowd.png")
+```
+
+### R Method
+
+| Variant | Description| Caret |
+|:-----|:------|:---|
+|Random Forests |"Classic" random forests| `"rf"`|
+
+]
 

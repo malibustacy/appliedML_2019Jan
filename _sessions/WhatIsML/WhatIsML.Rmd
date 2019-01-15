@@ -222,6 +222,7 @@ knitr::include_graphics("image/trump_gut_blank.jpg")
 knitr::include_graphics("image/trump_gut_statement.jpg")
 ```
 
+
 ---
 
 # Solution 2: Data-Driven Machine Learning
@@ -560,12 +561,18 @@ knitr::include_graphics("image/three_models.png")
 
 *To <high>learn something</high> from the data*
 
-- Which features are most <high>important</high> in predicting the criterion and which can be safely ignored?
-- What is the <high>relationship</high> between features and the criterion?
-    - Strong? Weak? Positive? Negative?
-- Make <high>predictions</high> for new data.
-    - I've got a new patient, how likely is it that (s)he is having a heart attack?
-- Improve predictions over time with new data.
+Which features are most <high>important</high> in predicting the criterion and which can be safely ignored?
+
+What is the <high>relationship</high> between features and the criterion?
+
+- Strong? Weak? Positive? Negative?
+
+Make <high>predictions</high> for new data.
+
+- Is this patient having a is having a heart attack?
+- How much will this new site sell?
+
+Improve predictions over time with new data.
 
 
 
@@ -591,11 +598,11 @@ knitr::include_graphics("https://github.com/therbootcamp/appliedML_2019Jan/blob/
 
 ### Practical
 
-- Need a computational / mathematical representation of the data that can be programmed and <high>productionised</high>.
+Need a computational / mathematical representation of the data that can be programmed and <high>productionised</high>.
 
-- A model is like a step-by-step recipe, telling you exactly what data you need, and how to combine it. 
+A model is like a <high>step-by-step recipe</high>, telling you exactly what data you need, and how to combine it. 
 
-```{r, echo = FALSE, fig.align = 'center', out.width = "70%"}
+```{r, echo = FALSE, fig.align = 'center', out.width = "70%", fig.cap= "<font size = 4>amazon.com</font>"}
 knitr::include_graphics("https://images-na.ssl-images-amazon.com/images/I/91%2BGl%2B3LRHL.jpg")
 ```
 
