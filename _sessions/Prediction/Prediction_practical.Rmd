@@ -1,6 +1,6 @@
 ---
-title: "Fitting"
-subtitle: "Parameter estimation and fitting statistics with regression"
+title: "Prediction"
+subtitle: "With regression, decision trees, and random forests"
 author: "Applied Machine Learning with R<br/><a href='https://therbootcamp.github.io'>www.therbootcamp.com</a><br/><a href='https://twitter.com/therbootcamp'>@therbootcamp</a>"
 output:
   html_document:
@@ -20,22 +20,22 @@ knitr::opts_chunk$set(comment = NA,
 options(digits = 3)
 ```
 
-```{r, echo = FALSE, fig.align = 'center', eval = TRUE, out.width = "70%", fig.cap="Source: wikipedia"}
-knitr::include_graphics("https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/Linear_regression.svg/1200px-Linear_regression.svg.png")
+```{r, echo = FALSE, fig.align = 'center', eval = TRUE, out.width = "70%", fig.cap="Source: Medium.com"}
+knitr::include_graphics("https://cdn-images-1.medium.com/max/1200/0*F0y1bmOEzCFCcPE_")
 ```
 
 ## {.tabset}
 
 ### Overview
 
-In this practical you'll practice the basics of fitting and exploring regression models in R.
+In this practical you'll practice the basics of model fitting and prediction with regression and decision trees
 
 By the end of this practical you will know how to:
 
-1. Fit regression to training data.
-2. Explore your object with generic functions.
-3. Evaluate its fitting performance using accuracy measures such as MSE and MAE.
-4. Explore the effects of adding additional features.
+1. Fit regression, decision trees and random forests to training data
+2. Evaluate model fitting and prediction performance
+3. Compare the fitting and prediction performance of two models
+4. Explore the effects of features on model predictions
 
 ### Datasets
 
@@ -46,702 +46,480 @@ library(ggthemes)
 
 |File  |Rows | Columns |
 |:----|:-----|:------|
-|[college_train.csv](https://raw.githubusercontent.com/therbootcamp/appliedML_2019Jan/master/_sessions/_data/college_train.csv)| 1000 | 21|
+|[college_train.csv](https://raw.githubusercontent.com/therbootcamp/appliedML_2019Jan/master/1_Data/college_train.csv)| 500 | 18|
+|[college_test.csv](https://raw.githubusercontent.com/therbootcamp/appliedML_2019Jan/master/1_Data/college_est.csv)| 277 | 18|
+|[house_train.csv](https://raw.githubusercontent.com/therbootcamp/appliedML_2019Jan/master/1_Data/house_train.csv)| 5000 | 21|
+|[house_test.csv](https://raw.githubusercontent.com/therbootcamp/appliedML_2019Jan/master/1_Data/_data/house_test.csv)| 1000 | 21|
+
+
+```{r, message = FALSE, eval = TRUE, echo = FALSE}
+# Load datasets locally
+library(tidyverse)
+college_train <- read_csv("https://raw.githubusercontent.com/therbootcamp/appliedML_2019Jan/master/1_Data/college_train.csv")
+college_test <- read_csv("https://raw.githubusercontent.com/therbootcamp/appliedML_2019Jan/master/1_Data/college_test.csv")
+house_train <- read_csv("https://raw.githubusercontent.com/therbootcamp/appliedML_2019Jan/master/1_Data/house_train.csv")
+house_test <- read_csv("https://raw.githubusercontent.com/therbootcamp/appliedML_2019Jan/master/1_Data/house_test.csv")
+```
+
+- The `college_train` and `college_test` data are taken from the `College` dataset in the `ISLR` package. To see column descriptions, run the following:
+
+```{r, eval = FALSE}
+library(ISLR)   # Load ISLR package
+?College        # Look at help menu for College
+```
+
+- The `carseats_train` and `carseats_test` data are taken from the `Carseats` dataset in the `ISLR` package. To see column descriptions, run the following:
+
+```{r, eval = FALSE}
+library(ISLR)   # Load ISLR package
+?Carseats        # Look at help menu for Carseats
+```
+
+- The `house_train` and `house_test` data come from [https://www.kaggle.com/harlfoxem/housesalesprediction](https://www.kaggle.com/harlfoxem/housesalesprediction)
 
 ### Glossary
 
 | Function| Package | Description |
 |:---|:------|:---------------------------------------------|
-| `summary()`|`base`|    Get summary information from an R object| 
-| `names()`|`base`|    See the named elements of a list| 
-| `LIST$NAME()`|`base`|    Get the named element `NAME` from a list `OBJECT`| 
+| `trainControl()`|`caret`|    Define modelling control parameters| 
+| `train()`|`caret`|    Train a model|
 | `predict(object, newdata)`|`base`|    Predict the criterion values of `newdata` based on `object`|
+| `postResample()`|`caret`|   Calculate aggregate model performance in regression tasks|
+| `confusionMatrix()`|`caret`|   Calculate aggregate model performance in classification tasks| 
+
 
 ### Packages
 
 |Package| Installation|
 |:------|:------|
 |`tidyverse`|`install.packages("tidyverse")`|
-|`broom`|`install.packages("broom")`|
-|`rpart`|`install.packages("rpart")`|
-|`FFTrees`|`install.packages("FFTrees")`|
-|`partykit`|`install.packages("partykit")`|
-|`party`|`install.packages("party")`|
-|`randomForest`|`install.packages("randomForest")`|
 |`caret`|`install.packages("caret")`|
 
 ### Cheatsheet
 
-*None*
+<figure>
+<center>
+<a href="https://github.com/rstudio/cheatsheets/raw/master/caret.pdf">
+  <img src="https://www.rstudio.com/wp-content/uploads/2015/01/caret-cheatsheet-200x155@2x.png" alt="Trulli" style="width:70%">
+  <figcaption>hhttps://github.com/rstudio/cheatsheets/raw/master/caret.pdf</figcaption></a>
+</figure>
 
 ### Examples
 
 ```{r, eval = FALSE, echo = TRUE}
-# Machine learning basics ------------------------------------
+# Fitting and evaluating a regression model ------------------------------------
 
 # Step 0: Load packages-----------
 
 library(tidyverse)    # Load tidyverse for dplyr and tidyr
-library(rpart)        # For rpart()
-library(caret)        # For resamp 
-library(partykit)     # For nice decision trees
+library(caret)        # For ML mastery 
+library(partykit)     # For decision trees
+library(party)        # For decision trees
 
-# Load  and Clean Training data ----------------------
+# Step 1: Load and Clean, and Explore Training data ----------------------
 
-# I'll use the mpg dataset from the dplyr package in this example
-#  no need to load an external dataset
+# training data
+data_train <- read_csv("1_Data/mpg_train.csv")
 
-data_train <- mpg
+# test data
+data_test <- read_csv("1_Data/mpg_test.csv")
 
-# Convert character to factor
+# Convert all characters to factor
+#  Some ML models require factors
 
 data_train <- data_train %>%
   mutate_if(is.character, factor)
 
-# Explore training data -----------------------------
+data_test <- data_test %>%
+  mutate_if(is.character, factor)
 
-View(data_train)
+# Explore training data
 
-# Our goal is to predict hwy
+data_train        # Print the dataset
+View(data_train)  # Open in a new spreadsheet-like window 
+dim(data_train)   # Print dimensions
+names(data_train) # Print the names
 
-# Define training control parameters
-# In this case, I will fit to the entire dataset without any sampling
+# Step 2: Define training control parameters -------------
+
+# In this case, I will set method = "none" to fit to 
+#  the entire dataset without any fancy methods
 
 train_control <- trainControl(method = "none") 
 
-# Fit models predicting hwy ------------------
+# Step 3: Train model: -----------------------------
+#   Criterion: hwy
+#   Features: year, cyl, displ
 
 # Regression
 
-hwy_glm <- train(hwy ~ .,
+hwy_glm <- train(form = hwy ~ year + cyl + displ,
                  data = data_train,
                  method = "glm",
-                 trControl = fitControl)
-
-# Decision Tree
-
-hwy_rpart <- train(hwy ~ .,
-                   data = data_train,
-                   method = "rpart",
-                   trControl = fitControl,
-                   tuneGrid = expand.grid(cp = .05))   # Need to define cp
+                 trControl = train_control)
 
 # Look at summary information
+hwy_glm$finalModel
 summary(hwy_glm)
-summary(hwy_rpart)
+
+# Decision Trees
+
+hwy_dt <- train(form = hwy ~ year + cyl + displ,
+                data = data_train,
+                method = "rpart",
+                trControl = train_control,
+                tuneGrid = expand.grid(cp = .01))   # Set complexity parameter
+
+# Look at summary information
+hwy_dt$finalModel
+plot(as.party(hwy_dt$finalModel))   # Visualise your trees
+
+# Random Forests
+
+hwy_rf <- train(form = hwy ~ year + cyl + displ,
+                data = data_train,
+                method = "rf",
+                trControl = train_control,
+                tuneGrid = expand.grid(mtry = 2))   # Set number of features randomly selected
+
+# Look at summary information
+hwy_rf$finalModel
+
+# Step 4: Access fit ------------------------------
 
 # Save fitted values
 glm_fit <- predict(hwy_glm)
-rpart_fit <- predict(hwy_rpart)
+dt_fit <- predict(hwy_dt)
+rf_fit <- predict(hwy_rf)
 
-# Regression Fitting Accuracy
+# Define criterion_train
+criterion_train <- data_train$hwy
 
-# Define truth
-truth <- data_train$hwy
+#  Calculate fitting accuracies
+postResample(pred = glm_fit, obs = criterion_train)
+postResample(pred = dt_fit, obs = criterion_train)
+postResample(pred = rf_fit, obs = criterion_train)
 
-postResample(pred = glm_fit, 
-             obs = truth)
-
-#      RMSE  Rsquared       MAE 
-# 0.8233526 0.9807992 0.6307284 
-
-#   rpart fit accuracy
-postResample(pred = rpart_fit, 
-             obs = truth)
-
-#      RMSE  Rsquared       MAE 
-# 2.7507442 0.7856868 2.0901933 
-
-# Conclusion: Fit for regression is better in all measures
-
-# Step 6: Plot fitting accuracy -------------------------
+# Visualise Accuracy -------------------------
 
 # Tidy competition results
-competition_results <- tibble(truth = truth,
-                              Regression = glm_fit,
-                              DecisionTrees = rpart_fit) %>%
-                       gather(group, prediction, -truth)
+accuracy <- tibble(criterion_train = criterion_train,
+                   Regression = glm_fit,
+                   DecisionTrees = dt_fit,
+                   RandomForest = rf_fit) %>%
+               gather(model, prediction, -criterion_train) %>%
+  
+  # Add error measures
+  mutate(se = prediction - criterion_train,
+         ae = abs(prediction - criterion_train))
 
-# Plot!
-ggplot(data = competition_results,
-       aes(x = truth, y = prediction, col = group)) +
+# Calculate summaries
+accuracy_agg <- accuracy %>%
+                  group_by(model) %>%
+                  summarise(mae = mean(ae))   # Calculate MAE (mean absolute error)
+
+# Plot A) Scatterplot of truth versus predictions
+
+ggplot(data = accuracy,
+       aes(x = criterion_train, y = prediction, col = model)) +
   geom_point(alpha = .2) +
   geom_abline(slope = 1, intercept = 0) +
-  labs(title = "Predicting car mileage",
-       subtitle = "Regression versus decision trees")
+  labs(title = "Predicting mpg$hwy",
+       subtitle = "Black line indicates perfect performance")
+
+# Plot B) Violin plot of absolute errors
+
+ggplot(data = accuracy, 
+       aes(x = model, y = ae, fill = model)) + 
+  geom_violin() + 
+  geom_jitter(width = .05, alpha = .2) +
+  labs(title = "Fitting Absolute Errors",
+       subtitle = "Numbers indicate means",
+       x = "Model",
+       y = "Absolute Error") +
+  guides(fill = FALSE) +
+  annotate(geom = "label", 
+           x = accuracy_agg$model, 
+           y = accuracy_agg$mae, 
+           label = round(accuracy_agg$mae, 2))
+
+# Step 5: Access prediction ------------------------------
+
+# Save predicted values
+glm_pred <- predict(hwy_glm, newdata = data_test)
+dt_pred <- predict(hwy_dt, newdata = data_test)
+rf_pred <- predict(hwy_rf, newdata = data_test)
+
+# Define criterion_train
+criterion_test <- data_test$hwy
+
+#  Calculate fitting accuracies
+postResample(pred = glm_pred, obs = criterion_test)
+postResample(pred = dt_pred, obs = criterion_test)
+postResample(pred = rf_pred, obs = criterion_test)
+
+# Visualise Accuracy -------------------------
+
+# Tidy competition results
+accuracy <- tibble(criterion_test = criterion_test,
+                   Regression = glm_pred,
+                   DecisionTrees = dt_pred,
+                   RandomForest = rf_pred) %>%
+               gather(model, prediction, -criterion_test) %>%
+  
+  # Add error measures
+  mutate(se = prediction - criterion_test,
+         ae = abs(prediction - criterion_test))
+
+# Calculate summaries
+accuracy_agg <- accuracy %>%
+                  group_by(model) %>%
+                  summarise(mae = mean(ae))   # Calculate MAE (mean absolute error)
+
+# Plot A) Scatterplot of truth versus predictions
+
+ggplot(data = accuracy,
+       aes(x = criterion_test, y = prediction, col = model)) +
+  geom_point(alpha = .2) +
+  geom_abline(slope = 1, intercept = 0) +
+  labs(title = "Predicting mpg$hwy",
+       subtitle = "Black line indicates perfect performance")
+
+# Plot B) Violin plot of absolute errors
+
+ggplot(data = accuracy, 
+       aes(x = model, y = ae, fill = model)) + 
+  geom_violin() + 
+  geom_jitter(width = .05, alpha = .2) +
+  labs(title = "Prediction Absolute Errors",
+       subtitle = "Numbers indicate means",
+       x = "Model",
+       y = "Absolute Error") +
+  guides(fill = FALSE) +
+  annotate(geom = "label", 
+           x = accuracy_agg$model, 
+           y = accuracy_agg$mae, 
+           label = round(accuracy_agg$mae, 2))
 ```
 
 # Tasks
 
 ## A - Setup
 
-1. Open your `baselrbootcamp` R project. It should already have the folders `1_Data` and `2_Code`. Make sure that the data file(s) listed in the `Datasets` section above are in your `1_Data` folder
+1. Open your `BaselRBootcamp` R project. It should already have the folders `1_Data` and `2_Code`. Make sure that the data file(s) listed in the `Datasets` section above are in your `1_Data` folder
 
-```{r}
-# Done!
-```
-
-2. Open a new R script. At the top of the script, using comments, write your name and the date. Save it as a new file called `fitting_practical.R` in the `2_Code` folder.  
+2. Open a new R script. At the top of the script, using comments, write your name and the date. Save it as a new file called `Fitting_practical.R` in the `2_Code` folder.  
 
 3. Using `library()` load the set of packages for this practical listed in the packages section above.
 
 ```{r, eval = FALSE, echo = TRUE}
 ## NAME
 ## DATE
-## Fitting Practical
+## Prediction Practical
 
 library(tidyverse)
-library(rpart)
-library(partykit)
-library(part)
-library(randomForest)
 library(caret)
+library(party)
+library(partykit)
 ```
 
 ```{r, message = FALSE, warning = FALSE, echo = FALSE, eval = TRUE}
 library(tidyverse)
 ```
 
-4. For this practical, we'll use a dataset of 388 U.S. College.  The data is stored in `college_train.csv`. Using the following template, load the dataset into R as `college_train`:
+4. In the code below, we will load each of the datasets listed in the `Datasets` as new objects
 
 ```{r, echo = TRUE, eval = FALSE, message = FALSE, warning = FALSE}
+# College data
 college_train <- read_csv(file = "1_Data/college_train.csv")
+college_test <- read_csv(file = "1_Data/college_train.csv")
+
+# House data
+house_train <- read_csv(file = "1_Data/house_train.csv")
+house_train <- read_csv(file = "1_Data/house_test.csv")
 ```
 
-```{r, echo = FALSE, eval = FALSE, message = FALSE, warning = FALSE}
-# For local use
-college_train <- read_csv(file = "_sessions/Fitting/1_Data/college_train.csv")
-```
+5. Take a look at the first few rows of each dataframe by printing then to the console.
 
-5. Take a look at the first few rows of the dataset by printing it to the console.
+6. Print the numbers of rows and columns of each dataset using the `dim()` function
+
+7. Look at the names of the dataframe with the `names()` function.
+
+8. Open the dataset in a new window using `View()`. Do they look alright?
+
+9. We need to do a little bit of data cleaning before starting. Specifically, we need to convert all columns to factors: Do this by running the following code:
 
 ```{r}
-college_train
+# Convert character to factor
+
+college_train <- college_train %>%
+          mutate_if(is.character, factor)
+
+college_test <- college_test %>%
+          mutate_if(is.character, factor)
+
+house_train <- house_train %>%
+          mutate_if(is.character, factor)
+
+house_test <- house_test %>%
+          mutate_if(is.character, factor)
+
+carseats_train <- carseats_train %>%
+          mutate_if(is.character, factor)
+
+carseats_test <- carseats_test %>%
+          mutate_if(is.character, factor)
 ```
 
-6. Print the numbers of rows and columns using the `dim()` function
+# College
+
+In this section, we will again predict college graduation rates `Grad_Rate` from the `college_train` and `college_test` datasets. Here's how they should look:
+
+```{r, results = 'asis', echo = FALSE, eval = TRUE}
+knitr::kable(college_train[1:10,])
+```
+
+## Fitting
+
+Using the basics steps in the Examples section above, fit each of three models, regression, decision trees, and random forests to the `college_train` data. your goal is to fit models predicting `Grad.Rate`
+
+1. Look at the `college_train` dataset and decide which features you think are reasonable to include in a model.
+
+2. Using `trainControl()`, set your training control method to `"none"`. Save your object as `ctrl_none`
+
+3. Using `train()` fit a regression model called `grad_glm` using the features you think are reasonable.
+
+4. Explore your `grad_glm` object by looking at `grad_glm$finalModel` and using `summary()`, what do you find?
+
+5. Using `train()`, fit a decision tree model called `grad_dt` (using the same features as above).
+
+- Set the complexity parameter to `cp = 0.01`
 
 ```{r}
-dim(college_train)
+grad_dt <- train(form = Grad.Rate ~ .,    # Make sure to specify your features here!
+                 data = data_train,
+                 method = "rpart",
+                 trControl = train_control,
+                 tuneGrid = expand.grid(cp = .01))   # Set complexity parameter
+
 ```
 
-7. Open the dataset in a new window using `View()`
+
+6. Explore your `grad_dt` object by looking at `grad_dt$finalModel` and plotting it with `plot(as.party(grad_dt$finalModel))`, what do you find?
+
+7. Using `train()`, fit a random forest model called `grad_rf` (using the same features as above).
+
+- Set the number of randomly sampled parameter to `mtry` = 2
+
+```{r, eval = FALSE, echo = TRUE}
+grad_rf <- train(form = Grad.Rate ~ .,    # Make sure to specify your features here!
+                 data = college_train,
+                 method = "rf",
+                 trControl = train_control,
+                 tuneGrid = expand.grid(mtry = 2))  # Set number of features randomly selected
+```
+
+
+8. Using `postResample()`, determine the fitting performance of each of your models
+
+9. Which one had the best fits? What was the fitting MAE of each model?
+
+10. If you'd like to, try visualizing the fitting results using the plotting code in the Examples
+
+##  Prediction
+
+1. Using `postResample()`, determine the prediction performance of each of your models on the `college_test` data.
+
+2. How does each model's prediction performance compare to its fitting performance? Is it worse? Better? The same?
+
+3. Which of the three models has the best prediction performance?
+
+4. If you had to use one of these three models in the real-world, which one would it be? Why?
+
+5. If someone came to you and asked "If I use your model in the future to predict the graduation rate of a new college, how accurate do you think it would be?", what would you say?
+
+# House
+
+In this section, we will again predict the prices of houses in King County Washington (home of Seattle, [which you can thank for this](https://qz.com/208457/a-cartographic-guide-to-starbucks-global-domination/)) using the `house_train` and `house_test` datasets. Here's how they should look:
+
+```{r, results = 'asis', echo = FALSE, eval = TRUE}
+knitr::kable(house_train[1:10,])
+```
+
+## Fitting
+
+Fit each of three models, regression, decision trees, and random forests to the `house` data. Your goal is to fit models predicting `price`
+
+1. Look at the `house_train` dataset and decide which features you think are reasonable to include in a model.
+
+2. Using `trainControl()`, set your training control method to `"none"`. Save your object as `ctrl_none`
+
+3. Using `train()` fit a regression model called `price_glm` using the features you think are reasonable.
+
+4. Explore your `price_glm` object by looking at `price_glm$finalModel` and using `summary()`, what do you find?
+
+5. Using `train()`, fit a decision tree model called `price_dt` (using the same features as above).
+
+- Set the complexity parameter to `cp = 0.01`
+
+6. Explore your `price_dt` object by looking at `price_dt$finalModel` and plotting it with `plot(as.party(price_dt$finalModel))`, what do you find?
+
+7. Using `train()`, fit a random forest model called `price_rf` (using the same features as above).
+
+- Set the number of randomly sampled parameter to `mtry` = 2
+
+8. Using `postResample()`, determine the fitting performance of each of your models
+
+9. Which one had the best fits? What was the fitting MAE of each model?
+
+10. If you'd like to, try visualizing the fitting results using the plotting code in the Examples
+
+##  Prediction
+
+1. Using `postResample()`, determine the prediction performance of each of your models on the `house_test` data.
+
+2. How does each model's prediction performance compare to its fitting performance? Is it worse? Better? The same?
+
+3. Which of the three models has the best prediction performance?
+
+4. If you had to use one of these three models in the real-world, which one would it be? Why?
+
+5. If someone came to you and asked "If I use your model in the future to predict house selling prices, how accurate do you think it would be?", what would you say?
+
+# Exploring model tuning parameters
+
+1. In all of your decision tree models so far, you have been setting the complexity parameter to 0.01. Try setting it to a large value such as 0.2 and see how your decision trees change. Do they get more or less complicated? How does increasing this value affect fitting and prediction performance? If you are interested in learning more about this parameter, look at the help menu with `?rpart.control`.
+
+2. In each of your random forest models, you have been setting the `mtry` argument to 2. Try setting it to a larger value such as 5 and re-running your models. How does increasing this value affect fitting and prediction performance? If you are interested in learning more about this parameter, look at the help menu with `?randomForest`.
+
+3. By default, the `train()` function uses 500 trees in `method = "rf"`. How do the number of trees affect performance? To answer this, try setting the number of trees to 1,000 (see example below) and re-evaluating your model's training and test performance. What do you find? What if you set the number of trees to just 10?
 
 ```{r, eval = FALSE}
-View(college_train)
+# Create random forest model with 1000 trees
+
+mod <- train(form = hwy ~ year + cyl + displ,
+             data = data_train,
+             method = "rf",
+             trControl = train_control,
+             ntree = 1000,   # use 1000 trees! (Instead of 500)
+             tuneGrid = expand.grid(mtry = 2))
+
 ```
 
-8. We need to do a little bit of data cleaning before starting. Specifically, we need to convert all columns to factors, and remove the column `college_name`: Do this by running the following code:
+# Challenges
+
+1. So far you've probably been using most, if not all, available features in predicting house sales. But imagine someone came to you and said "I need to know how much a set of new houses will sell for, but I only have access to three features `bedrooms`, `bathrooms`, and `sqft_living`. Which of your models should I use and how accurate will they be? How would you answer that question? Use your modelling techniques to find out!
+
+2. Repeat your modelling process, but now do a classification task. Specifically, predict whether or not a house sells for at least \$1,000,000. To do this, you'll first need to create a new column called `million` in both your `house_train` and `house_test` datasets (the code below should help you). Then, use your best modelling techniques to make this prediction. How accurate are your models in predicting whether or not a house will sell for over $1,000,000? Don't forget to use the `confusionMatrix()` function instead of `postResample()` to evaluate your model's accuracy!
 
 ```{r}
-# Convert character to factor and remove college_name
+# Add million column to house_train and house_test
+#  A factor indicating whether or not a house sells for
+#   over 1,000,0000
 
-college_train <- college_train %>%
-          mutate_if(is.character, factor) %>%
-  select(-college_name)
+house_train <- house_train %>%
+  mutate(million = factor(price > 1000000))
+
+house_test <- house_test %>%
+  mutate(million = factor(price > 1000000))
 ```
-
-## B - Determine sampling procedure
-
-In `caret`, we always need to define computational nuances of training using the `trainControl()` function. Because we're learning the basics of fitting, we'll set `method = "none"` (note that you would almost never do this for a real prediction task!)
-
-```{r}
-# Set training resampling method to "none" to keep everything super simple
-#   for demonstration purposes
-
-ctrl <- trainControl(method = "none") 
-```
-
-## B - Linear Model, Regression
-
-1. Using the code below, fit a linear model predicting graduation rate (`Grad_Rate`) as a function of three features, `Private` (whether the college is private or public), Books (estimated book costs), and PhD (percent of faculty with Ph.Ds). Save the result as an object `Grad_Rate_glm`
-
-```{r}
-# Fit a standard linear regression model predicting Grad_Rate
-
-Grad_Rate_glm <- train(Grad_Rate ~ .,
-                      data = college_train,
-                      method = "glm",
-                      trControl = ctrl)
-```
-
-2. Explore the model using the `summary()` function.
-
-```{r}
-# Show summary information from the regression model
-
-summary(Grad_Rate_glm)
-```
-
-3. Look at the results,  how do you interpret the regression coefficients? which features seem important in predicting graduation rate?
-
-4. Using `varImp()`, determine feature importance, which features were most important according to random forests?
-
-```{r}
-varImp(Grad_Rate_glm)
-```
-
-5. Now it's time to save the model fits! Do this by running the following code to save the fitted values as `glm_fit`
-
-```{r}
-# Get fitted values from the model and save as glm_fit
-
-glm_fit <- predict(Grad_Rate_glm)
-```
-
-6. Print your `glm_fit` object - what are these values? Do they look reasonable?
-
-```{r}
-# Print glm_fit
-
-glm_fit
-```
-
-7. Now it's time to compare your model fits to the true values, we'll start by defining a vector called `truth`!
-
-```{r}
-# Define Grad_Rate as the 'truth'
-
-truth <- college_train$Grad_Rate
-```
-
-8. Now let's plot the results! We'll plot the relationship between the truth and the regression fitted values `glm_fit`
-
-```{r}
-# Tidy up the results
-competition_results <- tibble(truth = truth,
-                              Regression = glm_fit) %>%
-                       gather(group, prediction, -truth)
-
-# Plot!
-
-ggplot(data = competition_results,
-       aes(x = truth, y = prediction)) +
-  geom_point(alpha = .2) +
-  geom_abline(slope = 1, intercept = 0) +
-  labs(title = "Predicting College Graduation Rates with Regression",
-       subtitle = "Line indicates perfect performance",
-       x = "True Graduation Rates",
-       y = "Fitted Graduation Rates") +
-  xlim(0, 120) + 
-  ylim(0, 120)
-```
-
-9. Look at the plot, how do you interpret this? Do you think the model did well or not in fitting graduation rates?
-
-10. Now it's time to quantify our model's fitting results. To do this, we'll use the `postResample()` function, with the fitted values as the prediction, and the truth as the observed values
-
-```{r}
-# Regression Fitting Accuracy
-
-postResample(pred = glm_fit, 
-             obs = truth)
-```
-
-11. You'll see three values here, the easiest to understand is MAE which stands for "Mean Absolute Error" -- in other words, "oh average how far are the predictions from the true values?". Small values of this are good! A value of 0 means perfect prediction. How do you interpret these results? What was the mean absolute error of the model?
-
-## C - Decision Tree, Regression
-
-1. Time to fit some decision trees! To do this, we'll use `"rpart"` model. Run the following code to create your decision tree object `Grad_Rate_rpart`. The basic procedure is the same as fitting linear regression, however, we need to add one key argument. Because we set `method = "none"` in the train control arguments, we need to tell the model which value of the cost complexity parameter `cp` to use.
-
-```{r}
-# Create decision trees predicting graduation rate
-
-Grad_Rate_rpart <- train(Grad_Rate ~ .,
-                         method = "rpart",       # Fit decision trees
-                         data = college_train, 
-                         trControl = fitControl,
-                         tuneGrid = expand.grid(cp = .05))  # Fix cp to 0.05
-```
-
-2. The nice thing about decision trees is we can visualize them! Visualize your decision tree using the following code. Can you interpret the results?
-
-```{r}
-# Visualise your tree
-
-plot(as.party(Grad_Rate_rpart$finalModel))
-```
-
-3. Which features did your decision trees use? How do they compare to your regression model?
-
-4. Using `varImp()`, determine feature importance, which features were most important according to random forests?
-
-```{r}
-varImp(Grad_Rate_rpart)
-```
-
-5. Let's see how well your decision trees did in fitting graduation rates. Get this by using the `predict()` function just like we did with regression:
-
-```{r}
-# Save fitted values from decision tree object as rpart_fit
-
-rpart_fit <- predict(Grad_Rate_rpart)
-```
-
-6. Print your `rpart_fit` object - what are these values? Do they look reasonable?
-
-```{r}
-# Print rpart_fit
-
-rpart_fit
-```
-
-7. Now it's time to compare your model fits to the true values, we'll start by plotting them like we did with regression:
-
-```{r}
-# Tidy up the results
-competition_results <- tibble(truth = truth,
-                              Decision_Trees = rpart_fit) %>%
-                       gather(group, prediction, -truth)
-
-# Plot!
-
-ggplot(data = competition_results,
-       aes(x = truth, y = prediction)) +
-  geom_point(alpha = .2) +
-  geom_abline(slope = 1, intercept = 0) +
-  labs(title = "Predicting College Graduation Rates with Regression",
-       x = "True Graduation Rates",
-       y = "Fitted Graduation Rates") +
-  xlim(0, 120) + 
-  ylim(0, 120)
-```
-
-8. Look at the plot, how do you interpret this? Do you find anything strange about the fits of decision trees versus regression? Do you think the model did well or not in fitting graduation rates?
-
-9. Now it's time to quantify our model's fitting results. Using the `postResample()` function, compare the predicted values `rpart_fit` to the true values as follows:
-
-```{r}
-# Regression Fitting Accuracy
-
-postResample(pred = rpart_fit, 
-             obs = truth)
-```
-
-10. How do you interpret these results? What was the mean absolute error of your decision tree model? How do you interpret this?
-
-## G - Random Forests, Regression
-
-1. Now it's time to add random forests! We'll go through the same procedure as last time. However, we'll also add the argument `importance = TRUE` which, for some reason, is necessary to save variable importance values for random forests:
-
-```{r}
-# Create random forests predicting graduation rate
-
-Grad_Rate_rf <- train(Grad_Rate ~ .,
-                      method = "rf", 
-                      data = college_train, 
-                      trControl = fitControl,
-                      importance = TRUE)
-```
-
-2. Using `varImp()`, determine feature importance, which features were most important according to random forests?
-
-```{r}
-varImp(Grad_Rate_rf)
-```
-
-3. Let's see how well your random forest model did in fitting graduation rates. Get this by using the `predict()` function just like we did with regression:
-
-```{r}
-# Save fitted values from random forest object as rf_fit
-
-rf_fit <- predict(Grad_Rate_rf)
-```
-
-5. Print your `rpart_fit` object - what are these values? Do they look reasonable?
-
-```{r}
-# Print rf_fit
-
-rf_fit
-```
-
-6. Now it's time to compare your model fits to the true values, we'll start by plotting them. 
-
-```{r}
-# Tidy up the results
-competition_results <- tibble(truth = truth,
-                              Decision_Trees = rf_fit) %>%
-                       gather(group, prediction, -truth)
-
-# Plot!
-
-ggplot(data = competition_results,
-       aes(x = truth, y = prediction)) +
-  geom_point(alpha = .2) +
-  geom_abline(slope = 1, intercept = 0) +
-  labs(title = "Predicting College Graduation Rates with Regression",
-       x = "True Graduation Rates",
-       y = "Fitted Graduation Rates") +
-  xlim(0, 120) + 
-  ylim(0, 120)
-```
-
-7. Look at the plot, how do you interpret this? Do you think the model did well or not in fitting graduation rates?
-
-8. Now it's time to quantify our model's fitting results. Using the `postResample()` function, compare the predicted values `rpart_fit` to the true values as follows:
-
-```{r}
-# Regression Fitting Accuracy
-
-postResample(pred = rf_fit, 
-             obs = truth)
-```
-
-9. How do you interpret these results? What was the mean absolute error of the random forest model?
-
-## H - Comparing the three models
-
-1. Using the following code, create a plot showing the fits of the three different models:
-
-```{r}
-# Tidy competition results
-competition_results <- tibble(truth = truth,
-                              Regression = glm_fit,
-                              DecisionTrees = rpart_fit,
-                              RandomForest = rf_fit) %>%
-                       gather(group, prediction, -truth)
-
-# Plot!
-ggplot(data = competition_results,
-       aes(x = truth, y = prediction, col = group)) +
-  geom_point(alpha = .2) +
-  geom_abline(slope = 1, intercept = 0) +
-  labs(title = "Predicting College Graduation Rates",
-       subtitle = "Comparing three models") +
-  xlim(0, 120) + 
-  ylim(0, 120)
-```
-
-2. What does the plot tell you about how well the three models could fit the training data?
-
-3. Now let's look at the model performance in another way -- by looking at their distributions of absolute errors. Using the code below, create distributions of the absolute errors
-
-```{r, eval = FALSE, echo = TRUE}
-# Combine the absolute errors of each model
-competition_results <- tibble(Regression = abs(glm_fit - truth),
-                              DecisionTrees = abs(rpart_fit - truth),
-                              RandomForest = abs(rf_fit - truth)) %>%
-                       gather(model, absolute_error)
-
-# Calculate summaries
-summaries <- competition_results %>%
-  group_by(model) %>%
-  summarise(mae = mean(absolute_error))
-
-# Create plot!
-ggplot(data = competition_results, 
-       aes(x = model, y = absolute_error, fill = model)) + 
-  geom_violin() + 
-  geom_jitter(width = .05, alpha = .2) +
-  labs(title = "Distributions of Fitting Absolute Errors",
-       subtitle = "Numbers indicate means",
-       x = "Model",
-       y = "Absolute Error") +
-  guides(fill = FALSE) +
-  annotate(geom = "label", 
-           x = summaries$model, 
-           y = summaries$mae, 
-           label = round(summaries$mae, 2))
-```
-
-2. Based on MAE, Which of your models, seemed to fit the data the best?
-
-## Classification
-
-Now it's time to do a classification task! Recall that in a classification task, we are predicting a category, not a continuous number. In this task, we'll predict whether or not a college is Private or Public, this is stored as the variable `college_train$Private`
-
-In order to do classification training with `caret`, all you need to do is make sure that the criterion is coded as a factor. To see that is coded as a factor, just print the object as follows:
-
-```{r}
-# Print the variable Private, should be a factor!
-
-college_train$Private
-```
-
-Now, we'll save this as a new object called `truth`
-
-```{r}
-# Define the truth as college_train$Private
-
-truth <- college_train$Private
-```
-
-
-## I - Linear Model, Classification
-
-1. Using `train()`, create `Private_glm()`, a regression model predicting the variable `Private`
-
-```{r}
-# Fit regression model predicting private
-Private_glm <- train(Private ~ .,
-                     data = college_train,
-                     method = "glm",
-                     trControl = fitControl)
-```
-
-2. Explore the model using the `summary()` function.
-
-```{r}
-# Show summary information from the regression model
-
-summary(Private_glm)
-```
-
-3. Look at the results, how do you interpret the regression coefficients? Which features seem important in predicting graduation rate?
-
-4. Now it's time to save the model fits! Do this by running the following code to save the fitted values as `glm_fit`
-
-```{r}
-# Get fitted values
-
-glm_fit <- predict(Private_glm)
-```
-
-5. Print your `glm_fit` object - what are these values? Do they look reasonable?
-
-```{r}
-# Print glm_fit
-
-glm_fit
-```
-
-6. Now it's time to calculate model accuracy, to do this, we will use a new function called `confusionMatrix()`. This function compares model predictions to a 'reference' (in our case, the truth, and returns several summary statistics). In the code below, we'll use `glm_fit` as the model predictions, and 
-
-```{r}
-# Show accuracy of glm_fit versus the true values
-
-confusionMatrix(data = glm_fit,                   # This is the prediction!
-                reference = college_train$Private) # This is the truth!
-```
-
-7. Look at the results, what is the overall accuracy of the model?
-
-## J - Decision Trees, Classification
-
-1. Using `train()`, create `Private_rpart()`, a decision tree model predicting the variable `Private`
-
-```{r}
-# Fit regression model predicting private
-Private_rpart <- train(Private ~ .,
-                       data = college_train,
-                       method = "rpart",
-                       trControl = fitControl, 
-                       tuneGrid = expand.grid(cp = .05))
-```
-
-2. Using the code below, plot the decision tree
-
-```{r}
-plot(as.party(Private_rpart$finalModel))
-```
-
-4. Save the model fits as `rpart_fit`
-
-```{r}
-# Get fitted values
-
-rpart_fit <- predict(Private_rpart)
-```
-
-5. Print your `rpart_fit` object - what are these values? Do they look reasonable?
-
-```{r}
-# Print rpart_fit
-
-rpart_fit
-```
-
-6. Now it's time to calculate model accuracy, to do this, we will use `confusionMatrix()`.
-
-```{r}
-# Show accuracy of glm_fit versus the true values
-
-confusionMatrix(data = rpart_fit,  # This is the prediction!
-                reference = truth) # This is the truth!
-```
-
-7. Look at the results, what is the overall accuracy of the model?
-
-## K - Random Forests, Classification
-
-1. Repeat steps E: 1-7 above to get the accuracy of random forests in classification.
-
-2. What is the final overall accuracy of random forests in predicting whether a school is private or public?
-
-## G - Compare results
-
-1. To compare the accuracy of your classification models, use the following code:
-
-```{r}
-# Get overall accuracy from decision trees
-rpart_accuracy <- confusionMatrix(data = rpart_fit,  
-                                  reference = truth)$overall[1]
-
-# Get overall accuracy from regression
-glm_accuracy <- confusionMatrix(data =  glm_fit,  
-                                  reference = truth)$overall[1]
-
-# Get overall accuracy from random forests
-rf_accuracy <- confusionMatrix(data =  rf_fit,  
-                               reference = truth)$overall[1]
-
-# Combine results into one table
-competition_results <- tibble(DecisionTrees = rpart_accuracy,
-                              Regression = glm_accuracy,
-                              RandomForests = glm_accuracy) %>%
-  gather(model, accuracy)
-
-
-# Plot the results!
-ggplot(competition_results, aes(x = model, y = accuracy, fill = model)) + 
-  geom_bar(stat = "identity") +
-  labs(title = "Is a college private or public?",
-       subtitle = "Fitting classification accuracy") +
-  ylim(c(0, 1)) +
-  annotate(geom = "label", 
-           x = competition_results$model, 
-           y = competition_results$accuracy, 
-           label = round(competition_results$accuracy, 2))
-```
-
-
-## H - Challenges
-
-1. In fitting the decision trees, we always set the complexity parameter to .05. Try setting it to either a smaller (e.g.; .01), or larger (e.g.; .10) value. How does this change the trees? Do they become simpler or more complex? Does their fitting accuracy increase or decrease?
-
-2. There is lots of interesting information hidden in each of your model objects which are stored as `X$finalModel` in your fitting objects. Using the following code to get your started, try exploring your randomforest object. What else can you find in it? Look at the help menu with `?randomForest` to see definitions for all of the outputs.
-
-```{r, echo = TRUE, eval = FALSE}
-# Print my random forest model
-Grad_Rate_rf$finalModel
-
-# Show names of all elements in the object
-names(Grad_Rate_rf$finalModel)
-
-# Feature importance
-Grad_Rate_rf$finalModel$importance
-
-# Number of trees used
-Grad_Rate_rf$finalModel$ntree
-
-# Number of variables randomly sampled at each splyt
-Grad_Rate_rf$finalModel$mtry
-```
-
-3. Try repeating your modelling procedure with a new criterion. For example, for regression you could predict the percent of alumni who donate (`perc.alumni`), for classification, you could predict whether or not a school is 'hot' -- where a 'hot' school is one that receives at least 10,000 applications (Hint: use the code below to create the `hot` variable)
-
-```{r, eval = FALSE, echo = TRUE}
-# Add a new factor criterion 'hot' which indicates whether or not a schol receives at least 10,000 applications
-
-college_train <- college_train %>%
-  mutate(hot = factor(Apps >= 10000))
-
-# You may also wish to remove the original Apps variable when modelling as this variable
-#  could perfectly predict 'hot'!
-
-college_train <- college_train %>%
-  select(-Apps)
-```
-
-
