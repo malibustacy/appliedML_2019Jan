@@ -451,7 +451,7 @@ print(baselers)
 ```
 ## # A tibble: 10,000 x 20
 ##       id sex     age height weight income
-##    &lt;dbl&gt; &lt;chr&gt; &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;
+##    &lt;int&gt; &lt;chr&gt; &lt;int&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;
 ##  1     1 male     44   174.  113.    6300
 ##  2     2 male     65   180.   75.2  10900
 ##  3     3 fema…    31   168.   55.5   5100
@@ -462,7 +462,8 @@ print(baselers)
 ##  8     8 fema…    41   156.   67.8   7600
 ##  9     9 male     43   176.   69.3   8500
 ## 10    10 fema…    31   166.   66.3   6100
-## # … with 9,990 more rows, and 14 more variables
+## # ... with 9,990 more rows, and 14 more
+## #   variables
 ```
 ]
 
@@ -874,12 +875,23 @@ if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
   d.head.appendChild(s);
 })();</script>
 
-<script type="text/x-mathjax-config">
-MathJax.Hub.Config({
-  tex2jax: {
-    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+<script>
+(function() {
+  var i, text, code, codes = document.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
   }
-});
+})();
 </script>
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>
