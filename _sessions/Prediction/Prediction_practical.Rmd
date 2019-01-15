@@ -33,7 +33,7 @@ In this practical you'll practice the basics of model fitting and prediction wit
 By the end of this practical you will know how to:
 
 1. Fit regression, decision trees and random forests to training data
-2. Evaluate modelfitting and prediction performance
+2. Evaluate model fitting and prediction performance
 3. Compare the fitting and prediction performance of two models
 4. Explore the effects of features on model predictions
 
@@ -327,7 +327,7 @@ library(partykit)
 library(tidyverse)
 ```
 
-4. In the code below, we will load each of the datasets listed in the `Datasets` as new objets
+4. In the code below, we will load each of the datasets listed in the `Datasets` as new objects
 
 ```{r, echo = TRUE, eval = FALSE, message = FALSE, warning = FALSE}
 # College data
@@ -424,7 +424,7 @@ grad_rf <- train(form = Grad.Rate ~ .,    # Make sure to specify your features h
 
 9. Which one had the best fits? What was the fitting MAE of each model?
 
-10. If you'd like to, try visualising the fitting results using the plotting code in the Examples
+10. If you'd like to, try visualizing the fitting results using the plotting code in the Examples
 
 ##  Prediction
 
@@ -472,7 +472,7 @@ Fit each of three models, regression, decision trees, and random forests to the 
 
 9. Which one had the best fits? What was the fitting MAE of each model?
 
-10. If you'd like to, try visualising the fitting results using the plotting code in the Examples
+10. If you'd like to, try visualizing the fitting results using the plotting code in the Examples
 
 ##  Prediction
 
