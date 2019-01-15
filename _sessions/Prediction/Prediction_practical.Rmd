@@ -46,24 +46,28 @@ library(ggthemes)
 
 |File  |Rows | Columns |
 |:----|:-----|:------|
-|[college_train.csv](https://raw.githubusercontent.com/therbootcamp/appliedML_2019Jan/master/_sessions/_data/college_train.csv)| 1000 | 21|
+|[college_train.csv](https://raw.githubusercontent.com/therbootcamp/appliedML_2019Jan/master/1_Data/college_train.csv)| 500 | 18|
+|[college_test.csv](https://raw.githubusercontent.com/therbootcamp/appliedML_2019Jan/master/1_Data/college_est.csv)| 277 | 18|
+|[house_train.csv](https://raw.githubusercontent.com/therbootcamp/appliedML_2019Jan/master/1_Data/house_train.csv)| 5000 | 21|
+|[house_test.csv](https://raw.githubusercontent.com/therbootcamp/appliedML_2019Jan/master/1_Data/_data/house_test.csv)| 1000 | 21|
 
-These data are taken from the `College` dataset in the `ISLR` package. To see column descriptions, run the following:
+The `college_train` and `college_test` data are taken from the `College` dataset in the `ISLR` package. To see column descriptions, run the following:
 
 ```{r, eval = FALSE}
 library(ISLR)   # Load ISLR package
 ?College        # Look at help menu for College
 ```
 
+The `house_train` and `house_test` data come from [https://www.kaggle.com/harlfoxem/housesalesprediction](https://www.kaggle.com/harlfoxem/housesalesprediction)
 
 ### Glossary
 
 | Function| Package | Description |
 |:---|:------|:---------------------------------------------|
-| `summary()`|`base`|    Get summary information from an R object| 
-| `names()`|`base`|    See the named elements of a list| 
-| `LIST$NAME()`|`base`|    Get the named element `NAME` from a list `OBJECT`| 
+| `trainControl()`|`caret`|    Define modelling control parameters| 
+| `train()`|`caret`|    Train a model|
 | `predict(object, newdata)`|`base`|    Predict the criterion values of `newdata` based on `object`|
+| `postResample()`|`caret`|   Calculate aggregate model performance| 
 
 ### Packages
 
@@ -74,7 +78,12 @@ library(ISLR)   # Load ISLR package
 
 ### Cheatsheet
 
-*None*
+<figure>
+<center>
+<a href="https://github.com/rstudio/cheatsheets/raw/master/caret.pdf">
+  <img src="https://www.rstudio.com/wp-content/uploads/2015/01/caret-cheatsheet-200x155@2x.png" alt="Trulli" style="width:70%">
+  <figcaption>hhttps://github.com/rstudio/cheatsheets/raw/master/caret.pdf</figcaption></a>
+</figure>
 
 ### Examples
 
