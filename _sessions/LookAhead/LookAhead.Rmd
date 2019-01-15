@@ -1,0 +1,482 @@
+---
+title: "Look ahead"
+subtitle: ""
+author: "Applied Machine Learning with R<br/><a href='https://therbootcamp.github.io'>www.therbootcamp.com</a><br/><a href='https://twitter.com/therbootcamp'>@therbootcamp</a>"
+date: "January 2019"
+output:
+  xaringan::moon_reader:
+    css: ["default", "baselrbootcamp.css"]
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+      ratio: '16:9'
+
+
+---
+
+layout: true
+
+<div class="my-footer"><span>
+<a href="https://therbootcamp.github.io/"><font color="#7E7E7E">Applied Machine Learning with R, January 2019</font></a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+<a href="https://therbootcamp.github.io/"><font color="#7E7E7E">www.therbootcamp.com</font></a>
+</span></div> 
+
+
+---
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+# see: https://github.com/yihui/xaringan
+# install.packages("xaringan")
+# see: 
+# https://github.com/yihui/xaringan/wiki
+# https://github.com/gnab/remark/wiki/Markdown
+options(width=110)
+options(digits = 4)
+```
+
+
+.pull-left45[
+<br><br><br><br><br>
+#  Hello Machine Learning Experts!
+
+In 2 days, 6 sessions, and 16 hours you have come a long way.
+
+]
+
+.pull-right4[
+
+<img src="image/schedule_2019Jan_ML.png" height="580" align="center">
+]
+
+---
+
+#  Welcome to the Data Revolution
+
+.pull-left4[
+
+<i>"Machine learning will be the engine of global growth."</i><br>
+
+Financial times, July 2018
+
+<i>"Fuel of the future - Data is giving rise to a new economy."</i><br>
+
+The Economist, May 2017
+
+<i>"Wie Big Data die Finanzmärkte verändern könnte"</i><br>
+
+NZZ, August 2018
+
+]
+
+.pull-right55[
+<p align="center">
+<img src="https://corecompete.com/wp-content/uploads/2018/09/Big-Data-Showing-Big-Growth-min-1.jpg" height = 400px>
+</p>
+]
+---
+
+#  Alpha Go Zero
+
+.pull-left35[
+<u>March, 2016</u>
+
+Trained on the basis of previous games, AlphaGo beats Lee Sedol, a former World Champion of Go.
+
+<u>Mai, 2017</u>
+
+An improved Version of AlphaGo beats Ke Jie, the current world nr. 1 at the time.
+
+]
+
+.pull-right6[
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/tXlM99xPQC8" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+]
+
+---
+
+# YOLO
+
+.pull-left35[
+State of the art object recognition using <high>Convolutional Neural Networks</high> (CNN).<br>
+<p align="center">
+
+<img src="image/convo.gif" height=300px>
+
+</p>
+]
+
+.pull-right6[
+<br2>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/Cgxsv1riJhI?start=265&end=390 " frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+]
+
+---
+
+#  Turing Test
+
+.pull-left35[
+<u>Turing test</u>
+<p align="center"><img src="https://cdn-images-1.medium.com/max/1600/1*hf4zDAYhhp3GqFGdvFV-Ow.png" height=350px></p>
+]
+
+.pull-right6[
+<u>Google Duplex</u>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/D5VN56jQMWM&start=144&end=2010" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+]
+
+---
+
+# Changes to the economy
+
+.pull-left4[
+### Businesses employ AI/ML
+<p align="left">
+  <img src="image/bytemarks.png" height=380>
+</p>
+]
+
+.pull-right55[
+### Jobs become obsolete
+<p align="left">
+  <img src="image/obsolete.png" height=380>
+</p>
+]
+
+<!---<iframe width="1200" height="560" src="https://www.bloomberg.com/graphics/2017-job-risk/#dvz-asset-d3js-scatterplot-container" frameborder="0">
+--->
+
+---
+
+#  Repeating the past
+
+.pull-left35[
+### A nerdy cartoon
+<p align="center">
+  <img src="image/garbage_in_garbage_out.png" height = 415px>
+</p>
+
+]
+
+.pull-right6[
+### The real world: Predictive policing
+<a href="https://www.economist.com/briefing/2013/07/20/dont-even-think-about-it">The Economist</a><br>
+<a href="http://harvardcrcl.org/minority-report-why-we-should-question-predictive-policing/">Harvard Civil Rights Review</a>
+<p align="center">
+  <img src="https://thumbs-prod.si-cdn.com/iAjAEjLfbEMUclq382sRC9uZAog=/800x600/filters:no_upscale()/https://public-media.si-cdn.com/filer/bd/a0/bda0b561-aa85-42a7-884c-f268e2f4eb2a/predpol.jpg">
+</p>
+]
+
+---
+
+#  Repeating the past
+
+.pull-left45[
+### Recidivity risk scores
+<p align="center">
+  <img src="image/risk_score.png">
+</p>
+
+]
+
+.pull-right45[
+### Empirical evaluation
+<a href="https://www.propublica.org/article/machine-bias-risk-assessments-in-criminal-sentencing">Pro Publica I</a>, 
+<a href="https://www.propublica.org/article/how-we-analyzed-the-compas-recidivism-algorithm">Pro Publica II</a>
+<p align="left">
+  <img src="image/risk_score_eval.png" height=300px>
+</p>
+]
+
+---
+
+#  "Objective" = Good?
+
+.pull-left6[
+<p align="center">
+  <img src="image/hiring.jpg" height=400px><br>
+  See <a href="https://www.theguardian.com/science/2016/sep/01/how-algorithms-rule-our-working-lives">Guardian</a>, <a href="https://www.bloomberg.com/opinion/articles/2018-01-18/personality-tests-are-failing-american-workers">Bloomberg</a>
+</p>
+]
+
+.pull-right35[
+<p align="center">
+  <img src="image/mathdestruct.jpg" height=400px>
+</p>
+]
+---
+
+#  Consider simple
+
+.pull-left35[
+
+<i>"Complex environments often instead call for simple
+decision rules. That is because these rules are more robust to ignorance."</i><a href="https://www.bis.org/review/r120905a.pdf" style="font-size:8px">[Full text]</a><br><br>
+Andy Haldane, Director for Financial Stability, Bank of England
+
+<br><br><br><br><br>
+For background see<br>
+<a href="GigerenzerGaissmaier AnnuRevPsych 2011.pdf">Gigerenzer & Gaissmaier (2011)</a><br>
+<a href="https://pure.mpg.de/rest/items/item_2483194/component/file_2483420/content">Phillips, Neth, Woike, & Gaissmaier (2017)</a>
+]
+
+.pull-right6[
+<high>Fast and Frugal Trees</high><br>
+Fast, communicable, open and often surprisingly successful decision algorithms. 
+
+<p align="center">
+  <img src="image/FFTs.png">
+</p>
+]
+
+
+
+---
+
+# The end of privacy
+
+.pull-left3[
+
+<i>"Most technologies have their bright and dark side [...] My personal opinion is that a machine's ability to better understand us would lead to improved consumer experience, products, etc… But imagine that we published a clone of youarewhatyoulike.com that simply predicted which of your friends was gay (or Christian or liberal or HIV-positive, etc); lynches are not unlikely to follow…"</i>
+
+Michal Kosinski, Stanford University <a href="https://www.theguardian.com/world/2014/aug/03/internet-death-privacy-google-facebook-alex-preston" style="font-size:8px">[Full text]</a>
+
+]
+
+.pull-right65[
+<p><img src="image/endofprivacy.jpg" height=410px></p>
+]
+
+---
+
+<div class="center_text_2">
+  <span>
+  What do you think?
+  </span>
+</div> 
+
+
+---
+
+# How to continue
+
+.pull-left5[
+<font size = 4><i>
+<font size = 6>
+1. Practice<br>
+2. Read books<br>
+3. Consult websites<br>
+4. Attend R group<br>
+5. Get consulting<br>
+]
+
+</font>
+<br>
+
+.pull-right5[
+<p align="center"><img border="0" alt="W3Schools" src="http://www.theunmanageableemployee.com/wp-content/uploads/2011/07/5cs-stones-cropped-11052730.jpg?w=112"></p>
+]
+
+---
+
+# Books
+
+Here is a very incomplete series of good books. They are ordered by complexity, beginning with user-friendly books on <high>learning statistics</high> in R and ending with books focusing on the more <high>advanced topics of the R language</high>.
+
+
+<table width="100%" style="cellspacing:0; cellpadding:0; border:none;">
+
+  <tr>    
+
+
+    <td>
+  <a href="http://appliedpredictivemodeling.com/"><img border="0" alt="W3Schools" src="http://static1.squarespace.com/static/51156277e4b0b8b2ffe11c00/t/51157487e4b0b8b2ffe16829/1509217882069/?format=1500w" height="180" ></a>
+  </td>
+  
+      <td>
+  <a href="http://www-bcf.usc.edu/~gareth/ISL/ISLR%20First%20Printing.pdf"><img border="0" alt="W3Schools" src="https://images-na.ssl-images-amazon.com/images/I/41EaH4W9LVL._SX332_BO1,204,203,200_.jpg" height="180" ></a>
+  </td>
+  
+        <td>
+  <a href="https://www.manning.com/books/deep-learning-with-r"><img border="0" alt="W3Schools" src="http://t1.gstatic.com/images?q=tbn:ANd9GcTRRlqFPDLuz1b1FRqtL_bcVrILqPEJgh17piFhG-zwXYN_nCWm" height="180" ></a>
+  </td>
+
+  
+  <td>
+  <a href="https://www.tidytextmining.com/"><img border="0" alt="W3Schools" src="https://www.tidytextmining.com/images/cover.png" height="180" ></a>
+  </td>
+  
+  <td>
+  <a href="https://www.orellfuessli.ch/shop/home/artikeldetails/ID35367941.html?ProvID=10917736&gclid=Cj0KCQiAg_HhBRDNARIsAGHLV5238Q26gQmFttHRnYGjcAhz4CslStb-3qBegvuZS5gnCpWSLNlQvF0aAgfOEALw_wcB"><img border="0" alt="W3Schools" src="https://assets.thalia.media/img/35367941-00-00.jpg" height="180" ></a>
+  </td>
+  
+  </tr>
+  
+
+  <tr style="background-color:#ffffff">
+
+    <td> 
+  <a href="http://r4ds.had.co.nz/"><img border="0" alt="W3Schools" src="http://r4ds.had.co.nz/cover.png" height="180"></a>
+  </td>
+
+  <td>
+  <a href="https://covers.oreillystatic.com/images/0636920028574/cat.gif"><img border="0" alt="W3Schools" src="https://covers.oreillystatic.com/images/0636920028574/cat.gif" height="180"></a>
+  </td>
+
+        <td>
+  <a href="https://csgillespie.github.io/efficientR/"><img border="0" alt="W3Schools" src="https://csgillespie.github.io/efficientR/figures/f0_web.png" height="180" ></a>
+  </td>
+
+  <td>
+  <a href="www.rcpp.org/"><img border="0" alt="W3Schools" src="http://t3.gstatic.com/images?q=tbn:ANd9GcSO9T6JQYtpQgcaCXudbqMB-fnvTjGowsnmeh9-BQku3zveR4-J" height="180" ></a>
+  </td>
+  
+  
+  <td>
+  <a href="http://adv-r.had.co.nz/"><img border="0" alt="W3Schools" src="https://images.tandf.co.uk/common/jackets/amazon/978146658/9781466586963.jpg" height="180" ></a>
+  </td>
+
+
+  </tr>
+  
+
+
+</table>
+<br>
+
+
+---
+
+.pull-left4[
+
+# Websites
+
+The web is a great place to learn about R. 
+
+<font size = 4><i>Best begin your journey with:</i></font>
+
+[Google](www.google.com) or [Rseek](www.rseek.org), which is a wrapper around google to maximize hits related to R. However, most of the time Google works just fine. Just be sure to add *r* to the the search query. 
+
+<font size = 4><i>Then you will most likely be redirected to one of two pages</i></font>
+
+[R-bloggers](www.r-bloggers.com) is a website on which R users inform each other on the newest developments. See, e.g., Nathaniel's [entry](https://www.r-bloggers.com/the-new-and-improved-pirateplot-now-with-themes/).
+
+[Stackoverflow](www.r-bloggers.com) is a website on which R users exchange problems and solutions to problems. Try post something yourself. You will be amazed by the turnaround. 
+
+
+]
+
+.pull-right5[
+<p align="left" style="padding: 0 0px"><br><br><br><br><br><br><br><br><br>
+    <a href="https://www.google.com/"><img border="0" alt="W3Schools" src="https://raw.githubusercontent.com/therbootcamp/therbootcamp.github.io/master/_sessions/_image/google.png" height="100"></a><img border="0" alt="W3Schools" src="https://raw.githubusercontent.com/therbootcamp/therbootcamp.github.io/master/_sessions/_image/comma.png" height="50"><a href="http://rseek.org/"><img border="0" alt="W3Schools" src="https://raw.githubusercontent.com/therbootcamp/therbootcamp.github.io/master/_sessions/_image/rseek.png" height="100" style="margin-left:10px; margin-buttom:10px"></a><br><br><br><br>
+    <a href="https://www.r-bloggers.com/"><img border="0" alt="W3Schools" src="https://raw.githubusercontent.com/therbootcamp/therbootcamp.github.io/master/_sessions/_image/rbloggers.png" height="105" style="margin-bottom:10px"></a><br>
+  <a href="https://stackoverflow.com/"><img border="0" alt="W3Schools" src="https://raw.githubusercontent.com/therbootcamp/therbootcamp.github.io/master/_sessions/_image/stackoverflow.png" height="105"></a>
+</p>
+]
+
+
+
+---
+
+# Support & Consulting
+
+<table class="tg"  style="cellspacing:0; cellpadding:0; border:none">
+  <tr>
+    <th class="tg-yw4l">
+    
+  <p align="center"><br>
+    <a href="www.dirkwulff.org"><img border="0" alt="W3Schools" src="https://therbootcamp.github.io/assets/img/dirk_square_small2.png" height="230" style="border-radius:50%"></a><br>
+
+<p align="center">
+<font size = 5>Dr. Dirk Wulff</font><br><br>
+<a href="www.dirkwulff.org"><b>dirkwulff.org</b></a><br>
+<a href="https://github.com/dwulff"><b>github.com/dwulff</b></a><br>
+<font size=4><i>packages: </i></font> 
+<a href="https://cran.r-project.org/web/packages/cstab/index.html"><b>cstab</b></a>, <br>
+<a href="https://cran.r-project.org/web/packages/memnet/index.html"><b>memnet</b></a>,<a href="https://cran.r-project.org/web/packages/mousetrap/index.html"><b>mousetrap</b></a>, <br><a href="https://github.com/dwulff/choicepp"><b>choicepp</b>
+</p>  
+  
+    </th>
+    <th class="tg-yw4l"><p align="center"><br>
+    <a href="www.nathanieldphillips.com/"><img border="0" alt="W3Schools" src="https://therbootcamp.github.io/assets/img/nathaniel_square_small.png" height="230" style="border-radius:50%"></a><br>
+
+<p align="center">
+<font size = 5>Dr. Nathaniel Phillips</font><br><br>
+<a href="www.nathanieldphillips.com/"><b>nathanieldphillips.com</b></a><br>
+<a href="https://github.com/ndphillips"><b>github.com/ndphillips</b></a><br>
+<font size=4><i>packages: </i></font> 
+<a href="https://github.com/ndphillips/yarrr"><b>yarrr</b></a>, <br>
+<a href="https://github.com/ndphillips/FFTrees"><b>FFTrees</b></a></th>
+
+ <th class="tg-yw4l"><p align="center">
+<p align="center"><br>
+    <a href="https://psychologie.unibas.ch/de/personen/markus-steiner/about-me/"><img border="0" alt="W3Schools" src="https://therbootcamp.github.io/assets/img/markus_square2.png" height="230" style="border-radius:50%"></a><br>
+
+<p align="center">
+<font size = 5>Markus Steiner</font><br><br>
+<a href="https://github.com/mdsteiner"><b>github.com/mdsteiner</b></a><br>
+<font size=4><i>package: </i></font> 
+<a href="https://github.com/ndphillips/ShinyPsych"><b>ShinyPsych</b> <br><br><br>
+</p></th></tr>
+</table>
+
+---
+
+
+# Upcoming courses
+
+
+<table class="tg"  style="cellspacing:0; cellpadding:0; border:none;">
+<tr valign="top">
+  <td>
+  
+    <p align="center">
+      <a href = "https://advancedstudies.unibas.ch/studienangebot/kurs/introduction-to-r-for-data-science-208287">
+      <font style="font-size:20px;weight:700"><br>Intro to R for Data Science</font><br>
+      <br>
+      <img src="https://therbootcamp.github.io/assets/img/data_science.png" height="210px" width="340px"></img><br>
+      <high>2 days, Feburary 23/24, 2019</high></a>
+    </p>
+  </td>
+
+    <td>
+    <p align="center">
+    <a class="project-link" href="mailto:therbootcamp@gmail.com?subject=Preregistration for Statistics with R&body=I would like to preregister for the R Bootcamp on 'Statistics with R' in February/March 2019 (tbc) in Basel, Switzerland." align="center">
+  
+  <font style="font-size:20px;weight:700"><br>Statistics with R</font><br>
+  <br>
+  <img src="image/statistics.png" height="210px" width="340px"></img><br>
+  
+  <high>2 days, April 6/7, 2019</high><br><br><br>
+  </a>
+  
+  </p>
+  </td>
+  
+  <td>
+    <p align="center">
+      <a href = "http://www.therbootcamp.com">
+      <font style="font-size:20px;weight:700"> Data Warehousing &<br>Cloud Computing </font><br>
+      <br>
+      <img src="image/warehousing.jpg" height="210px" width="340px"></img><br>
+      <high>Fall/Winter 2019</high></a>
+    </p>
+  </td>
+  </tr>
+
+
+---
+
+
+# Thank you
+
+
+<a href="http://i.imgur.com/PgtvQar.png"><font size=5>Here is an R Joke.</font></a><br><br>
+<font size=5>And now one more thing</font>...
+
