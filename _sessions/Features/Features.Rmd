@@ -53,6 +53,26 @@ library(ggthemes)
 
 # Problems
 
+.pull-left45[
+
+
+
+]
+
+.pull-right45[
+
+<p>
+<img href="image/dumbdata.png">
+</p>
+
+]
+
+
+
+---
+
+# Problems
+
 Too many features -> curse of dimensionality
 
 Wrong features 

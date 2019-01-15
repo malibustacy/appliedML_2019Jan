@@ -22,7 +22,7 @@ output: html_document
 |:--|:-------------|:-------------|
 |0| Welcome!<br>[slides](_sessions/Welcome/Welcome.html) | Recap<br>[slides](_sessions/Recap/Recap.html)|
 |1| What is ML?<br>[slides](_sessions/WhatIsML/WhatIsML.html)| Optimization <br>[slides](_sessions/Optimization/Optimization.html), [practical](_sessions/Optimization/Optimization_practical.html) |
-|2| R for ML <br>[slides](_sessions/Data/Data.html), [practical](_sessions/Data/Data_practical.html)| Models<br>[slides](_sessions/Models/Models.html), [practical](_sessions/Models/Models_practical.html)|
+|2| R for ML <br>[slides](_sessions/RforML/RforML.html), [interactive](sessions/RforML/RforML_interactive.R) | Models<br>[slides](_sessions/Models/Models.html), [practical](_sessions/Models/Models_practical.html)|
 |3|   Fitting<br>[slides](_sessions/Fitting/Fitting.html), [practical](_sessions/Fitting/Fitting_practical.html) |Features <br>[slides](_sessions/Features/Features.html), [practical](_sessions/Features/Features_practical.html)|
 |4|Prediction <br>[slides](_sessions/Prediction/Prediction.htl), [practical](_sessions/Prediction/Prediction_practical.html)    | Look Ahead<br>[slides](_sessions/LookAhead/LookAhead.html) |
 
@@ -31,4 +31,4 @@ output: html_document
 ## Schedule
 
 <p align="center"><br>
-    <a href="https://therbootcamp.github.io/Intro2DataScience_2018Oct/index.html"><img border="0" alt="Jan2019Schedule" src="schedule_appliedML_2019Jan.png" style="width:450px"></a><br>
+    <a href="https://therbootcamp.github.io/Intro2DataScience_2018Oct/index.html"><img border="0" alt="Jan2019Schedule" src="https://raw.githubusercontent.com/therbootcamp/therbootcamp.github.io/master/_sessions/_image/schedule_2019Jan_ML.png" style="width:450px"></a><br>
