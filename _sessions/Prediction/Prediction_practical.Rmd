@@ -97,15 +97,19 @@ library(caret)        # For ML mastery
 
 # Step 1: Load and Clean, and Explore Training data ----------------------
 
-# I'll use the mpg dataset from the dplyr package in this example
-#  no need to load an external dataset
-
+# training data
 data_train <- read_csv("1_Data/mpg_train.csv")
+
+# test data
+data_test <- read_csv("1_Data/mpg_test.csv")
 
 # Convert all characters to factor
 #  Some ML models require factors
 
 data_train <- data_train %>%
+  mutate_if(is.character, factor)
+
+data_test <- data_test %>%
   mutate_if(is.character, factor)
 
 # Explore training data
@@ -141,12 +145,12 @@ summary(hwy_glm)
 # Save fitted values
 glm_fit <- predict(hwy_glm)
 
-# Define truth as the true criterion
-truth <- data_train$hwy
+# Define truth as the criterion
+criterion <- data_train$hwy
 
 # Regression Fitting Accuracy
 postResample(pred = glm_fit, 
-             obs = truth)
+             obs = criterion)
 
 #     RMSE Rsquared      MAE 
 # 3.825010 0.622349 2.767995 
@@ -157,13 +161,13 @@ postResample(pred = glm_fit,
 # Step 5: Visualise Accuracy -------------------------
 
 # Tidy competition results
-accuracy <- tibble(truth = truth,
+accuracy <- tibble(criterion = criterion,
                    Regression = glm_fit) %>%
-               gather(model, prediction, -truth) %>%
+               gather(model, prediction, -criterion) %>%
   
   # Add error measures
-  mutate(se = prediction - truth,
-         ae = abs(prediction - truth))
+  mutate(se = prediction - criterion,
+         ae = abs(prediction - criterion))
 
 
 # Calculate summaries
@@ -174,7 +178,7 @@ accuracy_agg <- accuracy %>%
 # Plot A) Scatterplot of truth versus predictions
 
 ggplot(data = accuracy,
-       aes(x = truth, y = prediction, col = model)) +
+       aes(x = criterion, y = prediction, col = model)) +
   geom_point(alpha = .2) +
   geom_abline(slope = 1, intercept = 0) +
   labs(title = "Predicting mpg$hwy",
@@ -316,12 +320,12 @@ glm_fit
 
 ## D - Evaluating accuracy
 
-1. Now it's time to compare your model fits to the true values, we'll start by defining a vector called `truth`!
+1. Now it's time to compare your model fits to the true values, we'll start by defining a vector called `truth_train`!
 
 ```{r}
 # Define Grad_Rate as the 'truth'
 
-truth <- college_train$Grad_Rate
+criterion_train <- college_train$Grad_Rate
 ```
 
 2. Let's quantify our model's fitting results. To do this, we'll use the `postResample()` function, with the fitted values as the prediction, and the truth as the observed values:
@@ -329,8 +333,8 @@ truth <- college_train$Grad_Rate
 ```{r}
 # Regression Fitting Accuracy
 
-postResample(pred = glm_fit,   # Fitted values 
-             obs = truth)      # True values
+postResample(pred = glm_fit,    # Fitted values 
+             obs = criterion_train) # True values
 ```
 
 3. You'll see three values here, the easiest to understand is MAE which stands for "Mean Absolute Error" -- in other words, "oh average how far are the predictions from the true values?". A value of 0 means perfect prediction, so small values are good! How do you interpret these results?
@@ -341,12 +345,12 @@ postResample(pred = glm_fit,   # Fitted values
 
 ```{r}
 # accuracy: a dataframe of raw absolute errors
-accuracy <- tibble(truth = truth,
+accuracy <- tibble(criterion = criterion_train,
                    Regression = glm_fit) %>%
                 gather(model, prediction, -truth) %>%
   
   # Add error measures
-  mutate(ae = abs(prediction - truth))
+  mutate(ae = abs(prediction - criterion))
 
 # accuracy_agg: Dataframe of aggregate errors
 accuracy_agg <- accuracy %>%
@@ -356,13 +360,13 @@ accuracy_agg <- accuracy %>%
 
 5. Print the `accuracy` and `accuracy_agg` objects to see how they look.
 
-6. Using the code below, create a scatterplot showing the relationship between the true criterion values and the model fits
+6. Using the code below, create a scatterplot showing the relationship between the criterion and the model fits
 
 ```{r}
 # Plot A) Scatterplot of truth versus predictions
 
 ggplot(data = accuracy,
-       aes(x = truth, y = prediction)) +
+       aes(x = criterion, y = prediction)) +
   geom_point(alpha = .2) +
   geom_abline(slope = 1, intercept = 0) +
   labs(title = "Regression: One Feature",
@@ -453,12 +457,12 @@ Now it's time to do a classification task! Recall that in a classification task,
 class(college_train$Private)
 ```
 
-2. Now, we'll save the Private column as a new object called `truth`
+2. Now, we'll save the Private column as a new object called `criterion`
 
 ```{r}
-# Define the truth as college_train$Private
+# Define the criterion as college_train$Private
 
-truth <- college_train$Private
+criterion <- college_train$Private
 ```
 
 ## H - Fit a classification model
@@ -501,13 +505,13 @@ glm_fit <- predict(Private_glm)
 glm_fit
 ```
 
-3. Now it's time to calculate model accuracy, to do this, we will use a new function called `confusionMatrix()`. This function compares model predictions to a 'reference' (in our case, the truth, and returns several summary statistics). In the code below, we'll use `glm_fit` as the model predictions, and 
+3. Now it's time to calculate model accuracy, to do this, we will use a new function called `confusionMatrix()`. This function compares model predictions to a 'reference' (in our case, the truth, and returns several summary statistics). In the code below, we'll use `glm_fit` as the model predictions, and our already defined `criterion` as the reference
 
 ```{r}
 # Show accuracy of glm_fit versus the true values
 
-confusionMatrix(data = glm_fit,                   # This is the prediction!
-                reference = college_train$Private) # This is the truth!
+confusionMatrix(data = glm_fit,        # This is the prediction!
+                reference = criterion) # This is the truth!
 ```
 
 4. Look at the results, what is the overall accuracy of the model? How do you interpret this?
@@ -526,7 +530,6 @@ glm_accuracy <- confusionMatrix(data =  glm_fit,
 # Combine results into one table
 accuracy <- tibble(Regression = glm_accuracy) %>%
               gather(model, accuracy)
-
 
 # Plot the results!
 ggplot(accuracy, aes(x = model, y = accuracy, fill = model)) + 
