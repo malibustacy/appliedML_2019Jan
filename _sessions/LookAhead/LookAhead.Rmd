@@ -264,7 +264,7 @@ Michal Kosinski, Stanford University <a href="https://www.theguardian.com/world/
 
 ---
 
-# How to continue
+# Next steps
 
 .pull-left5[
 <font size = 4><i>
@@ -272,8 +272,8 @@ Michal Kosinski, Stanford University <a href="https://www.theguardian.com/world/
 1. Practice<br>
 2. Read books<br>
 3. Consult websites<br>
-4. Attend R group<br>
-5. Get consulting<br>
+4. Support & consulting<br>
+5. Upcoming courses<br>
 ]
 
 </font>
