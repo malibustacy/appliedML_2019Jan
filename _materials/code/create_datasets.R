@@ -44,6 +44,23 @@ heart_test <- heart.test
 write_csv(heart_train, path = "1_Data/heart_train.csv")
 write_csv(heart_test, path = "1_Data/heart_test.csv")
 
+
+### mpg -- ggplot2
+
+set.seed(100)
+
+mpg_d <- mpg %>%
+  sample_n(nrow(.)) %>%
+  select(-trans)
+
+carseats_train <- carseats[1:100,]
+carseats_test <- carseats[101:nrow(carseats),]
+
+write_csv(carseats_train, path = "1_Data/carseats_train.csv")
+write_csv(carseats_test, path = "1_Data/carseats_test.csv")
+
+
+
 ###  house  - Housing data from king county US, https://www.kaggle.com/northon/king-county-house-data
 
 house <- read_csv("https://raw.githubusercontent.com/therbootcamp/BaselRBootcamp_2018July/master/_sessions/_data//baselrbootcamp_data/kc_house.csv")

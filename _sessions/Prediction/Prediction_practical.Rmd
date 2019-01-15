@@ -168,7 +168,7 @@ hwy_dt <- train(form = hwy ~ year + cyl + displ,
                 data = data_train,
                 method = "rpart",
                 trControl = train_control,
-                tuneGrid = expand.grid(cp = .001))   # Set complexity parameter
+                tuneGrid = expand.grid(cp = .01))   # Set complexity parameter
 
 # Look at summary information
 hwy_dt$finalModel
@@ -180,7 +180,7 @@ hwy_rf <- train(form = hwy ~ year + cyl + displ,
                 data = data_train,
                 method = "rf",
                 trControl = train_control,
-                tuneGrid = expand.grid(mtry = 2))   # Set number of features randomly selecte
+                tuneGrid = expand.grid(mtry = 2))   # Set number of features randomly selected
 
 # Look at summary information
 hwy_rf$finalModel
@@ -395,11 +395,30 @@ Using the basics steps in the Examples section above, fit each of three models, 
 
 - Set the complexity parameter to `cp = 0.01`
 
+```{r}
+grad_dt <- train(form = Grad.Rate ~ .,    # Make sure to specify your features here!
+                 data = data_train,
+                 method = "rpart",
+                 trControl = train_control,
+                 tuneGrid = expand.grid(cp = .01))   # Set complexity parameter
+
+```
+
+
 6. Explore your `grad_dt` object by looking at `grad_dt$finalModel` and plotting it with `plot(as.party(grad_dt$finalModel))`, what do you find?
 
 7. Using `train()`, fit a random forest model called `grad_rf` (using the same features as above).
 
 - Set the number of randomly sampled parameter to `mtry` = 2
+
+```{r, eval = FALSE, echo = TRUE}
+grad_rf <- train(form = Grad.Rate ~ .,    # Make sure to specify your features here!
+                 data = college_train,
+                 method = "rf",
+                 trControl = train_control,
+                 tuneGrid = expand.grid(mtry = 2))  # Set number of features randomly selected
+```
+
 
 8. Using `postResample()`, determine the fitting performance of each of your models
 
@@ -467,7 +486,6 @@ Fit each of three models, regression, decision trees, and random forests to the 
 
 5. If someone came to you and asked "If I use your model in the future to predict house selling prices, how accurate do you think it would be?", what would you say?
 
-
 # Exploring model tuning parameters
 
 1. In all of your decision tree models so far, you have been setting the complexity parameter to 0.01. Try setting it to a large value such as 0.2 and see how your decision trees change. Do they get more or less complicated? How does increasing this value affect fitting and prediction performance? If you are interested in learning more about this parameter, look at the help menu with `?rpart.control`.
@@ -492,7 +510,7 @@ mod <- train(form = hwy ~ year + cyl + displ,
 
 1. So far you've probably been using most, if not all, available features in predicting house sales. But imagine someone came to you and said "I need to know how much a set of new houses will sell for, but I only have access to three features `bedrooms`, `bathrooms`, and `sqft_living`. Which of your models should I use and how accurate will they be? How would you answer that question? Use your modelling techniques to find out!
 
-2. Repeat your modelling process, but now do a classification task. Specifically, predict whether or not a house sells for at least \$1,000,000. To do this, you'll first need to create a new column called `million` in both your `house_train` and `house_test` datasets (the code below should help you). Then, use your best modelling techniques. How accurate are your models in predicting whether or not a house will sell for over $1,000,000? Don't forget to use the `confusionMatrix()` function instead of `postResample()` to evaluate your model's accuracy!
+2. Repeat your modelling process, but now do a classification task. Specifically, predict whether or not a house sells for at least \$1,000,000. To do this, you'll first need to create a new column called `million` in both your `house_train` and `house_test` datasets (the code below should help you). Then, use your best modelling techniques to make this prediction. How accurate are your models in predicting whether or not a house will sell for over $1,000,000? Don't forget to use the `confusionMatrix()` function instead of `postResample()` to evaluate your model's accuracy!
 
 ```{r}
 # Add million column to house_train and house_test
@@ -505,4 +523,3 @@ house_train <- house_train %>%
 house_test <- house_test %>%
   mutate(million = factor(price > 1000000))
 ```
-

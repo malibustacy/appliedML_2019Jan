@@ -1091,7 +1091,7 @@ hwy_dt &lt;- train(form = hwy ~ year + cyl + displ,
                 data = data_train,
                 method = &quot;rpart&quot;,
                 trControl = train_control,
-                tuneGrid = expand.grid(cp = .001))   # Set complexity parameter
+                tuneGrid = expand.grid(cp = .01))   # Set complexity parameter
 
 # Look at summary information
 hwy_dt$finalModel
@@ -1103,7 +1103,7 @@ hwy_rf &lt;- train(form = hwy ~ year + cyl + displ,
                 data = data_train,
                 method = &quot;rf&quot;,
                 trControl = train_control,
-                tuneGrid = expand.grid(mtry = 2))   # Set number of features randomly selecte
+                tuneGrid = expand.grid(mtry = 2))   # Set number of features randomly selected
 
 # Look at summary information
 hwy_rf$finalModel
@@ -1522,6 +1522,11 @@ carseats_test &lt;- carseats_test %&gt;%
 <ul>
 <li>Set the complexity parameter to <code>cp = 0.01</code></li>
 </ul>
+<pre class="r"><code>grad_dt &lt;- train(form = Grad.Rate ~ .,    # Make sure to specify your features here!
+                 data = data_train,
+                 method = &quot;rpart&quot;,
+                 trControl = train_control,
+                 tuneGrid = expand.grid(cp = .01))   # Set complexity parameter</code></pre>
 <ol start="6" style="list-style-type: decimal">
 <li><p>Explore your <code>grad_dt</code> object by looking at <code>grad_dt$finalModel</code> and plotting it with <code>plot(as.party(grad_dt$finalModel))</code>, what do you find?</p></li>
 <li><p>Using <code>train()</code>, fit a random forest model called <code>grad_rf</code> (using the same features as above).</p></li>
@@ -1529,6 +1534,11 @@ carseats_test &lt;- carseats_test %&gt;%
 <ul>
 <li>Set the number of randomly sampled parameter to <code>mtry</code> = 2</li>
 </ul>
+<pre class="r"><code>grad_rf &lt;- train(form = Grad.Rate ~ .,    # Make sure to specify your features here!
+                 data = college_train,
+                 method = &quot;rf&quot;,
+                 trControl = train_control,
+                 tuneGrid = expand.grid(mtry = 2))  # Set number of features randomly selected</code></pre>
 <ol start="8" style="list-style-type: decimal">
 <li><p>Using <code>postResample()</code>, determine the fitting performance of each of your models</p></li>
 <li><p>Which one had the best fits? What was the fitting MAE of each model?</p></li>
@@ -1865,7 +1875,7 @@ mod &lt;- train(form = hwy ~ year + cyl + displ,
 <h1>Challenges</h1>
 <ol style="list-style-type: decimal">
 <li><p>So far you’ve probably been using most, if not all, available features in predicting house sales. But imagine someone came to you and said &quot;I need to know how much a set of new houses will sell for, but I only have access to three features <code>bedrooms</code>, <code>bathrooms</code>, and <code>sqft_living</code>. Which of your models should I use and how accurate will they be? How would you answer that question? Use your modelling techniques to find out!</p></li>
-<li><p>Repeat your modelling process, but now do a classification task. Specifically, predict whether or not a house sells for at least $1,000,000. To do this, you’ll first need to create a new column called <code>million</code> in both your <code>house_train</code> and <code>house_test</code> datasets (the code below should help you). Then, use your best modelling techniques. How accurate are your models in predicting whether or not a house will sell for over $1,000,000? Don’t forget to use the <code>confusionMatrix()</code> function instead of <code>postResample()</code> to evaluate your model’s accuracy!</p></li>
+<li><p>Repeat your modelling process, but now do a classification task. Specifically, predict whether or not a house sells for at least $1,000,000. To do this, you’ll first need to create a new column called <code>million</code> in both your <code>house_train</code> and <code>house_test</code> datasets (the code below should help you). Then, use your best modelling techniques to make this prediction. How accurate are your models in predicting whether or not a house will sell for over $1,000,000? Don’t forget to use the <code>confusionMatrix()</code> function instead of <code>postResample()</code> to evaluate your model’s accuracy!</p></li>
 </ol>
 <pre class="r"><code># Add million column to house_train and house_test
 #  A factor indicating whether or not a house sells for
