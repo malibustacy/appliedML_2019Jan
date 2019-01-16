@@ -34,7 +34,6 @@ options(htmltools.dir.version = FALSE)
 options(width=110)
 options(digits = 4)
 
-
 # Get color palette functions
 
 source("https://raw.githubusercontent.com/therbootcamp/therbootcamp.github.io/master/_materials/code/baselrbootcamp_palettes.R")
@@ -1015,13 +1014,6 @@ geom_linerange(aes(x = fits, ymin = fits, ymax = truth), col = baselrbootcamp_co
 ```
 
 ]
-
-
----
-
-
-
-
 
 ---
 
