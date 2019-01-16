@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Parameter Tuning</title>
+    <title>Features</title>
     <meta charset="utf-8">
     <meta name="author" content="Applied Machine Learning with R www.therbootcamp.com @therbootcamp" />
     <link href="libs/remark-css/default.css" rel="stylesheet" />
@@ -11,7 +11,7 @@
     <textarea id="source">
 class: center, middle, inverse, title-slide
 
-# Parameter Tuning
+# Features
 ### Applied Machine Learning with R<br/><a href='https://therbootcamp.github.io'>www.therbootcamp.com</a><br/><a href='https://twitter.com/therbootcamp'><span class="citation">@therbootcamp</span></a>
 ### January 2019
 
@@ -36,13 +36,346 @@ layout: true
 
 
 
-.pull-left4[
 
-# Recap: What are model tuning parameters?
+.pull-left45[
+
+# Feature issues
+&lt;br&gt;
+&lt;high&gt;Too many features&lt;/high&gt;
+
+- Curse of dimensionality
+- Feature importance
+
+&lt;high&gt;Wrong features&lt;/high&gt;
+
+- Feature scaling
+- Feature correlation
+- Feature quality
+
+&lt;high&gt;Create new features&lt;/high&gt;
+
+- Feature engineering
+
+]
+
+.pull-right45[
+
+&lt;p&gt;
+&lt;br&gt;&lt;br&gt;
+&lt;img src="image/dumbdata.png" height = 500px&gt;
+&lt;/p&gt;
+
+]
+
+---
+
+# Curse of dimensionality
+
+.pull-left35[
+
+As the number of features grows...
+
+&lt;high&gt;Performance&lt;/high&gt; - the amount of data need to generalize accurately grows exponentially.
+
+&lt;high&gt;Efficiency&lt;/high&gt; - the amount of computations grows (how much depends on the model).
+
+&lt;high&gt;Redundancy&lt;/high&gt; - the amount of redudancy grows (how much depends on the) 
+
+&amp;#8594; &lt;high&gt;Small set of good predictors&lt;high&gt;
 
 ]
 
 .pull-right6[
+
+&lt;p&gt;
+&lt;br&gt;&lt;br&gt;
+&lt;img src="image/cod.png"&gt;
+&lt;/p&gt;
+
+]
+
+---
+
+# How to reduce dimensionality?
+
+.pull-left45[
+
+&lt;u&gt;3 ways&lt;/u&gt;
+
+&lt;i&gt;A&lt;/i&gt; Reduce variables &lt;high&gt;manually&lt;/high&gt; based on statistical or intitive considerations.
+
+&lt;i&gt;B&lt;/i&gt; Reduce variables &lt;high&gt;automatically&lt;/high&gt; using the right ML algorithms, e.g., `random forests` or `lasso regression`.
+
+&lt;i&gt;C&lt;/i&gt; Compress variables using &lt;high&gt;dimensionality reduction algorithms&lt;/high&gt;, such `principal component analysis`(PCA).
+
+]
+
+.pull-right5[
+
+&lt;p align = "center"&gt;
+&lt;img src="image/highd.jpeg"&gt;
+&lt;font size=3&gt;Interstellar&lt;font&gt;
+&lt;/p&gt;
+
+]
+
+---
+
+# Feature importance
+
+.pull-left4[
+
+&lt;high&gt;Feature importance&lt;/high&gt; characterizes how much a feature contributes to the fitting/prediction performance. 
+
+Typically &lt;high&gt;normalized&lt;/high&gt; to `[0, 100]`.
+
+There are many &lt;high&gt;model specific metrics&lt;/high&gt;.
+
+&lt;u&gt;General strategies&lt;/u&gt;
+- Single variable prediction (e.g., using `LOESS`, `ROC`) 
+- Accuracy loss from scrambling
+- `random forests` importance
+- etc.  
+]
+
+.pull-right5[
+
+```r
+# plot variable importance for lm(income ~ .)
+plot(varImp(income_lm))
+```
+
+&lt;img src="Features_files/figure-html/unnamed-chunk-4-1.png" style="display: block; margin: auto;" /&gt;
+
+]
+
+---
+
+# `varImp()`
+
+.pull-left45[
+`varImp()` &lt;high&gt;automically selects appropriate measure&lt;/high&gt; of variable importance for a given algorithm. 
+
+
+```r
+varImp(income_lm)
+```
+
+
+```
+lm variable importance
+
+          Overall
+age        100.00
+food        48.67
+happiness   18.60
+alcohol     17.81
+tattoos      7.86
+fitness      6.89
+height       6.83
+weight       2.34
+children     1.52
+datause      0.00
+```
+
+]
+
+.pull-right5[
+
+```r
+# plot variable importance for lm(income ~ .)
+plot(varImp(income_lm))
+```
+
+&lt;img src="Features_files/figure-html/unnamed-chunk-8-1.png" style="display: block; margin: auto;" /&gt;
+
+]
+
+---
+
+# Dimensionality reduction using `PCA`
+
+.pull-left45[
+
+The go-to algorithm for dimensionality is &lt;high&gt;principal component analysis&lt;/high&gt; (PCA). 
+
+PCA is an &lt;high&gt;unsupervised&lt;/high&gt;, &lt;high&gt;regression-based&lt;/high&gt; algorithm that re-represents the data in a &lt;high&gt;new feature space&lt;/high&gt;.  
+
+The new features aka &lt;high&gt;principal components are greedy&lt;/high&gt; in that they attempt to explain as much variance as they can leaving as little as possible to other components.
+
+&lt;high&gt;Skimming the best components off the top&lt;/high&gt; results in a small number of features that &lt;high&gt;preserve the original features as well as possible&lt;/high&gt;.
+
+]
+
+
+.pull-right45[
+
+&lt;p align = "center"&gt;
+&lt;img src="image/pca.png"&gt;
+&lt;/p&gt;
+
+]
+
+---
+
+# Using `PCA`
+
+.pull-left45[
+
+
+```r
+# train model WITHOUT PCA preprocessing
+model = train(income ~ ., method = 'lm', 
+           data = bas_train)
+
+plot(varImp(model))
+```
+
+&lt;img src="Features_files/figure-html/unnamed-chunk-10-1.png" style="display: block; margin: auto;" /&gt;
+
+
+]
+
+.pull-right45[
+
+
+```r
+# train model WITH PCA preprocessing
+model = train(income ~ ., method = 'lm', 
+              data = bas_train,
+              preProc = c('pca'))
+plot(varImp(model))
+```
+
+&lt;img src="Features_files/figure-html/unnamed-chunk-12-1.png" style="display: block; margin: auto;" /&gt;
+
+]
+
+---
+
+# Correlated features
+
+
+
+---
+
+# Correlated features
+
+.pull-left45[
+
+The go-to algorithm for dimensionality is &lt;high&gt;principal component analysis&lt;/high&gt; (PCA). 
+
+PCA is an &lt;high&gt;unsupervised&lt;/high&gt;, &lt;high&gt;regression-based&lt;/high&gt; algorithm that re-represents the data in a &lt;high&gt;new feature space&lt;/high&gt;.  
+
+The new features aka &lt;high&gt;principal components are greedy&lt;/high&gt; in that they attempt to explain as much variance as they can leaving as little as possible to other components.
+
+&lt;high&gt;Skimming the best components off the top&lt;/high&gt; results in a small number of features that &lt;high&gt;preserve the original features as well as possible&lt;/high&gt;.
+
+]
+
+
+
+---
+
+# Human insight
+
+.pull-left45[
+
+The go-to algorithm for dimensionality is &lt;high&gt;principal component analysis&lt;/high&gt; (PCA). 
+
+PCA is an &lt;high&gt;unsupervised&lt;/high&gt;, &lt;high&gt;regression-based&lt;/high&gt; algorithm that re-represents the data in a &lt;high&gt;new feature space&lt;/high&gt;.  
+
+The new features aka &lt;high&gt;principal components are greedy&lt;/high&gt; in that they attempt to explain as much variance as they can leaving as little as possible to other components.
+
+&lt;high&gt;Skimming the best components off the top&lt;/high&gt; results in a small number of features that &lt;high&gt;preserve the original features as well as possible&lt;/high&gt;.
+
+]
+
+
+
+
+---
+
+# Problems
+
+Too many features -&gt; curse of dimensionality
+
+Wrong features 
+  in face of truth -&gt; feature generation
+  in face of data -&gt; reverse engineering (black vs. white box)
+
+Psychology
+  
+
+.pull-left4[
+
+#  
+
+]
+
+.pull-right6[
+
+]
+
+---
+
+.pull-left5[
+
+# Feature importance
+
+Regardless of the model you use, you will often want to know &lt;high&gt;which features are important&lt;/high&gt; in predicting the criterion.
+
+Often displayed on a *relative* scale from 0 to 100
+
+Every model has their own definition of importance (see [the caret documentation](http://topepo.github.io/caret/variable-importance.html) for details).
+
+Different models can give you different importance rankings
+
+&lt;img src="http://worldartsme.com/images/scale-clipart-1.jpg" width="40%" style="display: block; margin: auto;" /&gt;
+
+
+]
+
+.pull-right45[
+
+### Variable importance plot
+
+Here's an example variable importance plot from R
+
+&lt;img src="http://mgel2011-kvm.env.duke.edu/mget/files/2012/07/RandomForestImportance.png" width="100%" style="display: block; margin: auto;" /&gt;
+
+]
+
+---
+
+.pull-left5[
+
+## `varImp()`
+
+
+Use `varImp()` to extract &lt;high&gt;variable importance&lt;/high&gt; from a model
+
+
+
+```r
+# Get veriable importance from glm_train
+# varImp(glm_train)
+```
+    
+  
+]
+
+.pull-right45[
+&lt;br&gt;&lt;br&gt;&lt;br&gt;
+You can also plot the results using `plot()`
+
+
+```r
+# Plot variable importance
+
+# plot(varImp(glm_train))
+```
+
 
 ]
 
@@ -51,7 +384,7 @@ layout: true
 
 .pull-left4[
 
-# Why do we have tuning parameters
+# Neural Networks
 
 - Regularisation
 - Complexity
@@ -61,115 +394,6 @@ layout: true
 .pull-right6[
 
 ]
-
-
----
-
-.pull-left4[
-
-# Bias-Variance Trade-off
-
-- A short introduction
-
-]
-
-.pull-right6[
-
-]
-
-
----
-
-.pull-left4[
-
-# Regularisation / complexity controlling methods
-
-- Regression
-  - Ridge (L1 penalty), Lasso (L2 penalty)
-  
-- Trees
-  - Max depth, minimum elements per node
-  
-- KNN
-   - Just try different values of K
-
-]
-
-.pull-right6[
-
-]
-
-
----
-
-.pull-left4[
-
-# How do you select best tuning parameters?
-
-- Crossvalidation
-
-]
-
-.pull-right6[
-
-]
-
-
----
-
-.pull-left4[
-
-# Cross-Validation
-
-]
-
-.pull-right6[
-
-]
-
----
-
-.pull-left4[
-
-# Estimating prediction accuracy with cross-validation
-
-]
-
-.pull-right6[
-
-]
-
----
-
-.pull-left4[
-
-# Estimating True prediction accuracy
-
-
-- Hold out set
-- Why do we always use a holdout set?
-
-]
-
-.pull-right6[
-
-]
-
-
----
-
-# Caret
-
-
-
-
-
----
-
-
-# Practical
-
-&lt;font size=6&gt;&lt;b&gt;&lt;a href="https://therbootcamp.github.io/Intro2DataScience_2018Oct/_sessions/Plotting/Plotting_practical.html"&gt;Link to practical&lt;/a&gt;
     </textarea>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
 <script>var slideshow = remark.create({
