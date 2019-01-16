@@ -140,6 +140,11 @@ View(data_train)  # Open in a new spreadsheet-like window
 dim(data_train)   # Print dimensions
 names(data_train) # Print the names
 
+# Define criterion_train
+#   We'll use this later to evaluate model accuracy
+
+criterion_train <- data_train$hwy
+
 # Step 2: Define training control parameters -------------
 
 # In this case, I will set method = "none" to fit to 
@@ -151,7 +156,7 @@ train_control <- trainControl(method = "none")
 #   Criterion: hwy
 #   Features: year, cyl, displ
 
-# Regression
+# Regression --------------------------
 
 hwy_glm <- train(form = hwy ~ year + cyl + displ,
                  data = data_train,
@@ -162,7 +167,13 @@ hwy_glm <- train(form = hwy ~ year + cyl + displ,
 hwy_glm$finalModel
 summary(hwy_glm)
 
-# Decision Trees
+# Save fitted values
+glm_fit <- predict(hwy_glm)
+
+#  Calculate fitting accuracies
+postResample(pred = glm_fit, obs = criterion_train)
+
+# Decision Trees ----------------
 
 hwy_dt <- train(form = hwy ~ year + cyl + displ,
                 data = data_train,
@@ -174,7 +185,13 @@ hwy_dt <- train(form = hwy ~ year + cyl + displ,
 hwy_dt$finalModel
 plot(as.party(hwy_dt$finalModel))   # Visualise your trees
 
-# Random Forests
+# Save fitted values
+dt_fit <- predict(hwy_dt)
+
+# Calculate fitting accuracies
+postResample(pred = dt_fit, obs = criterion_train)
+
+# Random Forests -------------------------
 
 hwy_rf <- train(form = hwy ~ year + cyl + displ,
                 data = data_train,
@@ -185,19 +202,10 @@ hwy_rf <- train(form = hwy ~ year + cyl + displ,
 # Look at summary information
 hwy_rf$finalModel
 
-# Step 4: Access fit ------------------------------
-
 # Save fitted values
-glm_fit <- predict(hwy_glm)
-dt_fit <- predict(hwy_dt)
 rf_fit <- predict(hwy_rf)
 
-# Define criterion_train
-criterion_train <- data_train$hwy
-
-#  Calculate fitting accuracies
-postResample(pred = glm_fit, obs = criterion_train)
-postResample(pred = dt_fit, obs = criterion_train)
+# Calculate fitting accuracies
 postResample(pred = rf_fit, obs = criterion_train)
 
 # Visualise Accuracy -------------------------
@@ -245,13 +253,13 @@ ggplot(data = accuracy,
 
 # Step 5: Access prediction ------------------------------
 
+# Define criterion_train
+criterion_test <- data_test$hwy
+
 # Save predicted values
 glm_pred <- predict(hwy_glm, newdata = data_test)
 dt_pred <- predict(hwy_dt, newdata = data_test)
 rf_pred <- predict(hwy_rf, newdata = data_test)
-
-# Define criterion_train
-criterion_test <- data_test$hwy
 
 #  Calculate fitting accuracies
 postResample(pred = glm_pred, obs = criterion_test)
