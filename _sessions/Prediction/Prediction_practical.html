@@ -896,11 +896,10 @@ Source: Medium.com
 <h2></h2>
 <div id="overview" class="section level3">
 <h3>Overview</h3>
-<p>In this practical you’ll practice the basics of model fitting and prediction with regression and decision trees</p>
 <p>By the end of this practical you will know how to:</p>
 <ol style="list-style-type: decimal">
 <li>Fit regression, decision trees and random forests to training data</li>
-<li>Evaluate model fitting and prediction performance</li>
+<li>Evaluate model fitting <em>and</em> prediction performance in a test set</li>
 <li>Compare the fitting and prediction performance of two models</li>
 <li>Explore the effects of features on model predictions</li>
 </ol>
@@ -1063,6 +1062,11 @@ View(data_train)  # Open in a new spreadsheet-like window
 dim(data_train)   # Print dimensions
 names(data_train) # Print the names
 
+# Define criterion_train
+#   We'll use this later to evaluate model accuracy
+
+criterion_train &lt;- data_train$hwy
+
 # Step 2: Define training control parameters -------------
 
 # In this case, I will set method = &quot;none&quot; to fit to 
@@ -1074,7 +1078,7 @@ train_control &lt;- trainControl(method = &quot;none&quot;)
 #   Criterion: hwy
 #   Features: year, cyl, displ
 
-# Regression
+# Regression --------------------------
 
 hwy_glm &lt;- train(form = hwy ~ year + cyl + displ,
                  data = data_train,
@@ -1085,7 +1089,13 @@ hwy_glm &lt;- train(form = hwy ~ year + cyl + displ,
 hwy_glm$finalModel
 summary(hwy_glm)
 
-# Decision Trees
+# Save fitted values
+glm_fit &lt;- predict(hwy_glm)
+
+#  Calculate fitting accuracies
+postResample(pred = glm_fit, obs = criterion_train)
+
+# Decision Trees ----------------
 
 hwy_dt &lt;- train(form = hwy ~ year + cyl + displ,
                 data = data_train,
@@ -1097,7 +1107,13 @@ hwy_dt &lt;- train(form = hwy ~ year + cyl + displ,
 hwy_dt$finalModel
 plot(as.party(hwy_dt$finalModel))   # Visualise your trees
 
-# Random Forests
+# Save fitted values
+dt_fit &lt;- predict(hwy_dt)
+
+# Calculate fitting accuracies
+postResample(pred = dt_fit, obs = criterion_train)
+
+# Random Forests -------------------------
 
 hwy_rf &lt;- train(form = hwy ~ year + cyl + displ,
                 data = data_train,
@@ -1108,19 +1124,10 @@ hwy_rf &lt;- train(form = hwy ~ year + cyl + displ,
 # Look at summary information
 hwy_rf$finalModel
 
-# Step 4: Access fit ------------------------------
-
 # Save fitted values
-glm_fit &lt;- predict(hwy_glm)
-dt_fit &lt;- predict(hwy_dt)
 rf_fit &lt;- predict(hwy_rf)
 
-# Define criterion_train
-criterion_train &lt;- data_train$hwy
-
-#  Calculate fitting accuracies
-postResample(pred = glm_fit, obs = criterion_train)
-postResample(pred = dt_fit, obs = criterion_train)
+# Calculate fitting accuracies
 postResample(pred = rf_fit, obs = criterion_train)
 
 # Visualise Accuracy -------------------------
@@ -1168,13 +1175,13 @@ ggplot(data = accuracy,
 
 # Step 5: Access prediction ------------------------------
 
+# Define criterion_train
+criterion_test &lt;- data_test$hwy
+
 # Save predicted values
 glm_pred &lt;- predict(hwy_glm, newdata = data_test)
 dt_pred &lt;- predict(hwy_dt, newdata = data_test)
 rf_pred &lt;- predict(hwy_rf, newdata = data_test)
-
-# Define criterion_train
-criterion_test &lt;- data_test$hwy
 
 #  Calculate fitting accuracies
 postResample(pred = glm_pred, obs = criterion_test)
@@ -1256,10 +1263,10 @@ house_train &lt;- read_csv(file = &quot;1_Data/house_test.csv&quot;)</code></pre
 <li><p>Take a look at the first few rows of each dataframe by printing then to the console.</p></li>
 <li><p>Print the numbers of rows and columns of each dataset using the <code>dim()</code> function</p></li>
 <li><p>Look at the names of the dataframe with the <code>names()</code> function.</p></li>
-<li><p>Open the dataset in a new window using <code>View()</code>. Do they look alright?</p></li>
+<li><p>Open the dataset in a new window using <code>View()</code>. Do they look ok?</p></li>
 <li><p>We need to do a little bit of data cleaning before starting. Specifically, we need to convert all columns to factors: Do this by running the following code:</p></li>
 </ol>
-<pre class="r"><code># Convert character to factor
+<pre class="r"><code># Convert all character columns to factor
 
 college_train &lt;- college_train %&gt;%
           mutate_if(is.character, factor)
@@ -1271,18 +1278,12 @@ house_train &lt;- house_train %&gt;%
           mutate_if(is.character, factor)
 
 house_test &lt;- house_test %&gt;%
-          mutate_if(is.character, factor)
-
-carseats_train &lt;- carseats_train %&gt;%
-          mutate_if(is.character, factor)
-
-carseats_test &lt;- carseats_test %&gt;%
           mutate_if(is.character, factor)</code></pre>
 </div>
 </div>
-<div id="college" class="section level1">
-<h1>College</h1>
-<p>In this section, we will again predict college graduation rates <code>Grad_Rate</code> from the <code>college_train</code> and <code>college_test</code> datasets. Here’s how they should look:</p>
+<div id="college-graduation-rates" class="section level1">
+<h1>College Graduation Rates</h1>
+<p>In this section, we will again predict college graduation rates <code>Grad_Rate</code> from the <code>college_train</code> and <code>college_test</code> datasets. Here’s how the first few rows of <code>college_train</code> should look:</p>
 <table>
 <thead>
 <tr class="header">
@@ -1515,9 +1516,9 @@ carseats_test &lt;- carseats_test %&gt;%
 <ol style="list-style-type: decimal">
 <li><p>Look at the <code>college_train</code> dataset and decide which features you think are reasonable to include in a model.</p></li>
 <li><p>Using <code>trainControl()</code>, set your training control method to <code>&quot;none&quot;</code>. Save your object as <code>ctrl_none</code></p></li>
-<li><p>Using <code>train()</code> fit a regression model called <code>grad_glm</code> using the features you think are reasonable.</p></li>
+<li><p>Using <code>train()</code> fit a regression model called <code>grad_glm</code> predicting <code>Grad.Rate</code>, and using the features you think are reasonable.</p></li>
 <li><p>Explore your <code>grad_glm</code> object by looking at <code>grad_glm$finalModel</code> and using <code>summary()</code>, what do you find?</p></li>
-<li><p>Using <code>train()</code>, fit a decision tree model called <code>grad_dt</code> (using the same features as above).</p></li>
+<li><p>Using <code>train()</code>, fit a decision tree model called <code>grad_dt</code> predicting <code>Grad.Rate</code> (using the same features as above).</p></li>
 </ol>
 <ul>
 <li>Set the complexity parameter to <code>cp = 0.01</code></li>
@@ -1529,7 +1530,7 @@ carseats_test &lt;- carseats_test %&gt;%
                  tuneGrid = expand.grid(cp = .01))   # Set complexity parameter</code></pre>
 <ol start="6" style="list-style-type: decimal">
 <li><p>Explore your <code>grad_dt</code> object by looking at <code>grad_dt$finalModel</code> and plotting it with <code>plot(as.party(grad_dt$finalModel))</code>, what do you find?</p></li>
-<li><p>Using <code>train()</code>, fit a random forest model called <code>grad_rf</code> (using the same features as above).</p></li>
+<li><p>Using <code>train()</code>, fit a random forest model called <code>grad_rf</code> predicting <code>Grad.Rate</code> (using the same features as above).</p></li>
 </ol>
 <ul>
 <li>Set the number of randomly sampled parameter to <code>mtry</code> = 2</li>
@@ -1540,15 +1541,15 @@ carseats_test &lt;- carseats_test %&gt;%
                  trControl = train_control,
                  tuneGrid = expand.grid(mtry = 2))  # Set number of features randomly selected</code></pre>
 <ol start="8" style="list-style-type: decimal">
-<li><p>Using <code>postResample()</code>, determine the fitting performance of each of your models</p></li>
+<li><p>Using <code>postResample()</code>, determine the fitting performance of each of your models.</p></li>
 <li><p>Which one had the best fits? What was the fitting MAE of each model?</p></li>
-<li><p>If you’d like to, try visualizing the fitting results using the plotting code in the Examples</p></li>
+<li><p>If you’d like to, try visualizing the fitting results using the plotting code shown in the Examples tab above.</p></li>
 </ol>
 </div>
 <div id="prediction" class="section level2">
 <h2>Prediction</h2>
 <ol style="list-style-type: decimal">
-<li><p>Using <code>postResample()</code>, determine the prediction performance of each of your models on the <code>college_test</code> data.</p></li>
+<li><p>Using <code>postResample()</code>, determine the <em>prediction</em> performance of each of your models on the <code>college_test</code> data.</p></li>
 <li><p>How does each model’s prediction performance compare to its fitting performance? Is it worse? Better? The same?</p></li>
 <li><p>Which of the three models has the best prediction performance?</p></li>
 <li><p>If you had to use one of these three models in the real-world, which one would it be? Why?</p></li>
@@ -1556,9 +1557,9 @@ carseats_test &lt;- carseats_test %&gt;%
 </ol>
 </div>
 </div>
-<div id="house" class="section level1">
-<h1>House</h1>
-<p>In this section, we will again predict the prices of houses in King County Washington (home of Seattle, <a href="https://qz.com/208457/a-cartographic-guide-to-starbucks-global-domination/">which you can thank for this</a>) using the <code>house_train</code> and <code>house_test</code> datasets. Here’s how they should look:</p>
+<div id="house-prices-in-king-county-washington" class="section level1">
+<h1>House Prices in King County, Washington</h1>
+<p>In this section, we will predict the prices of houses in King County Washington (home of Seattle, <a href="https://qz.com/208457/a-cartographic-guide-to-starbucks-global-domination/">which you can thank for this</a>) using the <code>house_train</code> and <code>house_test</code> datasets. Here’s how they should look:</p>
 <table>
 <thead>
 <tr class="header">
@@ -1820,20 +1821,20 @@ carseats_test &lt;- carseats_test %&gt;%
 </table>
 <div id="fitting-1" class="section level2">
 <h2>Fitting</h2>
-<p>Fit each of three models, regression, decision trees, and random forests to the <code>house</code> data. Your goal is to fit models predicting <code>price</code></p>
+<p>Your goal in the following models is to predict <code>price</code></p>
 <ol style="list-style-type: decimal">
 <li><p>Look at the <code>house_train</code> dataset and decide which features you think are reasonable to include in a model.</p></li>
 <li><p>Using <code>trainControl()</code>, set your training control method to <code>&quot;none&quot;</code>. Save your object as <code>ctrl_none</code></p></li>
-<li><p>Using <code>train()</code> fit a regression model called <code>price_glm</code> using the features you think are reasonable.</p></li>
+<li><p>Using <code>train()</code> fit a regression model called <code>price_glm</code> predicting <code>price</code> using the features you think are reasonable.</p></li>
 <li><p>Explore your <code>price_glm</code> object by looking at <code>price_glm$finalModel</code> and using <code>summary()</code>, what do you find?</p></li>
-<li><p>Using <code>train()</code>, fit a decision tree model called <code>price_dt</code> (using the same features as above).</p></li>
+<li><p>Using <code>train()</code>, fit a decision tree model called <code>price_dt</code> predicting <code>price</code> and using the same features as above.</p></li>
 </ol>
 <ul>
 <li>Set the complexity parameter to <code>cp = 0.01</code></li>
 </ul>
 <ol start="6" style="list-style-type: decimal">
 <li><p>Explore your <code>price_dt</code> object by looking at <code>price_dt$finalModel</code> and plotting it with <code>plot(as.party(price_dt$finalModel))</code>, what do you find?</p></li>
-<li><p>Using <code>train()</code>, fit a random forest model called <code>price_rf</code> (using the same features as above).</p></li>
+<li><p>Using <code>train()</code>, fit a random forest model called <code>price_rf</code> predicting <code>price</code> and using the same features as above.</p></li>
 </ol>
 <ul>
 <li>Set the number of randomly sampled parameter to <code>mtry</code> = 2</li>
@@ -1858,7 +1859,7 @@ carseats_test &lt;- carseats_test %&gt;%
 <div id="exploring-model-tuning-parameters" class="section level1">
 <h1>Exploring model tuning parameters</h1>
 <ol style="list-style-type: decimal">
-<li><p>In all of your decision tree models so far, you have been setting the complexity parameter to 0.01. Try setting it to a large value such as 0.2 and see how your decision trees change. Do they get more or less complicated? How does increasing this value affect fitting and prediction performance? If you are interested in learning more about this parameter, look at the help menu with <code>?rpart.control</code>.</p></li>
+<li><p>In all of your decision tree models so far, you have been setting the complexity parameter to 0.01. Try setting it to a largre value of 0.2 and see how your decision trees change (by plotting them). Do they get more or less complicated? How does increasing this value affect fitting and prediction performance? If you are interested in learning more about this parameter, look at the help menu with <code>?rpart.control</code>.</p></li>
 <li><p>In each of your random forest models, you have been setting the <code>mtry</code> argument to 2. Try setting it to a larger value such as 5 and re-running your models. How does increasing this value affect fitting and prediction performance? If you are interested in learning more about this parameter, look at the help menu with <code>?randomForest</code>.</p></li>
 <li><p>By default, the <code>train()</code> function uses 500 trees in <code>method = &quot;rf&quot;</code>. How do the number of trees affect performance? To answer this, try setting the number of trees to 1,000 (see example below) and re-evaluating your model’s training and test performance. What do you find? What if you set the number of trees to just 10?</p></li>
 </ol>
@@ -1868,7 +1869,7 @@ mod &lt;- train(form = hwy ~ year + cyl + displ,
              data = data_train,
              method = &quot;rf&quot;,
              trControl = train_control,
-             ntree = 1000,   # use 1000 trees! (Instead of 500)
+             ntree = 1000,   # use 1000 trees! (Instead of the default value of 500)
              tuneGrid = expand.grid(mtry = 2))</code></pre>
 </div>
 <div id="challenges" class="section level1">

@@ -28,12 +28,10 @@ knitr::include_graphics("https://cdn-images-1.medium.com/max/1200/0*F0y1bmOEzCFC
 
 ### Overview
 
-In this practical you'll practice the basics of model fitting and prediction with regression and decision trees
-
 By the end of this practical you will know how to:
 
 1. Fit regression, decision trees and random forests to training data
-2. Evaluate model fitting and prediction performance
+2. Evaluate model fitting *and* prediction performance in a test set
 3. Compare the fitting and prediction performance of two models
 4. Explore the effects of features on model predictions
 
@@ -140,6 +138,11 @@ View(data_train)  # Open in a new spreadsheet-like window
 dim(data_train)   # Print dimensions
 names(data_train) # Print the names
 
+# Define criterion_train
+#   We'll use this later to evaluate model accuracy
+
+criterion_train <- data_train$hwy
+
 # Step 2: Define training control parameters -------------
 
 # In this case, I will set method = "none" to fit to 
@@ -151,7 +154,7 @@ train_control <- trainControl(method = "none")
 #   Criterion: hwy
 #   Features: year, cyl, displ
 
-# Regression
+# Regression --------------------------
 
 hwy_glm <- train(form = hwy ~ year + cyl + displ,
                  data = data_train,
@@ -162,7 +165,13 @@ hwy_glm <- train(form = hwy ~ year + cyl + displ,
 hwy_glm$finalModel
 summary(hwy_glm)
 
-# Decision Trees
+# Save fitted values
+glm_fit <- predict(hwy_glm)
+
+#  Calculate fitting accuracies
+postResample(pred = glm_fit, obs = criterion_train)
+
+# Decision Trees ----------------
 
 hwy_dt <- train(form = hwy ~ year + cyl + displ,
                 data = data_train,
@@ -174,7 +183,13 @@ hwy_dt <- train(form = hwy ~ year + cyl + displ,
 hwy_dt$finalModel
 plot(as.party(hwy_dt$finalModel))   # Visualise your trees
 
-# Random Forests
+# Save fitted values
+dt_fit <- predict(hwy_dt)
+
+# Calculate fitting accuracies
+postResample(pred = dt_fit, obs = criterion_train)
+
+# Random Forests -------------------------
 
 hwy_rf <- train(form = hwy ~ year + cyl + displ,
                 data = data_train,
@@ -185,19 +200,10 @@ hwy_rf <- train(form = hwy ~ year + cyl + displ,
 # Look at summary information
 hwy_rf$finalModel
 
-# Step 4: Access fit ------------------------------
-
 # Save fitted values
-glm_fit <- predict(hwy_glm)
-dt_fit <- predict(hwy_dt)
 rf_fit <- predict(hwy_rf)
 
-# Define criterion_train
-criterion_train <- data_train$hwy
-
-#  Calculate fitting accuracies
-postResample(pred = glm_fit, obs = criterion_train)
-postResample(pred = dt_fit, obs = criterion_train)
+# Calculate fitting accuracies
 postResample(pred = rf_fit, obs = criterion_train)
 
 # Visualise Accuracy -------------------------
@@ -245,13 +251,13 @@ ggplot(data = accuracy,
 
 # Step 5: Access prediction ------------------------------
 
+# Define criterion_train
+criterion_test <- data_test$hwy
+
 # Save predicted values
 glm_pred <- predict(hwy_glm, newdata = data_test)
 dt_pred <- predict(hwy_dt, newdata = data_test)
 rf_pred <- predict(hwy_rf, newdata = data_test)
-
-# Define criterion_train
-criterion_test <- data_test$hwy
 
 #  Calculate fitting accuracies
 postResample(pred = glm_pred, obs = criterion_test)
@@ -345,12 +351,12 @@ house_train <- read_csv(file = "1_Data/house_test.csv")
 
 7. Look at the names of the dataframe with the `names()` function.
 
-8. Open the dataset in a new window using `View()`. Do they look alright?
+8. Open the dataset in a new window using `View()`. Do they look ok?
 
 9. We need to do a little bit of data cleaning before starting. Specifically, we need to convert all columns to factors: Do this by running the following code:
 
 ```{r}
-# Convert character to factor
+# Convert all character columns to factor
 
 college_train <- college_train %>%
           mutate_if(is.character, factor)
@@ -363,17 +369,11 @@ house_train <- house_train %>%
 
 house_test <- house_test %>%
           mutate_if(is.character, factor)
-
-carseats_train <- carseats_train %>%
-          mutate_if(is.character, factor)
-
-carseats_test <- carseats_test %>%
-          mutate_if(is.character, factor)
 ```
 
-# College
+# College Graduation Rates
 
-In this section, we will again predict college graduation rates `Grad_Rate` from the `college_train` and `college_test` datasets. Here's how they should look:
+In this section, we will again predict college graduation rates `Grad_Rate` from the `college_train` and `college_test` datasets. Here's how the first few rows of `college_train` should look:
 
 ```{r, results = 'asis', echo = FALSE, eval = TRUE}
 knitr::kable(college_train[1:10,])
@@ -387,11 +387,11 @@ Using the basics steps in the Examples section above, fit each of three models, 
 
 2. Using `trainControl()`, set your training control method to `"none"`. Save your object as `ctrl_none`
 
-3. Using `train()` fit a regression model called `grad_glm` using the features you think are reasonable.
+3. Using `train()` fit a regression model called `grad_glm` predicting `Grad.Rate`, and using the features you think are reasonable.
 
 4. Explore your `grad_glm` object by looking at `grad_glm$finalModel` and using `summary()`, what do you find?
 
-5. Using `train()`, fit a decision tree model called `grad_dt` (using the same features as above).
+5. Using `train()`, fit a decision tree model called `grad_dt` predicting `Grad.Rate` (using the same features as above).
 
 - Set the complexity parameter to `cp = 0.01`
 
@@ -401,13 +401,12 @@ grad_dt <- train(form = Grad.Rate ~ .,    # Make sure to specify your features h
                  method = "rpart",
                  trControl = train_control,
                  tuneGrid = expand.grid(cp = .01))   # Set complexity parameter
-
 ```
 
 
 6. Explore your `grad_dt` object by looking at `grad_dt$finalModel` and plotting it with `plot(as.party(grad_dt$finalModel))`, what do you find?
 
-7. Using `train()`, fit a random forest model called `grad_rf` (using the same features as above).
+7. Using `train()`, fit a random forest model called `grad_rf` predicting `Grad.Rate` (using the same features as above).
 
 - Set the number of randomly sampled parameter to `mtry` = 2
 
@@ -419,16 +418,15 @@ grad_rf <- train(form = Grad.Rate ~ .,    # Make sure to specify your features h
                  tuneGrid = expand.grid(mtry = 2))  # Set number of features randomly selected
 ```
 
-
-8. Using `postResample()`, determine the fitting performance of each of your models
+8. Using `postResample()`, determine the fitting performance of each of your models.
 
 9. Which one had the best fits? What was the fitting MAE of each model?
 
-10. If you'd like to, try visualizing the fitting results using the plotting code in the Examples
+10. If you'd like to, try visualizing the fitting results using the plotting code shown in the Examples tab above.
 
 ##  Prediction
 
-1. Using `postResample()`, determine the prediction performance of each of your models on the `college_test` data.
+1. Using `postResample()`, determine the *prediction* performance of each of your models on the `college_test` data.
 
 2. How does each model's prediction performance compare to its fitting performance? Is it worse? Better? The same?
 
@@ -438,9 +436,9 @@ grad_rf <- train(form = Grad.Rate ~ .,    # Make sure to specify your features h
 
 5. If someone came to you and asked "If I use your model in the future to predict the graduation rate of a new college, how accurate do you think it would be?", what would you say?
 
-# House
+# House Prices in King County, Washington
 
-In this section, we will again predict the prices of houses in King County Washington (home of Seattle, [which you can thank for this](https://qz.com/208457/a-cartographic-guide-to-starbucks-global-domination/)) using the `house_train` and `house_test` datasets. Here's how they should look:
+In this section, we will predict the prices of houses in King County Washington (home of Seattle, [which you can thank for this](https://qz.com/208457/a-cartographic-guide-to-starbucks-global-domination/)) using the `house_train` and `house_test` datasets. Here's how they should look:
 
 ```{r, results = 'asis', echo = FALSE, eval = TRUE}
 knitr::kable(house_train[1:10,])
@@ -448,23 +446,23 @@ knitr::kable(house_train[1:10,])
 
 ## Fitting
 
-Fit each of three models, regression, decision trees, and random forests to the `house` data. Your goal is to fit models predicting `price`
+Your goal in the following models is to predict `price`
 
 1. Look at the `house_train` dataset and decide which features you think are reasonable to include in a model.
 
 2. Using `trainControl()`, set your training control method to `"none"`. Save your object as `ctrl_none`
 
-3. Using `train()` fit a regression model called `price_glm` using the features you think are reasonable.
+3. Using `train()` fit a regression model called `price_glm` predicting `price` using the features you think are reasonable.
 
 4. Explore your `price_glm` object by looking at `price_glm$finalModel` and using `summary()`, what do you find?
 
-5. Using `train()`, fit a decision tree model called `price_dt` (using the same features as above).
+5. Using `train()`, fit a decision tree model called `price_dt` predicting `price` and using the same features as above.
 
 - Set the complexity parameter to `cp = 0.01`
 
 6. Explore your `price_dt` object by looking at `price_dt$finalModel` and plotting it with `plot(as.party(price_dt$finalModel))`, what do you find?
 
-7. Using `train()`, fit a random forest model called `price_rf` (using the same features as above).
+7. Using `train()`, fit a random forest model called `price_rf` predicting `price` and using the same features as above.
 
 - Set the number of randomly sampled parameter to `mtry` = 2
 
@@ -488,7 +486,7 @@ Fit each of three models, regression, decision trees, and random forests to the 
 
 # Exploring model tuning parameters
 
-1. In all of your decision tree models so far, you have been setting the complexity parameter to 0.01. Try setting it to a large value such as 0.2 and see how your decision trees change. Do they get more or less complicated? How does increasing this value affect fitting and prediction performance? If you are interested in learning more about this parameter, look at the help menu with `?rpart.control`.
+1. In all of your decision tree models so far, you have been setting the complexity parameter to 0.01. Try setting it to a largre value of 0.2 and see how your decision trees change (by plotting them). Do they get more or less complicated? How does increasing this value affect fitting and prediction performance? If you are interested in learning more about this parameter, look at the help menu with `?rpart.control`.
 
 2. In each of your random forest models, you have been setting the `mtry` argument to 2. Try setting it to a larger value such as 5 and re-running your models. How does increasing this value affect fitting and prediction performance? If you are interested in learning more about this parameter, look at the help menu with `?randomForest`.
 
@@ -501,7 +499,7 @@ mod <- train(form = hwy ~ year + cyl + displ,
              data = data_train,
              method = "rf",
              trControl = train_control,
-             ntree = 1000,   # use 1000 trees! (Instead of 500)
+             ntree = 1000,   # use 1000 trees! (Instead of the default value of 500)
              tuneGrid = expand.grid(mtry = 2))
 
 ```

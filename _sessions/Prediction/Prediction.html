@@ -12,6 +12,7 @@
 class: center, middle, inverse, title-slide
 
 # Model Prediction
+## With Regression, Decision Trees, and Random Forests
 ### Applied Machine Learning with R<br/><a href='https://therbootcamp.github.io'>www.therbootcamp.com</a><br/><a href='https://twitter.com/therbootcamp'><span class="citation">@therbootcamp</span></a>
 ### January 2019
 
@@ -27,6 +28,7 @@ layout: true
 &lt;/span&gt;&lt;/div&gt; 
 
 ---
+class: center, middle
 
 
 
@@ -35,22 +37,170 @@ layout: true
 
 
 
-
-
-&gt; # It's tough to make predictions, especially about the future
-&gt; # ~ Yogi Berra
 
 ---
 
-.pull-left4[
+ ## "Prediction is very difficult, especially if it's about the future."
+ ## ~  Nils Bohr, Nobel Laureate in Physics
 
-# What does prediction mean?
+---
+class: middle, center
+
+ ## "An economist is an expert who will know tomorrow why the things he predicted yesterday didn't happen today. "
+ ## ~ Evan Esar
+
+---
+class: middle, center
+
+
+ ## "Forecasting is the art of saying what will happen, and then explaining why it didn't!"
+ ## ~ Anonymous
+
+---
+
+&lt;br&gt;&lt;br&gt;
+&lt;div class="figure" style="text-align: center"&gt;
+&lt;img src="https://cdn-images-1.medium.com/max/1600/1*_QGyIwpgq831xI54cIe_GQ.jpeg" alt="Source: Medium.com" width="100%" /&gt;
+&lt;p class="caption"&gt;Source: Medium.com&lt;/p&gt;
+&lt;/div&gt;
+
+
+---
+
+.pull-left45[
+## What is model Testing?
+
+Model testing is the process of accessing a model's predictions on *new, unseen* data.
 
 ]
 
+.pull-right5[
+
+&lt;div class="figure" style="text-align: center"&gt;
+&lt;img src="https://cdn-images-1.medium.com/max/1600/1*_QGyIwpgq831xI54cIe_GQ.jpeg" alt="Source: Medium.com" width="100%" /&gt;
+&lt;p class="caption"&gt;Source: Medium.com&lt;/p&gt;
+&lt;/div&gt;
+
+
+]
+
+
+
+
+---
+
+# Why do we separate training from prediction?
+
+.pull-left35[
+&lt;br&gt;
+
+## Just because a model can &lt;high&gt;fit past data well&lt;/high&gt;, does *not* necessarily mean that it will &lt;high&gt;predict new data well&lt;/high&gt;.
+
+]
+ 
 .pull-right6[
 
+&lt;p align="center"&gt;
+  &lt;img src="https://raw.githubusercontent.com/therbootcamp/Erfurt_2018June/master/_sessions/_image/prediction_collage.png"&gt;
+&lt;/p&gt;
+
+
 ]
+
+---
+&lt;br&gt;&lt;br&gt;
+&lt;font size = 6&gt;"Can you come up with a model that will perfectly match past data but is worthless in predicting future data?"&lt;/font&gt;&lt;br&gt;&lt;br&gt;
+
+
+.pull-left45[
+
+&lt;br&gt;
+&lt;font size=5&gt;&lt;hfont&gt;Past &lt;high&gt;Training&lt;/high&gt; Data&lt;/hfont&gt;&lt;/font&gt;
+
+&lt;br&gt;
+
+
+| id|sex | age|fam_history |smoking | disease|
+|--:|:---|---:|:-----------|:-------|-------:|
+|  1|m   |  45|No          |FALSE   |       0|
+|  2|m   |  43|Yes         |FALSE   |       1|
+|  3|f   |  40|Yes         |FALSE   |       1|
+|  4|m   |  51|Yes         |FALSE   |       1|
+|  5|m   |  44|No          |TRUE    |       0|
+
+]
+
+
+.pull-right45[
+
+&lt;br&gt;
+&lt;font size=5&gt;&lt;hfont&gt;Future &lt;high&gt; Test&lt;/high&gt; Data&lt;/hfont&gt;&lt;/font&gt;
+
+&lt;br&gt;
+
+
+| id|sex | age|fam_history |smoking |disease |
+|--:|:---|---:|:-----------|:-------|:-------|
+| 91|m   |  51|Yes         |TRUE    |?       |
+| 92|f   |  47|No          |TRUE    |?       |
+| 93|m   |  39|No          |TRUE    |?       |
+| 94|f   |  51|Yes         |TRUE    |?       |
+| 95|f   |  50|Yes         |FALSE   |?       |
+
+]
+
+
+
+---
+
+## Overfitting - Examples
+
+
+.pull-left5[
+
+
+]
+
+
+.pull-right45[
+
+
+
+
+]
+
+
+
+---
+class: middle, center
+
+## Can you think of a model that perfectly fits this data...
+##  But is totally useless in predicting future data?
+
+
+
+```r
+df &lt;- data.frame(id = c(1, 2, 3, 4, 5),
+                 sex = c("m", "f", "f", "m", "f"),
+                 age = c(54, 27, 53, 38, 43),
+                 drug = c("X", "Y", "X", "Y", "X"),
+                 success = c("Yes", "No", "Yes", "No", "Yes"))
+
+df %&gt;% kable()
+```
+
+
+
+ id  sex    age  drug   success 
+---  ----  ----  -----  --------
+  1  m       54  X      Yes     
+  2  f       27  Y      No      
+  3  f       53  X      Yes     
+  4  m       38  Y      No      
+  5  f       43  X      Yes     
+
+
+
 
 
 ---
@@ -64,6 +214,32 @@ layout: true
 .pull-right6[
 
 ]
+
+
+
+---
+
+.pull-left4[
+
+# Why do we nee
+
+What is the purpose of a model?
+
+Separating signal from noise.
+What is noise? Things you can't predict
+What is signal? Thanks you can predict.
+
+Trick: Don't trick yourself into thinking you can predict things you can't.
+
+]
+
+
+.pull-right55[
+
+
+]
+
+
 
 
 ---
@@ -96,7 +272,6 @@ layout: true
 
 ---
 
-
 .pull-left4[
 
 # What are good baseline models of performance?
@@ -113,9 +288,77 @@ layout: true
 
 # What are reasons why prediction performance can differ from training?
 
+- Random chance (you got lucky!)
+
+- You fit an overly complex model
+
 ]
 
 .pull-right6[
+
+]
+
+
+---
+
+.pull-left4[
+
+# Decision Trees
+
+In [decision trees](https://en.wikipedia.org/wiki/Decision_tree), the criterion is modeled as a &lt;high&gt;sequence of logical YES or NO questions&lt;/high&gt;.
+&lt;br&gt;&lt;br&gt;
+
+&lt;p align="center"&gt;
+  &lt;img src="https://raw.githubusercontent.com/therbootcamp/therbootcamp.github.io/master/_sessions/_image/defaulttree.png" height="250px"&gt;
+&lt;/p&gt;
+
+]
+
+.pull-right55[
+
+### Fitting
+
+Goal: Maximize accuracy by define splits that maximize *Node Purity*
+
+&lt;img src="image/tree_purity_example.png" width="100%" style="display: block; margin: auto;" /&gt;
+
+### R Method
+
+| Variant | Description| Caret |
+|:-----|:------|:---|
+|rpart |Recursive Partitioning| `"rpart"`|
+
+]
+
+---
+
+.pull-left4[
+
+# Random Forest
+
+In [Random Forest](https://en.wikipedia.org/wiki/Random_forest), the criterion is models as the &lt;high&gt;aggregate prediction of a large number of decision trees&lt;/high&gt; each based on different features.
+&lt;br&gt;
+
+&lt;p align="center"&gt;
+  &lt;img src="https://raw.githubusercontent.com/therbootcamp/Erfurt_2018June/master/_sessions/_image/randomforest_diagram.png" height="285px"&gt;&lt;br&gt;
+  &lt;a href="https://medium.com/@williamkoehrsen"&gt;Source&lt;/a&gt;
+&lt;/p&gt;
+
+]
+
+.pull-right55[
+
+### Fitting
+
+Goal: Create a large set of diverse trees that can be aggregated into one *Wisdom of Crowds* judgment
+
+&lt;img src="image/tree_crowd.png" width="60%" style="display: block; margin: auto;" /&gt;
+
+### R Method
+
+| Variant | Description| Caret |
+|:-----|:------|:---|
+|Random Forests |"Classic" random forests| `"rf"`|
 
 ]
 
@@ -150,23 +393,12 @@ if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
   d.head.appendChild(s);
 })();</script>
 
-<script>
-(function() {
-  var i, text, code, codes = document.getElementsByTagName('code');
-  for (i = 0; i < codes.length;) {
-    code = codes[i];
-    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
-      text = code.textContent;
-      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
-          /^\$\$(.|\s)+\$\$$/.test(text) ||
-          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
-        code.outerHTML = code.innerHTML;  // remove <code></code>
-        continue;
-      }
-    }
-    i++;
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  tex2jax: {
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre']
   }
-})();
+});
 </script>
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>
