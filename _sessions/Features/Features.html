@@ -166,16 +166,16 @@ varImp(income_lm)
 lm variable importance
 
           Overall
-age        100.00
-food        48.67
-happiness   18.60
-alcohol     17.81
-tattoos      7.86
-fitness      6.89
-height       6.83
-weight       2.34
-children     1.52
-datause      0.00
+age       100.000
+food       41.506
+alcohol    24.415
+happiness  15.775
+tattoos     4.838
+children    2.910
+fitness     0.748
+datause     0.676
+weight      0.237
+height      0.000
 ```
 
 ]
@@ -253,147 +253,181 @@ plot(varImp(model))
 
 ---
 
-# Correlated features
-
-
-
----
-
-# Correlated features
+# Other, easy feature problems
 
 .pull-left45[
 
-The go-to algorithm for dimensionality is &lt;high&gt;principal component analysis&lt;/high&gt; (PCA). 
+### Multi-collinearity
 
-PCA is an &lt;high&gt;unsupervised&lt;/high&gt;, &lt;high&gt;regression-based&lt;/high&gt; algorithm that re-represents the data in a &lt;high&gt;new feature space&lt;/high&gt;.  
-
-The new features aka &lt;high&gt;principal components are greedy&lt;/high&gt; in that they attempt to explain as much variance as they can leaving as little as possible to other components.
-
-&lt;high&gt;Skimming the best components off the top&lt;/high&gt; results in a small number of features that &lt;high&gt;preserve the original features as well as possible&lt;/high&gt;.
-
-]
+Multi-collinearity, &lt;high&gt;high feature correlations&lt;/high&gt;, mean that there is redundancy in the data, which can lead to &lt;high&gt;less stable fits&lt;/high&gt;, &lt;high&gt;uninterpretable variable importances&lt;/high&gt;, and &lt;high&gt;worse predictions&lt;/high&gt;.
 
 
+```r
+# identify redundant variables
+findCorrelation(cor(baselers))
+```
 
----
+```
+[1] 5
+```
 
-# Human insight
-
-.pull-left45[
-
-The go-to algorithm for dimensionality is &lt;high&gt;principal component analysis&lt;/high&gt; (PCA). 
-
-PCA is an &lt;high&gt;unsupervised&lt;/high&gt;, &lt;high&gt;regression-based&lt;/high&gt; algorithm that re-represents the data in a &lt;high&gt;new feature space&lt;/high&gt;.  
-
-The new features aka &lt;high&gt;principal components are greedy&lt;/high&gt; in that they attempt to explain as much variance as they can leaving as little as possible to other components.
-
-&lt;high&gt;Skimming the best components off the top&lt;/high&gt; results in a small number of features that &lt;high&gt;preserve the original features as well as possible&lt;/high&gt;.
-
-]
-
-
-
-
----
-
-# Problems
-
-Too many features -&gt; curse of dimensionality
-
-Wrong features 
-  in face of truth -&gt; feature generation
-  in face of data -&gt; reverse engineering (black vs. white box)
-
-Psychology
-  
-
-.pull-left4[
-
-#  
-
-]
-
-.pull-right6[
-
-]
-
----
-
-.pull-left5[
-
-# Feature importance
-
-Regardless of the model you use, you will often want to know &lt;high&gt;which features are important&lt;/high&gt; in predicting the criterion.
-
-Often displayed on a *relative* scale from 0 to 100
-
-Every model has their own definition of importance (see [the caret documentation](http://topepo.github.io/caret/variable-importance.html) for details).
-
-Different models can give you different importance rankings
-
-&lt;img src="http://worldartsme.com/images/scale-clipart-1.jpg" width="40%" style="display: block; margin: auto;" /&gt;
-
+```r
+# remove from data
+remove &lt;- findCorrelation(cor(baselers))
+baselers &lt;- baselers %&gt;%
+  select(-remove)
+```
 
 ]
 
 .pull-right45[
 
-### Variable importance plot
+### Unequal &amp; low variance 
 
-Here's an example variable importance plot from R
-
-&lt;img src="http://mgel2011-kvm.env.duke.edu/mget/files/2012/07/RandomForestImportance.png" width="100%" style="display: block; margin: auto;" /&gt;
-
-]
-
----
-
-.pull-left5[
-
-## `varImp()`
-
-
-Use `varImp()` to extract &lt;high&gt;variable importance&lt;/high&gt; from a model
-
+Unequal variance &lt;high&gt;breaks regularization&lt;/high&gt; (L1, L2) and renders estimates difficult to interpret.
 
 
 ```r
-# Get veriable importance from glm_train
-# varImp(glm_train)
+# standardize and center variables
+train(..., preProc("center", "scale"))
 ```
-    
-  
-]
 
-.pull-right45[
-&lt;br&gt;&lt;br&gt;&lt;br&gt;
-You can also plot the results using `plot()`
+Low variance variables add parameters, but &lt;high&gt;can hardly contribute to prediction&lt;/high&gt; and are, thus, also redundant.
 
 
 ```r
-# Plot variable importance
-
-# plot(varImp(glm_train))
+# identify low variance variables
+nearZeroVar(baselers)
 ```
 
+```
+integer(0)
+```
 
 ]
 
 
 ---
 
-.pull-left4[
+# Difficult feature problems
 
-# Neural Networks
+&lt;br&gt;
+.pull-left25[
 
-- Regularisation
-- Complexity
+&lt;i&gt;A&lt;/i&gt; &lt;high&gt;Trivial features&lt;/high&gt; 
+
+Successful prediction not necessarily implies that a meaningful pattern has been detected.
+
+&lt;br&gt;
+&lt;i&gt;B&lt;/i&gt; &lt;high&gt;Missing features&lt;/high&gt;
+
+Some problems are hard, requiring the engineering of new features. 
+
+]
+
+
+.pull-right65[
+&lt;br&gt;
+&lt;p align="center"&gt;
+  &lt;img src="image/here_to_help.png"&gt;
+&lt;/p&gt;
+
+]
+
+---
+
+# Trivial features
+
+.pull-left3[
+
+&lt;u&gt;&lt;a href="https://www.gwern.net/Tanks"&gt;An urban myth?!&lt;/a&gt;&lt;/u&gt;
+
+"The Army trained a program to differentiate American tanks from Russian tanks with 100% accuracy. Only later did analysts realized that the American tanks had been photographed on a sunny day and the Russian tanks had been photographed on a cloudy day. The computer had learned to detect brightness."&lt;br&gt;&lt;br&gt;
+New York Times &lt;a href="https://www.nytimes.com/2017/10/09/science/stanford-sexual-orientation-study.html" style="font-size:8px"&gt;[Full text]&lt;/a&gt;
 
 ]
 
 .pull-right6[
 
+&lt;p align="center"&gt;
+  &lt;img src="image/tank.jpg"&gt;
+&lt;/p&gt;
+
 ]
+
+
+---
+
+# Trivial features
+
+
+In 2012, Nate Silver was praised to have correctly predicted the outcomes of the presidential election in 50 states after having correctly predicted 49 states in 2009. &lt;high&gt;But how much of a challenge was that?&lt;/high&gt;
+
+.pull-left5[
+
+&lt;p align="center"&gt;
+  &lt;img src="image/elect2008.png" height = 380px&gt;
+&lt;/p&gt;
+
+]
+
+.pull-right5[
+
+&lt;p align="center"&gt;
+  &lt;img src="image/elect2012.png" height = 380px&gt;
+&lt;/p&gt;
+
+]
+
+---
+
+# (Always!) missing features
+
+&lt;high&gt;Feature Engineering&lt;/high&gt;
+
+&lt;i&gt;"…some machine learning projects succeed and some fail. What makes the difference? Easily the most important factor is the features used."&lt;/i&gt;
+
+Pedro Domingos
+
+&lt;i&gt;"The algorithms we used are very standard for Kagglers. […] We spent most of our efforts in feature engineering. [...] We were also very careful to discard features likely to expose us to the risk of over-fitting our model."&lt;/i&gt;
+
+Xavier Conort
+
+&lt;i&gt;"Coming up with features is difficult, time-consuming, requires expert knowledge. "Applied machine learning" is basically feature engineering."&lt;/i&gt;
+
+Andrew Ng
+
+---
+
+# Feature engineering
+
+.pull-left45[
+
+&lt;i&gt;“Feature engineering is the process of &lt;high&gt;transforming raw data&lt;/high&gt; into features that &lt;high&gt;better represent the underlying problem&lt;/high&gt; to the predictive models, resulting in improved model accuracy on unseen data.”&lt;/i&gt;
+
+Jason Brownlee
+
+&lt;i&gt;"...while avoiding the &lt;high&gt;curse of dimensionality&lt;/high&gt;."&lt;/i&gt;
+
+duw
+
+&lt;u&gt;Feature engineering involves&lt;/u&gt;
+
+- &lt;high&gt;Transformations&lt;/high&gt;
+- &lt;high&gt;Interactions&lt;/high&gt;
+- &lt;high&gt;New features&lt;/high&gt;
+
+]
+
+.pull-right45[
+
+&lt;p align="center"&gt;
+  &lt;img src="image/albert.jpeg" &gt;
+&lt;/p&gt;
+
+]
+
+---
     </textarea>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
 <script>var slideshow = remark.create({
