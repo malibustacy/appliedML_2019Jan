@@ -1,5 +1,6 @@
 ---
 title: "Model Prediction"
+subtitle: "With Regression, Decision Trees, and Random Forests"
 author: "Applied Machine Learning with R<br/><a href='https://therbootcamp.github.io'>www.therbootcamp.com</a><br/><a href='https://twitter.com/therbootcamp'>@therbootcamp</a>"
 date: "January 2019"
 output:
@@ -22,12 +23,7 @@ layout: true
 </span></div> 
 
 ---
-
-```{r, eval = TRUE, echo = FALSE, warning=F,message=F}
-# Code to knit slides
-baselers <- readr::read_csv("../_data/baselers.csv")
-```
-
+class: center, middle
 
 ```{r setup, include=FALSE}
 options(htmltools.dir.version = FALSE)
@@ -46,31 +42,171 @@ knitr::opts_chunk$set(comment=NA, fig.width=6, fig.height=6, echo = TRUE, eval =
 library(tidyverse)
 library(baselers)
 library(ggthemes)
+library(knitr)
+
+set.seed(100)
+
+past <- tibble(id = 1:5,
+               sex = sample(c("m", "f"), size  = 5, replace = TRUE),
+               age = round(rnorm(5, mean = 45, sd = 5), 0),
+               fam_history = sample(c("Yes", "No"), size = 5, replace = TRUE),
+               smoking = sample(c(TRUE, FALSE), size = 5, replace = TRUE),
+               disease = sample(c(0, 1), size = 5, replace = TRUE))
+
+present <- tibble(id = 91:95,
+                  sex = sample(c("m", "f"), size  = 5, replace = TRUE),
+               age = round(rnorm(5, mean = 45, sd = 5), 0),
+               fam_history = sample(c("Yes", "No"), size = 5, replace = TRUE),
+               smoking = sample(c(TRUE, FALSE), size = 5, replace = TRUE),
+               disease = rep("?", 5))
+
+
 ```
 
 
 
-> # It's tough to make predictions, especially about the future
-> # ~ Yogi Berra
 
 
 ---
 
-# Models of london temperature
+ ## "Prediction is very difficult, especially if it's about the future."
+ ## ~  Nils Bohr, Nobel Laureate in Physics
 
+---
+class: middle, center
+
+ ## "An economist is an expert who will know tomorrow why the things he predicted yesterday didn't happen today. "
+ ## ~ Evan Esar
+
+---
+class: middle, center
+
+
+ ## "Forecasting is the art of saying what will happen, and then explaining why it didn't!"
+ ## ~ Anonymous
+
+---
+
+<br><br>
+```{r, echo = FALSE, fig.align = 'center', out.width = "100%", fig.cap = "Source: Medium.com"}
+knitr::include_graphics("https://cdn-images-1.medium.com/max/1600/1*_QGyIwpgq831xI54cIe_GQ.jpeg")
+```
 
 
 ---
 
-.pull-left4[
+.pull-left45[
+## What is model Testing?
 
-# What does prediction mean?
+Model testing is the process of accessing a model's predictions on *new, unseen* data.
 
 ]
 
+.pull-right5[
+
+```{r, echo = FALSE, fig.align = 'center', out.width = "100%", fig.cap = "Source: Medium.com"}
+knitr::include_graphics("https://cdn-images-1.medium.com/max/1600/1*_QGyIwpgq831xI54cIe_GQ.jpeg")
+```
+
+
+]
+
+
+
+
+---
+
+# Why do we separate training from prediction?
+
+.pull-left35[
+<br>
+
+## Just because a model can <high>fit past data well</high>, does *not* necessarily mean that it will <high>predict new data well</high>.
+
+]
+ 
 .pull-right6[
 
+<p align="center">
+  <img src="https://raw.githubusercontent.com/therbootcamp/Erfurt_2018June/master/_sessions/_image/prediction_collage.png">
+</p>
+
+
 ]
+
+---
+<br><br>
+<font size = 6>"Can you come up with a model that will perfectly match past data but is worthless in predicting future data?"</font><br><br>
+
+
+.pull-left45[
+
+<br>
+<font size=5><hfont>Past <high>Training</high> Data</hfont></font>
+
+<br>
+
+```{r, results = 'asis', echo = FALSE}
+knitr::kable(past, format = "markdown")
+```
+
+]
+
+
+.pull-right45[
+
+<br>
+<font size=5><hfont>Future <high> Test</high> Data</hfont></font>
+
+<br>
+
+```{r, echo = FALSE}
+knitr::kable(present, format = "markdown")
+```
+
+]
+
+
+
+---
+
+## Overfitting - Examples
+
+
+.pull-left5[
+
+
+]
+
+
+.pull-right45[
+
+
+
+
+]
+
+
+
+---
+class: middle, center
+
+## Can you think of a model that perfectly fits this data...
+##  But is totally useless in predicting future data?
+
+
+```{r}
+df <- data.frame(id = c(1, 2, 3, 4, 5),
+                 sex = c("m", "f", "f", "m", "f"),
+                 age = c(54, 27, 53, 38, 43),
+                 drug = c("X", "Y", "X", "Y", "X"),
+                 success = c("Yes", "No", "Yes", "No", "Yes"))
+
+df %>% kable()
+```
+
+
+
 
 
 ---
@@ -142,7 +278,6 @@ Trick: Don't trick yourself into thinking you can predict things you can't.
 
 ---
 
-
 .pull-left4[
 
 # What are good baseline models of performance?
@@ -159,9 +294,81 @@ Trick: Don't trick yourself into thinking you can predict things you can't.
 
 # What are reasons why prediction performance can differ from training?
 
+- Random chance (you got lucky!)
+
+- You fit an overly complex model
+
 ]
 
 .pull-right6[
+
+]
+
+
+---
+
+.pull-left4[
+
+# Decision Trees
+
+In [decision trees](https://en.wikipedia.org/wiki/Decision_tree), the criterion is modeled as a <high>sequence of logical YES or NO questions</high>.
+<br><br>
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/therbootcamp/therbootcamp.github.io/master/_sessions/_image/defaulttree.png" height="250px">
+</p>
+
+]
+
+.pull-right55[
+
+### Fitting
+
+Goal: Maximize accuracy by define splits that maximize *Node Purity*
+
+```{r, echo = FALSE, out.width = "100%"}
+knitr::include_graphics("image/tree_purity_example.png")
+```
+
+### R Method
+
+| Variant | Description| Caret |
+|:-----|:------|:---|
+|rpart |Recursive Partitioning| `"rpart"`|
+
+]
+
+---
+
+.pull-left4[
+
+# Random Forest
+
+In [Random Forest](https://en.wikipedia.org/wiki/Random_forest), the criterion is models as the <high>aggregate prediction of a large number of decision trees</high> each based on different features.
+<br>
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/therbootcamp/Erfurt_2018June/master/_sessions/_image/randomforest_diagram.png" height="285px"><br>
+  <a href="https://medium.com/@williamkoehrsen">Source</a>
+</p>
+
+]
+
+.pull-right55[
+
+### Fitting
+
+Goal: Create a large set of diverse trees that can be aggregated into one *Wisdom of Crowds* judgment
+
+```{r, echo = FALSE, out.width = "60%"}
+knitr::include_graphics("image/tree_crowd.png")
+```
+
+### R Method
+
+| Variant | Description| Caret |
+|:-----|:------|:---|
+|Random Forests |"Classic" random forests| `"rf"`|
 
 ]
 

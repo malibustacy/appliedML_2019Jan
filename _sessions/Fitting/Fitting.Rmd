@@ -1,5 +1,6 @@
 ---
 title: "Model Fitting"
+subtitle: "With Regression"
 author: "Applied Machine Learning with R<br/><a href='https://therbootcamp.github.io'>www.therbootcamp.com</a><br/><a href='https://twitter.com/therbootcamp'>@therbootcamp</a>"
 date: "January 2019"
 output:
@@ -625,7 +626,7 @@ class: center,  middle
 
 <br><br>
 
-# Let's fit models with caret!
+# Let's fit regression models with caret!
 
 ```{r, echo = FALSE, out.width = "70%"}
 knitr::include_graphics("https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/09/Caret-package-in-R.png")
@@ -917,6 +918,56 @@ mod <- train(form = factor(Default) ~ .,
 
 ]
 
+
+---
+.pull-left35[
+
+# Getting final models: .$finalModel
+
+The `train()` function returns a list with a key object called `finalModel` - this is your final machine learning model!
+
+You can access the model with `mod$finalModel`, you can explore the object with generic functions:
+
+
+|Function|Description
+|:------|:----|
+|`summary()`| Overview of the most important information|
+|`names()`|See all named elements you can access with $|
+
+]
+
+.pull-right6[
+
+
+```{r, eval = FALSE, echo = TRUE}
+# Create a regression object
+baselers_glm <- glm(income ~ age + height + children,
+                    data = baselers)
+
+# Look at summary results
+summary(baselers_glm)
+# [...]
+```
+
+```{r, eval = TRUE, echo = FALSE}
+baselers_glm <- glm(income ~ age + height + children,
+                    data = baselers)
+```
+
+
+```{r}
+# Look at all named outputs
+names(baselers_glm)
+
+# Access specific outputs
+baselers_glm$coefficients
+```
+
+
+]
+
+
+
 ---
 
 .pull-left5[
@@ -1021,71 +1072,4 @@ class: middle, center
 
 <h1><a href=https://therbootcamp.github.io/appliedML_2019Jan/_sessions/Fitting/Fitting_practical.html>Practical</a></h1>
 
-
----
-
-.pull-left4[
-
-# Decision Trees
-
-In [decision trees](https://en.wikipedia.org/wiki/Decision_tree), the criterion is modeled as a <high>sequence of logical YES or NO questions</high>.
-<br><br>
-
-<p align="center">
-  <img src="https://raw.githubusercontent.com/therbootcamp/therbootcamp.github.io/master/_sessions/_image/defaulttree.png" height="250px">
-</p>
-
-]
-
-.pull-right55[
-
-### Fitting
-
-Goal: Maximize accuracy by define splits that maximize *Node Purity*
-
-```{r, echo = FALSE, out.width = "100%"}
-knitr::include_graphics("image/tree_purity_example.png")
-```
-
-### R Method
-
-| Variant | Description| Caret |
-|:-----|:------|:---|
-|rpart |Recursive Partitioning| `"rpart"`|
-
-]
-
----
-
-.pull-left4[
-
-# Random Forest
-
-In [Random Forest](https://en.wikipedia.org/wiki/Random_forest), the criterion is models as the <high>aggregate prediction of a large number of decision trees</high> each based on different features.
-<br>
-
-<p align="center">
-  <img src="https://raw.githubusercontent.com/therbootcamp/Erfurt_2018June/master/_sessions/_image/randomforest_diagram.png" height="285px"><br>
-  <a href="https://medium.com/@williamkoehrsen">Source</a>
-</p>
-
-]
-
-.pull-right55[
-
-### Fitting
-
-Goal: Create a large set of diverse trees that can be aggregated into one *Wisdom of Crowds* judgment
-
-```{r, echo = FALSE, out.width = "60%"}
-knitr::include_graphics("image/tree_crowd.png")
-```
-
-### R Method
-
-| Variant | Description| Caret |
-|:-----|:------|:---|
-|Random Forests |"Classic" random forests| `"rf"`|
-
-]
 
