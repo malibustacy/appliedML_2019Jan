@@ -24,8 +24,44 @@ layout: true
 ---
 
 ```{r, eval = TRUE, echo = FALSE, warning=F,message=F}
+require(caret)
+require(tidyverse)
 # Code to knit slides
-baselers <- readr::read_csv("../_data/baselers.csv")
+#bas = read_csv('1_Data/baselers.csv')
+bas = read_csv('../../1_Data/baselers.csv')
+
+sel = apply(bas, 1, function(x) any(is.na(unlist(x))))
+bas = bas[!sel,]
+
+bas = bas %>% 
+  mutate_if(is.character, as.factor)
+
+preprocesssing = preProcess(bas)
+bas = predict(preprocesssing, bas)
+
+
+bas <- bas %>%
+  sample_n(1000)
+
+bas <- bas %>% select_if(is.numeric)
+
+fitControl_cv <- trainControl(
+  method = "repeatedcv",
+  number = 1,
+  repeats = 1)
+
+train_index = createDataPartition(bas$income, p = .8, list = FALSE)
+bas_train = bas %>% slice(train_index)
+bas_test = bas %>% slice(-train_index)
+
+income_lm = train(income ~ . - id, 
+           method = 'lm', 
+           data = bas_train)
+
+income_lm_short = train(income ~ age + food + alcohol + happiness + fitness + datause + tattoos + weight + children + fitness + height, 
+           method = 'lm', 
+           data = bas_train)
+
 ```
 
 
@@ -49,23 +85,273 @@ library(ggthemes)
 ```
 
 
----
-
-# Problems
 
 .pull-left45[
 
+# Feature issues
+<br>
+<high>Too many features</high>
 
+- Curse of dimensionality
+- Feature importance
+
+<high>Wrong features</high>
+
+- Feature scaling
+- Feature correlation
+- Feature quality
+
+<high>Create new features</high>
+
+- Feature engineering
 
 ]
 
 .pull-right45[
 
 <p>
-<img href="image/dumbdata.png">
+<br><br>
+<img src="image/dumbdata.png" height = 500px>
 </p>
 
 ]
+
+---
+
+# Curse of dimensionality
+
+.pull-left35[
+
+As the number of features grows...
+
+<high>Performance</high> - the amount of data need to generalize accurately grows exponentially.
+
+<high>Efficiency</high> - the amount of computations grows (how much depends on the model).
+
+<high>Redundancy</high> - the amount of redudancy grows (how much depends on the) 
+
+&#8594; <high>Small set of good predictors<high>
+
+]
+
+.pull-right6[
+
+<p>
+<br><br>
+<img src="image/cod.png">
+</p>
+
+]
+
+---
+
+# How to reduce dimensionality?
+
+.pull-left45[
+
+<u>3 ways</u>
+
+<i>A</i> Reduce variables <high>manually</high> based on statistical or intitive considerations.
+
+<i>B</i> Reduce variables <high>automatically</high> using the right ML algorithms, e.g., `random forests` or `lasso regression`.
+
+<i>C</i> Compress variables using <high>dimensionality reduction algorithms</high>, such `principal component analysis`(PCA).
+
+]
+
+.pull-right5[
+
+<p align = "center">
+<img src="image/highd.jpeg">
+<font size=3>Interstellar<font>
+</p>
+
+]
+
+---
+
+# Feature importance
+
+.pull-left4[
+
+<high>Feature importance</high> characterizes how much a feature contributes to the fitting/prediction performance. 
+
+Typically <high>normalized</high> to `[0, 100]`.
+
+There are many <high>model specific metrics</high>.
+
+<u>General strategies</u>
+- Single variable prediction (e.g., using `LOESS`, `ROC`) 
+- Accuracy loss from scrambling
+- `random forests` importance
+- etc.  
+]
+
+.pull-right5[
+```{r, eval = FALSE}
+# plot variable importance for lm(income ~ .)
+plot(varImp(income_lm))
+```
+
+```{r, echo = FALSE, fig.height=5.2, fig.width=8}
+plot(varImp(income_lm),col='#EA4B68',cex=1.3,scales = list(cex=1.3,lineheight=1.3),xlab=list(cex=1.5))
+```
+
+]
+
+---
+
+# `varImp()`
+
+.pull-left45[
+`varImp()` <high>automically selects appropriate measure</high> of variable importance for a given algorithm. 
+
+```{r eval = FALSE}
+varImp(income_lm)
+```
+
+```{r echo = F}
+varImp(income_lm_short)
+```
+
+]
+
+.pull-right5[
+```{r, eval = FALSE}
+# plot variable importance for lm(income ~ .)
+plot(varImp(income_lm))
+```
+
+```{r, echo = FALSE, fig.height=5.2, fig.width=8}
+plot(varImp(income_lm),col='#EA4B68',cex=1.3,scales = list(cex=1.3,lineheight=1.3),xlab=list(cex=1.5))
+```
+
+]
+
+---
+
+# Dimensionality reduction using `PCA`
+
+.pull-left45[
+
+The go-to algorithm for dimensionality is <high>principal component analysis</high> (PCA). 
+
+PCA is an <high>unsupervised</high>, <high>regression-based</high> algorithm that re-represents the data in a <high>new feature space</high>.  
+
+The new features aka <high>principal components are greedy</high> in that they attempt to explain as much variance as they can leaving as little as possible to other components.
+
+<high>Skimming the best components off the top</high> results in a small number of features that <high>preserve the original features as well as possible</high>.
+
+]
+
+
+.pull-right45[
+
+<p align = "center">
+<img src="image/pca.png">
+</p>
+
+]
+
+---
+
+# Using `PCA`
+
+.pull-left45[
+
+```{r fig.height=5.2, fig.width=8, eval = F}
+# train model WITHOUT PCA preprocessing
+model = train(income ~ ., method = 'lm', 
+           data = bas_train)
+
+plot(varImp(model))
+```
+
+```{r fig.height=5.2, fig.width=8, echo = F}
+# train model WITHOUT PCA preprocessing
+model = train(income ~ . -id, method = 'lm', 
+              data = bas_train)
+
+plot(varImp(model, scale=F),col='#EA4B68',cex=1.3,scales = list(cex=1.3,lineheight=1.3),xlab=list(cex=1.5))
+```
+
+
+]
+
+.pull-right45[
+
+```{r fig.height=5.2, fig.width=8, eval = F}
+# train model WITH PCA preprocessing
+model = train(income ~ ., method = 'lm', 
+              data = bas_train,
+              preProc = c('pca'))
+plot(varImp(model))
+```
+
+```{r fig.height=5.2, fig.width=8, echo = F}
+# train model WITH PCA preprocessing
+model = train(income ~ . -id, method = 'lm', 
+              data = bas_train,
+              preProc = c('pca'),
+              trControl = trainControl(preProcOptions = list(thresh = 0.75)))
+plot(varImp(model, scale=F),col='#EA4B68',cex=1.3,scales = list(cex=1.3,lineheight=1.3),xlab=list(cex=1.5))
+```
+
+]
+
+---
+
+# Other feature problems
+
+.pull-left45[
+
+### Multi-collinearity
+
+Multi-collinearity, high features correlations, 
+
+]
+
+.pull-right45[
+
+### Low variance 
+
+]
+
+
+---
+
+# Correlated features
+
+.pull-left45[
+
+The go-to algorithm for dimensionality is <high>principal component analysis</high> (PCA). 
+
+PCA is an <high>unsupervised</high>, <high>regression-based</high> algorithm that re-represents the data in a <high>new feature space</high>.  
+
+The new features aka <high>principal components are greedy</high> in that they attempt to explain as much variance as they can leaving as little as possible to other components.
+
+<high>Skimming the best components off the top</high> results in a small number of features that <high>preserve the original features as well as possible</high>.
+
+]
+
+
+
+---
+
+# Human insight
+
+.pull-left45[
+
+The go-to algorithm for dimensionality is <high>principal component analysis</high> (PCA). 
+
+PCA is an <high>unsupervised</high>, <high>regression-based</high> algorithm that re-represents the data in a <high>new feature space</high>.  
+
+The new features aka <high>principal components are greedy</high> in that they attempt to explain as much variance as they can leaving as little as possible to other components.
+
+<high>Skimming the best components off the top</high> results in a small number of features that <high>preserve the original features as well as possible</high>.
+
+]
+
 
 
 
@@ -104,7 +390,7 @@ Often displayed on a *relative* scale from 0 to 100
 
 Every model has their own definition of importance (see [the caret documentation](http://topepo.github.io/caret/variable-importance.html) for details).
 
-Different models can give you different importance rankings (ML is fun!)
+Different models can give you different importance rankings
 
 ```{r, echo = FALSE, out.width = "40%"}
 knitr::include_graphics("http://worldartsme.com/images/scale-clipart-1.jpg")
@@ -137,7 +423,7 @@ Use `varImp()` to extract <high>variable importance</high> from a model
 
 ```{r}
 # Get veriable importance from glm_train
-varImp(glm_train)
+# varImp(glm_train)
 ```    
     
   
@@ -150,7 +436,7 @@ You can also plot the results using `plot()`
 ```{r, fig.width = 3, fig.height = 5, out.width = "50%"}
 # Plot variable importance
 
-plot(varImp(glm_train))
+# plot(varImp(glm_train))
 ```
 
 
