@@ -39,6 +39,7 @@ class: center, middle
 
 
 ---
+class: middle, center
 
  ## "Prediction is very difficult, especially if it's about the future."
  ## ~  Nils Bohr, Nobel Laureate in Physics
@@ -68,9 +69,13 @@ class: middle, center
 ---
 
 .pull-left45[
-## What is model Testing?
+
+# What is model Testing?
 
 Model testing is the process of accessing a model's predictions on *new, unseen* data.
+
+
+
 
 ]
 
@@ -94,7 +99,7 @@ Model testing is the process of accessing a model's predictions on *new, unseen*
 .pull-left35[
 &lt;br&gt;
 
-## Just because a model can &lt;high&gt;fit past data well&lt;/high&gt;, does *not* necessarily mean that it will &lt;high&gt;predict new data well&lt;/high&gt;.
+&lt;font size = 5&gt;Just because a model can &lt;high&gt;fit past data well&lt;/high&gt;, does &lt;i&gt;not&lt;/i&gt; necessarily mean that it will &lt;high&gt;predict new data well&lt;/high&gt;&lt;/font&gt;
 
 ]
  
@@ -153,150 +158,74 @@ Model testing is the process of accessing a model's predictions on *new, unseen*
 
 ---
 
-## Overfitting - Examples
-
-
-.pull-left5[
-
-
-]
-
-
-.pull-right45[
-
-
-
-
-]
-
-
-
----
-class: middle, center
-
-## Can you think of a model that perfectly fits this data...
-##  But is totally useless in predicting future data?
-
-
-
-```r
-df &lt;- data.frame(id = c(1, 2, 3, 4, 5),
-                 sex = c("m", "f", "f", "m", "f"),
-                 age = c(54, 27, 53, 38, 43),
-                 drug = c("X", "Y", "X", "Y", "X"),
-                 success = c("Yes", "No", "Yes", "No", "Yes"))
-
-df %&gt;% kable()
-```
-
-
-
- id  sex    age  drug   success 
----  ----  ----  -----  --------
-  1  m       54  X      Yes     
-  2  f       27  Y      No      
-  3  f       53  X      Yes     
-  4  m       38  Y      No      
-  5  f       43  X      Yes     
-
-
-
-
-
----
 
 .pull-left4[
+&lt;br&gt;&lt;br&gt;
+# Overfitting
 
-# How do you measure prediction performance?
+When a model is consistently &lt;high&gt;less accurate in predicting future data&lt;/high&gt; than in &lt;high&gt;fitting training data&lt;high&gt;, this is called &lt;high&gt;overfitting&lt;/high&gt;
 
-]
+Overfitting typically occurs when a model 'mistakes' random noise for a predictable signal
 
-.pull-right6[
-
-]
-
-
-
----
-
-.pull-left4[
-
-# Why do we nee
-
-What is the purpose of a model?
-
-Separating signal from noise.
-What is noise? Things you can't predict
-What is signal? Thanks you can predict.
-
-Trick: Don't trick yourself into thinking you can predict things you can't.
 
 ]
 
 
 .pull-right55[
+&lt;br&gt;&lt;br&gt;
+
+&lt;div class="figure" style="text-align: center"&gt;
+&lt;img src="https://cdn-images-1.medium.com/max/1600/1*SBUK2QEfCP-zvJmKm14wGQ.png" alt="&amp;lt;font size = 4&amp;gt;hackernoon.com&amp;lt;/font&amp;gt;"  /&gt;
+&lt;p class="caption"&gt;&lt;font size = 4&gt;hackernoon.com&lt;/font&gt;&lt;/p&gt;
+&lt;/div&gt;
+
+&lt;div class="figure" style="text-align: center"&gt;
+&lt;img src="https://cdn-images-1.medium.com/max/1200/1*cdvfzvpkJkUudDEryFtCnA.png" alt="&amp;lt;font size = 4&amp;gt;Medium.com&amp;lt;/font&amp;gt;"  /&gt;
+&lt;p class="caption"&gt;&lt;font size = 4&gt;Medium.com&lt;/font&gt;&lt;/p&gt;
+&lt;/div&gt;
 
 
 ]
 
+
+---
+
+# Overfitting
+
+&lt;img src="Prediction_files/figure-html/unnamed-chunk-8-1.png" style="display: block; margin: auto;" /&gt;
 
 
 
 ---
 
-.pull-left4[
+# Overfitting
 
-# What are reasons why prediction performance can differ from training?
+.pull-left45[
+
+### How do we prevent overfitting?
+
+1 - Always evaluate models based on their performance on new, unseen data *never* on training data
+
+2 - 
+
 
 ]
 
-.pull-right6[
+.pull-right5[
+
+
 
 ]
+
 
 ---
+class: center, middle
 
-.pull-left4[
+&lt;font color = "gray"&gt;&lt;h1&gt;Regression&lt;/h1&gt;&lt;/font&gt;
 
-# How do you know if a model's predictions are 'good'?
+&lt;high&gt;&lt;h1&gt;Decision Trees&lt;/h1&gt;&lt;/high&gt;
 
-- Compare to baseline models
-- Compare multiple models!
-- Define meaningful performance levels (aka, costs) *a priori* 
-
-]
-
-.pull-right6[
-
-]
-
----
-
-.pull-left4[
-
-# What are good baseline models of performance?
-
-]
-
-.pull-right6[
-
-]
-
----
-
-.pull-left4[
-
-# What are reasons why prediction performance can differ from training?
-
-- Random chance (you got lucky!)
-
-- You fit an overly complex model
-
-]
-
-.pull-right6[
-
-]
+&lt;font color = "gray"&gt;&lt;h1&gt;Random Forests&lt;/h1&gt;&lt;/font&gt;
 
 
 ---
@@ -316,19 +245,130 @@ In [decision trees](https://en.wikipedia.org/wiki/Decision_tree), the criterion 
 
 .pull-right55[
 
-### Fitting
+&lt;br&gt;&lt;br&gt;
+### How Decision Trees are grown
 
-Goal: Maximize accuracy by define splits that maximize *Node Purity*
+Find splits in data that maximize *Node Purity*
 
 &lt;img src="image/tree_purity_example.png" width="100%" style="display: block; margin: auto;" /&gt;
 
-### R Method
+]
 
-| Variant | Description| Caret |
-|:-----|:------|:---|
-|rpart |Recursive Partitioning| `"rpart"`|
+---
+
+.pull-left4[
+
+# Decision Trees
+
+In [decision trees](https://en.wikipedia.org/wiki/Decision_tree), the criterion is modeled as a &lt;high&gt;sequence of logical YES or NO questions&lt;/high&gt;.
+&lt;br&gt;&lt;br&gt;
+
+&lt;p align="center"&gt;
+  &lt;img src="https://raw.githubusercontent.com/therbootcamp/therbootcamp.github.io/master/_sessions/_image/defaulttree.png" height="250px"&gt;
+&lt;/p&gt;
 
 ]
+
+.pull-right55[
+&lt;br&gt;&lt;br&gt;&lt;br&gt;
+## Decision Trees in Caret: rpart
+
+To fit a decision tree in caret, use `method = "rpart"`
+
+
+```r
+# Fit a decision tree with a defined cp = .10
+
+train(form = income ~ .,
+      data = baselers,
+      method = "rpart",  # Decision Tree
+      trControl = ctrl,
+      tuneGrid = expand.grid(cp = .10)) # cp
+```
+
+
+]
+
+
+---
+
+.pull-left45[
+
+# Decision Trees
+
+### Complexity Parameter
+
+Decision trees have a &lt;high&gt;complexity parameter&lt;/high&gt; called &lt;high&gt;cp&lt;/high&gt;
+
+This control show complex (large) trees are allowed to grow
+
+- Small cp (&lt; 0.01) = Complex Trees
+- Large cp (&gt; 0.10) = Simple Trees
+
+The best value of cp depends on your dataset!
+
+]
+
+.pull-right5[
+
+&lt;br&gt;&lt;br&gt;
+
+&lt;img src="image/complexity_parameter.png" width="100%" style="display: block; margin: auto;" /&gt;
+
+]
+
+
+---
+
+.pull-left45[
+
+# Decision Trees
+
+### Complexity Parameter
+
+Decision trees have a &lt;high&gt;complexity parameter&lt;/high&gt; called &lt;high&gt;cp&lt;/high&gt;
+
+This control show complex (large) trees are allowed to grow
+
+- Small cp (&lt; 0.01) = Complex Trees
+- Large cp (&gt; 0.10) = Simple Trees
+
+The best value of cp depends on your dataset!
+
+
+]
+
+.pull-right5[
+
+&lt;br&gt;&lt;br&gt;&lt;br&gt;
+## Decision Trees in Caret: rpart
+
+When fitting a decision tree, the `cp` parameter can be defined by the user in the `tuneGrid` argument:
+
+
+```r
+# Fit a random forest with a defined mtry = 4
+
+train(form = income ~ .,
+      data = baselers,
+      method = "rf",  # Random Forest
+      trControl = ctrl,
+      tuneGrid = expand.grid(mtry = 4)) # mtry
+```
+
+- `mtry` can also be optimally determined through methods such as &lt;high&gt;cross-validation&lt;/high&gt;, which we will learn later
+
+]
+
+
+---
+class: center, middle
+
+&lt;font color = "gray"&gt;&lt;h1&gt;Regression&lt;/h1&gt;&lt;/font&gt;
+
+&lt;font color = "gray"&gt;&lt;h1&gt;Decision Trees&lt;/h1&gt;&lt;/font&gt;
+
+&lt;high&gt;&lt;h1&gt;Random Forests&lt;/h1&gt;&lt;/high&gt;
 
 ---
 
@@ -347,34 +387,307 @@ In [Random Forest](https://en.wikipedia.org/wiki/Random_forest), the criterion i
 ]
 
 .pull-right55[
+&lt;br&gt;
+### Wisdom of the Forest
 
-### Fitting
+In Random Forests, we create a large set of &lt;high&gt;diverse trees&lt;/high&gt; that can be aggregated into one &lt;high&gt;Wisdom of Crowds&lt;/high&gt; judgment
 
-Goal: Create a large set of diverse trees that can be aggregated into one *Wisdom of Crowds* judgment
-
-&lt;img src="image/tree_crowd.png" width="60%" style="display: block; margin: auto;" /&gt;
-
-### R Method
-
-| Variant | Description| Caret |
-|:-----|:------|:---|
-|Random Forests |"Classic" random forests| `"rf"`|
+&lt;img src="image/tree_crowd.png" width="80%" style="display: block; margin: auto;" /&gt;
 
 ]
 
 
 ---
 
-# Caret
+.pull-left4[
+
+# Random Forest
+
+In [Random Forest](https://en.wikipedia.org/wiki/Random_forest), the criterion is models as the &lt;high&gt;aggregate prediction of a large number of decision trees&lt;/high&gt; each based on different features.
+&lt;br&gt;
+
+&lt;p align="center"&gt;
+  &lt;img src="https://raw.githubusercontent.com/therbootcamp/Erfurt_2018June/master/_sessions/_image/randomforest_diagram.png" height="285px"&gt;&lt;br&gt;
+  &lt;a href="https://medium.com/@williamkoehrsen"&gt;Source&lt;/a&gt;
+&lt;/p&gt;
+
+]
+
+.pull-right55[
+&lt;br&gt;&lt;br&gt;&lt;br&gt;
+## Random Forests Caret: rf
+
+To fit a random forest in caret, use `method = "rf"`
+
+
+```r
+# Fit a random forest with a defined mtry = 3
+
+train(form = income ~ .,
+      data = baselers,
+      method = "rf",  # Random Forest
+      trControl = ctrl,
+      tuneGrid = expand.grid(mtry = 3))
+```
+
+]
+
+---
+
+.pull-left4[
+
+# Random Forest
+
+### Diversity Parameter: mtry
+
+Random Forests have a &lt;high&gt;diversity parameter&lt;/high&gt; called &lt;high&gt;mtry&lt;/high&gt;
+
+Technically, this controls how many features are randomly considered at each split of the trees
+
+- Small mtry (~ 1) = Diverse Forest
+- Large mtry (&gt; 5) = Simple Trees
+
+The "best" value of mtry depends on your dataset!
+
+]
+
+.pull-right55[
+&lt;br&gt;&lt;br&gt;
+
+&lt;img src="image/mtry_parameter.png" width="100%" style="display: block; margin: auto;" /&gt;
+
+]
+
+---
+
+.pull-left4[
+
+# Random Forest
+
+### Diversity Parameter: mtry
+
+Random Forests have a &lt;high&gt;diversity parameter&lt;/high&gt; called &lt;high&gt;mtry&lt;/high&gt;
+
+Technically, this controls how many features are randomly considered at each split of the trees
+
+- Small mtry (~ 1) = Diverse Forest
+- Large mtry (&gt; 5) = Simple Trees
+
+The "best" value of mtry depends on your dataset!
+
+]
+
+.pull-right55[
+
+&lt;br&gt;&lt;br&gt;
+## Random Forests in Caret: rf
+
+When fitting a random forest, the `mtry` parameter can be defined by the user in the `tuneGrid` argument:
+
+
+```r
+# Fit a random forest with a defined mtry = 2
+
+train(form = income ~ .,
+      data = baselers,
+      method = "rpart",  # Decision Tree
+      trControl = ctrl,
+      tuneGrid = expand.grid(mtry = 2)) # mtry
+```
+
+- `mtry` can also be optimally determined through methods such as &lt;high&gt;cross-validation&lt;/high&gt;, which we will learn later
+
+]
+
+
+
+---
+class: center,  middle
+
+&lt;br&gt;&lt;br&gt;
+
+# Let's test model predictions with caret!
+
+&lt;img src="https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/09/Caret-package-in-R.png" width="70%" style="display: block; margin: auto;" /&gt;
+
+
+
 
 
 
 ---
 
+# Predict new data with predict()
 
-# Practical
+.pull-left4[
 
-&lt;font size=6&gt;&lt;b&gt;&lt;a href="https://therbootcamp.github.io/Intro2DataScience_2018Oct/_sessions/Plotting/Plotting_practical.html"&gt;Link to practical&lt;/a&gt;
+Testing model predictions with `caret` is very easy.
+
+All you need to do is get a vector of predictions from a new dataframe `newdata` using the `predict()` function:
+
+
+```r
+# Get predictions for test data!
+predict(mod, newdata = data_test)
+```
+
+|argument|description|
+|:----|:-----|
+|object| A machine learning / statistical object created from `caret`, ...|
+|newdata|A dataframe of new data|
+
+This returns a vector of predicted values for your new data!
+
+]
+
+.pull-right55[
+
+To get predictions, just use `predict()` combined with new data
+
+
+```r
+# Load training and test data
+data_train &lt;- read_csv("1_Data/XXX_train.csv")
+data_test &lt;- read_csv("1_Data/XXX_test.csv")
+
+# Fit model to training data
+mod &lt;- train(form = Y ~ .,
+             method = "glm",
+             data = data_train)
+
+# Get fitted values (for training data)
+mod_fit &lt;- predict(mod)
+
+# Predictions for NEW data_test data!
+mod_pred &lt;- predict(mod, newdata = data_test)
+```
+
+
+]
+
+
+---
+
+# Predict new data with predict()
+
+.pull-left4[
+
+Testing model predictions with `caret` is very easy.
+
+All you need to do is get a vector of predictions from a new dataframe `newdata` using the `predict()` function:
+
+
+```r
+# Get predictions for test data!
+predict(mod, newdata = data_test)
+```
+
+|argument|description|
+|:----|:-----|
+|object| A machine learning / statistical object created from `caret`, ...|
+|newdata|A dataframe of new data|
+
+This returns a vector of predicted values for your new data!
+
+]
+
+.pull-right55[
+
+Once you have a vector of predictions, you can compare them to the criterion with `postResample()`
+
+
+```r
+# Define criterion
+criterion_train &lt;- data_train$Y
+criterion_test &lt;- data_test$Y
+
+# Fitting performance
+postResample(pred = mod_fit, 
+             obs = criterion_train)
+
+#    RMSE Rsquared      MAE 
+#2.454015 0.848482 1.889584 
+
+# Prediction performance
+postResample(pred = mod_pred, 
+             obs = criterion_test)
+
+#     RMSE  Rsquared       MAE 
+#3.4763941 0.6977009 2.6764346 
+```
+
+
+]
+
+
+
+---
+.pull-left5[
+
+# 5 steps with caret
+
+Step 0: Load training and test data
+
+
+```r
+data_train &lt;- read_csv("1_Data/XXX_train.csv")
+data_test &lt;- read_csv("1_Data/XXX_test.csv")
+```
+
+Step 1: Define control parameters
+
+
+```r
+# Use method = "none" for no advanced fitting
+ctl &lt;- trainControl(method = "none")
+```
+
+Step 2: Train model
+
+
+```r
+mod &lt;- train(form = Y ~ .,  
+             data = data_train,
+             method = "rpart",
+             trControl = ctl,
+             tuneGrid = expand.grid(mtry = 2))
+```
+
+]
+
+.pull-right45[
+&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;
+Step 3: Explore
+
+
+```r
+mod            # Print object
+mod$finalModel # Final model
+```
+
+Step 4: Predict 
+
+
+```r
+rpart_pred &lt;- predict(object = mod, 
+                      newdata = data_test)
+```
+
+Step 5: Evaluate prediction accuracy
+
+
+```r
+postResample(pred = rpart_pred, 
+             obs = data_test$Y)
+```
+
+]
+
+---
+
+class: middle, center
+
+&lt;h1&gt;&lt;a href=https://therbootcamp.github.io/appliedML_2019Jan/_sessions/Prediction/Prediction_practical.html&gt;Practical&lt;/a&gt;&lt;/h1&gt;
     </textarea>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
 <script>var slideshow = remark.create({

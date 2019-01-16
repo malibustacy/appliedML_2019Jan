@@ -34,6 +34,8 @@ options(htmltools.dir.version = FALSE)
 # https://github.com/gnab/remark/wiki/Markdown
 options(width=110)
 options(digits = 4)
+
+source("https://raw.githubusercontent.com/therbootcamp/therbootcamp.github.io/master/_materials/code/baselrbootcamp_palettes.R")
 ```
 
 ```{r, echo = FALSE ,message = FALSE, warning = FALSE}
@@ -68,6 +70,7 @@ present <- tibble(id = 91:95,
 
 
 ---
+class: middle, center
 
  ## "Prediction is very difficult, especially if it's about the future."
  ## ~  Nils Bohr, Nobel Laureate in Physics
@@ -96,9 +99,13 @@ knitr::include_graphics("https://cdn-images-1.medium.com/max/1600/1*_QGyIwpgq831
 ---
 
 .pull-left45[
-## What is model Testing?
+
+# What is model Testing?
 
 Model testing is the process of accessing a model's predictions on *new, unseen* data.
+
+
+
 
 ]
 
@@ -121,7 +128,7 @@ knitr::include_graphics("https://cdn-images-1.medium.com/max/1600/1*_QGyIwpgq831
 .pull-left35[
 <br>
 
-## Just because a model can <high>fit past data well</high>, does *not* necessarily mean that it will <high>predict new data well</high>.
+<font size = 5>Just because a model can <high>fit past data well</high>, does <i>not</i> necessarily mean that it will <high>predict new data well</high></font>
 
 ]
  
@@ -170,139 +177,145 @@ knitr::kable(present, format = "markdown")
 
 ---
 
-## Overfitting - Examples
-
-
-.pull-left5[
-
-
-]
-
-
-.pull-right45[
-
-
-
-
-]
-
-
-
----
-class: middle, center
-
-## Can you think of a model that perfectly fits this data...
-##  But is totally useless in predicting future data?
-
-
-```{r}
-df <- data.frame(id = c(1, 2, 3, 4, 5),
-                 sex = c("m", "f", "f", "m", "f"),
-                 age = c(54, 27, 53, 38, 43),
-                 drug = c("X", "Y", "X", "Y", "X"),
-                 success = c("Yes", "No", "Yes", "No", "Yes"))
-
-df %>% kable()
-```
-
-
-
-
-
----
 
 .pull-left4[
+<br><br>
+# Overfitting
 
-# How do you measure prediction performance?
+When a model is consistently <high>less accurate in predicting future data</high> than in <high>fitting training data<high>, this is called <high>overfitting</high>
 
-]
+Overfitting typically occurs when a model 'mistakes' random noise for a predictable signal
 
-.pull-right6[
-
-]
-
-
-
----
-
-.pull-left4[
-
-# Why do we nee
-
-What is the purpose of a model?
-
-Separating signal from noise.
-What is noise? Things you can't predict
-What is signal? Thanks you can predict.
-
-Trick: Don't trick yourself into thinking you can predict things you can't.
 
 ]
 
 
 .pull-right55[
+<br><br>
+
+```{r, echo = FALSE, fig.cap = "<font size = 4>hackernoon.com</font>"}
+knitr::include_graphics("https://cdn-images-1.medium.com/max/1600/1*SBUK2QEfCP-zvJmKm14wGQ.png")
+```
+
+```{r, echo = FALSE,  fig.cap = "<font size = 4>Medium.com</font>"}
+knitr::include_graphics("https://cdn-images-1.medium.com/max/1200/1*cdvfzvpkJkUudDEryFtCnA.png")
+```
 
 
 ]
 
+
+---
+
+# Overfitting
+
+```{r, fig.width = 8, fig.height = 3.5, echo = FALSE, eval = TRUE, warning = FALSE, dpi = 200}
+set.seed(5)
+
+N <- 40
+
+iv <- rnorm(N, mean = 10, sd = 2)
+truth <- iv 
+noise <- rnorm(N, mean = 0, sd = 2)
+obs <- truth + noise
+
+data <- data.frame(iv, obs)
+
+
+poly_pred <- map_dfc(.x = c(1, 19), .f = function(degree) {
+  
+  output <- data.frame(lm(obs ~ poly(iv, degree), data = data)$fitted.values)
+  
+  names(output) <- paste0("d", degree)
+  
+  return(output)
+
+}) %>% mutate(id = 1:N,
+              x = iv,
+              obs = obs) %>%
+  gather(Degree, pred, -id, -x, -obs) %>%
+  mutate(`Fitting` = abs(pred - obs))
+
+
+poly_pred <- poly_pred %>%
+  mutate(Degree = case_when(Degree == "d1" ~ "Simple",
+                            TRUE ~ "Complex"))
+
+
+
+overfit_gg <- ggplot(poly_pred, aes(x = x, y = pred, col = Degree)) + 
+  geom_line(size = 1.5) +
+  geom_point(aes(x = x, y = obs), col = "black", pch = 21) +
+  annotate("segment", x = 5, y = 5, xend = 15, yend = 15, col = "black", linetype = 4, size = 1) +
+  xlim(5, 15) +
+  ylim(5, 15) +
+  labs(title = "Model overfitting",
+       subtitle = "Dashed line is TRUE model") +
+  theme_bw() +
+    theme(legend.position="bottom") +
+    scale_color_baselrbootcamp()
+  
+poly_pred <- poly_pred %>% mutate(
+
+  obs_new = x + rnorm(1, mean = 0, sd = 2),
+  `Prediction` = abs(obs_new - pred)
+  
+)
+
+
+poly_pred <- poly_pred %>%
+  select(Degree, `Fitting`, `Prediction`) %>%
+  gather(phase, Error, -Degree)
+
+agg <- poly_pred %>%
+  group_by(Degree, phase) %>%
+  summarise(Error = mean(Error))
+
+fit_gg <- ggplot(agg, aes(x = phase, y = Error, fill = Degree)) +
+  geom_bar(position = "dodge", stat = "identity") +
+  labs(title = "Fitting versus Prediction Error",
+       subtitle = "Smaller values are better!",
+       x = "Modelling Phase") +  
+  scale_y_continuous(limits=c(.75,1.25),oob = scales::rescale_none) +
+  theme_bw() +
+    theme(legend.position="bottom") +
+    scale_fill_baselrbootcamp()
+
+ggpubr::ggarrange(overfit_gg, fit_gg)
+```
 
 
 
 ---
 
-.pull-left4[
+# Overfitting
 
-# What are reasons why prediction performance can differ from training?
+.pull-left45[
+
+### How do we prevent overfitting?
+
+1 - Always evaluate models based on their performance on new, unseen data *never* on training data
+
+2 - 
+
 
 ]
 
-.pull-right6[
+.pull-right5[
+
+
 
 ]
+
 
 ---
+class: center, middle
 
-.pull-left4[
+<font color = "gray"><h1>Regression</h1></font>
 
-# How do you know if a model's predictions are 'good'?
+<high><h1>Decision Trees</h1></high>
 
-- Compare to baseline models
-- Compare multiple models!
-- Define meaningful performance levels (aka, costs) *a priori* 
-
-]
-
-.pull-right6[
-
-]
-
----
-
-.pull-left4[
-
-# What are good baseline models of performance?
-
-]
-
-.pull-right6[
-
-]
-
----
-
-.pull-left4[
-
-# What are reasons why prediction performance can differ from training?
-
-- Random chance (you got lucky!)
-
-- You fit an overly complex model
-
-]
-
-.pull-right6[
-
-]
+<font color = "gray"><h1>Random Forests</h1></font>
 
 
 ---
@@ -322,21 +335,132 @@ In [decision trees](https://en.wikipedia.org/wiki/Decision_tree), the criterion 
 
 .pull-right55[
 
-### Fitting
+<br><br>
+### How Decision Trees are grown
 
-Goal: Maximize accuracy by define splits that maximize *Node Purity*
+Find splits in data that maximize *Node Purity*
 
 ```{r, echo = FALSE, out.width = "100%"}
 knitr::include_graphics("image/tree_purity_example.png")
 ```
 
-### R Method
+]
 
-| Variant | Description| Caret |
-|:-----|:------|:---|
-|rpart |Recursive Partitioning| `"rpart"`|
+---
+
+.pull-left4[
+
+# Decision Trees
+
+In [decision trees](https://en.wikipedia.org/wiki/Decision_tree), the criterion is modeled as a <high>sequence of logical YES or NO questions</high>.
+<br><br>
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/therbootcamp/therbootcamp.github.io/master/_sessions/_image/defaulttree.png" height="250px">
+</p>
 
 ]
+
+.pull-right55[
+<br><br><br>
+## Decision Trees in Caret: rpart
+
+To fit a decision tree in caret, use `method = "rpart"`
+
+```{r, eval = FALSE}
+# Fit a decision tree with a defined cp = .10
+
+train(form = income ~ .,
+      data = baselers,
+      method = "rpart",  # Decision Tree
+      trControl = ctrl,
+      tuneGrid = expand.grid(cp = .10)) # cp
+```
+
+
+]
+
+
+---
+
+.pull-left45[
+
+# Decision Trees
+
+### Complexity Parameter
+
+Decision trees have a <high>complexity parameter</high> called <high>cp</high>
+
+This control show complex (large) trees are allowed to grow
+
+- Small cp (< 0.01) = Complex Trees
+- Large cp (> 0.10) = Simple Trees
+
+The best value of cp depends on your dataset!
+
+]
+
+.pull-right5[
+
+<br><br>
+
+```{r, echo = FALSE, out.width = "100%"}
+knitr::include_graphics("image/complexity_parameter.png")
+```
+
+]
+
+
+---
+
+.pull-left45[
+
+# Decision Trees
+
+### Complexity Parameter
+
+Decision trees have a <high>complexity parameter</high> called <high>cp</high>
+
+This control show complex (large) trees are allowed to grow
+
+- Small cp (< 0.01) = Complex Trees
+- Large cp (> 0.10) = Simple Trees
+
+The best value of cp depends on your dataset!
+
+
+]
+
+.pull-right5[
+
+<br><br><br>
+## Decision Trees in Caret: rpart
+
+When fitting a decision tree, the `cp` parameter can be defined by the user in the `tuneGrid` argument:
+
+```{r, eval = FALSE}
+# Fit a random forest with a defined mtry = 4
+
+train(form = income ~ .,
+      data = baselers,
+      method = "rf",  # Random Forest
+      trControl = ctrl,
+      tuneGrid = expand.grid(mtry = 4)) # mtry
+```
+
+- `mtry` can also be optimally determined through methods such as <high>cross-validation</high>, which we will learn later
+
+]
+
+
+---
+class: center, middle
+
+<font color = "gray"><h1>Regression</h1></font>
+
+<font color = "gray"><h1>Decision Trees</h1></font>
+
+<high><h1>Random Forests</h1></high>
 
 ---
 
@@ -355,37 +479,304 @@ In [Random Forest](https://en.wikipedia.org/wiki/Random_forest), the criterion i
 ]
 
 .pull-right55[
+<br>
+### Wisdom of the Forest
 
-### Fitting
+In Random Forests, we create a large set of <high>diverse trees</high> that can be aggregated into one <high>Wisdom of Crowds</high> judgment
 
-Goal: Create a large set of diverse trees that can be aggregated into one *Wisdom of Crowds* judgment
-
-```{r, echo = FALSE, out.width = "60%"}
+```{r, echo = FALSE, out.width = "80%"}
 knitr::include_graphics("image/tree_crowd.png")
 ```
-
-### R Method
-
-| Variant | Description| Caret |
-|:-----|:------|:---|
-|Random Forests |"Classic" random forests| `"rf"`|
 
 ]
 
 
 ---
 
-# Caret
+.pull-left4[
+
+# Random Forest
+
+In [Random Forest](https://en.wikipedia.org/wiki/Random_forest), the criterion is models as the <high>aggregate prediction of a large number of decision trees</high> each based on different features.
+<br>
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/therbootcamp/Erfurt_2018June/master/_sessions/_image/randomforest_diagram.png" height="285px"><br>
+  <a href="https://medium.com/@williamkoehrsen">Source</a>
+</p>
+
+]
+
+.pull-right55[
+<br><br><br>
+## Random Forests Caret: rf
+
+To fit a random forest in caret, use `method = "rf"`
+
+```{r, eval = FALSE}
+# Fit a random forest with a defined mtry = 3
+
+train(form = income ~ .,
+      data = baselers,
+      method = "rf",  # Random Forest
+      trControl = ctrl,
+      tuneGrid = expand.grid(mtry = 3))
+```
+
+]
+
+---
+
+.pull-left4[
+
+# Random Forest
+
+### Diversity Parameter: mtry
+
+Random Forests have a <high>diversity parameter</high> called <high>mtry</high>
+
+Technically, this controls how many features are randomly considered at each split of the trees
+
+- Small mtry (~ 1) = Diverse Forest
+- Large mtry (> 5) = Simple Trees
+
+The "best" value of mtry depends on your dataset!
+
+]
+
+.pull-right55[
+<br><br>
+
+```{r, echo = FALSE, out.width = "100%"}
+knitr::include_graphics("image/mtry_parameter.png")
+```
+
+]
+
+---
+
+.pull-left4[
+
+# Random Forest
+
+### Diversity Parameter: mtry
+
+Random Forests have a <high>diversity parameter</high> called <high>mtry</high>
+
+Technically, this controls how many features are randomly considered at each split of the trees
+
+- Small mtry (~ 1) = Diverse Forest
+- Large mtry (> 5) = Simple Trees
+
+The "best" value of mtry depends on your dataset!
+
+]
+
+.pull-right55[
+
+<br><br>
+## Random Forests in Caret: rf
+
+When fitting a random forest, the `mtry` parameter can be defined by the user in the `tuneGrid` argument:
+
+```{r, eval = FALSE}
+# Fit a random forest with a defined mtry = 2
+
+train(form = income ~ .,
+      data = baselers,
+      method = "rpart",  # Decision Tree
+      trControl = ctrl,
+      tuneGrid = expand.grid(mtry = 2)) # mtry
+```
+
+- `mtry` can also be optimally determined through methods such as <high>cross-validation</high>, which we will learn later
+
+]
+
+
+
+---
+class: center,  middle
+
+<br><br>
+
+# Let's test model predictions with caret!
+
+```{r, echo = FALSE, out.width = "70%"}
+knitr::include_graphics("https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/09/Caret-package-in-R.png")
+```
+
+
+```{r, echo = FALSE}
+library(caret)
+data(cars)
+```
 
 
 
 ---
 
+# Predict new data with predict()
 
-# Practical
+.pull-left4[
 
-<font size=6><b><a href="https://therbootcamp.github.io/Intro2DataScience_2018Oct/_sessions/Plotting/Plotting_practical.html">Link to practical</a>
+Testing model predictions with `caret` is very easy.
 
+All you need to do is get a vector of predictions from a new dataframe `newdata` using the `predict()` function:
+
+```{r, eval = FALSE}
+# Get predictions for test data!
+predict(mod, newdata = data_test)
+```
+
+|argument|description|
+|:----|:-----|
+|object| A machine learning / statistical object created from `caret`, ...|
+|newdata|A dataframe of new data|
+
+This returns a vector of predicted values for your new data!
+
+]
+
+.pull-right55[
+
+To get predictions, just use `predict()` combined with new data
+
+```{r, eval = FALSE}
+# Load training and test data
+data_train <- read_csv("1_Data/XXX_train.csv")
+data_test <- read_csv("1_Data/XXX_test.csv")
+
+# Fit model to training data
+mod <- train(form = Y ~ .,
+             method = "glm",
+             data = data_train)
+
+# Get fitted values (for training data)
+mod_fit <- predict(mod)
+
+# Predictions for NEW data_test data!
+mod_pred <- predict(mod, newdata = data_test)
+```
+
+
+]
+
+
+---
+
+# Predict new data with predict()
+
+.pull-left4[
+
+Testing model predictions with `caret` is very easy.
+
+All you need to do is get a vector of predictions from a new dataframe `newdata` using the `predict()` function:
+
+```{r, eval = FALSE}
+# Get predictions for test data!
+predict(mod, newdata = data_test)
+```
+
+|argument|description|
+|:----|:-----|
+|object| A machine learning / statistical object created from `caret`, ...|
+|newdata|A dataframe of new data|
+
+This returns a vector of predicted values for your new data!
+
+]
+
+.pull-right55[
+
+Once you have a vector of predictions, you can compare them to the criterion with `postResample()`
+
+```{r, eval = FALSE}
+# Define criterion
+criterion_train <- data_train$Y
+criterion_test <- data_test$Y
+
+# Fitting performance
+postResample(pred = mod_fit, 
+             obs = criterion_train)
+
+#    RMSE Rsquared      MAE 
+#2.454015 0.848482 1.889584 
+
+# Prediction performance
+postResample(pred = mod_pred, 
+             obs = criterion_test)
+
+#     RMSE  Rsquared       MAE 
+#3.4763941 0.6977009 2.6764346 
+```
+
+
+]
+
+
+
+---
+.pull-left5[
+
+# 5 steps with caret
+
+Step 0: Load training and test data
+
+```{r, eval = FALSE}
+data_train <- read_csv("1_Data/XXX_train.csv")
+data_test <- read_csv("1_Data/XXX_test.csv")
+```
+
+Step 1: Define control parameters
+
+```{r, eval = FALSE}
+# Use method = "none" for no advanced fitting
+ctl <- trainControl(method = "none")
+```
+
+Step 2: Train model
+
+```{r, eval = FALSE}
+mod <- train(form = Y ~ .,  
+             data = data_train,
+             method = "rpart",
+             trControl = ctl,
+             tuneGrid = expand.grid(mtry = 2))
+```
+
+]
+
+.pull-right45[
+<br><br><br><br><br>
+Step 3: Explore
+
+```{r, eval = FALSE}
+mod            # Print object
+mod$finalModel # Final model
+```
+
+Step 4: Predict 
+
+```{r, eval = FALSE}
+rpart_pred <- predict(object = mod, 
+                      newdata = data_test)
+```
+
+Step 5: Evaluate prediction accuracy
+
+```{r, eval = FALSE}
+postResample(pred = rpart_pred, 
+             obs = data_test$Y)
+```
+
+]
+
+---
+
+class: middle, center
+
+<h1><a href=https://therbootcamp.github.io/appliedML_2019Jan/_sessions/Prediction/Prediction_practical.html>Practical</a></h1>
 
 
 
