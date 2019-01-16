@@ -546,7 +546,7 @@ ctrl &lt;- trainControl(...)
 
 mod &lt;- train(...)
 summary(mod)
-mod
+mod$finalModel   # see final model
 
 # Step 4: Assess fit
 #   predict(), postResample()
@@ -640,8 +640,8 @@ Regression: `method = "glm"`
 ```r
 # Fit a regression model predicting Price
 
-mod &lt;- train(form = Price ~ .,  # Formula
-             data = cars,       # Training data
+mod &lt;- train(form = income ~ .,  # Formula
+             data = baselers,       # Training data
              method = "glm",    # Regression
              trControl = ctrl)  # Control Parameters
 ```
@@ -687,8 +687,8 @@ Random Forest: `method = "rf"`
 ```r
 # Fit a Random Forest model predicting Price
 
-mod &lt;- train(form = Price ~ .,  # Formula
-             data = cars,       # Training data
+mod &lt;- train(form = income ~ ., # Formula
+             data = baselers,   # Training data
              method = "rf",     # Random Forests
              trControl = ctrl)  # Control Parameters
 ```
@@ -772,9 +772,10 @@ This code will think that Default is a continuous number, not a category (probab
 ```r
 # Will be a regression task if Default is numeric
 
-mod &lt;- train(form = Default ~ .,
+mod &lt;- train(form = default ~ .,
              data = Loans,
-             method = "glm")
+             method = "glm",
+             trControl = ctrl)
 ```
 
 &lt;font color='red' size = 3&gt;Warning messages:...Are you sure you wanted to do regression?&lt;/font&gt;
@@ -791,6 +792,74 @@ mod &lt;- train(form = factor(Default) ~ .,
 ```
 
 ]
+
+
+---
+.pull-left35[
+
+# Getting final models: .$finalModel
+
+The `train()` function returns a list with a key object called `finalModel` - this is your final machine learning model!
+
+You can access the model with `mod$finalModel`, you can explore the object with generic functions:
+
+
+|Function|Description
+|:------|:----|
+|`summary()`| Overview of the most important information|
+|`names()`|See all named elements you can access with $|
+
+]
+
+.pull-right6[
+
+
+
+```r
+# Create a regression object
+mod &lt;- train(form = income ~ age + height + fitness,  # Formula
+             data = baselers,       # Training data
+             method = "glm",    # Regression
+             trControl = ctrl)  # Control Parameters
+
+# Look at final model
+mod$finalModel
+# [...]
+```
+
+
+
+
+
+```r
+# Look at all named outputs
+names(mod$finalModel)
+```
+
+```
+ [1] "coefficients"      "residuals"         "fitted.values"     "effects"           "R"                
+ [6] "rank"              "qr"                "family"            "linear.predictors" "deviance"         
+[11] "aic"               "null.deviance"     "iter"              "weights"           "prior.weights"    
+[16] "df.residual"       "df.null"           "y"                 "converged"         "boundary"         
+[21] "model"             "formula"           "terms"             "data"              "offset"           
+[26] "control"           "method"            "contrasts"         "xlevels"           "xNames"           
+[31] "problemType"       "tuneValue"         "obsLevels"         "param"            
+```
+
+```r
+# Access specific outputs
+mod$finalModel$coefficients
+```
+
+```
+(Intercept)         age      height     fitness 
+    136.606     151.751       3.381      11.012 
+```
+
+
+]
+
+
 
 ---
 
@@ -818,8 +887,8 @@ glm_fits[1:5]
 ```
 
 ```
-    1     2     3     4     5 
-20556 20044 32228 32352 33792 
+   1    2    3    4    5 
+5507 6971 6969 8643 5324 
 ```
 
 You can use this vector to compare the model fits to the true values (see plot to right)
@@ -835,7 +904,7 @@ If the model was perfect, all points would be on diagonal
 *Code Hidden*
 
 
-&lt;img src="Fitting_files/figure-html/unnamed-chunk-32-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="Fitting_files/figure-html/unnamed-chunk-35-1.png" style="display: block; margin: auto;" /&gt;
 
 
 ]
@@ -857,18 +926,18 @@ To calculate aggregate model performance, use `postResample()`
 ```r
 # Assess performance with postResample()
 
-postResample(pred = glm_fits,   # Predictions 
-             obs = cars$Price)  # True values
+postResample(pred = glm_fits, # Predictions 
+             obs = baselers$income) # Truth
 ```
 
 ```
     RMSE Rsquared      MAE 
-2250.067    0.952 1615.247 
+1172.905    0.821  936.994 
 ```
 
 
 
-Here, this tells us that the Mean Absolute Error (MAE) of the model in fitting was 1615.25
+Thistells us that the Mean Absolute Error (MAE) of the model in fitting was 936.99
 
 ]
 
@@ -880,7 +949,7 @@ Red lines indicate absolute error(s)
 
 *Code Hidden*
 
-&lt;img src="Fitting_files/figure-html/unnamed-chunk-35-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="Fitting_files/figure-html/unnamed-chunk-38-1.png" style="display: block; margin: auto;" /&gt;
 
 ]
 
@@ -889,70 +958,6 @@ Red lines indicate absolute error(s)
 class: middle, center
 
 &lt;h1&gt;&lt;a href=https://therbootcamp.github.io/appliedML_2019Jan/_sessions/Fitting/Fitting_practical.html&gt;Practical&lt;/a&gt;&lt;/h1&gt;
-
-
----
-
-.pull-left4[
-
-# Decision Trees
-
-In [decision trees](https://en.wikipedia.org/wiki/Decision_tree), the criterion is modeled as a &lt;high&gt;sequence of logical YES or NO questions&lt;/high&gt;.
-&lt;br&gt;&lt;br&gt;
-
-&lt;p align="center"&gt;
-  &lt;img src="https://raw.githubusercontent.com/therbootcamp/therbootcamp.github.io/master/_sessions/_image/defaulttree.png" height="250px"&gt;
-&lt;/p&gt;
-
-]
-
-.pull-right55[
-
-### Fitting
-
-Goal: Maximize accuracy by define splits that maximize *Node Purity*
-
-&lt;img src="image/tree_purity_example.png" width="100%" style="display: block; margin: auto;" /&gt;
-
-### R Method
-
-| Variant | Description| Caret |
-|:-----|:------|:---|
-|rpart |Recursive Partitioning| `"rpart"`|
-
-]
-
----
-
-.pull-left4[
-
-# Random Forest
-
-In [Random Forest](https://en.wikipedia.org/wiki/Random_forest), the criterion is models as the &lt;high&gt;aggregate prediction of a large number of decision trees&lt;/high&gt; each based on different features.
-&lt;br&gt;
-
-&lt;p align="center"&gt;
-  &lt;img src="https://raw.githubusercontent.com/therbootcamp/Erfurt_2018June/master/_sessions/_image/randomforest_diagram.png" height="285px"&gt;&lt;br&gt;
-  &lt;a href="https://medium.com/@williamkoehrsen"&gt;Source&lt;/a&gt;
-&lt;/p&gt;
-
-]
-
-.pull-right55[
-
-### Fitting
-
-Goal: Create a large set of diverse trees that can be aggregated into one *Wisdom of Crowds* judgment
-
-&lt;img src="image/tree_crowd.png" width="60%" style="display: block; margin: auto;" /&gt;
-
-### R Method
-
-| Variant | Description| Caret |
-|:-----|:------|:---|
-|Random Forests |"Classic" random forests| `"rf"`|
-
-]
     </textarea>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
 <script>var slideshow = remark.create({

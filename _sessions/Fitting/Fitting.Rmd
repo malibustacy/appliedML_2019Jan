@@ -44,11 +44,14 @@ source("https://raw.githubusercontent.com/therbootcamp/therbootcamp.github.io/ma
 knitr::opts_chunk$set(comment=NA, fig.width=6, fig.height=6, echo = TRUE, eval = TRUE, 
                       message = FALSE, warning = FALSE, fig.align = 'center', dpi = 200)
 library(tidyverse)
-library(baselers)
 library(ggthemes)
 library(ggpubr)
 library(caret)
 library(ISLR)
+
+baselers <- read_csv("https://raw.githubusercontent.com/therbootcamp/appliedML_2019Jan/master/1_Data/baselers.csv")
+
+
 ```
 
 
@@ -675,7 +678,7 @@ ctrl <- trainControl(...)
 
 mod <- train(...)
 summary(mod)
-mod
+mod$finalModel   # see final model
 
 # Step 4: Assess fit
 #   predict(), postResample()
@@ -769,8 +772,8 @@ Regression: `method = "glm"`
 ```{r, echo = TRUE, out.width = "90%", eval = TRUE, warning = FALSE}
 # Fit a regression model predicting Price
 
-mod <- train(form = Price ~ .,  # Formula
-             data = cars,       # Training data
+mod <- train(form = income ~ .,  # Formula
+             data = baselers,       # Training data
              method = "glm",    # Regression
              trControl = ctrl)  # Control Parameters
 ```
@@ -815,8 +818,8 @@ Random Forest: `method = "rf"`
 ```{r, echo = TRUE, out.width = "90%", eval = TRUE, warning = FALSE}
 # Fit a Random Forest model predicting Price
 
-mod <- train(form = Price ~ .,  # Formula
-             data = cars,       # Training data
+mod <- train(form = income ~ ., # Formula
+             data = baselers,   # Training data
              method = "rf",     # Random Forests
              trControl = ctrl)  # Control Parameters
 ```
@@ -899,9 +902,10 @@ This code will think that Default is a continuous number, not a category (probab
 ```{r, eval = FALSE}
 # Will be a regression task if Default is numeric
 
-mod <- train(form = Default ~ .,
+mod <- train(form = default ~ .,
              data = Loans,
-             method = "glm")
+             method = "glm",
+             trControl = ctrl)
 ```
 
 <font color='red' size = 3>Warning messages:...Are you sure you wanted to do regression?</font>
@@ -941,26 +945,30 @@ You can access the model with `mod$finalModel`, you can explore the object with 
 
 ```{r, eval = FALSE, echo = TRUE}
 # Create a regression object
-baselers_glm <- glm(income ~ age + height + children,
-                    data = baselers)
+mod <- train(form = income ~ age + height + fitness,  # Formula
+             data = baselers,       # Training data
+             method = "glm",    # Regression
+             trControl = ctrl)  # Control Parameters
 
-# Look at summary results
-summary(baselers_glm)
+# Look at final model
+mod$finalModel
 # [...]
 ```
 
 ```{r, eval = TRUE, echo = FALSE}
-baselers_glm <- glm(income ~ age + height + children,
-                    data = baselers)
+mod <- train(form = income ~ age + height + fitness,  # Formula
+             data = baselers,       # Training data
+             method = "glm",    # Regression
+             trControl = ctrl)  # Control Parameters
 ```
 
 
 ```{r}
 # Look at all named outputs
-names(baselers_glm)
+names(mod$finalModel)
 
 # Access specific outputs
-baselers_glm$coefficients
+mod$finalModel$coefficients
 ```
 
 
@@ -1006,8 +1014,8 @@ If the model was perfect, all points would be on diagonal
 
 ```{r, fig.width = 4, fig.height = 3, fig.align = 'center', echo = FALSE}
 # Plot fits versus truth
-tibble(fits = glm_fits,
-       truth = cars$Price) %>%
+tibble(fits = glm_fits[1:100],
+       truth = baselers$income[1:100]) %>%
 ggplot(aes(x = fits, y = truth)) + 
   geom_abline(slope = 1, intercept = 0) +
   geom_point(alpha = .1) +
@@ -1033,16 +1041,16 @@ To calculate aggregate model performance, use `postResample()`
 ```{r}
 # Assess performance with postResample()
 
-postResample(pred = glm_fits,   # Predictions 
-             obs = cars$Price)  # True values
+postResample(pred = glm_fits, # Predictions 
+             obs = baselers$income) # Truth
 ```
 
 ```{r, echo = FALSE, eval = TRUE}
 x <- postResample(pred = glm_fits, 
-             obs = cars$Price)
+                 obs = baselers$income)
 ```
 
-Here, this tells us that the Mean Absolute Error (MAE) of the model in fitting was `r round(x[3], 2)`
+Thistells us that the Mean Absolute Error (MAE) of the model in fitting was `r round(x[3], 2)`
 
 ]
 
@@ -1055,8 +1063,8 @@ Red lines indicate absolute error(s)
 *Code Hidden*
 
 ```{r, fig.width = 4, fig.height = 3, fig.align = 'center', echo = FALSE}
-tibble(fits = glm_fits,
-       truth = cars$Price) %>%
+tibble(fits = glm_fits[1:100],
+       truth = baselers$income[1:100]) %>%
 ggplot(aes(x = fits, y = truth)) + 
     geom_point(alpha = .2) +
 geom_linerange(aes(x = fits, ymin = fits, ymax = truth), col = baselrbootcamp_cols("magenta")) +
