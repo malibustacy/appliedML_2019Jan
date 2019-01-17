@@ -84,8 +84,9 @@ library(mlbench)       # Load ISLR package
 | `predict(object, newdata)`|`stats`|    Predict the criterion values of `newdata` based on `object`|
 | `postResample()`|`caret`|   Calculate aggregate model performance in regression tasks|
 | `confusionMatrix()`|`caret`|   Calculate aggregate model performance in classification tasks| 
-| `varImp()`|`caret`|   |
-| `confusionMatrix()`|`caret`|   Calculate aggregate model performance in classification tasks| 
+| `varImp()`|`caret`| Determine the model-specific importance of features |
+| `findCorrelation()`, `nearZeroVar()` |`caret`|  Identify highly correlated and low variance features. | 
+| `rfe()`, `rfeControl()` |`caret`|  Run and control recursive feature selection. | 
 
 ### Packages
 
@@ -106,216 +107,165 @@ library(mlbench)       # Load ISLR package
 ### Examples
 
 ```{r, eval = FALSE, echo = TRUE}
+
 # Fitting and evaluating a regression model ------------------------------------
 
 # Step 0: Load packages-----------
 
 library(tidyverse)    # Load tidyverse for dplyr and tidyr
 library(caret)        # For ML mastery 
-library(partykit)     # For decision trees
-library(party)        # For decision trees
 
-# Step 1: Load and Clean, and Explore Training data ----------------------
+# Step 1: Load, prepare, and explore data ----------------------
 
-# training data
-data_train <- read_csv("1_Data/mpg_train.csv")
+# read data
+data <- read_csv("1_Data/mpg_num.csv")
 
-# test data
-data_test <- read_csv("1_Data/mpg_test.csv")
-
-# Convert all characters to factor
-#  Some ML models require factors
-
-data_train <- data_train %>%
-  mutate_if(is.character, factor)
-
-data_test <- data_test %>%
+# Convert all characters to factors
+data <- data %>%
   mutate_if(is.character, factor)
 
 # Explore training data
+data        # Print the dataset
+dim(data)   # Print dimensions
+names(data) # Print the names
 
-data_train        # Print the dataset
-View(data_train)  # Open in a new spreadsheet-like window 
-dim(data_train)   # Print dimensions
-names(data_train) # Print the names
+# Step 2: Create training and test sets -------------
 
-# Define criterion_train
-#   We'll use this later to evaluate model accuracy
+# Create train index
+train_index <- createDataPartition(criterion, 
+                                  p = .8, list = FALSE)
 
-criterion_train <- data_train$hwy
+# Create training and test sets
+data_train <- data %>% slice(train_index)
+data_test <- data %>% slice(-train_index)
 
-# Step 2: Define training control parameters -------------
+# split predictors and criterion
+criterion_train <- data_train %>% select(hwy) %>% pull()
+predictors_train <- data_train %>% select(-hwy)
+criterion_test <- data_test %>% select(hwy) %>% pull()
+predictors_test <- data_test %>% select(-hwy)
 
-# In this case, I will set method = "none" to fit to 
-#  the entire dataset without any fancy methods
+# Step 3: Clean data -------------
 
-train_control <- trainControl(method = "none") 
+# Test for excessively correlated features
+corr_matrix <- cor(predictors_train)
+corr_features <- findCorrelation(corr_matrix)
 
-# Step 3: Train model: -----------------------------
-#   Criterion: hwy
-#   Features: year, cyl, displ
+# Remove excessively correlated features
+predictors_train <- predictors_train %>% select(-corr_features)
 
-# Regression --------------------------
+# Test for near zero variance features
+zerovar_features <- nearZeroVar(predictors_train)
 
-hwy_glm <- train(form = hwy ~ year + cyl + displ,
+# Remove near zero variance features
+predictors_train <- predictors_train %>% select(-zerovar_features)
+
+# recombine data
+data_train <- predictors_train %>% add_column(hwy = criterion_train)
+
+# Step 4: Define training control parameters -------------
+
+# Train using cross-validation
+train_control <- trainControl(method = "cv") 
+
+# Step 5: Fit models -------------
+
+# Fit glm vanilla flavor
+hwy_glm <- train(form = hwy ~ .,
                  data = data_train,
                  method = "glm",
                  trControl = train_control)
 
-# Look at summary information
-hwy_glm$finalModel
-summary(hwy_glm)
+# Fit with pca transformation
+hwy_glm_pca <- train(form = hwy ~ .,
+                     data = data_train,
+                     method = "glm",
+                     trControl = train_control,
+                     preProcess = c('pca'))
 
-# Save fitted values
-glm_fit <- predict(hwy_glm)
+# Fit scaling and centering
+hwy_glm_sca <- train(form = hwy ~ .,
+                     data = data_train,
+                     method = "glm",
+                     trControl = train_control,
+                     preProcess = c('scale', 'center'))
 
-#  Calculate fitting accuracies
-postResample(pred = glm_fit, obs = criterion_train)
+# Get fits
+glm_fit     <- predict(hwy_glm)
+glm_pca_fit <- predict(hwy_glm_pca)
+glm_sca_fit <- predict(hwy_glm_sca)
 
-# Decision Trees ----------------
+# Step 6: Evaluate variable importance -------------
 
-hwy_dt <- train(form = hwy ~ year + cyl + displ,
-                data = data_train,
-                method = "rpart",
-                trControl = train_control,
-                tuneGrid = expand.grid(cp = .01))   # Set complexity parameter
+# Run varImp()
+imp_glm     <- varImp(hwy_glm)
+imp_glm_pca <- varImp(hwy_glm_pca)
+imp_glm_sca <- varImp(hwy_glm_sca)
 
-# Look at summary information
-hwy_dt$finalModel
-plot(as.party(hwy_dt$finalModel))   # Visualise your trees
+# Plot variable importance
+plot(imp_glm)
+plot(imp_glm_pca)
+plot(imp_glm_sca)
 
-# Save fitted values
-dt_fit <- predict(hwy_dt)
+# Step 7: Select variables -------------
 
-# Calculate fitting accuracies
-postResample(pred = dt_fit, obs = criterion_train)
+# Select by hand in formula
+hwy_glm_sel <- train(form = hwy ~ cty,
+                     data = data_train,
+                     method = "glm",
+                     trControl = train_control)
 
-# Random Forests -------------------------
+# Select by hand in data
+hwy_glm_sel <- train(form = hwy ~ cty,
+                     data = data_train %>% 
+                       select(-cyl, -displ, -year),
+                     method = "glm",
+                     trControl = train_control)
 
-hwy_rf <- train(form = hwy ~ year + cyl + displ,
-                data = data_train,
-                method = "rf",
-                trControl = train_control,
-                tuneGrid = expand.grid(mtry = 2))   # Set number of features randomly selected
+# Select by reducing pca criterion ---
 
-# Look at summary information
-hwy_rf$finalModel
+# Reduce criterion to 50% variance epxlained 
+train_control_pca <- trainControl(method = "cv",
+                                  preProcOptions = list(thresh = 0.50)) 
 
-# Save fitted values
-rf_fit <- predict(hwy_rf)
+# Refit model with update
+hwy_glm_sel <- train(form = hwy ~ cty,
+                     data = data_train %>% 
+                       select(-cyl, -displ, -year),
+                     method = "glm",
+                     trControl = train_control_pca,
+                     preProcess = c('pca'))
 
-# Calculate fitting accuracies
-postResample(pred = rf_fit, obs = criterion_train)
+# Step 8: Recursive feature elimination -------------
 
-# Visualise Accuracy -------------------------
+# Feature elimination settings 
+rfe_control <- rfeControl(functions = lmFuncs,  # linear model
+                          method = "cv",
+                          verbose = FALSE)
 
-# Tidy competition results
-accuracy <- tibble(criterion_train = criterion_train,
-                   Regression = glm_fit,
-                   DecisionTrees = dt_fit,
-                   RandomForest = rf_fit) %>%
-               gather(model, prediction, -criterion_train) %>%
-  
-  # Add error measures
-  mutate(se = prediction - criterion_train,
-         ae = abs(prediction - criterion_train))
+# Run feature elimination
+profile <- rfe(x = predictors_train, 
+               y = criterion_train,
+               sizes = c(1, 2, 3),     # Features set sizes should be considered
+               rfeControl = rfe_control)
 
-# Calculate summaries
-accuracy_agg <- accuracy %>%
-                  group_by(model) %>%
-                  summarise(mae = mean(ae))   # Calculate MAE (mean absolute error)
+# plot result
+trellis.par.set(caretTheme())
+plot(profile, type = c("g", "o"))
 
-# Plot A) Scatterplot of truth versus predictions
+# Step 9: Evaluate models -------------
 
-ggplot(data = accuracy,
-       aes(x = criterion_train, y = prediction, col = model)) +
-  geom_point(alpha = .2) +
-  geom_abline(slope = 1, intercept = 0) +
-  labs(title = "Predicting mpg$hwy",
-       subtitle = "Black line indicates perfect performance")
+# you know how...
 
-# Plot B) Violin plot of absolute errors
-
-ggplot(data = accuracy, 
-       aes(x = model, y = ae, fill = model)) + 
-  geom_violin() + 
-  geom_jitter(width = .05, alpha = .2) +
-  labs(title = "Fitting Absolute Errors",
-       subtitle = "Numbers indicate means",
-       x = "Model",
-       y = "Absolute Error") +
-  guides(fill = FALSE) +
-  annotate(geom = "label", 
-           x = accuracy_agg$model, 
-           y = accuracy_agg$mae, 
-           label = round(accuracy_agg$mae, 2))
-
-# Step 5: Access prediction ------------------------------
-
-# Define criterion_train
-criterion_test <- data_test$hwy
-
-# Save predicted values
-glm_pred <- predict(hwy_glm, newdata = data_test)
-dt_pred <- predict(hwy_dt, newdata = data_test)
-rf_pred <- predict(hwy_rf, newdata = data_test)
-
-#  Calculate fitting accuracies
-postResample(pred = glm_pred, obs = criterion_test)
-postResample(pred = dt_pred, obs = criterion_test)
-postResample(pred = rf_pred, obs = criterion_test)
-
-# Visualise Accuracy -------------------------
-
-# Tidy competition results
-accuracy <- tibble(criterion_test = criterion_test,
-                   Regression = glm_pred,
-                   DecisionTrees = dt_pred,
-                   RandomForest = rf_pred) %>%
-               gather(model, prediction, -criterion_test) %>%
-  
-  # Add error measures
-  mutate(se = prediction - criterion_test,
-         ae = abs(prediction - criterion_test))
-
-# Calculate summaries
-accuracy_agg <- accuracy %>%
-                  group_by(model) %>%
-                  summarise(mae = mean(ae))   # Calculate MAE (mean absolute error)
-
-# Plot A) Scatterplot of truth versus predictions
-
-ggplot(data = accuracy,
-       aes(x = criterion_test, y = prediction, col = model)) +
-  geom_point(alpha = .2) +
-  geom_abline(slope = 1, intercept = 0) +
-  labs(title = "Predicting mpg$hwy",
-       subtitle = "Black line indicates perfect performance")
-
-# Plot B) Violin plot of absolute errors
-
-ggplot(data = accuracy, 
-       aes(x = model, y = ae, fill = model)) + 
-  geom_violin() + 
-  geom_jitter(width = .05, alpha = .2) +
-  labs(title = "Prediction Absolute Errors",
-       subtitle = "Numbers indicate means",
-       x = "Model",
-       y = "Absolute Error") +
-  guides(fill = FALSE) +
-  annotate(geom = "label", 
-           x = accuracy_agg$model, 
-           y = accuracy_agg$mae, 
-           label = round(accuracy_agg$mae, 2))
 ```
 
 # Tasks
 
 ## A - Setup
 
-1. Open your `BaselRBootcamp` R project. It should already have the folders `1_Data` and `2_Code`. Make sure that the data file(s) listed in the `Datasets` section above are in your `1_Data` folder
+1. Open your `BaselRBootcamp` R project. It should already have the folders `1_Data` and `2_Code`. Make sure that the data file(s) listed in the `Datasets` section above are in your `1_Data` folder.
 
-2. Open a new R script. At the top of the script, using comments, write your name and the date. Save it as a new file called `Fitting_practical.R` in the `2_Code` folder.  
+2. Open a new R script. At the top of the script, using comments, write your name and the date. Save it as a new file called `Features_practical.R` in the `2_Code` folder.  
 
 3. Using `library()` load the set of packages for this practical listed in the packages section above.
 
@@ -326,8 +276,6 @@ ggplot(data = accuracy,
 
 library(tidyverse)
 library(caret)
-library(party)
-library(partykit)
 ```
 
 ```{r, message = FALSE, warning = FALSE, echo = FALSE, eval = TRUE}
