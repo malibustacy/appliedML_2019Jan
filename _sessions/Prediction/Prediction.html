@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Model Prediction</title>
+    <title>Prediction</title>
     <meta charset="utf-8">
     <meta name="author" content="Applied Machine Learning with R www.therbootcamp.com @therbootcamp" />
     <link href="libs/remark-css/default.css" rel="stylesheet" />
@@ -11,7 +11,7 @@
     <textarea id="source">
 class: center, middle, inverse, title-slide
 
-# Model Prediction
+# Prediction
 ## With Regression, Decision Trees, and Random Forests
 ### Applied Machine Learning with R<br/><a href='https://therbootcamp.github.io'>www.therbootcamp.com</a><br/><a href='https://twitter.com/therbootcamp'><span class="citation">@therbootcamp</span></a>
 ### January 2019
@@ -37,25 +37,26 @@ class: center, middle
 
 
 
-
 ---
-class: middle, center
-
- ## "Prediction is very difficult, especially if it's about the future."
- ## ~  Nils Bohr, Nobel Laureate in Physics
-
----
-class: middle, center
-
- ## "An economist is an expert who will know tomorrow why the things he predicted yesterday didn't happen today. "
- ## ~ Evan Esar
-
----
-class: middle, center
 
 
- ## "Forecasting is the art of saying what will happen, and then explaining why it didn't!"
- ## ~ Anonymous
+## Prediction...
+&lt;br&gt;
+&lt;i&gt;"Prediction is very difficult, especially if it's about the future."&lt;/i&gt;
+
+Nils Bohr, Nobel Laureate in Physics
+
+&lt;br&gt;
+
+&lt;i&gt;"An economist is an expert who will know tomorrow why the things he predicted yesterday didn't happen today."&lt;/i&gt;
+
+Evan Esar
+
+&lt;br&gt;
+
+&lt;i&gt;"Forecasting [prediction] is the art of saying what will happen, and then explaining why it didn't!"&lt;/i&gt;
+
+Anonymous
 
 ---
 
@@ -70,9 +71,9 @@ class: middle, center
 
 .pull-left45[
 
-# What is model Testing?
+# What is model prediction?
 
-Model testing is the process of accessing a model's predictions on *new, unseen* data.
+Model prediction (aka, testing) is the process of accessing a model's predictions on *new, unseen* data.
 
 
 
@@ -113,44 +114,43 @@ Model testing is the process of accessing a model's predictions on *new, unseen*
 ]
 
 ---
-&lt;br&gt;&lt;br&gt;
-&lt;font size = 6&gt;"Can you come up with a model that will perfectly match past data but is worthless in predicting future data?"&lt;/font&gt;&lt;br&gt;&lt;br&gt;
+&lt;br&gt;&lt;br&gt;&lt;br&gt;
+&lt;font size = 6&gt;"Can you come up with a model that will perfectly fit the training criterion but is worthless in predicting test data?"&lt;/font&gt;&lt;br&gt;&lt;br&gt;
 
 
 .pull-left45[
 
 &lt;br&gt;
-&lt;font size=5&gt;&lt;hfont&gt;Past &lt;high&gt;Training&lt;/high&gt; Data&lt;/hfont&gt;&lt;/font&gt;
+&lt;font size=5&gt;&lt;high&gt;Training&lt;/high&gt; Data&lt;/font&gt;
 
 &lt;br&gt;
 
 
-| id|sex | age|fam_history |smoking | disease|
-|--:|:---|---:|:-----------|:-------|-------:|
-|  1|m   |  45|No          |FALSE   |       0|
-|  2|m   |  43|Yes         |FALSE   |       1|
-|  3|f   |  40|Yes         |FALSE   |       1|
-|  4|m   |  51|Yes         |FALSE   |       1|
-|  5|m   |  44|No          |TRUE    |       0|
+| id|sex | age|fam_history |smoking | criterion|
+|--:|:---|---:|:-----------|:-------|---------:|
+|  1|m   |  45|No          |FALSE   |         0|
+|  2|m   |  43|Yes         |FALSE   |         1|
+|  3|f   |  40|Yes         |FALSE   |         1|
+|  4|m   |  51|Yes         |FALSE   |         1|
+|  5|m   |  44|No          |TRUE    |         0|
 
 ]
-
 
 .pull-right45[
 
 &lt;br&gt;
-&lt;font size=5&gt;&lt;hfont&gt;Future &lt;high&gt; Test&lt;/high&gt; Data&lt;/hfont&gt;&lt;/font&gt;
+&lt;font size=5&gt;&lt;high&gt; Test&lt;/high&gt; Data&lt;/font&gt;
 
 &lt;br&gt;
 
 
-| id|sex | age|fam_history |smoking |disease |
-|--:|:---|---:|:-----------|:-------|:-------|
-| 91|m   |  51|Yes         |TRUE    |?       |
-| 92|f   |  47|No          |TRUE    |?       |
-| 93|m   |  39|No          |TRUE    |?       |
-| 94|f   |  51|Yes         |TRUE    |?       |
-| 95|f   |  50|Yes         |FALSE   |?       |
+| id|sex | age|fam_history |smoking |criterion |
+|--:|:---|---:|:-----------|:-------|:---------|
+| 91|m   |  51|Yes         |TRUE    |?         |
+| 92|f   |  47|No          |TRUE    |?         |
+| 93|m   |  39|No          |TRUE    |?         |
+| 94|f   |  51|Yes         |TRUE    |?         |
+| 95|f   |  50|Yes         |FALSE   |?         |
 
 ]
 
@@ -445,7 +445,7 @@ Random Forests have a &lt;high&gt;diversity parameter&lt;/high&gt; called &lt;hi
 Technically, this controls how many features are randomly considered at each split of the trees
 
 - Small mtry (~ 1) = Diverse Forest
-- Large mtry (&gt; 5) = Simple Trees
+- Large mtry (&gt; 5) = Similar Forest
 
 The "best" value of mtry depends on your dataset!
 
@@ -471,7 +471,7 @@ Random Forests have a &lt;high&gt;diversity parameter&lt;/high&gt; called &lt;hi
 Technically, this controls how many features are randomly considered at each split of the trees
 
 - Small mtry (~ 1) = Diverse Forest
-- Large mtry (&gt; 5) = Simple Trees
+- Large mtry (&gt; 5) = Similar Forest
 
 The "best" value of mtry depends on your dataset!
 
@@ -498,8 +498,6 @@ train(form = income ~ .,
 - `mtry` can also be optimally determined through methods such as &lt;high&gt;cross-validation&lt;/high&gt;, which we will learn later
 
 ]
-
-
 
 ---
 class: center,  middle

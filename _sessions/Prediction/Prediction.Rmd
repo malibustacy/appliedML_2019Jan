@@ -1,5 +1,5 @@
 ---
-title: "Model Prediction"
+title: "Prediction"
 subtitle: "With Regression, Decision Trees, and Random Forests"
 author: "Applied Machine Learning with R<br/><a href='https://therbootcamp.github.io'>www.therbootcamp.com</a><br/><a href='https://twitter.com/therbootcamp'>@therbootcamp</a>"
 date: "January 2019"
@@ -53,14 +53,14 @@ past <- tibble(id = 1:5,
                age = round(rnorm(5, mean = 45, sd = 5), 0),
                fam_history = sample(c("Yes", "No"), size = 5, replace = TRUE),
                smoking = sample(c(TRUE, FALSE), size = 5, replace = TRUE),
-               disease = sample(c(0, 1), size = 5, replace = TRUE))
+               criterion = sample(c(0, 1), size = 5, replace = TRUE))
 
 present <- tibble(id = 91:95,
                   sex = sample(c("m", "f"), size  = 5, replace = TRUE),
                age = round(rnorm(5, mean = 45, sd = 5), 0),
                fam_history = sample(c("Yes", "No"), size = 5, replace = TRUE),
                smoking = sample(c(TRUE, FALSE), size = 5, replace = TRUE),
-               disease = rep("?", 5))
+               criterion = rep("?", 5))
 
 
 ```
@@ -68,25 +68,26 @@ present <- tibble(id = 91:95,
 
 
 
-
 ---
-class: middle, center
-
- ## "Prediction is very difficult, especially if it's about the future."
- ## ~  Nils Bohr, Nobel Laureate in Physics
-
----
-class: middle, center
-
- ## "An economist is an expert who will know tomorrow why the things he predicted yesterday didn't happen today. "
- ## ~ Evan Esar
-
----
-class: middle, center
 
 
- ## "Forecasting is the art of saying what will happen, and then explaining why it didn't!"
- ## ~ Anonymous
+## Prediction...
+<br>
+<i>"Prediction is very difficult, especially if it's about the future."</i>
+
+Nils Bohr, Nobel Laureate in Physics
+
+<br>
+
+<i>"An economist is an expert who will know tomorrow why the things he predicted yesterday didn't happen today."</i>
+
+Evan Esar
+
+<br>
+
+<i>"Forecasting [prediction] is the art of saying what will happen, and then explaining why it didn't!"</i>
+
+Anonymous
 
 ---
 
@@ -100,9 +101,9 @@ knitr::include_graphics("https://cdn-images-1.medium.com/max/1600/1*_QGyIwpgq831
 
 .pull-left45[
 
-# What is model Testing?
+# What is model prediction?
 
-Model testing is the process of accessing a model's predictions on *new, unseen* data.
+Model prediction (aka, testing) is the process of accessing a model's predictions on *new, unseen* data.
 
 
 
@@ -142,14 +143,14 @@ knitr::include_graphics("https://cdn-images-1.medium.com/max/1600/1*_QGyIwpgq831
 ]
 
 ---
-<br><br>
-<font size = 6>"Can you come up with a model that will perfectly match past data but is worthless in predicting future data?"</font><br><br>
+<br><br><br>
+<font size = 6>"Can you come up with a model that will perfectly fit the training criterion but is worthless in predicting test data?"</font><br><br>
 
 
 .pull-left45[
 
 <br>
-<font size=5><hfont>Past <high>Training</high> Data</hfont></font>
+<font size=5><high>Training</high> Data</font>
 
 <br>
 
@@ -159,11 +160,10 @@ knitr::kable(past, format = "markdown")
 
 ]
 
-
 .pull-right45[
 
 <br>
-<font size=5><hfont>Future <high> Test</high> Data</hfont></font>
+<font size=5><high> Test</high> Data</font>
 
 <br>
 
@@ -538,7 +538,7 @@ Random Forests have a <high>diversity parameter</high> called <high>mtry</high>
 Technically, this controls how many features are randomly considered at each split of the trees
 
 - Small mtry (~ 1) = Diverse Forest
-- Large mtry (> 5) = Simple Trees
+- Large mtry (> 5) = Similar Forest
 
 The "best" value of mtry depends on your dataset!
 
@@ -566,7 +566,7 @@ Random Forests have a <high>diversity parameter</high> called <high>mtry</high>
 Technically, this controls how many features are randomly considered at each split of the trees
 
 - Small mtry (~ 1) = Diverse Forest
-- Large mtry (> 5) = Simple Trees
+- Large mtry (> 5) = Similar Forest
 
 The "best" value of mtry depends on your dataset!
 
@@ -592,8 +592,6 @@ train(form = income ~ .,
 - `mtry` can also be optimally determined through methods such as <high>cross-validation</high>, which we will learn later
 
 ]
-
-
 
 ---
 class: center,  middle
