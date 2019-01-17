@@ -14,7 +14,7 @@ pima_diabetes = PimaIndiansDiabetes2 %>%
   as.tibble() %>%
   select(diabetes, names(.))
 
-write.csv(pima_diabetes, '1_Data/pima_diabetes.csv')
+write_csv(pima_diabetes, '1_Data/pima_diabetes.csv')
 
 # ----- prepare violent_crime & murder
 
@@ -76,7 +76,41 @@ write_csv(violent_crime, '1_Data/violent_crime.csv')
 write_csv(nonviolent_crime, '1_Data/nonviolent_crime.csv')
 
 
+# ----- prepare pima_diabetes
 
+require(mlbench)
+data(PimaIndiansDiabetes)
+data(PimaIndiansDiabetes2)
+
+sapply(PimaIndiansDiabetes2,function(x) sum(is.na(x)))
+pima_diabetes = PimaIndiansDiabetes2 %>% 
+  select(-triceps, -insulin) %>%
+  filter(!is.na(glucose),!is.na(pressure),!is.na(mass)) %>%
+  as.tibble() %>%
+  select(diabetes, names(.))
+
+write_csv(pima_diabetes, '1_Data/pima_diabetes.csv')
+
+findCorrelation(cor(pima_diabetes %>% select(-diabetes)))
+nearZeroVar(pima_diabetes)
+
+
+fit = train(diabetes ~ .,
+      data = pima_train,
+      method = 'rf',
+      trControl = trainControl(method = 'cv'),
+      tuneGrid = data.frame(mtry = 2))
+
+varImp(fit, scale = F)
+
+a = randomForest::randomForest(diabetes ~ .,
+                           data = pima_train,ntree=100,
+                           nodesize = 100
+                            )
+dim(a$forest$treemap)
+
+randomForest::getTree(fit)
+randomForest::importance(a,type=2)
 
 
 findCorrelation(cor(pima_diabetes %>% select(-diabetes)))

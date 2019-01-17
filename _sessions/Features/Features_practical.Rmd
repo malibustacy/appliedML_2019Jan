@@ -289,12 +289,14 @@ library(tidyverse)
 pima_diabetes <- read_csv(file = "1_Data/pima_diabetes.csv")
 
 # (Non-) violent crime statistics
-house_train <- read_csv(file = "1_Data/violent_crime.csv")
-house_train <- read_csv(file = "1_Data/nonviolent_crime.csv")
+violent_crime    <- read_csv(file = "1_Data/violent_crime.csv")
+nonviolent_crime <- read_csv(file = "1_Data/nonviolent_crime.csv")
 ```
 
 
 ## B - Pima Indians Diabetes
+
+In this section, you will explore feature selection for the Pima Indians Diabetes data set. The Pima are a group of Native Americans living in Arizona. A genetic predisposition allowed this group to survive normally to a diet poor of carbohydrates for years. In the recent years, because of a sudden shift from traditional agricultural crops to processed foods, together with a decline in physical activity, made them develop the highest prevalence of type 2 diabetes and for this reason they have been subject of many studies. 
 
 1. Take a look at the first few rows of the pima diabetes data frame by printing then to the console.
 
@@ -304,45 +306,173 @@ house_train <- read_csv(file = "1_Data/nonviolent_crime.csv")
 
 4. Open the dataset in a new window using `View()`. Do they look ok?
 
-## Splitting
+### Splitting
 
-1. As always, before you do anything you need to make sure that you separate a hold-out data set for later. Create `pima_train` and `pima_test` using `createDataPartition()` with 80% of cases going into the training set. The criterion is `diabetes`. 
+5. As always, before you do anything you need to make sure that you separate a hold-out data set for later. Create `pima_train` and `pima_test` using `createDataPartition()` with as little as <b>15% of cases going into the training set</b>. Also store the variable `diabetes` in the test set, which will be the criterion . 
 
 ```{r, echo = TRUE}
-train_index <- createDataPartition(XX$XX, p = .8, list = FALSE)
+# split index
+train_index <- createDataPartition(XX$XX, p = .15, list = FALSE)
+
+# train and test sets
 pima_train <- XX %>% slice(train_index)
 pima_test  <- XX %>% slice(-train_index)
+
+# test criterion
+criterion <- pima_test$XX
 ```
 
-## Remove unwanted features
+```{r}
+# split index
+train_index <- createDataPartition(pima_diabetes$diabetes, p = .15, list = FALSE)
 
-Ok, now that we have a training set, let's get to work and remove some features.
+# train and test sets
+pima_train <- pima_diabetes %>% slice(train_index)
+pima_test  <- pima_diabetes %>% slice(-train_index)
 
-1. First split the training data into a data frame holding the predictors and the criterion using the code below.
+# test criterion
+criterion <- pima_test$diabetes
+```
+
+### Remove unwanted features
+
+Ok, with the training set, let's get to work and remove some features.
+
+6. First split the training data into a data frame holding the predictors and the criterion using the code below.
 
 ```{r, echo = TRUE}
 # Select predictors
 pima_train_pred <- pima_train %>% select(-diabetes)
-pima_train_crit <- pima_train %>% select(diabetes) %>% pull()
 
+# Select criterion
+pima_train_crit <- pima_train %>% select(diabetes) %>% pull()
 ```
 
-
-1. Although, this dataset is rather small and rather well curated, test if there are any excessively correlated features using `cor()` and `findCorrelation()` using the code below. 
+7. Although, this dataset is rather small and rather well curated, test if there are any excessively correlated features using `cor()` and `findCorrelation()` using the code below. Are there any?
 
 ```{r, echo = TRUE}
-# Get predictors
-predictors <- 
-
 # determine correlation matrix
-corr_matrix <- cor(XX_predictors)
+corr_matrix <- cor(XX_pred)
 
 # find excessively correlated variables
 findCorrelation(corr_matrix)
-
 ```
 
-# College Graduation Rates
+```{r}
+# determine correlation matrix
+corr_matrix <- cor(pima_train_pred)
+
+# find excessively correlated variables
+findCorrelation(corr_matrix)
+```
+
+8. Now, test if there are any near-zero variance predictors. Any of those?
+
+```{r, echo = TRUE}
+# find near zero variance predictors
+nearZeroVar(XX_pred)
+```
+
+```{r}
+# find near zero variance predictors
+nearZeroVar(pima_train_pred)
+```
+
+## Feature importance
+
+After having retained all features in the previous section section, this section explores feature selection on grounds of feature importance. To do this, we first need to fit our model. How about a simple logistic gression aka `method = 'glm'`? 
+
+9. Fit the `glm` to the training data.
+
+```{r, echo = TRUE}
+# fit random forest
+pima_glm <- train(diabetes ~ .,
+                data = XX,
+                method = XX
+                )
+```
+
+```{r}
+# fit random forest
+pima_glm <- train(diabetes ~ .,
+                data = pima_train,
+                method = 'glm')
+```
+
+10. Evaluate the results s
+
+```{r, echo = TRUE}
+# determine variable importance
+varimp_glm <- varImp(XX)
+
+# print variable importance
+varimp_glm
+
+# print variable importance
+plot(varimp_glm)
+```
+
+```{r}
+# determine variable importance
+varimp_glm <- varImp(pima_glm)
+
+# print variable importance
+varimp_glm
+
+# print variable importance
+plot(varimp_glm)
+```
+
+
+```{r, echo = TRUE}
+# fit glm with best four features
+pima_glm4 = train(diabetes ~ XX + YY + ZZ + AA,
+                data = XX,
+                method = XX)
+```
+
+```{r}
+# fit glm with best four features
+pima_glm4 = train(diabetes ~ glucose + mass + pregnant + pedigree,
+                data = pima_train,
+                method = 'glm')
+```
+
+
+```{r, echo = TRUE}
+# fit random forest
+pima_glm_pred <- predict(pima_glm, newdata = pima_test)
+pima_glm4_pred <- predict(pima_glm4, newdata = pima_test)
+
+confusionMatrix(pima_glm_pred, criterion)
+confusionMatrix(pima_glm4_pred, criterion)
+```
+
+
+
+```{r}
+# fit random forest
+pima_rf = rfe(x = diabetes ~ glucose + mass + age + pedigree,
+                data = pima_train,
+                trControl = trainControl(method = 'cv'),
+                tuneGrid = data.frame(mtry = 3)
+                )
+```
+
+
+
+
+
+9. Calculate feature importance using `varImp()`. See below.
+
+```{r, echo = TRUE}
+# determine feature importance
+nearZeroVar(XX_pred)
+```
+
+
+
+
 
 In this section, we will again predict college graduation rates `Grad_Rate` from the `college_train` and `college_test` datasets. Here's how the first few rows of `college_train` should look:
 
