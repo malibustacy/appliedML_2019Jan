@@ -817,8 +817,8 @@ You can access the model with `mod$finalModel`, and explore the object with gene
 
 ```r
 # Create a regression object
-mod &lt;- train(form = income ~ age + height + fitness,  # Formula
-             data = baselers,       # Training data
+mod &lt;- train(form = income ~ age + height + fitness,
+             data = baselers,   # Training data
              method = "glm",    # Regression
              trControl = ctrl)  # Control Parameters
 

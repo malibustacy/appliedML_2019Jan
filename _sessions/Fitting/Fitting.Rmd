@@ -945,8 +945,8 @@ You can access the model with `mod$finalModel`, and explore the object with gene
 
 ```{r, eval = FALSE, echo = TRUE}
 # Create a regression object
-mod <- train(form = income ~ age + height + fitness,  # Formula
-             data = baselers,       # Training data
+mod <- train(form = income ~ age + height + fitness,
+             data = baselers,   # Training data
              method = "glm",    # Regression
              trControl = ctrl)  # Control Parameters
 
