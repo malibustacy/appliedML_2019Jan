@@ -1050,7 +1050,7 @@ x <- postResample(pred = glm_fits,
                  obs = baselers$income)
 ```
 
-Thistells us that the Mean Absolute Error (MAE) of the model in fitting was `r round(x[3], 2)`
+This tells us that the Mean Absolute Error (MAE) of the model in fitting was `r round(x[3], 2)`
 
 ]
 
