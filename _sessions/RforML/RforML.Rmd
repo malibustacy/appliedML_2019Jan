@@ -293,6 +293,37 @@ mean(x = c(1, 2, 3, NA), na.rm = TRUE)
 1. Everything is an object
 2. <mono><-</mono> creates/changes objects
 3. Everything happens through functions
+4. <high>Functions have (default) arguments</high>
+5. Find help with <mono>?</mono>
+6. Data lives in data frames
+7. 3 data types + factors
+8. `formula` and `data` specify a model 
+9. Use RStudio and projects
+10. Use editor, shortcuts, auto-complete
+]
+
+.pull-right5[
+```{r}
+# mean with pipe %>%
+c(1, 2, 3) %>% mean()
+
+# mean with pipe %>% and NA
+c(1, 2, 3, NA) %>% mean()
+
+# changing default to handle NA
+c(1, 2, 3, NA) %>% mean(na.rm = TRUE)
+
+```
+]
+
+---
+
+# Essentials: 10 basic R lessons 
+
+.pull-left4[
+1. Everything is an object
+2. <mono><-</mono> creates/changes objects
+3. Everything happens through functions
 4. Functions have (default) arguments
 5. <high>Find help with <mono>?</mono></high>
 6. Data lives in data frames
@@ -432,7 +463,12 @@ options(max.print=8,width=48)
 # select sex veriable using $
 baselers$sex
 
-# Wherever possible, AVOID...
+# select sex veriable using %>% select
+baselers %>% select(sex) %>% pull()
+```
+
+```{r, eval = F}
+# Possible, but less pretty...
 baselers[['sex']]
 baselers[[2]]
 ```

@@ -44,6 +44,7 @@ bas <- bas %>%
   sample_n(1000)
 
 bas <- bas %>% select_if(is.numeric)
+baselers = bas
 
 fitControl_cv <- trainControl(
   method = "repeatedcv",
@@ -301,160 +302,171 @@ plot(varImp(model, scale=F),col='#EA4B68',cex=1.3,scales = list(cex=1.3,lineheig
 
 ---
 
-# Other feature problems
+# Other, easy feature problems
 
 .pull-left45[
 
 ### Multi-collinearity
 
-Multi-collinearity, high features correlations, 
-
-]
-
-.pull-right45[
-
-### Low variance 
-
-]
-
-
----
-
-# Correlated features
-
-.pull-left45[
-
-The go-to algorithm for dimensionality is <high>principal component analysis</high> (PCA). 
-
-PCA is an <high>unsupervised</high>, <high>regression-based</high> algorithm that re-represents the data in a <high>new feature space</high>.  
-
-The new features aka <high>principal components are greedy</high> in that they attempt to explain as much variance as they can leaving as little as possible to other components.
-
-<high>Skimming the best components off the top</high> results in a small number of features that <high>preserve the original features as well as possible</high>.
-
-]
-
-
-
----
-
-# Human insight
-
-.pull-left45[
-
-The go-to algorithm for dimensionality is <high>principal component analysis</high> (PCA). 
-
-PCA is an <high>unsupervised</high>, <high>regression-based</high> algorithm that re-represents the data in a <high>new feature space</high>.  
-
-The new features aka <high>principal components are greedy</high> in that they attempt to explain as much variance as they can leaving as little as possible to other components.
-
-<high>Skimming the best components off the top</high> results in a small number of features that <high>preserve the original features as well as possible</high>.
-
-]
-
-
-
-
----
-
-# Problems
-
-Too many features -> curse of dimensionality
-
-Wrong features 
-  in face of truth -> feature generation
-  in face of data -> reverse engineering (black vs. white box)
-
-Psychology
-  
-
-.pull-left4[
-
-#  
-
-]
-
-.pull-right6[
-
-]
-
----
-
-.pull-left5[
-
-# Feature importance
-
-Regardless of the model you use, you will often want to know <high>which features are important</high> in predicting the criterion.
-
-Often displayed on a *relative* scale from 0 to 100
-
-Every model has their own definition of importance (see [the caret documentation](http://topepo.github.io/caret/variable-importance.html) for details).
-
-Different models can give you different importance rankings
-
-```{r, echo = FALSE, out.width = "40%"}
-knitr::include_graphics("http://worldartsme.com/images/scale-clipart-1.jpg")
-```
-
-
-]
-
-.pull-right45[
-
-### Variable importance plot
-
-Here's an example variable importance plot from R
-
-```{r, echo = FALSE, out.width = "100%"}
-knitr::include_graphics("http://mgel2011-kvm.env.duke.edu/mget/files/2012/07/RandomForestImportance.png")
-```
-
-]
-
----
-
-.pull-left5[
-
-## `varImp()`
-
-
-Use `varImp()` to extract <high>variable importance</high> from a model
-
+Multi-collinearity, <high>high feature correlations</high>, mean that there is redundancy in the data, which can lead to <high>less stable fits</high>, <high>uninterpretable variable importances</high>, and <high>worse predictions</high>.
 
 ```{r}
-# Get veriable importance from glm_train
-# varImp(glm_train)
-```    
-    
-  
+# identify redundant variables
+findCorrelation(cor(baselers))
+
+# remove from data
+remove <- findCorrelation(cor(baselers))
+baselers <- baselers %>%
+  select(-remove)
+
+```
+
 ]
 
 .pull-right45[
-<br><br><br>
-You can also plot the results using `plot()`
 
-```{r, fig.width = 3, fig.height = 5, out.width = "50%"}
-# Plot variable importance
+### Unequal & low variance 
 
-# plot(varImp(glm_train))
+Unequal variance <high>breaks regularization</high> (L1, L2) and renders estimates difficult to interpret.
+
+```{r, eval = F}
+# standardize and center variables
+train(..., preProc("center", "scale"))
 ```
 
+Low variance variables add parameters, but <high>can hardly contribute to prediction</high> and are, thus, also redundant.
+
+```{r}
+# identify low variance variables
+nearZeroVar(baselers)
+```
 
 ]
 
 
 ---
 
-.pull-left4[
+# Difficult feature problems
 
-# Neural Networks
+<br>
+.pull-left25[
 
-- Regularisation
-- Complexity
+<i>A</i> <high>Trivial features</high> 
+
+Successful prediction not necessarily implies that a meaningful pattern has been detected.
+
+<br>
+<i>B</i> <high>Missing features</high>
+
+Some problems are hard, requiring the engineering of new features. 
+
+]
+
+
+.pull-right65[
+<br>
+<p align="center">
+  <img src="image/here_to_help.png">
+</p>
+
+]
+
+---
+
+# Trivial features
+
+.pull-left3[
+
+<u><a href="https://www.gwern.net/Tanks">An urban myth?!</a></u>
+
+"The Army trained a program to differentiate American tanks from Russian tanks with 100% accuracy. Only later did analysts realized that the American tanks had been photographed on a sunny day and the Russian tanks had been photographed on a cloudy day. The computer had learned to detect brightness."<br><br>
+New York Times <a href="https://www.nytimes.com/2017/10/09/science/stanford-sexual-orientation-study.html" style="font-size:8px">[Full text]</a>
 
 ]
 
 .pull-right6[
 
+<p align="center">
+  <img src="image/tank.jpg">
+</p>
+
 ]
+
+
+---
+
+# Trivial features
+
+
+In 2012, Nate Silver was praised to have correctly predicted the outcomes of the presidential election in 50 states after having correctly predicted 49 states in 2009. <high>But how much of a challenge was that?</high>
+
+.pull-left5[
+
+<p align="center">
+  <img src="image/elect2008.png" height = 380px>
+</p>
+
+]
+
+.pull-right5[
+
+<p align="center">
+  <img src="image/elect2012.png" height = 380px>
+</p>
+
+]
+
+---
+
+# (Always!) missing features
+
+<high>Feature Engineering</high>
+
+<i>"…some machine learning projects succeed and some fail. What makes the difference? Easily the most important factor is the features used."</i>
+
+Pedro Domingos
+
+<i>"The algorithms we used are very standard for Kagglers. […] We spent most of our efforts in feature engineering. [...] We were also very careful to discard features likely to expose us to the risk of over-fitting our model."</i>
+
+Xavier Conort
+
+<i>"Coming up with features is difficult, time-consuming, requires expert knowledge. "Applied machine learning" is basically feature engineering."</i>
+
+Andrew Ng
+
+---
+
+# Feature engineering
+
+.pull-left45[
+
+<i>“Feature engineering is the process of <high>transforming raw data</high> into features that <high>better represent the underlying problem</high> to the predictive models, resulting in improved model accuracy on unseen data.”</i>
+
+Jason Brownlee
+
+<i>"...while avoiding the <high>curse of dimensionality</high>."</i>
+
+duw
+
+<u>Feature engineering involves</u>
+
+- <high>Transformations</high>
+- <high>Interactions</high>
+- <high>New features</high>
+
+]
+
+.pull-right45[
+
+<p align="center">
+  <img src="image/albert.jpeg" >
+</p>
+
+]
+
+---
+
+class: middle, center
+
+<h1><a href=https://therbootcamp.github.io/appliedML_2019Jan/_sessions/Features/Features_practical.html>Practical</a></h1>
 

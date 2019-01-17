@@ -336,6 +336,53 @@ mean(x = c(1, 2, 3, NA), na.rm = TRUE)
 1. Everything is an object
 2. &lt;mono&gt;&lt;-&lt;/mono&gt; creates/changes objects
 3. Everything happens through functions
+4. &lt;high&gt;Functions have (default) arguments&lt;/high&gt;
+5. Find help with &lt;mono&gt;?&lt;/mono&gt;
+6. Data lives in data frames
+7. 3 data types + factors
+8. `formula` and `data` specify a model 
+9. Use RStudio and projects
+10. Use editor, shortcuts, auto-complete
+]
+
+.pull-right5[
+
+```r
+# mean with pipe %&gt;%
+c(1, 2, 3) %&gt;% mean()
+```
+
+```
+## [1] 2
+```
+
+```r
+# mean with pipe %&gt;% and NA
+c(1, 2, 3, NA) %&gt;% mean()
+```
+
+```
+## [1] NA
+```
+
+```r
+# changing default to handle NA
+c(1, 2, 3, NA) %&gt;% mean(na.rm = TRUE)
+```
+
+```
+## [1] 2
+```
+]
+
+---
+
+# Essentials: 10 basic R lessons 
+
+.pull-left4[
+1. Everything is an object
+2. &lt;mono&gt;&lt;-&lt;/mono&gt; creates/changes objects
+3. Everything happens through functions
 4. Functions have (default) arguments
 5. &lt;high&gt;Find help with &lt;mono&gt;?&lt;/mono&gt;&lt;/high&gt;
 6. Data lives in data frames
@@ -500,8 +547,8 @@ baselers$sex
 ```
 
 ```r
-# Wherever possible, AVOID...
-baselers[['sex']]
+# select sex veriable using %&gt;% select
+baselers %&gt;% select(sex) %&gt;% pull()
 ```
 
 ```
@@ -509,15 +556,12 @@ baselers[['sex']]
 ## [6] "male"   "male"   "female"
 ##  [ reached getOption("max.print") -- omitted 9992 entries ]
 ```
+
 
 ```r
+# Possible, but less pretty...
+baselers[['sex']]
 baselers[[2]]
-```
-
-```
-## [1] "male"   "male"   "female" "male"   "male"  
-## [6] "male"   "male"   "female"
-##  [ reached getOption("max.print") -- omitted 9992 entries ]
 ```
 
 
