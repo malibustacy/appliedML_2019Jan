@@ -12,7 +12,7 @@ knitr::opts_chunk$set(comment = NA,
                       fig.width = 6, 
                       fig.height = 6,
                       fig.align = 'center',
-                      echo = TRUE, 
+                      echo = FALSE, 
                       eval = FALSE, 
                       warning = FALSE,
                       message = FALSE)
@@ -282,42 +282,64 @@ library(caret)
 library(tidyverse)
 ```
 
-4. In the code below, we will load each of the datasets listed in the `Datasets` as new objects
+4. In the code below, we will load each of the datasets listed in the `Datasets` as new objects.
 
 ```{r, echo = TRUE, eval = FALSE, message = FALSE, warning = FALSE}
-# College data
-college_train <- read_csv(file = "1_Data/college_train.csv")
-college_test <- read_csv(file = "1_Data/college_train.csv")
+# Pimo Indians diabetes
+pima_diabetes <- read_csv(file = "1_Data/pima_diabetes.csv")
 
-# House data
-house_train <- read_csv(file = "1_Data/house_train.csv")
-house_train <- read_csv(file = "1_Data/house_test.csv")
+# (Non-) violent crime statistics
+house_train <- read_csv(file = "1_Data/violent_crime.csv")
+house_train <- read_csv(file = "1_Data/nonviolent_crime.csv")
 ```
 
-5. Take a look at the first few rows of each dataframe by printing then to the console.
 
-6. Print the numbers of rows and columns of each dataset using the `dim()` function
+## B - Pima Indians Diabetes
 
-7. Look at the names of the dataframe with the `names()` function.
+1. Take a look at the first few rows of the pima diabetes data frame by printing then to the console.
 
-8. Open the dataset in a new window using `View()`. Do they look ok?
+2. Print the numbers of rows and columns of each dataset using the `dim()` function.
 
-9. We need to do a little bit of data cleaning before starting. Specifically, we need to convert all columns to factors: Do this by running the following code:
+3. Look at the names of the dataframe with the `names()` function.
 
-```{r}
-# Convert all character columns to factor
+4. Open the dataset in a new window using `View()`. Do they look ok?
 
-college_train <- college_train %>%
-          mutate_if(is.character, factor)
+## Splitting
 
-college_test <- college_test %>%
-          mutate_if(is.character, factor)
+1. As always, before you do anything you need to make sure that you separate a hold-out data set for later. Create `pima_train` and `pima_test` using `createDataPartition()` with 80% of cases going into the training set. The criterion is `diabetes`. 
 
-house_train <- house_train %>%
-          mutate_if(is.character, factor)
+```{r, echo = TRUE}
+train_index <- createDataPartition(XX$XX, p = .8, list = FALSE)
+pima_train <- XX %>% slice(train_index)
+pima_test  <- XX %>% slice(-train_index)
+```
 
-house_test <- house_test %>%
-          mutate_if(is.character, factor)
+## Remove unwanted features
+
+Ok, now that we have a training set, let's get to work and remove some features.
+
+1. First split the training data into a data frame holding the predictors and the criterion using the code below.
+
+```{r, echo = TRUE}
+# Select predictors
+pima_train_pred <- pima_train %>% select(-diabetes)
+pima_train_crit <- pima_train %>% select(diabetes) %>% pull()
+
+```
+
+
+1. Although, this dataset is rather small and rather well curated, test if there are any excessively correlated features using `cor()` and `findCorrelation()` using the code below. 
+
+```{r, echo = TRUE}
+# Get predictors
+predictors <- 
+
+# determine correlation matrix
+corr_matrix <- cor(XX_predictors)
+
+# find excessively correlated variables
+findCorrelation(corr_matrix)
+
 ```
 
 # College Graduation Rates
