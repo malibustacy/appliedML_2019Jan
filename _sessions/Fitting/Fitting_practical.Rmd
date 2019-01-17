@@ -323,7 +323,7 @@ postResample(pred = glm_fit,   # Fitted values
              obs = criterion)  # criterion values
 ```
 
-3. You'll see three values here, the easiest to understand is MAE which stands for "Mean Absolute Error" -- in other words, "oh average how far are the predictions from the true values?". A value of 0 means perfect prediction, so small values are good! How do you interpret these results?
+3. You'll see three values here, the easiest to understand is MAE which stands for "Mean Absolute Error" -- in other words, "on average how far are the predictions from the true values?" A value of 0 means perfect prediction, so small values are good! How do you interpret these results?
 
 4. Now we're ready to do some plotting. But first, we need to re-organise the data a bit. We'll create two dataframes
   - `accuracy`: Raw absolute errors
