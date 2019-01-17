@@ -772,8 +772,8 @@ Regression: `method = "glm"`
 ```{r, echo = TRUE, out.width = "90%", eval = TRUE, warning = FALSE}
 # Fit a regression model predicting Price
 
-mod <- train(form = income ~ .,  # Formula
-             data = baselers,       # Training data
+mod <- train(form = income ~ ., # Formula
+             data = baselers,   # Training data
              method = "glm",    # Regression
              trControl = ctrl)  # Control Parameters
 ```
@@ -930,7 +930,7 @@ mod <- train(form = factor(Default) ~ .,
 
 The `train()` function returns a list with a key object called `finalModel` - this is your final machine learning model!
 
-You can access the model with `mod$finalModel`, you can explore the object with generic functions:
+You can access the model with `mod$finalModel`, and explore the object with generic functions:
 
 
 |Function|Description
@@ -945,8 +945,8 @@ You can access the model with `mod$finalModel`, you can explore the object with 
 
 ```{r, eval = FALSE, echo = TRUE}
 # Create a regression object
-mod <- train(form = income ~ age + height + fitness,  # Formula
-             data = baselers,       # Training data
+mod <- train(form = income ~ age + height + fitness,
+             data = baselers,   # Training data
              method = "glm",    # Regression
              trControl = ctrl)  # Control Parameters
 
@@ -1050,7 +1050,7 @@ x <- postResample(pred = glm_fits,
                  obs = baselers$income)
 ```
 
-Thistells us that the Mean Absolute Error (MAE) of the model in fitting was `r round(x[3], 2)`
+This tells us that the Mean Absolute Error (MAE) of the model in fitting was `r round(x[3], 2)`
 
 ]
 
