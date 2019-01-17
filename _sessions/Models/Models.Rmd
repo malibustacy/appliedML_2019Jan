@@ -1,5 +1,5 @@
 ---
-title: "Parameter Tuning"
+title: "Features"
 author: "Applied Machine Learning with R<br/><a href='https://therbootcamp.github.io'>www.therbootcamp.com</a><br/><a href='https://twitter.com/therbootcamp'>@therbootcamp</a>"
 date: "January 2019"
 output:
@@ -25,7 +25,7 @@ layout: true
 
 ```{r, eval = TRUE, echo = FALSE, warning=F,message=F}
 # Code to knit slides
-baselers <- readr::read_csv("../_data/baselers.csv")
+#baselers <- readr::read_csv("../_data/baselers.csv")
 ```
 
 
@@ -47,6 +47,31 @@ library(tidyverse)
 library(baselers)
 library(ggthemes)
 ```
+
+Supervised learning
+
+Regularization
+  automatic feature selection
+
+Kernel trick
+
+Ensembles
+  Bagging
+  Ensemble
+  Boosting
+
+Feature generation
+  Random Forest
+  Neural networks
+  CNN
+
+Unspervised learning
+
+  kernel trick
+
+  k-means
+  SVD
+  PCA
 
 
 .pull-left4[
