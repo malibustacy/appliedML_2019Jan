@@ -72,8 +72,8 @@ sel = sample(1994,1000)
 violent_crime = violent_crime %>% slice(sel)
 nonviolent_crime = nonviolent_crime %>% slice(sel)
 
-write.csv(violent_crime, '1_Data/violent_crime.csv')
-write.csv(nonviolent_crime, '1_Data/nonviolent_crime.csv')
+write_csv(violent_crime, '1_Data/violent_crime.csv')
+write_csv(nonviolent_crime, '1_Data/nonviolent_crime.csv')
 
 
 
