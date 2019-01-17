@@ -930,7 +930,7 @@ mod <- train(form = factor(Default) ~ .,
 
 The `train()` function returns a list with a key object called `finalModel` - this is your final machine learning model!
 
-You can access the model with `mod$finalModel`, you can explore the object with generic functions:
+You can access the model with `mod$finalModel`, and explore the object with generic functions:
 
 
 |Function|Description
