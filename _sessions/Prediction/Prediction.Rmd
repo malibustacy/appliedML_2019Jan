@@ -53,14 +53,14 @@ past <- tibble(id = 1:5,
                age = round(rnorm(5, mean = 45, sd = 5), 0),
                fam_history = sample(c("Yes", "No"), size = 5, replace = TRUE),
                smoking = sample(c(TRUE, FALSE), size = 5, replace = TRUE),
-               disease = sample(c(0, 1), size = 5, replace = TRUE))
+               criterion = sample(c(0, 1), size = 5, replace = TRUE))
 
 present <- tibble(id = 91:95,
                   sex = sample(c("m", "f"), size  = 5, replace = TRUE),
                age = round(rnorm(5, mean = 45, sd = 5), 0),
                fam_history = sample(c("Yes", "No"), size = 5, replace = TRUE),
                smoking = sample(c(TRUE, FALSE), size = 5, replace = TRUE),
-               disease = rep("?", 5))
+               criterion = rep("?", 5))
 
 
 ```
@@ -143,14 +143,14 @@ knitr::include_graphics("https://cdn-images-1.medium.com/max/1600/1*_QGyIwpgq831
 ]
 
 ---
-<br><br>
-<font size = 6>"Can you come up with a model that will perfectly match past data but is worthless in predicting future data?"</font><br><br>
+<br><br><br>
+<font size = 6>"Can you come up with a model that will perfectly fit the training criterion but is worthless in predicting test data?"</font><br><br>
 
 
 .pull-left45[
 
 <br>
-<font size=5><hfont>Past <high>Training</high> Data</hfont></font>
+<font size=5><high>Training</high> Data</font>
 
 <br>
 
@@ -160,11 +160,10 @@ knitr::kable(past, format = "markdown")
 
 ]
 
-
 .pull-right45[
 
 <br>
-<font size=5><hfont>Future <high> Test</high> Data</hfont></font>
+<font size=5><high> Test</high> Data</font>
 
 <br>
 
