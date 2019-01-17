@@ -242,7 +242,7 @@ names(college_train)
 View(college_train)
 ```
 
-9. We need to do a little bit of data cleaning before starting. Specifically, we need to convert all columns to factors: Do this by running the following code:
+9. We need to do a little bit of data cleaning before starting. Specifically, we need to convert all character columns to factors: Do this by running the following code:
 
 ```{r}
 # Convert character to factor and remove college_name
