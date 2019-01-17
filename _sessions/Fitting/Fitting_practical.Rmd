@@ -277,6 +277,7 @@ Grad_Rate_glm <- train(form = Grad_Rate ~ PhD,
                        trControl = ctrl_none)
 ```
 
+
 2. Explore the model using the `summary()` function.
 
 ```{r}
@@ -401,9 +402,9 @@ So far we have only used one feature (`PhD`), to predict `Grad_Rate`. Let's try 
 
 3. What is the Mean Absolute Error (MAE) of your new model that uses 4 features? How does this compare to your previous model that only used 1 feature?
 
-4. Create a scatterplot showing the relationship between your new model fits and the true values. How does this plot compare to your previous one?
+4 (Optional). Create a scatterplot showing the relationship between your new model fits and the true values. How does this plot compare to your previous one?
 
-5. Create a violin plot showing the distribution of absolute errors. How does this compare to your previous one?
+5 (Optional). Create a violin plot showing the distribution of absolute errors. How does this compare to your previous one?
 
 ## F - Use (almost) all features
 
@@ -424,9 +425,9 @@ Grad_Rate_glm <- train(form = Grad_Rate ~ . - XXX,   # Get rid of that one featu
 
 4. What is the Mean Absolute Error (MAE) of your new model that uses 6 features? How does this compare to your previous model that only used 1 feature?
 
-5. Create a scatterplot showing the relationship between your new model fits and the true values. How does this plot compare to your previous one?
+5 (Optional). Create a scatterplot showing the relationship between your new model fits and the true values. How does this plot compare to your previous one?
 
-6. Create a violin plot showing the distribution of absolute errors. How does this compare to your previous one?
+6 (Optional). Create a violin plot showing the distribution of absolute errors. How does this compare to your previous one?
 
 # Classification
 
