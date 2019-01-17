@@ -979,7 +979,7 @@ Source: Medium.com
 </tr>
 <tr class="odd">
 <td align="left"><code>predict(object, newdata)</code></td>
-<td align="left"><code>base</code></td>
+<td align="left"><code>stats</code></td>
 <td align="left">Predict the criterion values of <code>newdata</code> based on <code>object</code></td>
 </tr>
 <tr class="even">
@@ -1238,7 +1238,8 @@ ggplot(data = accuracy,
 <h2>A - Setup</h2>
 <ol style="list-style-type: decimal">
 <li><p>Open your <code>BaselRBootcamp</code> R project. It should already have the folders <code>1_Data</code> and <code>2_Code</code>. Make sure that the data file(s) listed in the <code>Datasets</code> section above are in your <code>1_Data</code> folder</p></li>
-<li><p>Open a new R script. At the top of the script, using comments, write your name and the date. Save it as a new file called <code>Fitting_practical.R</code> in the <code>2_Code</code> folder.</p></li>
+<li>Open a new R script. At the top of the script, using comments, write your name and the date. Save it as a new file called <code>Fitting_practical.R</code> in the <code>2_Code</code> folder.<br />
+</li>
 <li><p>Using <code>library()</code> load the set of packages for this practical listed in the packages section above.</p></li>
 </ol>
 <pre class="r"><code>## NAME
@@ -1258,7 +1259,7 @@ college_test &lt;- read_csv(file = &quot;1_Data/college_train.csv&quot;)
 
 # House data
 house_train &lt;- read_csv(file = &quot;1_Data/house_train.csv&quot;)
-house_train &lt;- read_csv(file = &quot;1_Data/house_test.csv&quot;)</code></pre>
+house_test &lt;- read_csv(file = &quot;1_Data/house_test.csv&quot;)</code></pre>
 <ol start="5" style="list-style-type: decimal">
 <li><p>Take a look at the first few rows of each dataframe by printing then to the console.</p></li>
 <li><p>Print the numbers of rows and columns of each dataset using the <code>dim()</code> function</p></li>
@@ -1293,18 +1294,18 @@ house_test &lt;- house_test %&gt;%
 <th align="right">Enroll</th>
 <th align="right">Top10perc</th>
 <th align="right">Top25perc</th>
-<th align="right">F.Undergrad</th>
-<th align="right">P.Undergrad</th>
+<th align="right">F_Undergrad</th>
+<th align="right">P_Undergrad</th>
 <th align="right">Outstate</th>
-<th align="right">Room.Board</th>
+<th align="right">Room_Board</th>
 <th align="right">Books</th>
 <th align="right">Personal</th>
 <th align="right">PhD</th>
 <th align="right">Terminal</th>
-<th align="right">S.F.Ratio</th>
-<th align="right">perc.alumni</th>
+<th align="right">S_F_Ratio</th>
+<th align="right">perc_alumni</th>
 <th align="right">Expend</th>
-<th align="right">Grad.Rate</th>
+<th align="right">Grad_Rate</th>
 </tr>
 </thead>
 <tbody>
@@ -1514,9 +1515,8 @@ house_test &lt;- house_test %&gt;%
 <h2>Fitting</h2>
 <p>Using the basics steps in the Examples section above, fit each of three models, regression, decision trees, and random forests to the <code>college_train</code> data. your goal is to fit models predicting <code>Grad.Rate</code></p>
 <ol style="list-style-type: decimal">
-<li><p>Look at the <code>college_train</code> dataset and decide which features you think are reasonable to include in a model.</p></li>
-<li><p>Using <code>trainControl()</code>, set your training control method to <code>&quot;none&quot;</code>. Save your object as <code>ctrl_none</code></p></li>
-<li><p>Using <code>train()</code> fit a regression model called <code>grad_glm</code> predicting <code>Grad.Rate</code>, and using the features you think are reasonable.</p></li>
+<li><p>Using <code>trainControl()</code>, set your training control method to <code>&quot;none&quot;</code>. Save your object as <code>ctrl_none</code>.</p></li>
+<li><p>Using <code>train()</code> fit a regression model called <code>grad_glm</code> predicting <code>Grad.Rate</code> as a function of all features.</p></li>
 <li><p>Explore your <code>grad_glm</code> object by looking at <code>grad_glm$finalModel</code> and using <code>summary()</code>, what do you find?</p></li>
 <li><p>Using <code>train()</code>, fit a decision tree model called <code>grad_dt</code> predicting <code>Grad.Rate</code> (using the same features as above).</p></li>
 </ol>
@@ -1528,7 +1528,7 @@ house_test &lt;- house_test %&gt;%
                  method = &quot;rpart&quot;,
                  trControl = train_control,
                  tuneGrid = expand.grid(cp = .01))   # Set complexity parameter</code></pre>
-<ol start="6" style="list-style-type: decimal">
+<ol start="5" style="list-style-type: decimal">
 <li><p>Explore your <code>grad_dt</code> object by looking at <code>grad_dt$finalModel</code> and plotting it with <code>plot(as.party(grad_dt$finalModel))</code>, what do you find?</p></li>
 <li><p>Using <code>train()</code>, fit a random forest model called <code>grad_rf</code> predicting <code>Grad.Rate</code> (using the same features as above).</p></li>
 </ol>
@@ -1540,7 +1540,7 @@ house_test &lt;- house_test %&gt;%
                  method = &quot;rf&quot;,
                  trControl = train_control,
                  tuneGrid = expand.grid(mtry = 2))  # Set number of features randomly selected</code></pre>
-<ol start="8" style="list-style-type: decimal">
+<ol start="7" style="list-style-type: decimal">
 <li><p>Using <code>postResample()</code>, determine the fitting performance of each of your models.</p></li>
 <li><p>Which one had the best fits? What was the fitting MAE of each model?</p></li>
 <li><p>If you’d like to, try visualizing the fitting results using the plotting code shown in the Examples tab above.</p></li>
@@ -1823,23 +1823,22 @@ house_test &lt;- house_test %&gt;%
 <h2>Fitting</h2>
 <p>Your goal in the following models is to predict <code>price</code></p>
 <ol style="list-style-type: decimal">
-<li><p>Look at the <code>house_train</code> dataset and decide which features you think are reasonable to include in a model.</p></li>
 <li><p>Using <code>trainControl()</code>, set your training control method to <code>&quot;none&quot;</code>. Save your object as <code>ctrl_none</code></p></li>
-<li><p>Using <code>train()</code> fit a regression model called <code>price_glm</code> predicting <code>price</code> using the features you think are reasonable.</p></li>
+<li><p>Using <code>train()</code> fit a regression model called <code>price_glm</code> predicting <code>price</code> using all features <em>except</em> for <code>id</code> and <code>date</code>. To do this, use <code>form = price ~ . -id -date</code></p></li>
 <li><p>Explore your <code>price_glm</code> object by looking at <code>price_glm$finalModel</code> and using <code>summary()</code>, what do you find?</p></li>
 <li><p>Using <code>train()</code>, fit a decision tree model called <code>price_dt</code> predicting <code>price</code> and using the same features as above.</p></li>
 </ol>
 <ul>
 <li>Set the complexity parameter to <code>cp = 0.01</code></li>
 </ul>
-<ol start="6" style="list-style-type: decimal">
+<ol start="5" style="list-style-type: decimal">
 <li><p>Explore your <code>price_dt</code> object by looking at <code>price_dt$finalModel</code> and plotting it with <code>plot(as.party(price_dt$finalModel))</code>, what do you find?</p></li>
 <li><p>Using <code>train()</code>, fit a random forest model called <code>price_rf</code> predicting <code>price</code> and using the same features as above.</p></li>
 </ol>
 <ul>
 <li>Set the number of randomly sampled parameter to <code>mtry</code> = 2</li>
 </ul>
-<ol start="8" style="list-style-type: decimal">
+<ol start="7" style="list-style-type: decimal">
 <li><p>Using <code>postResample()</code>, determine the fitting performance of each of your models</p></li>
 <li><p>Which one had the best fits? What was the fitting MAE of each model?</p></li>
 <li><p>If you’d like to, try visualizing the fitting results using the plotting code in the Examples</p></li>

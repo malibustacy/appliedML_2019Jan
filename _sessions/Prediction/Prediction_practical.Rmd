@@ -315,7 +315,6 @@ ggplot(data = accuracy,
 1. Open your `BaselRBootcamp` R project. It should already have the folders `1_Data` and `2_Code`. Make sure that the data file(s) listed in the `Datasets` section above are in your `1_Data` folder
 
 2. Open a new R script. At the top of the script, using comments, write your name and the date. Save it as a new file called `Fitting_practical.R` in the `2_Code` folder.  
-
 3. Using `library()` load the set of packages for this practical listed in the packages section above.
 
 ```{r, eval = FALSE, echo = TRUE}
@@ -342,7 +341,7 @@ college_test <- read_csv(file = "1_Data/college_train.csv")
 
 # House data
 house_train <- read_csv(file = "1_Data/house_train.csv")
-house_train <- read_csv(file = "1_Data/house_test.csv")
+house_test <- read_csv(file = "1_Data/house_test.csv")
 ```
 
 5. Take a look at the first few rows of each dataframe by printing then to the console.
@@ -383,15 +382,13 @@ knitr::kable(college_train[1:10,])
 
 Using the basics steps in the Examples section above, fit each of three models, regression, decision trees, and random forests to the `college_train` data. your goal is to fit models predicting `Grad.Rate`
 
-1. Look at the `college_train` dataset and decide which features you think are reasonable to include in a model.
+1. Using `trainControl()`, set your training control method to `"none"`. Save your object as `ctrl_none`.
 
-2. Using `trainControl()`, set your training control method to `"none"`. Save your object as `ctrl_none`
+2. Using `train()` fit a regression model called `grad_glm` predicting `Grad.Rate` as a function of all features.
 
-3. Using `train()` fit a regression model called `grad_glm` predicting `Grad.Rate`, and using the features you think are reasonable.
+3. Explore your `grad_glm` object by looking at `grad_glm$finalModel` and using `summary()`, what do you find?
 
-4. Explore your `grad_glm` object by looking at `grad_glm$finalModel` and using `summary()`, what do you find?
-
-5. Using `train()`, fit a decision tree model called `grad_dt` predicting `Grad.Rate` (using the same features as above).
+4. Using `train()`, fit a decision tree model called `grad_dt` predicting `Grad.Rate` (using the same features as above).
 
 - Set the complexity parameter to `cp = 0.01`
 
@@ -403,10 +400,9 @@ grad_dt <- train(form = Grad.Rate ~ .,    # Make sure to specify your features h
                  tuneGrid = expand.grid(cp = .01))   # Set complexity parameter
 ```
 
+5. Explore your `grad_dt` object by looking at `grad_dt$finalModel` and plotting it with `plot(as.party(grad_dt$finalModel))`, what do you find?
 
-6. Explore your `grad_dt` object by looking at `grad_dt$finalModel` and plotting it with `plot(as.party(grad_dt$finalModel))`, what do you find?
-
-7. Using `train()`, fit a random forest model called `grad_rf` predicting `Grad.Rate` (using the same features as above).
+6. Using `train()`, fit a random forest model called `grad_rf` predicting `Grad.Rate` (using the same features as above).
 
 - Set the number of randomly sampled parameter to `mtry` = 2
 
@@ -418,11 +414,11 @@ grad_rf <- train(form = Grad.Rate ~ .,    # Make sure to specify your features h
                  tuneGrid = expand.grid(mtry = 2))  # Set number of features randomly selected
 ```
 
-8. Using `postResample()`, determine the fitting performance of each of your models.
+7. Using `postResample()`, determine the fitting performance of each of your models.
 
-9. Which one had the best fits? What was the fitting MAE of each model?
+8. Which one had the best fits? What was the fitting MAE of each model?
 
-10. If you'd like to, try visualizing the fitting results using the plotting code shown in the Examples tab above.
+9. If you'd like to, try visualizing the fitting results using the plotting code shown in the Examples tab above.
 
 ##  Prediction
 
@@ -448,29 +444,27 @@ knitr::kable(house_train[1:10,])
 
 Your goal in the following models is to predict `price`
 
-1. Look at the `house_train` dataset and decide which features you think are reasonable to include in a model.
+1. Using `trainControl()`, set your training control method to `"none"`. Save your object as `ctrl_none`
 
-2. Using `trainControl()`, set your training control method to `"none"`. Save your object as `ctrl_none`
+2. Using `train()` fit a regression model called `price_glm` predicting `price` using all features *except* for `id` and `date`. To do this, use `form = price ~ . -id -date`
 
-3. Using `train()` fit a regression model called `price_glm` predicting `price` using the features you think are reasonable.
+3. Explore your `price_glm` object by looking at `price_glm$finalModel` and using `summary()`, what do you find?
 
-4. Explore your `price_glm` object by looking at `price_glm$finalModel` and using `summary()`, what do you find?
-
-5. Using `train()`, fit a decision tree model called `price_dt` predicting `price` and using the same features as above.
+4. Using `train()`, fit a decision tree model called `price_dt` predicting `price` and using the same features as above.
 
 - Set the complexity parameter to `cp = 0.01`
 
-6. Explore your `price_dt` object by looking at `price_dt$finalModel` and plotting it with `plot(as.party(price_dt$finalModel))`, what do you find?
+5. Explore your `price_dt` object by looking at `price_dt$finalModel` and plotting it with `plot(as.party(price_dt$finalModel))`, what do you find?
 
-7. Using `train()`, fit a random forest model called `price_rf` predicting `price` and using the same features as above.
+6. Using `train()`, fit a random forest model called `price_rf` predicting `price` and using the same features as above.
 
 - Set the number of randomly sampled parameter to `mtry` = 2
 
-8. Using `postResample()`, determine the fitting performance of each of your models
+7. Using `postResample()`, determine the fitting performance of each of your models
 
-9. Which one had the best fits? What was the fitting MAE of each model?
+8. Which one had the best fits? What was the fitting MAE of each model?
 
-10. If you'd like to, try visualizing the fitting results using the plotting code in the Examples
+9. If you'd like to, try visualizing the fitting results using the plotting code in the Examples
 
 ##  Prediction
 
