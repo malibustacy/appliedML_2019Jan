@@ -772,8 +772,8 @@ Regression: `method = "glm"`
 ```{r, echo = TRUE, out.width = "90%", eval = TRUE, warning = FALSE}
 # Fit a regression model predicting Price
 
-mod <- train(form = income ~ .,  # Formula
-             data = baselers,       # Training data
+mod <- train(form = income ~ ., # Formula
+             data = baselers,   # Training data
              method = "glm",    # Regression
              trControl = ctrl)  # Control Parameters
 ```
