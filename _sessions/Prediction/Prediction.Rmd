@@ -68,25 +68,26 @@ present <- tibble(id = 91:95,
 
 
 
-
 ---
-class: middle, center
-
- ## "Prediction is very difficult, especially if it's about the future."
- ## ~  Nils Bohr, Nobel Laureate in Physics
-
----
-class: middle, center
-
- ## "An economist is an expert who will know tomorrow why the things he predicted yesterday didn't happen today. "
- ## ~ Evan Esar
-
----
-class: middle, center
 
 
- ## "Forecasting is the art of saying what will happen, and then explaining why it didn't!"
- ## ~ Anonymous
+## Prediction...
+<br>
+<i>"Prediction is very difficult, especially if it's about the future."</i>
+
+Nils Bohr, Nobel Laureate in Physics
+
+<br>
+
+<i>"An economist is an expert who will know tomorrow why the things he predicted yesterday didn't happen today."</i>
+
+Evan Esar
+
+<br>
+
+<i>"Forecasting [prediction] is the art of saying what will happen, and then explaining why it didn't!"</i>
+
+Anonymous
 
 ---
 
@@ -100,9 +101,9 @@ knitr::include_graphics("https://cdn-images-1.medium.com/max/1600/1*_QGyIwpgq831
 
 .pull-left45[
 
-# What is model Testing?
+# What is model prediction?
 
-Model testing is the process of accessing a model's predictions on *new, unseen* data.
+Model prediction (aka, testing) is the process of accessing a model's predictions on *new, unseen* data.
 
 
 
@@ -538,7 +539,7 @@ Random Forests have a <high>diversity parameter</high> called <high>mtry</high>
 Technically, this controls how many features are randomly considered at each split of the trees
 
 - Small mtry (~ 1) = Diverse Forest
-- Large mtry (> 5) = Simple Trees
+- Large mtry (> 5) = Similar Forest
 
 The "best" value of mtry depends on your dataset!
 
@@ -566,7 +567,7 @@ Random Forests have a <high>diversity parameter</high> called <high>mtry</high>
 Technically, this controls how many features are randomly considered at each split of the trees
 
 - Small mtry (~ 1) = Diverse Forest
-- Large mtry (> 5) = Simple Trees
+- Large mtry (> 5) = Similar Forest
 
 The "best" value of mtry depends on your dataset!
 
@@ -592,8 +593,6 @@ train(form = income ~ .,
 - `mtry` can also be optimally determined through methods such as <high>cross-validation</high>, which we will learn later
 
 ]
-
-
 
 ---
 class: center,  middle
