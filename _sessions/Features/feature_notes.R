@@ -181,6 +181,19 @@ postResample(predict(tr, newdata = crime_test), crime_test$ViolentCrimesPerPop)
 
 
 
+# Feature elimination settings 
+rfe_control <- rfeControl(functions = lmFuncs,  # linear model
+                          method = "cv",
+                          verbose = FALSE)
+
+# Run feature elimination
+profile <- rfe(x = bas_train %>% select(-income), 
+               y = bas_train$income,
+               sizes = c(1, 2, 3),     # Features set sizes should be considered
+               rfeControl = rfe_control)
+
+
+
 
 cor(crime[[1]],crime[[2]])
 
