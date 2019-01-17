@@ -92,6 +92,8 @@ library(ISLR)   # Load ISLR package
 |:------|:------|
 |`tidyverse`|`install.packages("tidyverse")`|
 |`caret`|`install.packages("caret")`|
+|`partykit`|`install.packages("partykit")`|
+|`party`|`install.packages("party")`|
 
 ### Cheatsheet
 

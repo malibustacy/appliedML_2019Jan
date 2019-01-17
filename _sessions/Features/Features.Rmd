@@ -233,8 +233,37 @@ plot(varImp(income_lm),col='#EA4B68',cex=1.3,scales = list(cex=1.3,lineheight=1.
 
 # Recursive feature selection using `rfe()`
 
+.pull-left35[
 
+Algorithm(s) to <high>automatically select the best number of `n` predictors</high>, with `n` being selected from a set of candidate sets `N`, e.g., `N = [2,3,5,10]`, determined by the user. 
+<br><br><br>
+<u>Algorithm</u>
+1. <high>Resample</high> and split data<br2>
+2. Identify <high>best `n` predictors</high> and their prediction performance<br2>
+3. <high>Aggregate performance</high> and select best `n` and the accordingly best predictors
 
+]
+
+.pull-right6[
+
+```{r, eval = F}
+# Run feature elimination
+rfe(x = ..., y = ..., 
+    sizes = c(3,4,5,10), # feature set sizes
+    rfeControl = rfeControl(functions = lmFuncs))
+```
+
+```{r, echo = F}
+# Run feature elimination
+rfe(x = bas_train %>% select(-income), 
+    y = bas_train$income,
+    sizes = c(3,4,5,10),   # Features set sizes should be considered
+    rfeControl = rfeControl(
+      functions = lmFuncs,
+      verbose = FALSE))
+```
+
+]
 
 ---
 
@@ -358,12 +387,12 @@ nearZeroVar(baselers)
 <br>
 .pull-left25[
 
-<i>A</i> <high>Trivial features</high> 
+1 <high>Trivial features</high> 
 
 Successful prediction not necessarily implies that a meaningful pattern has been detected.
 
 <br>
-<i>B</i> <high>Missing features</high>
+2 <high>Missing features</high>
 
 Some problems are hard, requiring the engineering of new features. 
 

@@ -72,8 +72,8 @@ sel = sample(1994,1000)
 violent_crime = violent_crime %>% slice(sel)
 nonviolent_crime = nonviolent_crime %>% slice(sel)
 
-write.csv(violent_crime, '1_Data/violent_crime.csv')
-write.csv(nonviolent_crime, '1_Data/nonviolent_crime.csv')
+write_csv(violent_crime, '1_Data/violent_crime.csv')
+write_csv(nonviolent_crime, '1_Data/nonviolent_crime.csv')
 
 
 
@@ -178,6 +178,19 @@ tr = train(ViolentCrimesPerPop ~ .,
 
 postResample(predict(tr, newdata = crime_test), crime_test$ViolentCrimesPerPop)
 
+
+
+
+# Feature elimination settings 
+rfe_control <- rfeControl(functions = lmFuncs,  # linear model
+                          method = "cv",
+                          verbose = FALSE)
+
+# Run feature elimination
+profile <- rfe(x = bas_train %>% select(-income), 
+               y = bas_train$income,
+               sizes = c(1, 2, 3),     # Features set sizes should be considered
+               rfeControl = rfe_control)
 
 
 
