@@ -413,23 +413,26 @@ Are there &lt;high&gt;groups of features&lt;/high&gt;, which features belongs to
 
 ---
 
-# Excurse: Unsupervised learning
+# Excurse: Clustering
 
-.pull-left45[
+.pull-left5[
 
-`k-means`, `hierarchical-clustering`, and other &lt;high&gt;clustering algorithms&lt;/high&gt; attempt to find distributed membership to `\(k\)` groups (clusters) such that &lt;high&gt;groups are maximally homogenous&lt;/high&gt;.
+&lt;high&gt;Clustering algorithms&lt;/high&gt; attempt to find distributed membership to `\(k\)` groups (clusters) such that &lt;high&gt;groups are maximally homogenous&lt;/high&gt;.
 
 &lt;u&gt;k-means&lt;/u&gt;
 
-Assign cases to the closest centroids (high-dimensional means) while iteratively shifting them around to &lt;high&gt;minimize within-group variance versus between-group variance&lt;/high&gt;. 
+Assign cases to the closest cluster means, while iteratively shifting them around to &lt;high&gt;minimize within-group variance&lt;/high&gt;. 
 
-&lt;u&gt;´hierarchical clustering`&lt;/u&gt;
+&lt;u&gt;hierarchical clustering&lt;/u&gt;
 
 Place every case in one group. &lt;high&gt;Join clusters according to a pre-specified distance function&lt;/high&gt; until the desired number of `\(k\)` clusters is reached.  
 
+&lt;u&gt;R packages&lt;/u&gt;
+[cstab](https://arxiv.org/abs/1608.07494)
+
 ]
 
-.pull-right5[
+.pull-right45[
 
 &lt;p align="center"&gt;
   
@@ -441,10 +444,16 @@ Place every case in one group. &lt;high&gt;Join clusters according to a pre-spec
 
 ---
 
-# Unsupervised learning
+# Excurse: Dimensionality reduction
 
-pca &amp; svd
+.pull-left45[
+&lt;high&gt;Principal component analysis&lt;/high&gt; (PCA) is an &lt;high&gt;unsupervised&lt;/high&gt; algorithm that re-represents the data in a &lt;high&gt;new feature space&lt;/high&gt;.  
 
+The new features aka &lt;high&gt;principal components are greedy&lt;/high&gt; in that they attempt to explain and, thus, group together as many features as they can (leaving as few as possible for the next component). 
+
+&lt;high&gt;Singular value decomposition&lt;/high&gt; (SVD) is the general mathematical approach underlying PCA and other methods.
+
+]
 
 .pull-right45[
 
@@ -485,9 +494,6 @@ Xavier Conort
 
 
 ---
-
-
-# Practical
 
 class: middle, center
 
