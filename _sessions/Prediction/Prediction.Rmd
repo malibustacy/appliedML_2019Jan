@@ -391,7 +391,7 @@ train(form = income ~ .,
 
 Decision trees have a <high>complexity parameter</high> called <high>cp</high>
 
-This control show complex (large) trees are allowed to grow
+This controls how complex (large) trees are allowed to grow
 
 - Small cp (< 0.01) = Complex Trees
 - Large cp (> 0.10) = Simple Trees
@@ -468,7 +468,7 @@ class: center, middle
 
 # Random Forest
 
-In [Random Forest](https://en.wikipedia.org/wiki/Random_forest), the criterion is models as the <high>aggregate prediction of a large number of decision trees</high> each based on different features.
+In [Random Forest](https://en.wikipedia.org/wiki/Random_forest), the criterion is modeled as the <high>aggregate prediction of a large number of decision trees</high> each based on different features.
 <br>
 
 <p align="center">
@@ -730,7 +730,7 @@ Step 1: Define control parameters
 
 ```{r, eval = FALSE}
 # Use method = "none" for no advanced fitting
-ctl <- trainControl(method = "none")
+ctrl <- trainControl(method = "none")
 ```
 
 Step 2: Train model
@@ -739,7 +739,7 @@ Step 2: Train model
 mod <- train(form = Y ~ .,  
              data = data_train,
              method = "rpart",
-             trControl = ctl,
+             trControl = ctrl,
              tuneGrid = expand.grid(mtry = 2))
 ```
 
