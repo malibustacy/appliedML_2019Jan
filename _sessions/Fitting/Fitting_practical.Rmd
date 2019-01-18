@@ -266,14 +266,14 @@ ctrl_none <- trainControl(method = "none")
 
 ## C - Fit a regression model
 
-1. Using the code below, fit a regression model predicting graduation rate (`Grad_Rate`) as a function of one feature `PhD`, the percent of faculty with PhDs). Save the result as an object `Grad_Rate_glm`
+1. Using the code below, fit a regression model predicting graduation rate (`Grad.Rate`) as a function of one feature `PhD`, the percent of faculty with PhDs). Save the result as an object `Grad.Rate_glm`
 
 ```{r}
-# Grad_Rate_glm: Regression Model
-#   Criterion: Grad_Rate
+# Grad.Rate_glm: Regression Model
+#   Criterion: Grad.Rate
 #   Features: PhD
 
-Grad_Rate_glm <- train(form = Grad_Rate ~ PhD,
+Grad.Rate_glm <- train(form = Grad.Rate ~ PhD,
                        data = college_train,
                        method = "glm",
                        trControl = ctrl_none)
@@ -285,7 +285,7 @@ Grad_Rate_glm <- train(form = Grad_Rate ~ PhD,
 ```{r}
 # Show summary information from the regression model
 
-summary(Grad_Rate_glm)
+summary(Grad.Rate_glm)
 ```
 
 3. Look at the results, how do you interpret the regression coefficients? What is the general relationship between PhD and graduation rates? Does this make sense?
@@ -295,7 +295,7 @@ summary(Grad_Rate_glm)
 ```{r}
 # Get fitted values from the model and save as glm_fit
 
-glm_fit <- predict(Grad_Rate_glm)
+glm_fit <- predict(Grad.Rate_glm)
 ```
 
 5. Print your `glm_fit` object - what are these values? Do they look reasonable? That is, are they in the range of what you expect the criterion to be?
@@ -311,9 +311,9 @@ glm_fit
 1. Now it's time to compare your model fits to the true values, we'll start by defining the vector `criterion` as the graduation rates.
 
 ```{r}
-# Define criterion as Grad_Rate
+# Define criterion as Grad.Rate
 
-criterion <- college_train$Grad_Rate
+criterion <- college_train$Grad.Rate
 ```
 
 2. Let's quantify our model's fitting results. To do this, we'll use the `postResample()` function, with the fitted values as the prediction, and the criterion as the observed values:
@@ -392,7 +392,7 @@ ggplot(data = accuracy,
 
 ## F - Add more features
 
-So far we have only used one feature (`PhD`), to predict `Grad_Rate`. Let's try again, but now we'll use a total of four features:
+So far we have only used one feature (`PhD`), to predict `Grad.Rate`. Let's try again, but now we'll use a total of four features:
 
 - `PhD`: The percent of faculty with a PhD
 - `Room_Board`: Room and board costs
@@ -400,7 +400,7 @@ So far we have only used one feature (`PhD`), to predict `Grad_Rate`. Let's try 
 - `S_F_Ratio`: Student to faculty ratio
 
 
-1. Using the same steps as above, create a regression model `Grad_Rate_glm` which predicts `Grad_Rate` using all 4 features (you can also call it something else if you want to save your original model!).
+1. Using the same steps as above, create a regression model `Grad.Rate_glm` which predicts `Grad.Rate` using all 4 features (you can also call it something else if you want to save your original model!).
 
 2. Explore your model using `summary()`, which features seem to be important?
 
@@ -416,10 +416,10 @@ Alright now it's time to use all features available!
 
 1. Before we run the model, we need to make sure there aren't any features we *don't* want to include. Look at the `college_train` dataframe again -- do you see the one feature that we definitely don't want to include in the model?
 
-2. Using the same steps as above, create a regression model `glm_fit` which predicts `Grad_Rate` using all features *except* for that one we don't want (remember, use Y ~ . - XXX to remove a feature XXX)
+2. Using the same steps as above, create a regression model `glm_fit` which predicts `Grad.Rate` using all features *except* for that one we don't want (remember, use Y ~ . - XXX to remove a feature XXX)
 
 ```{r, echo = TRUE}
-Grad_Rate_glm <- train(form = Grad_Rate ~ . - XXX,   # Get rid of that one feature!
+Grad.Rate_glm <- train(form = Grad.Rate ~ . - XXX,   # Get rid of that one feature!
                        data = college_train,
                        method = "glm",
                        trControl = ctrl_none)

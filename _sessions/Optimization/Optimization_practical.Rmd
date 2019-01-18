@@ -42,6 +42,8 @@ library(ggthemes)
 
 |File  |Rows | Columns |
 |:----|:-----|:------|
+|[hitters_train.csv](https://raw.githubusercontent.com/therbootcamp/appliedML_2019Jan/master/1_Data/hitters_train.csv)| 50 | 20|
+|[hitters_test.csv](https://raw.githubusercontent.com/therbootcamp/appliedML_2019Jan/master/1_Data/_data/hitters_test.csv)| 213 | 20|
 |[college_train.csv](https://raw.githubusercontent.com/therbootcamp/appliedML_2019Jan/master/1_Data/college_train.csv)| 500 | 18|
 |[college_test.csv](https://raw.githubusercontent.com/therbootcamp/appliedML_2019Jan/master/1_Data/college_est.csv)| 277 | 18|
 |[house_train.csv](https://raw.githubusercontent.com/therbootcamp/appliedML_2019Jan/master/1_Data/house_train.csv)| 5000 | 21|
@@ -55,6 +57,17 @@ college_train <- read_csv("https://raw.githubusercontent.com/therbootcamp/applie
 college_test <- read_csv("https://raw.githubusercontent.com/therbootcamp/appliedML_2019Jan/master/1_Data/college_test.csv")
 house_train <- read_csv("https://raw.githubusercontent.com/therbootcamp/appliedML_2019Jan/master/1_Data/house_train.csv")
 house_test <- read_csv("https://raw.githubusercontent.com/therbootcamp/appliedML_2019Jan/master/1_Data/house_test.csv")
+hitters_train <- read_csv("https://raw.githubusercontent.com/therbootcamp/appliedML_2019Jan/master/1_Data/hitters_train.csv") %>%
+  select(Salary, everything())
+hitters_test <- read_csv("https://raw.githubusercontent.com/therbootcamp/appliedML_2019Jan/master/1_Data/hitters_test.csv") %>%
+  select(Salary, everything())
+```
+
+- The `hitters_train` and `hitters_test` data are taken from the `Hitters` dataset in the `ISLR` package. To see column descriptions, run the following:
+
+```{r, eval = FALSE}
+library(ISLR)   # Load ISLR package
+?Hitters        # Look at help menu for Hitters
 ```
 
 - The `college_train` and `college_test` data are taken from the `College` dataset in the `ISLR` package. To see column descriptions, run the following:
@@ -64,11 +77,11 @@ library(ISLR)   # Load ISLR package
 ?College        # Look at help menu for College
 ```
 
-- The `carseats_train` and `carseats_test` data are taken from the `Carseats` dataset in the `ISLR` package. To see column descriptions, run the following:
+- The `hitters_train` and `hitters_test` data are taken from the `hitters` dataset in the `ISLR` package. To see column descriptions, run the following:
 
 ```{r, eval = FALSE}
 library(ISLR)   # Load ISLR package
-?Carseats        # Look at help menu for Carseats
+?hitters        # Look at help menu for hitters
 ```
 
 - The `house_train` and `house_test` data come from [https://www.kaggle.com/harlfoxem/housesalesprediction](https://www.kaggle.com/harlfoxem/housesalesprediction)
@@ -334,7 +347,7 @@ ggplot(data = accuracy,
        aes(x = criterion_test, y = prediction, col = model)) +
   geom_point(alpha = .2) +
   geom_abline(slope = 1, intercept = 0) +
-  labs(title = "Predicting mpg$hwy",
+  labs(title = "Predicting Diamond Prices",
        subtitle = "Black line indicates perfect performance")
 
 # Plot B) Violin plot of absolute errors
@@ -354,12 +367,12 @@ ggplot(data = accuracy,
            label = round(accuracy_agg$mae, 2))
 ```
 
-# College Graduation Rates
+# Baseball player salaries
 
-In this section, we will again predict the prices of houses in King County Washington from the `house_train` and `house_test` datasets. Here's how the first few rows of `house_train` should look:
+In this section, we will predict the salaries of baseball players from the `hitters_train` and `hitters_test` datasets. Here's how the first few rows of `hitters_train` should look:
 
 ```{r, results = 'asis', echo = FALSE, eval = TRUE}
-knitr::kable(house_train[1:10,])
+knitr::kable(hitters_train[1:10,])
 ```
 
 ## A - Setup
@@ -387,9 +400,9 @@ library(tidyverse)
 4. Run the code below to load each of the datasets listed in the `Datasets` as new objects
 
 ```{r, echo = TRUE, eval = FALSE, message = FALSE, warning = FALSE}
-# Carseats data
-carseats_train <- read_csv(file = "1_Data/carseats_train.csv")
-carseats_test <- read_csv(file = "1_Data/carseats_test.csv")
+# hitters data
+hitters_train <- read_csv(file = "1_Data/hitters_train.csv")
+hitters_test <- read_csv(file = "1_Data/hitters_test.csv")
 ```
 
 5. Take a look at the first few rows of each dataframe by printing them to the console.
@@ -397,8 +410,8 @@ carseats_test <- read_csv(file = "1_Data/carseats_test.csv")
 ```{r, echo = TRUE, eval = FALSE}
 # Print dataframes to the console
 
-carseats_train
-carseats_test
+hitters_train
+hitters_test
 ```
 
 6. Print the numbers of rows and columns of each dataset using the `dim()` function
@@ -433,19 +446,19 @@ View(XXX)
 ```{r}
 # Convert all character columns to factor
 
-carseats_train <- carseats_train %>%
+hitters_train <- hitters_train %>%
           mutate_if(is.character, factor)
 
-carseats_test <- carseats_test %>%
+hitters_test <- hitters_test %>%
           mutate_if(is.character, factor)
 ```
 
 
 ```{r}
-data_train <- read_csv(file = "1_Data/carseats_train.csv") %>%
+data_train <- read_csv(file = "1_Data/hitters_train.csv") %>%
   slice(1:15)
 
-data_test <- read_csv(file = "1_Data/carseats_test.csv")
+data_test <- read_csv(file = "1_Data/hitters_test.csv")
 ```
 
 
@@ -474,7 +487,7 @@ ctrl_cv <- trainControl(method = "XX",
 ```{r, echo = TRUE, eval = FALSE}
 # Normal Regression --------------------------
 
-salary_glm <- train(form = XX ~ . -XX - XX,
+salary_glm <- train(form = XX ~ .,
                     data = XX,
                     method = "XX",
                     trControl = XX)
@@ -528,7 +541,7 @@ lambda_vec <- seq(from = 0, to = 1000, length = 100)
 ```{r, echo = TRUE, eval = FALSE}
 # Ridge Regression --------------------------
 
-salary_ridge <- train(form = XX ~ . -XX - XX,
+salary_ridge <- train(form = XX ~ .,
                       data = XX,
                       method = "XX",
                       trControl = XX,
@@ -594,7 +607,7 @@ lambda_vec <- seq(from = 0, to = 1000, length = 100)
 ```{r, echo = TRUE, eval = FALSE}
 # Lasso Regression --------------------------
 
-salary_lasso <- train(form = XX ~ . -XX - XX,
+salary_lasso <- train(form = XX ~ .,
                       data = XX,
                       method = "XX",
                       trControl = XX,
@@ -660,7 +673,7 @@ cp_vec <- seq(from = 0, to = .1, length = 100)
 ```{r, echo = TRUE, eval = FALSE}
 # Decision Tree --------------------------
 
-price_dt <- train(form = XX ~ . -XX - XX,
+price_dt <- train(form = XX ~ .,
                   data = XX,
                   method = "XX",
                   trControl = XX,
@@ -694,7 +707,8 @@ price_dt$bestTune$cp
 5. Plot your final decision tree using the following code
 
 ```{r, echo = TRUE, eval = FALSE}
-plot(as.party(price_dt$finalModel))   # Visualise your trees
+# Visualise your trees
+plot(as.party(price_dt$finalModel)) 
 ```
 
 6. How do the nodes in the tree compare to the coefficients you found in your regression analyses? Do you see similarities or differences?
@@ -722,7 +736,7 @@ mtry_vec <- 1:10
 ```{r, echo = TRUE, eval = FALSE}
 # Random Forest --------------------------
 
-salary_rf <- train(form = XX ~ . -XX - XX,
+salary_rf <- train(form = XX ~ .,
                    data = XX,
                    method = "XX",
                    trControl = XX,
@@ -753,7 +767,7 @@ plot(XX)
 salary_rf$bestTune$mtry
 ```
 
-## Estimate prediction accuracy
+## Estimate prediction accuracy from training folds
 
 1. Using `resamples()`, calculate the estimated prediction accuracy for each of your models. To do this, put your model objects in the named list (e.g.; `glm = salary_glm`, ...)
 
@@ -769,10 +783,18 @@ salary_resamples <- resamples(list(glm = XXX,
 2. Look at the summary of your `salary_resamples` object with `summary(salary_resamples)`. What does this tell you? Which model do you expect to have the best prediction accuracy for the test data?
 
 ```{r}
+# Print summaries of cross-validation accuracy 
 summary(salary_resamples)
 ```
 
 ## Calculate prediction accuracy
+
+1. Save the criterion value for the test data as a new vector called `criterion_test`
+
+```{r}
+# Save salaries of players in test dataset as criterion_test
+criterion_test <- XXX$XXX
+```
 
 1. Using `predict()`, save the prediction of your regular regression model `salary_glm` for the `hitters_test` data as a new object called `glm_pred`:
 
@@ -793,5 +815,36 @@ dt_pred <- predict(XXX, newdata = XXX)
 rf_pred <- predict(XXX, newdata = XXX)
 ```
 
+3. Using `postResample()`, calculate the aggregate prediction accuracy for each model using the template below
 
+- Set the pred argument to your model predictions (e.g.; `ridge_pred`)
+- Set the `obs` argument to the true criterion values `criterion_test`)
+
+```{r}
+# Calculate aggregate accuracy for a model
+postResample(pred = XXX, 
+             obs = XXX)
+```
+
+4. Which of your four models had the best performance in the true training data?
+
+5. How close were your model' true prediction values to the values you estimated in the previous section when you ran `resamples()`?
+
+## Challenges
+
+1. In addition to 'regular' 10 fold cross-validation, you can also do repeated 10-fold cross-validation, where the cross validation procedure is repeated many times. Do you think this will improve your models' performance? To test this, create a new training control object called `ctrl_cv_rep` as below. Then, train your models again using `ctrl_cv_rep` (instead of `ctrl_cv`), and evaluate their prediction performance. Do they improve?
+
+```{r}
+# Repeated cross validation.
+#  Folds = 10
+#  Repeats = 5
+
+ctrl_cv_rep <- trainControl(method = "repeatedcv",
+                            number = 10,
+                            repeats = 5)
+```
+
+2. Using the same procedure as above, compare models predicting the prices of houses in King County Washington using the `house_train` and `house_test` datasets. Which model does the best and how accurate was it? Was it the same model that performed the best predicting baseball player salaries?
+
+3. Using the same procedure as above, compare models predicting the graduate rate of students from different colleges using the `college_train` and `college_test` datasets. Which model does the best and how accurate was it? Was it the same model that performed the best predicting baseball player salaries?
 

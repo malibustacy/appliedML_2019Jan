@@ -914,6 +914,16 @@ Wikipedia
 </thead>
 <tbody>
 <tr class="odd">
+<td align="left"><a href="https://raw.githubusercontent.com/therbootcamp/appliedML_2019Jan/master/1_Data/hitters_train.csv">hitters_train.csv</a></td>
+<td align="left">50</td>
+<td align="left">20</td>
+</tr>
+<tr class="even">
+<td align="left"><a href="https://raw.githubusercontent.com/therbootcamp/appliedML_2019Jan/master/1_Data/_data/hitters_test.csv">hitters_test.csv</a></td>
+<td align="left">213</td>
+<td align="left">20</td>
+</tr>
+<tr class="odd">
 <td align="left"><a href="https://raw.githubusercontent.com/therbootcamp/appliedML_2019Jan/master/1_Data/college_train.csv">college_train.csv</a></td>
 <td align="left">500</td>
 <td align="left">18</td>
@@ -936,15 +946,20 @@ Wikipedia
 </tbody>
 </table>
 <ul>
+<li>The <code>hitters_train</code> and <code>hitters_test</code> data are taken from the <code>Hitters</code> dataset in the <code>ISLR</code> package. To see column descriptions, run the following:</li>
+</ul>
+<pre class="r"><code>library(ISLR)   # Load ISLR package
+?Hitters        # Look at help menu for Hitters</code></pre>
+<ul>
 <li>The <code>college_train</code> and <code>college_test</code> data are taken from the <code>College</code> dataset in the <code>ISLR</code> package. To see column descriptions, run the following:</li>
 </ul>
 <pre class="r"><code>library(ISLR)   # Load ISLR package
 ?College        # Look at help menu for College</code></pre>
 <ul>
-<li>The <code>carseats_train</code> and <code>carseats_test</code> data are taken from the <code>Carseats</code> dataset in the <code>ISLR</code> package. To see column descriptions, run the following:</li>
+<li>The <code>hitters_train</code> and <code>hitters_test</code> data are taken from the <code>hitters</code> dataset in the <code>ISLR</code> package. To see column descriptions, run the following:</li>
 </ul>
 <pre class="r"><code>library(ISLR)   # Load ISLR package
-?Carseats        # Look at help menu for Carseats</code></pre>
+?hitters        # Look at help menu for hitters</code></pre>
 <ul>
 <li>The <code>house_train</code> and <code>house_test</code> data come from <a href="https://www.kaggle.com/harlfoxem/housesalesprediction">https://www.kaggle.com/harlfoxem/housesalesprediction</a></li>
 </ul>
@@ -1264,7 +1279,7 @@ ggplot(data = accuracy,
        aes(x = criterion_test, y = prediction, col = model)) +
   geom_point(alpha = .2) +
   geom_abline(slope = 1, intercept = 0) +
-  labs(title = &quot;Predicting mpg$hwy&quot;,
+  labs(title = &quot;Predicting Diamond Prices&quot;,
        subtitle = &quot;Black line indicates perfect performance&quot;)
 
 # Plot B) Violin plot of absolute errors
@@ -1284,265 +1299,254 @@ ggplot(data = accuracy,
            label = round(accuracy_agg$mae, 2))</code></pre>
 </div>
 </div>
-<div id="college-graduation-rates" class="section level1">
-<h1>College Graduation Rates</h1>
-<p>In this section, we will again predict the prices of houses in King County Washington from the <code>house_train</code> and <code>house_test</code> datasets. Here’s how the first few rows of <code>house_train</code> should look:</p>
+<div id="baseball-player-salaries" class="section level1">
+<h1>Baseball player salaries</h1>
+<p>In this section, we will predict the salaries of baseball players from the <code>hitters_train</code> and <code>hitters_test</code> datasets. Here’s how the first few rows of <code>hitters_train</code> should look:</p>
 <table>
 <thead>
 <tr class="header">
-<th align="left">id</th>
-<th align="left">date</th>
-<th align="right">price</th>
-<th align="right">bedrooms</th>
-<th align="right">bathrooms</th>
-<th align="right">sqft_living</th>
-<th align="right">sqft_lot</th>
-<th align="right">floors</th>
-<th align="right">waterfront</th>
-<th align="right">view</th>
-<th align="right">condition</th>
-<th align="right">grade</th>
-<th align="right">sqft_above</th>
-<th align="right">sqft_basement</th>
-<th align="right">yr_built</th>
-<th align="right">yr_renovated</th>
-<th align="right">zipcode</th>
-<th align="right">lat</th>
-<th align="right">long</th>
-<th align="right">sqft_living15</th>
-<th align="right">sqft_lot15</th>
+<th align="right">Salary</th>
+<th align="right">AtBat</th>
+<th align="right">Hits</th>
+<th align="right">HmRun</th>
+<th align="right">Runs</th>
+<th align="right">RBI</th>
+<th align="right">Walks</th>
+<th align="right">Years</th>
+<th align="right">CAtBat</th>
+<th align="right">CHits</th>
+<th align="right">CHmRun</th>
+<th align="right">CRuns</th>
+<th align="right">CRBI</th>
+<th align="right">CWalks</th>
+<th align="left">League</th>
+<th align="left">Division</th>
+<th align="right">PutOuts</th>
+<th align="right">Assists</th>
+<th align="right">Errors</th>
+<th align="left">NewLeague</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="left">8651402910</td>
-<td align="left">2014-08-06</td>
-<td align="right">176000</td>
-<td align="right">2</td>
-<td align="right">1.00</td>
-<td align="right">770</td>
-<td align="right">5200</td>
-<td align="right">1.0</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">5</td>
-<td align="right">6</td>
-<td align="right">770</td>
-<td align="right">0</td>
-<td align="right">1969</td>
-<td align="right">0</td>
-<td align="right">98042</td>
-<td align="right">47.4</td>
-<td align="right">-122</td>
-<td align="right">1150</td>
-<td align="right">5330</td>
-</tr>
-<tr class="even">
-<td align="left">2493200235</td>
-<td align="left">2015-03-11</td>
-<td align="right">370000</td>
-<td align="right">2</td>
-<td align="right">1.00</td>
-<td align="right">850</td>
-<td align="right">6213</td>
-<td align="right">1.0</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">3</td>
-<td align="right">6</td>
-<td align="right">750</td>
-<td align="right">100</td>
-<td align="right">1916</td>
-<td align="right">0</td>
-<td align="right">98136</td>
-<td align="right">47.5</td>
-<td align="right">-122</td>
-<td align="right">1880</td>
-<td align="right">5500</td>
-</tr>
-<tr class="odd">
-<td align="left">8691300260</td>
-<td align="left">2015-04-13</td>
-<td align="right">875909</td>
+<td align="right">70</td>
+<td align="right">215</td>
+<td align="right">51</td>
 <td align="right">4</td>
-<td align="right">2.50</td>
-<td align="right">3610</td>
-<td align="right">13292</td>
-<td align="right">2.0</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">3</td>
-<td align="right">10</td>
-<td align="right">3610</td>
-<td align="right">0</td>
-<td align="right">1996</td>
-<td align="right">0</td>
-<td align="right">98075</td>
-<td align="right">47.6</td>
-<td align="right">-122</td>
-<td align="right">3000</td>
-<td align="right">10776</td>
-</tr>
-<tr class="even">
-<td align="left">3751600030</td>
-<td align="left">2014-07-17</td>
-<td align="right">100000</td>
-<td align="right">2</td>
-<td align="right">1.00</td>
-<td align="right">770</td>
-<td align="right">17334</td>
-<td align="right">1.0</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">3</td>
-<td align="right">7</td>
-<td align="right">770</td>
-<td align="right">0</td>
-<td align="right">1978</td>
-<td align="right">0</td>
-<td align="right">98001</td>
-<td align="right">47.3</td>
-<td align="right">-122</td>
-<td align="right">1480</td>
-<td align="right">17334</td>
-</tr>
-<tr class="odd">
-<td align="left">1994200012</td>
-<td align="left">2015-04-13</td>
-<td align="right">580000</td>
-<td align="right">3</td>
-<td align="right">1.75</td>
-<td align="right">1850</td>
-<td align="right">2797</td>
-<td align="right">1.0</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">3</td>
-<td align="right">8</td>
-<td align="right">1150</td>
-<td align="right">700</td>
-<td align="right">1977</td>
-<td align="right">0</td>
-<td align="right">98103</td>
-<td align="right">47.7</td>
-<td align="right">-122</td>
-<td align="right">1450</td>
-<td align="right">4599</td>
-</tr>
-<tr class="even">
-<td align="left">2768000390</td>
-<td align="left">2014-09-26</td>
-<td align="right">577000</td>
-<td align="right">5</td>
-<td align="right">2.75</td>
-<td align="right">1940</td>
-<td align="right">5000</td>
-<td align="right">2.0</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">5</td>
-<td align="right">7</td>
-<td align="right">1940</td>
-<td align="right">0</td>
-<td align="right">1951</td>
-<td align="right">0</td>
-<td align="right">98107</td>
-<td align="right">47.7</td>
-<td align="right">-122</td>
-<td align="right">1940</td>
-<td align="right">4230</td>
-</tr>
-<tr class="odd">
-<td align="left">7135521680</td>
-<td align="left">2014-05-22</td>
-<td align="right">665000</td>
+<td align="right">19</td>
+<td align="right">18</td>
+<td align="right">11</td>
+<td align="right">1</td>
+<td align="right">215</td>
+<td align="right">51</td>
 <td align="right">4</td>
-<td align="right">2.50</td>
-<td align="right">2600</td>
-<td align="right">17388</td>
-<td align="right">2.0</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">3</td>
+<td align="right">19</td>
+<td align="right">18</td>
+<td align="right">11</td>
+<td align="left">A</td>
+<td align="left">E</td>
+<td align="right">116</td>
+<td align="right">5</td>
+<td align="right">12</td>
+<td align="left">A</td>
+</tr>
+<tr class="even">
+<td align="right">475</td>
+<td align="right">458</td>
+<td align="right">114</td>
+<td align="right">13</td>
+<td align="right">67</td>
+<td align="right">57</td>
+<td align="right">48</td>
+<td align="right">4</td>
+<td align="right">1350</td>
+<td align="right">298</td>
+<td align="right">28</td>
+<td align="right">160</td>
+<td align="right">123</td>
+<td align="right">122</td>
+<td align="left">A</td>
+<td align="left">W</td>
+<td align="right">246</td>
+<td align="right">389</td>
+<td align="right">18</td>
+<td align="left">A</td>
+</tr>
+<tr class="odd">
+<td align="right">1043</td>
+<td align="right">586</td>
+<td align="right">159</td>
+<td align="right">12</td>
+<td align="right">72</td>
+<td align="right">79</td>
+<td align="right">53</td>
 <td align="right">9</td>
-<td align="right">2600</td>
-<td align="right">0</td>
-<td align="right">1996</td>
-<td align="right">0</td>
-<td align="right">98059</td>
-<td align="right">47.5</td>
-<td align="right">-122</td>
-<td align="right">2950</td>
-<td align="right">11553</td>
+<td align="right">3082</td>
+<td align="right">880</td>
+<td align="right">83</td>
+<td align="right">363</td>
+<td align="right">477</td>
+<td align="right">295</td>
+<td align="left">N</td>
+<td align="left">E</td>
+<td align="right">181</td>
+<td align="right">13</td>
+<td align="right">4</td>
+<td align="left">N</td>
 </tr>
 <tr class="even">
-<td align="left">4019301386</td>
-<td align="left">2014-09-09</td>
-<td align="right">425000</td>
-<td align="right">3</td>
-<td align="right">1.50</td>
-<td align="right">1970</td>
-<td align="right">13709</td>
-<td align="right">1.0</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">4</td>
-<td align="right">7</td>
-<td align="right">1680</td>
+<td align="right">775</td>
+<td align="right">568</td>
+<td align="right">158</td>
+<td align="right">20</td>
+<td align="right">89</td>
+<td align="right">75</td>
+<td align="right">73</td>
+<td align="right">15</td>
+<td align="right">8068</td>
+<td align="right">2273</td>
+<td align="right">177</td>
+<td align="right">1045</td>
+<td align="right">993</td>
+<td align="right">732</td>
+<td align="left">N</td>
+<td align="left">W</td>
+<td align="right">105</td>
 <td align="right">290</td>
-<td align="right">1955</td>
-<td align="right">0</td>
-<td align="right">98155</td>
-<td align="right">47.8</td>
-<td align="right">-122</td>
-<td align="right">2200</td>
-<td align="right">16536</td>
+<td align="right">10</td>
+<td align="left">N</td>
 </tr>
 <tr class="odd">
-<td align="left">1446401550</td>
-<td align="left">2015-02-06</td>
-<td align="right">225000</td>
+<td align="right">80</td>
+<td align="right">399</td>
+<td align="right">102</td>
 <td align="right">3</td>
-<td align="right">1.00</td>
-<td align="right">660</td>
-<td align="right">6600</td>
-<td align="right">1.0</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">4</td>
+<td align="right">56</td>
+<td align="right">34</td>
+<td align="right">34</td>
 <td align="right">5</td>
-<td align="right">660</td>
-<td align="right">0</td>
-<td align="right">1940</td>
-<td align="right">0</td>
-<td align="right">98168</td>
-<td align="right">47.5</td>
-<td align="right">-122</td>
-<td align="right">1320</td>
-<td align="right">6600</td>
+<td align="right">670</td>
+<td align="right">167</td>
+<td align="right">4</td>
+<td align="right">89</td>
+<td align="right">48</td>
+<td align="right">54</td>
+<td align="left">A</td>
+<td align="left">W</td>
+<td align="right">211</td>
+<td align="right">9</td>
+<td align="right">3</td>
+<td align="left">A</td>
 </tr>
 <tr class="even">
-<td align="left">1868901295</td>
-<td align="left">2014-07-29</td>
-<td align="right">660000</td>
-<td align="right">5</td>
-<td align="right">2.25</td>
-<td align="right">2540</td>
-<td align="right">3750</td>
-<td align="right">1.5</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">4</td>
+<td align="right">657</td>
+<td align="right">579</td>
+<td align="right">174</td>
 <td align="right">7</td>
-<td align="right">1510</td>
-<td align="right">1030</td>
-<td align="right">1925</td>
-<td align="right">0</td>
-<td align="right">98115</td>
-<td align="right">47.7</td>
-<td align="right">-122</td>
-<td align="right">1780</td>
-<td align="right">3750</td>
+<td align="right">67</td>
+<td align="right">78</td>
+<td align="right">58</td>
+<td align="right">6</td>
+<td align="right">3053</td>
+<td align="right">880</td>
+<td align="right">32</td>
+<td align="right">366</td>
+<td align="right">337</td>
+<td align="right">218</td>
+<td align="left">N</td>
+<td align="left">E</td>
+<td align="right">280</td>
+<td align="right">479</td>
+<td align="right">5</td>
+<td align="left">N</td>
+</tr>
+<tr class="odd">
+<td align="right">875</td>
+<td align="right">496</td>
+<td align="right">119</td>
+<td align="right">8</td>
+<td align="right">57</td>
+<td align="right">33</td>
+<td align="right">21</td>
+<td align="right">7</td>
+<td align="right">3358</td>
+<td align="right">882</td>
+<td align="right">36</td>
+<td align="right">365</td>
+<td align="right">280</td>
+<td align="right">165</td>
+<td align="left">N</td>
+<td align="left">W</td>
+<td align="right">155</td>
+<td align="right">371</td>
+<td align="right">29</td>
+<td align="left">N</td>
+</tr>
+<tr class="even">
+<td align="right">738</td>
+<td align="right">510</td>
+<td align="right">126</td>
+<td align="right">2</td>
+<td align="right">42</td>
+<td align="right">44</td>
+<td align="right">35</td>
+<td align="right">11</td>
+<td align="right">5562</td>
+<td align="right">1578</td>
+<td align="right">44</td>
+<td align="right">703</td>
+<td align="right">519</td>
+<td align="right">256</td>
+<td align="left">N</td>
+<td align="left">W</td>
+<td align="right">207</td>
+<td align="right">358</td>
+<td align="right">20</td>
+<td align="left">N</td>
+</tr>
+<tr class="odd">
+<td align="right">1800</td>
+<td align="right">551</td>
+<td align="right">171</td>
+<td align="right">13</td>
+<td align="right">94</td>
+<td align="right">83</td>
+<td align="right">94</td>
+<td align="right">13</td>
+<td align="right">6090</td>
+<td align="right">1840</td>
+<td align="right">128</td>
+<td align="right">969</td>
+<td align="right">900</td>
+<td align="right">917</td>
+<td align="left">N</td>
+<td align="left">E</td>
+<td align="right">1199</td>
+<td align="right">149</td>
+<td align="right">5</td>
+<td align="left">N</td>
+</tr>
+<tr class="even">
+<td align="right">417</td>
+<td align="right">313</td>
+<td align="right">78</td>
+<td align="right">6</td>
+<td align="right">32</td>
+<td align="right">41</td>
+<td align="right">12</td>
+<td align="right">12</td>
+<td align="right">3742</td>
+<td align="right">968</td>
+<td align="right">35</td>
+<td align="right">409</td>
+<td align="right">321</td>
+<td align="right">170</td>
+<td align="left">N</td>
+<td align="left">W</td>
+<td align="right">106</td>
+<td align="right">206</td>
+<td align="right">7</td>
+<td align="left">N</td>
 </tr>
 </tbody>
 </table>
@@ -1565,16 +1569,16 @@ library(partykit)</code></pre>
 <ol start="4" style="list-style-type: decimal">
 <li>Run the code below to load each of the datasets listed in the <code>Datasets</code> as new objects</li>
 </ol>
-<pre class="r"><code># Carseats data
-carseats_train &lt;- read_csv(file = &quot;1_Data/carseats_train.csv&quot;)
-carseats_test &lt;- read_csv(file = &quot;1_Data/carseats_test.csv&quot;)</code></pre>
+<pre class="r"><code># hitters data
+hitters_train &lt;- read_csv(file = &quot;1_Data/hitters_train.csv&quot;)
+hitters_test &lt;- read_csv(file = &quot;1_Data/hitters_test.csv&quot;)</code></pre>
 <ol start="5" style="list-style-type: decimal">
 <li>Take a look at the first few rows of each dataframe by printing them to the console.</li>
 </ol>
 <pre class="r"><code># Print dataframes to the console
 
-carseats_train
-carseats_test</code></pre>
+hitters_train
+hitters_test</code></pre>
 <ol start="6" style="list-style-type: decimal">
 <li>Print the numbers of rows and columns of each dataset using the <code>dim()</code> function</li>
 </ol>
@@ -1601,15 +1605,15 @@ View(XXX)</code></pre>
 </ol>
 <pre class="r"><code># Convert all character columns to factor
 
-carseats_train &lt;- carseats_train %&gt;%
+hitters_train &lt;- hitters_train %&gt;%
           mutate_if(is.character, factor)
 
-carseats_test &lt;- carseats_test %&gt;%
+hitters_test &lt;- hitters_test %&gt;%
           mutate_if(is.character, factor)</code></pre>
-<pre class="r"><code>data_train &lt;- read_csv(file = &quot;1_Data/carseats_train.csv&quot;) %&gt;%
+<pre class="r"><code>data_train &lt;- read_csv(file = &quot;1_Data/hitters_train.csv&quot;) %&gt;%
   slice(1:15)
 
-data_test &lt;- read_csv(file = &quot;1_Data/carseats_test.csv&quot;)</code></pre>
+data_test &lt;- read_csv(file = &quot;1_Data/hitters_test.csv&quot;)</code></pre>
 </div>
 <div id="a---setup-1" class="section level2">
 <h2>A - Setup</h2>
@@ -1637,7 +1641,7 @@ ctrl_cv &lt;- trainControl(method = &quot;XX&quot;,
 </ul>
 <pre class="r"><code># Normal Regression --------------------------
 
-salary_glm &lt;- train(form = XX ~ . -XX - XX,
+salary_glm &lt;- train(form = XX ~ .,
                     data = XX,
                     method = &quot;XX&quot;,
                     trControl = XX)</code></pre>
@@ -1673,7 +1677,7 @@ lambda_vec &lt;- seq(from = 0, to = 1000, length = 100)</code></pre>
 </ul>
 <pre class="r"><code># Ridge Regression --------------------------
 
-salary_ridge &lt;- train(form = XX ~ . -XX - XX,
+salary_ridge &lt;- train(form = XX ~ .,
                       data = XX,
                       method = &quot;XX&quot;,
                       trControl = XX,
@@ -1720,7 +1724,7 @@ lambda_vec &lt;- seq(from = 0, to = 1000, length = 100)</code></pre>
 </ul>
 <pre class="r"><code># Lasso Regression --------------------------
 
-salary_lasso &lt;- train(form = XX ~ . -XX - XX,
+salary_lasso &lt;- train(form = XX ~ .,
                       data = XX,
                       method = &quot;XX&quot;,
                       trControl = XX,
@@ -1767,7 +1771,7 @@ cp_vec &lt;- seq(from = 0, to = .1, length = 100)</code></pre>
 </ul>
 <pre class="r"><code># Decision Tree --------------------------
 
-price_dt &lt;- train(form = XX ~ . -XX - XX,
+price_dt &lt;- train(form = XX ~ .,
                   data = XX,
                   method = &quot;XX&quot;,
                   trControl = XX,
@@ -1785,7 +1789,8 @@ price_dt$bestTune$cp</code></pre>
 <ol start="5" style="list-style-type: decimal">
 <li>Plot your final decision tree using the following code</li>
 </ol>
-<pre class="r"><code>plot(as.party(price_dt$finalModel))   # Visualise your trees</code></pre>
+<pre class="r"><code># Visualise your trees
+plot(as.party(price_dt$finalModel)) </code></pre>
 <ol start="6" style="list-style-type: decimal">
 <li>How do the nodes in the tree compare to the coefficients you found in your regression analyses? Do you see similarities or differences?</li>
 </ol>
@@ -1811,7 +1816,7 @@ mtry_vec &lt;- 1:10</code></pre>
 </ul>
 <pre class="r"><code># Random Forest --------------------------
 
-salary_rf &lt;- train(form = XX ~ . -XX - XX,
+salary_rf &lt;- train(form = XX ~ .,
                    data = XX,
                    method = &quot;XX&quot;,
                    trControl = XX,
@@ -1827,8 +1832,8 @@ plot(XX)</code></pre>
 <pre class="r"><code># Print best mtry parameter
 salary_rf$bestTune$mtry</code></pre>
 </div>
-<div id="estimate-prediction-accuracy" class="section level2">
-<h2>Estimate prediction accuracy</h2>
+<div id="estimate-prediction-accuracy-from-training-folds" class="section level2">
+<h2>Estimate prediction accuracy from training folds</h2>
 <ol style="list-style-type: decimal">
 <li>Using <code>resamples()</code>, calculate the estimated prediction accuracy for each of your models. To do this, put your model objects in the named list (e.g.; <code>glm = salary_glm</code>, …)</li>
 </ol>
@@ -1841,7 +1846,63 @@ salary_resamples &lt;- resamples(list(glm = XXX,
 <ol start="2" style="list-style-type: decimal">
 <li>Look at the summary of your <code>salary_resamples</code> object with <code>summary(salary_resamples)</code>. What does this tell you? Which model do you expect to have the best prediction accuracy for the test data?</li>
 </ol>
-<pre class="r"><code>summary(salary_resamples)</code></pre>
+<pre class="r"><code># Print summaries of cross-validation accuracy 
+summary(salary_resamples)</code></pre>
+</div>
+<div id="calculate-prediction-accuracy" class="section level2">
+<h2>Calculate prediction accuracy</h2>
+<ol style="list-style-type: decimal">
+<li>Save the criterion value for the test data as a new vector called <code>criterion_test</code></li>
+</ol>
+<pre class="r"><code># Save salaries of players in test dataset as criterion_test
+criterion_test &lt;- XXX$XXX</code></pre>
+<ol style="list-style-type: decimal">
+<li>Using <code>predict()</code>, save the prediction of your regular regression model <code>salary_glm</code> for the <code>hitters_test</code> data as a new object called <code>glm_pred</code>:</li>
+</ol>
+<ul>
+<li>Set the first argument to <code>salary_glm</code></li>
+<li>Set the newdata argument to <code>hitters_test</code></li>
+</ul>
+<pre class="r"><code># Save the glm predicted salaries of hitters_test
+glm_pred &lt;- predict(XXX, newdata = XXX)</code></pre>
+<ol start="2" style="list-style-type: decimal">
+<li>Now do the same with your ridge, lasso, decision tree, and random forest models to get the objects <code>ridge_pred</code>, <code>lasso_pred</code>, <code>dt_pred</code> and <code>rf_pred</code></li>
+</ol>
+<pre class="r"><code>ridge_pred &lt;- predict(XXX, newdata = XXX)
+lasso_pred &lt;- predict(XXX, newdata = XXX)
+dt_pred &lt;- predict(XXX, newdata = XXX)
+rf_pred &lt;- predict(XXX, newdata = XXX)</code></pre>
+<ol start="3" style="list-style-type: decimal">
+<li>Using <code>postResample()</code>, calculate the aggregate prediction accuracy for each model using the template below</li>
+</ol>
+<ul>
+<li>Set the pred argument to your model predictions (e.g.; <code>ridge_pred</code>)</li>
+<li>Set the <code>obs</code> argument to the true criterion values <code>criterion_test</code>)</li>
+</ul>
+<pre class="r"><code># Calculate aggregate accuracy for a model
+postResample(pred = XXX, 
+             obs = XXX)</code></pre>
+<ol start="4" style="list-style-type: decimal">
+<li><p>Which of your four models had the best performance in the true training data?</p></li>
+<li><p>How close were your model’ true prediction values to the values you estimated in the previous section when you ran <code>resamples()</code>?</p></li>
+</ol>
+</div>
+<div id="challenges" class="section level2">
+<h2>Challenges</h2>
+<ol style="list-style-type: decimal">
+<li>In addition to ‘regular’ 10 fold cross-validation, you can also do repeated 10-fold cross-validation, where the cross validation procedure is repeated many times. Do you think this will improve your models’ performance? To test this, create a new training control object called <code>ctrl_cv_rep</code> as below. Then, train your models again using <code>ctrl_cv_rep</code> (instead of <code>ctrl_cv</code>), and evaluate their prediction performance. Do they improve?</li>
+</ol>
+<pre class="r"><code># Repeated cross validation.
+#  Folds = 10
+#  Repeats = 5
+
+ctrl_cv_rep &lt;- trainControl(method = &quot;repeatedcv&quot;,
+                            number = 10,
+                            repeats = 5)</code></pre>
+<ol start="2" style="list-style-type: decimal">
+<li><p>Using the same procedure as above, compare models predicting the prices of houses in King County Washington using the <code>house_train</code> and <code>house_test</code> datasets. Which model does the best and how accurate was it? Was it the same model that performed the best predicting baseball player salaries?</p></li>
+<li><p>Using the same procedure as above, compare models predicting the graduate rate of students from different colleges using the <code>college_train</code> and <code>college_test</code> datasets. Which model does the best and how accurate was it? Was it the same model that performed the best predicting baseball player salaries?</p></li>
+</ol>
 </div>
 </div>
 
