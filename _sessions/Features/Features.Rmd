@@ -156,7 +156,7 @@ As the number of features grows...
 
 <i>B)</i> Reduce variables <high>automatically</high> using the right ML algorithms, e.g., `random forests` or `lasso regression`, or feature selection algorithms, e.g., `recursive feature selection`.
 
-<i>C)</i> Compress variables using <high>dimensionality reduction algorithms</high>, such `principal component analysis` (PCA).
+<i>C)</i> Compress variables using <high>dimensionality reduction algorithms</high>, such as `principal component analysis` (PCA).
 
 ]
 
