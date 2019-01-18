@@ -125,7 +125,7 @@ library(ggthemes)
 
 As the number of features grows...
 
-<high>Performance</high> - the amount of data need to generalize accurately grows exponentially.
+<high>Performance</high> - the amount of data that needs to generalize accurately grows exponentially.
 
 <high>Efficiency</high> - the amount of computations grows (how much depends on the model).
 
