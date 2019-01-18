@@ -220,10 +220,14 @@ State of the art object recognition using <high>Convolutional Neural Networks</h
 decision rules. That is because these rules are more robust to ignorance."</i><a href="https://www.bis.org/review/r120905a.pdf" style="font-size:8px">[Full text]</a><br><br>
 Andy Haldane, Director for Financial Stability, Bank of England
 
-<br><br><br><br><br>
-For background see<br>
+<br><br>
+<u>Background readings</u><br>
 <a href="GigerenzerGaissmaier AnnuRevPsych 2011.pdf">Gigerenzer & Gaissmaier (2011)</a><br>
-<a href="https://pure.mpg.de/rest/items/item_2483194/component/file_2483420/content">Phillips, Neth, Woike, & Gaissmaier (2017)</a>
+<a href="https://pure.mpg.de/rest/items/item_2483194/component/file_2483420/content">Phillips et al. (2017)</a>
+
+<u>R packages</u> <br>
+[FFTrees]("https://cran.r-project.org/web/packages/FFTrees/vignettes/guide.html")
+
 ]
 
 .pull-right6[

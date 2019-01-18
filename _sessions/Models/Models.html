@@ -374,7 +374,7 @@ As random forests select at any node the best of `mtry`-many randomly selected f
 
 &lt;p align="center"&gt;
   
-  &lt;img src="image/self_tuning.png" height=400px&gt;
+  &lt;img src="image/self_tuning.png" height=420px&gt;
   
 &lt;/p&gt;
 
@@ -392,7 +392,7 @@ There is &lt;high&gt;no ground truth&lt;/high&gt;, rendering unsupervised learni
 
 &lt;u&gt;Common questions&lt;/u&gt;
 
-Are there &lt;high&gt;groups of cases&lt;/high&gt;, which case belongs to which group, and how many groups are there? &amp;#8594; `k-means` or `hierarchical clustering`
+Are there &lt;high&gt;groups of cases&lt;/high&gt; (clusters), which case belongs to which group, and how many groups are there? &amp;#8594; `k-means` or `hierarchical clustering`
 
 Are there &lt;high&gt;groups of features&lt;/high&gt;, which features belongs to which group, and how many groups are there? &amp;#8594; `pca` or `svd`
 
@@ -415,11 +415,29 @@ Are there &lt;high&gt;groups of features&lt;/high&gt;, which features belongs to
 
 # Excurse: Unsupervised learning
 
+.pull-left45[
 
-k-means
+`k-means`, `hierarchical-clustering`, and other &lt;high&gt;clustering algorithms&lt;/high&gt; attempt to find distributed membership to `\(k\)` groups (clusters) such that &lt;high&gt;groups are maximally homogenous&lt;/high&gt;.
 
-hierarchical
+&lt;u&gt;k-means&lt;/u&gt;
 
+Assign cases to the closest centroids (high-dimensional means) while iteratively shifting them around to &lt;high&gt;minimize within-group variance versus between-group variance&lt;/high&gt;. 
+
+&lt;u&gt;´hierarchical clustering`&lt;/u&gt;
+
+Place every case in one group. &lt;high&gt;Join clusters according to a pre-specified distance function&lt;/high&gt; until the desired number of `\(k\)` clusters is reached.  
+
+]
+
+.pull-right5[
+
+&lt;p align="center"&gt;
+  
+  &lt;img src="image/iris_kmeans.png" height=400px&gt;
+  
+&lt;/p&gt;
+
+]
 
 ---
 
@@ -428,7 +446,13 @@ hierarchical
 pca &amp; svd
 
 
+.pull-right45[
 
+&lt;p align = "center"&gt;
+&lt;img src="image/pca.png"&gt;
+&lt;/p&gt;
+
+]
 
 ---
 
@@ -486,12 +510,23 @@ if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
   d.head.appendChild(s);
 })();</script>
 
-<script type="text/x-mathjax-config">
-MathJax.Hub.Config({
-  tex2jax: {
-    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+<script>
+(function() {
+  var i, text, code, codes = document.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
   }
-});
+})();
 </script>
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>

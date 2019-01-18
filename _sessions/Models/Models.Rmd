@@ -455,7 +455,7 @@ There is <high>no ground truth</high>, rendering unsupervised learning problems 
 
 <u>Common questions</u>
 
-Are there <high>groups of cases</high>, which case belongs to which group, and how many groups are there? &#8594; `k-means` or `hierarchical clustering`
+Are there <high>groups of cases</high> (clusters), which case belongs to which group, and how many groups are there? &#8594; `k-means` or `hierarchical clustering`
 
 Are there <high>groups of features</high>, which features belongs to which group, and how many groups are there? &#8594; `pca` or `svd`
 
@@ -478,11 +478,29 @@ Are there <high>groups of features</high>, which features belongs to which group
 
 # Excurse: Unsupervised learning
 
+.pull-left45[
 
-k-means
+`k-means`, `hierarchical-clustering`, and other <high>clustering algorithms</high> attempt to find distributed membership to $k$ groups (clusters) such that <high>groups are maximally homogenous</high>.
 
-hierarchical
+<u>k-means</u>
 
+Assign cases to the closest centroids (high-dimensional means) while iteratively shifting them around to <high>minimize within-group variance versus between-group variance</high>. 
+
+<u>hierarchical clustering</u>
+
+Place every case in one group. <high>Join clusters according to a pre-specified distance function</high> until the desired number of $k$ clusters is reached.  
+
+]
+
+.pull-right5[
+
+<p align="center">
+  
+  <img src="image/iris_kmeans.png" height=400px>
+  
+</p>
+
+]
 
 ---
 
@@ -491,7 +509,13 @@ hierarchical
 pca & svd
 
 
+.pull-right45[
 
+<p align = "center">
+<img src="image/pca.png">
+</p>
+
+]
 
 ---
 
