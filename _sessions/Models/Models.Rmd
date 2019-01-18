@@ -46,6 +46,8 @@ knitr::opts_chunk$set(comment=NA, fig.width=6, fig.height=6, echo = TRUE, eval =
 library(tidyverse)
 library(baselers)
 library(ggthemes)
+
+source("https://raw.githubusercontent.com/therbootcamp/therbootcamp.github.io/master/_materials/code/baselrbootcamp_palettes.R")
 ```
 
 
@@ -163,16 +165,103 @@ Kernels <high>re-represent objects</high> in terms of other objects!
 
 # Robustness
 
-complex but sometimes necessary
+.pull-left5[
 
+To nontheless produce robust predictions, machine learning models use a variety of `tricks`:
+
+Decrease error tolerance
+  SVM
+Regularization
+  Lasso
+  Ridge
+  Elastic Net
+Binarize data
+  Trees
+Ensemble
+Resampling
+
+]
+
+.pull-right5[
+
+<p align="center">
+  <img src="image/robustness_sel.png">
+</p>
+
+]
 
 ---
 
 # Regularization
 
-complex but sometimes necessary
+.pull-left5[
+
+Regularization is the process of adding model terms, usually <high>penalties for complexity</high>, in order to prevent overfitting (or solve a problem in the first place).
+
+|Name|Penalty|Caret|
+|:----|:-----|:-----|
+| AIC/BIC | $$||\beta||_0$$ | - |
+| Lasso | $||\beta||_1$ | `method = "lasso` |
+| Ridge | $||\beta||_2$ | `method = "ridge` |
+| Elastic net | $||\beta||_2 + ||\beta||_2$ | `method = "elasticnet` |
+
+]
 
 
+
+.pull-right5[
+
+```{r, fig.width = 8, fig.height = 3.5, echo = FALSE, eval = TRUE, warning = FALSE, dpi = 200}
+set.seed(5)
+
+N <- 40
+
+iv <- rnorm(N, mean = 10, sd = 2)
+truth <- iv 
+noise <- rnorm(N, mean = 0, sd = 2)
+obs <- truth + noise
+
+data <- data.frame(iv, obs)
+
+
+poly_pred <- map_dfc(.x = c(1, 19), .f = function(degree) {
+  
+  output <- data.frame(lm(obs ~ poly(iv, degree), data = data)$fitted.values)
+  
+  names(output) <- paste0("d", degree)
+  
+  return(output)
+
+}) %>% mutate(id = 1:N,
+              x = iv,
+              obs = obs) %>%
+  gather(Degree, pred, -id, -x, -obs) %>%
+  mutate(`Fitting` = abs(pred - obs))
+
+
+poly_pred <- poly_pred %>%
+  mutate(Degree = case_when(Degree == "d1" ~ "Simple",
+                            TRUE ~ "Complex"))
+
+
+
+overfit_gg <- ggplot(poly_pred, aes(x = x, y = pred, col = Degree)) + 
+  geom_line(size = 1.5) +
+  geom_point(aes(x = x, y = obs), col = "black", pch = 21) +
+  annotate("segment", x = 5, y = 5, xend = 15, yend = 15, col = "black", linetype = 4, size = 1) +
+  xlim(5, 15) +
+  ylim(5, 15) +
+  labs(title = "Model overfitting",
+       subtitle = "Dashed line is TRUE model") +
+  theme_bw() +
+    theme(legend.position="bottom") +
+    scale_color_baselrbootcamp()
+ 
+overfit_gg
+
+```
+
+]
 
 ---
 
@@ -210,6 +299,25 @@ complex but sometimes necessary
 complex but sometimes necessary
 
 
+
+
+---
+
+# Supervised learning
+
+
+Non-Linearities can
+
+
+---
+
+# Feature engineering
+
+Non-Linearities can
+
+
+
+Einstein
 
 
 ---

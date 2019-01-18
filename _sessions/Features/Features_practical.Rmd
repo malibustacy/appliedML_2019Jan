@@ -301,7 +301,7 @@ In this section, you will explore feature selection for the Pima Indians Diabete
 
 4. Open the data set in a new window using `View()`. Do they look OK?
 
-### Splitting
+#### Splitting
 
 5. As always, before you do anything you need to make sure that you separate a hold-out data set for later. Create `pima_train` and `pima_test` using `createDataPartition()` with as little as <b>15% of cases going into the training set</b>. Also store the variable `diabetes` in the test set, which will be the criterion . 
 
@@ -329,7 +329,7 @@ pima_test  <- pima_diabetes %>% slice(-train_index)
 criterion <- pima_test$diabetes
 ```
 
-### Remove unwanted features
+#### Remove unwanted features
 
 OK, with the training set, let's get to work and remove some features.
 
@@ -381,7 +381,7 @@ nearZeroVar(XX_pred)
 nearZeroVar(pima_train_pred)
 ```
 
-### Feature importance
+#### Feature importance
 
 After having retained all features in the previous section section, this section explores feature selection on grounds of feature importance. To do this, we first need to fit our model. How about a simple logistic regression aka `method = 'glm'`? 
 
@@ -426,7 +426,7 @@ varimp_glm
 plot(varimp_glm)
 ```
 
-## Model comparison
+#### Model comparison
 
 11. Fit the glm a second time using only the four best features and store the result in a different fit object.
 
@@ -482,7 +482,7 @@ In this section, you will explore feature selection but with a data set with ver
 
 4. Open the data set in a new window using `View()`. Do they look OK?
 
-### Splitting
+#### Splitting
 
 5. Again, before you do anything you need to make sure that you separate a hold-out data set for later. Create `murders_train` and `murders_test` using `createDataPartition()` with again as little as <b>25% of cases going into the training set</b>. Also store the variable `diabetes` in the test set, which will be the criterion . 
 
@@ -498,7 +498,7 @@ murders_test  <- murders_crime %>% slice(-train_index)
 criterion <- murders_test$murders
 ```
 
-### Remove unwanted features
+#### Remove unwanted features
 
 OK, with the training set, let's get to work and remove some features.
 
@@ -556,7 +556,7 @@ murders_train_clean <- murders_train_pred %>%
   add_column(murders = murders_train_crit)
 ```
 
-## Model comparison
+#### Model comparison
 
 11. Fit a `glm` twice, once using the original training set and once using the clean training set, and store the fits in separate objects. 
 
@@ -596,7 +596,7 @@ confusionMatrix(murders_pred, criterion)
 confusionMatrix(murders_clean_pred, criterion)
 ```
 
-## Data compression with PCA
+#### Data compression with PCA
 
 13. Given the high features correlations it is sensible to compress the data using `principal component analysis` (PCA). Create a third fit object using the original training set with `preProcess = c('pca')` and `trControl = trainControl(preProcOptions = list(thresh = 0.8))` in the training function. The first argument tells R to use PCA, the second specifies that exactly 80% of the variance should be retained. 
 
@@ -621,7 +621,7 @@ confusionMatrix(murders_pca, criterion)
 
 15. Play around: Alter the amount of variance explained by the `PCA` (using `thresh`), increase the proportion dedicated to training, use a different model, e.g., `random forest`, and see whether things change. 
 
-## Feature importance
+#### Feature importance
 
 16. Evaluate the feature importance for each of the three models. 
 

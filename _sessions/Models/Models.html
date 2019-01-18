@@ -150,16 +150,55 @@ Kernels &lt;high&gt;re-represent objects&lt;/high&gt; in terms of other objects!
 
 # Robustness
 
-complex but sometimes necessary
+.pull-left5[
 
+To nontheless produce robust predictions, machine learning models use a variety of `tricks`:
+
+Decrease error tolerance
+  SVM
+Regularization
+  Lasso
+  Ridge
+  Elastic Net
+Binarize data
+  Trees
+Ensemble
+Resampling
+
+]
+
+.pull-right5[
+
+&lt;p align="center"&gt;
+  &lt;img src="image/robustness_sel.png"&gt;
+&lt;/p&gt;
+
+]
 
 ---
 
 # Regularization
 
-complex but sometimes necessary
+.pull-left5[
+
+Regularization is the process of adding model terms, usually &lt;high&gt;penalties for complexity&lt;/high&gt;, in order to prevent overfitting (or solve a problem in the first place).
+
+|Name|Penalty|Caret|
+|:----|:-----|:-----|
+| AIC/BIC | `$$||\beta||_0$$` | - |
+| Lasso | `\(||\beta||_1\)` | `method = "lasso` |
+| Ridge | `\(||\beta||_2\)` | `method = "ridge` |
+| Elastic net | `\(||\beta||_2 + ||\beta||_2\)` | `method = "elasticnet` |
+
+]
 
 
+
+.pull-right5[
+
+&lt;img src="Models_files/figure-html/unnamed-chunk-3-1.png" style="display: block; margin: auto;" /&gt;
+
+]
 
 ---
 
@@ -197,6 +236,25 @@ complex but sometimes necessary
 complex but sometimes necessary
 
 
+
+
+---
+
+# Supervised learning
+
+
+Non-Linearities can
+
+
+---
+
+# Feature engineering
+
+Non-Linearities can
+
+
+
+Einstein
 
 
 ---
