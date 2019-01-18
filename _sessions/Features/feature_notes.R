@@ -14,7 +14,7 @@ pima_diabetes = PimaIndiansDiabetes2 %>%
   as.tibble() %>%
   select(diabetes, names(.))
 
-write.csv(pima_diabetes, '1_Data/pima_diabetes.csv')
+write_csv(pima_diabetes, '1_Data/pima_diabetes.csv')
 
 # ----- prepare violent_crime & murder
 
@@ -50,32 +50,101 @@ violent_crime = as.tibble(violent_crime)
 violent_crime = readr::type_convert(violent_crime)
 
 
-nonviolent_crime = cbind(ViolentCrimesPerPop = data$nonViolPerPop, data[,sel_pred])
-nonviolent_long = vars_long[c(which(vars_short == 'ViolentCrimesPerPop'),sel_pred)]
+nonviolent_crime = cbind(nonViolPerPop = data$nonViolPerPop, data[,sel_pred])
+nonviolent_long = vars_long[c(which(vars_short == 'nonViolPerPop'),sel_pred)]
 
-nonviolent_sel = nonviolent_crime$ViolentCrimesPerPop != '?'
+nonviolent_sel = nonviolent_crime$nonViolPerPop != '?'
 nonviolent_crime = nonviolent_crime[nonviolent_sel,]
 nonviolent_long = nonviolent_long[nonviolent_sel]
 
-nonviolent_sel = apply(violent_crime,2,function(x) sum(x == '?', na.rm=T) == 0 & !any(is.na(x)))
+nonviolent_sel = apply(nonviolent_crime,2,function(x) sum(x == '?', na.rm=T) == 0 & !any(is.na(x)))
 
 nonviolent_crime = nonviolent_crime[,nonviolent_sel]
 nonviolent_long = long[nonviolent_sel]
 
-nonviolent_crime = as.tibble(violent_crime)
-nonviolent_crime = readr::type_convert(violent_crime)
+nonviolent_crime = as.tibble(nonviolent_crime)
+nonviolent_crime = readr::type_convert(nonviolent_crime)
+
+
+murders_crime = cbind(murders = ifelse(data$murders == 0,'no','yes'), data[,sel_pred])
+
+murders_sel = murders_crime$murders != '?'
+murders_crime = murders_crime[nonviolent_sel,]
+
+murders_sel = apply(murders_crime,2,function(x) sum(x == '?', na.rm=T) == 0 & !any(is.na(x)))
+
+murders_crime = murders_crime[,murders_sel]
+
+murders_crime = as.tibble(murders_crime)
+murders_crime = readr::type_convert(murders_crime)
+
 
 set.seed(100)
 
 sel = sample(1994,1000)
 
+murders_crime = murders_crime %>% mutate_if(is.character, as.factor)
+violent_crime = violent_crime %>% mutate_if(is.character, as.factor)
+nonviolent_crime = nonviolent_crime %>% mutate_if(is.character, as.factor)
+
+murders_crime = murders_crime %>% slice(sel)
 violent_crime = violent_crime %>% slice(sel)
 nonviolent_crime = nonviolent_crime %>% slice(sel)
 
+write_csv(murders_crime, '1_Data/murders_crime.csv')
 write_csv(violent_crime, '1_Data/violent_crime.csv')
 write_csv(nonviolent_crime, '1_Data/nonviolent_crime.csv')
 
 
+# ----- prepare pima_diabetes
+
+require(mlbench)
+data(PimaIndiansDiabetes)
+data(PimaIndiansDiabetes2)
+
+sapply(PimaIndiansDiabetes2,function(x) sum(is.na(x)))
+pima_diabetes = PimaIndiansDiabetes2 %>% 
+  select(-triceps, -insulin) %>%
+  filter(!is.na(glucose),!is.na(pressure),!is.na(mass)) %>%
+  as.tibble() %>%
+  select(diabetes, names(.))
+
+write_csv(pima_diabetes, '1_Data/pima_diabetes.csv')
+
+findCorrelation(cor(pima_diabetes %>% select(-diabetes)))
+nearZeroVar(pima_diabetes)
+
+
+n = c(20, 20)
+l = c(0, 20)
+r = c(20,0)
+
+gini = 1 - (n[1]/sum(n))**2 - (n[2]/sum(n))**2
+gini_l = 1 - (l[1]/sum(l))**2 - (l[2]/sum(l))**2
+gini_r = 1 - (r[1]/sum(r))**2 - (r[2]/sum(r))**2
+
+decr = gini - (n[1]/sum(n)) * gini_l - (n[2]/sum(n)) * gini_r
+decr
+
+
+fit = train(diabetes ~ .,
+      data = pima_train,
+      method = 'rf',
+      trControl = trainControl(method = 'cv'),
+      tuneGrid = data.frame(mtry = 2),ntree=20)
+
+varImp(fit, scale = F)
+
+a = randomForest::randomForest(diabetes ~ .,
+                           data = pima_train,ntree=10
+                            )
+randomForest::importance(a,type=2)
+
+dim(a$forest$treemap)
+
+
+
+randomForest::getTree(fit)
 
 
 

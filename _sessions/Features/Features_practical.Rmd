@@ -1,6 +1,6 @@
 ---
-title: "Prediction"
-subtitle: "With regression, decision trees, and random forests"
+title: "Features"
+subtitle: ""
 author: "Applied Machine Learning with R<br/><a href='https://therbootcamp.github.io'>www.therbootcamp.com</a><br/><a href='https://twitter.com/therbootcamp'>@therbootcamp</a>"
 output:
   html_document:
@@ -12,7 +12,7 @@ knitr::opts_chunk$set(comment = NA,
                       fig.width = 6, 
                       fig.height = 6,
                       fig.align = 'center',
-                      echo = TRUE, 
+                      echo = FALSE, 
                       eval = FALSE, 
                       warning = FALSE,
                       message = FALSE)
@@ -20,8 +20,8 @@ knitr::opts_chunk$set(comment = NA,
 options(digits = 3)
 ```
 
-```{r, echo = FALSE, fig.align = 'center', eval = TRUE, out.width = "100%", fig.cap="Source: Medium.com"}
-knitr::include_graphics("wrongdata.gif")
+```{r, echo = FALSE, fig.align = 'center', eval = TRUE, out.width = "90%", fig.cap=""}
+knitr::include_graphics("image/wrongdata.gif")
 ```
 
 ## {.tabset}
@@ -31,18 +31,9 @@ knitr::include_graphics("wrongdata.gif")
 By the end of this practical you will:
 
 1. Understand the importance the curse of dimensionality.
-2. Know how to preprocess data. 
-4. Explore new features.
-
-Ideas...
-
-show misprediction as data grows large
-show time taken as data grows large
-reduce dimensionality
-variable importance
-do scaling with lasso and ridge
-Z explore new features
-
+2. Know how eliminate unwanted features.
+3. Explore and use feature importance.
+4. Use dimensionality reduction.
 
 ### Datasets
 
@@ -54,6 +45,7 @@ library(ggthemes)
 |File  |Rows | Columns |
 |:----|:-----|:------|
 |[pima_diabetes](https://raw.githubusercontent.com/therbootcamp/appliedML_2019Jan/master/1_Data/pima_diabetes.csv)| 724 | 7|
+|[murders_crime](https://raw.githubusercontent.com/therbootcamp/appliedML_2019Jan/master/1_Data/violent_crime.csv)| 1000 | 102|
 |[violent_crime](https://raw.githubusercontent.com/therbootcamp/appliedML_2019Jan/master/1_Data/violent_crime.csv)| 1000 | 102|
 |[nonviolent_crime](https://raw.githubusercontent.com/therbootcamp/appliedML_2019Jan/master/1_Data/nonviolent_crime.csv)| 1000 | 102|
 
@@ -66,14 +58,14 @@ violent_crime <- read_csv("https://raw.githubusercontent.com/therbootcamp/applie
 nonviolent_crime <- read_csv("https://raw.githubusercontent.com/therbootcamp/appliedML_2019Jan/master/1_Data/nonviolent_crime.csv")
 ```
 
-- The `pima_diabetes` is a subset of the `PimaIndiansDiabetes2` dataset in the `mlbench` package. To see column descriptions, run the following:
+- The `pima_diabetes` is a subset of the `PimaIndiansDiabetes2` data set in the `mlbench` package. To see column descriptions, run the following:
 
 ```{r, eval = FALSE}
 library(mlbench)       # Load ISLR package
 ?PimaIndiansDiabetes2  # Look at help menu for College
 ```
 
-- The `violent_crime` and `non_violent_crime` data are subsets of the Communities and Crime Unnormalized Data Set dataset from the UCI Machine Learning Repository. To see column descriptions, visit this site: [Communities and Crime Unnormalized Data Set](https://archive.ics.uci.edu/ml/datasets/Communities+and+Crime+Unnormalized)
+- The `murders_crime`, `violent_crime`, and `non_violent_crime` data are subsets of the Communities and Crime Unnormalized Data Set data set from the UCI Machine Learning Repository. To see column descriptions, visit this site: [Communities and Crime Unnormalized Data Set](https://archive.ics.uci.edu/ml/datasets/Communities+and+Crime+Unnormalized)
 
 ### Glossary
 
@@ -93,6 +85,7 @@ library(mlbench)       # Load ISLR package
 |Package| Installation|
 |:------|:------|
 |`tidyverse`|`install.packages("tidyverse")`|
+|`tibble`|`install.packages("tibble")`|
 |`caret`|`install.packages("caret")`|
 
 ### Cheatsheet
@@ -100,7 +93,7 @@ library(mlbench)       # Load ISLR package
 <figure>
 <center>
 <a href="https://github.com/rstudio/cheatsheets/raw/master/caret.pdf">
-  <img src="https://www.rstudio.com/wp-content/uploads/2015/01/caret-cheatsheet-200x155@2x.png" alt="Trulli" style="width:70%">
+  <img src="https://www.rstudio.com/wp-content/uploads/2015/01/caret-cheatsheet.png" alt="Trulli" style="width:70%">
   <figcaption>hhttps://github.com/rstudio/cheatsheets/raw/master/caret.pdf</figcaption></a>
 </figure>
 
@@ -113,6 +106,7 @@ library(mlbench)       # Load ISLR package
 # Step 0: Load packages-----------
 
 library(tidyverse)    # Load tidyverse for dplyr and tidyr
+library(tibble)       # For advanced tibble functions
 library(caret)        # For ML mastery 
 
 # Step 1: Load, prepare, and explore data ----------------------
@@ -282,191 +276,410 @@ library(caret)
 library(tidyverse)
 ```
 
-4. In the code below, we will load each of the datasets listed in the `Datasets` as new objects
+4. In the code below, we will load each of the data sets listed in the `Datasets` as new objects.
 
 ```{r, echo = TRUE, eval = FALSE, message = FALSE, warning = FALSE}
-# College data
-college_train <- read_csv(file = "1_Data/college_train.csv")
-college_test <- read_csv(file = "1_Data/college_train.csv")
+# Pimo Indians diabetes
+pima_diabetes <- read_csv(file = "1_Data/pima_diabetes.csv")
 
-# House data
-house_train <- read_csv(file = "1_Data/house_train.csv")
-house_train <- read_csv(file = "1_Data/house_test.csv")
+# (Non-) violent crime statistics
+violent_crime    <- read_csv(file = "1_Data/violent_crime.csv")
+nonviolent_crime <- read_csv(file = "1_Data/nonviolent_crime.csv")
 ```
 
-5. Take a look at the first few rows of each dataframe by printing then to the console.
 
-6. Print the numbers of rows and columns of each dataset using the `dim()` function
+## B - Pima Indians Diabetes
 
-7. Look at the names of the dataframe with the `names()` function.
+In this section, you will explore feature selection for the Pima Indians Diabetes data set. The Pima are a group of Native Americans living in Arizona. A genetic predisposition allowed this group to survive normally to a diet poor of carbohydrates for years. In the recent years, because of a sudden shift from traditional agricultural crops to processed foods, together with a decline in physical activity, made them develop the highest prevalence of type 2 diabetes and for this reason they have been subject of many studies. 
 
-8. Open the dataset in a new window using `View()`. Do they look ok?
+1. Take a look at the first few rows of the pima diabetes data frame by printing then to the console.
 
-9. We need to do a little bit of data cleaning before starting. Specifically, we need to convert all columns to factors: Do this by running the following code:
+2. Print the numbers of rows and columns of each data set using the `dim()` function.
+
+3. Look at the names of the data frame with the `names()` function.
+
+4. Open the data set in a new window using `View()`. Do they look OK?
+
+### Splitting
+
+5. As always, before you do anything you need to make sure that you separate a hold-out data set for later. Create `pima_train` and `pima_test` using `createDataPartition()` with as little as <b>15% of cases going into the training set</b>. Also store the variable `diabetes` in the test set, which will be the criterion . 
+
+```{r, echo = TRUE}
+# split index
+train_index <- createDataPartition(XX$XX, p = .15, list = FALSE)
+
+# train and test sets
+pima_train <- XX %>% slice(train_index)
+pima_test  <- XX %>% slice(-train_index)
+
+# test criterion
+criterion <- pima_test$XX
+```
 
 ```{r}
-# Convert all character columns to factor
+# split index
+train_index <- createDataPartition(pima_diabetes$diabetes, p = .15, list = FALSE)
 
-college_train <- college_train %>%
-          mutate_if(is.character, factor)
+# train and test sets
+pima_train <- pima_diabetes %>% slice(train_index)
+pima_test  <- pima_diabetes %>% slice(-train_index)
 
-college_test <- college_test %>%
-          mutate_if(is.character, factor)
-
-house_train <- house_train %>%
-          mutate_if(is.character, factor)
-
-house_test <- house_test %>%
-          mutate_if(is.character, factor)
+# test criterion
+criterion <- pima_test$diabetes
 ```
 
-# College Graduation Rates
+### Remove unwanted features
 
-In this section, we will again predict college graduation rates `Grad_Rate` from the `college_train` and `college_test` datasets. Here's how the first few rows of `college_train` should look:
+OK, with the training set, let's get to work and remove some features.
 
-```{r, results = 'asis', echo = FALSE, eval = TRUE}
-knitr::kable(college_train[1:10,])
+6. First split the training data into a data frame holding the predictors and the criterion using the code below.
+
+```{r, echo = TRUE}
+# Select predictors
+pima_train_pred <- pima_train %>% select(-XX)
+
+# Select criterion
+pima_train_crit <- pima_train %>% select(XX) %>% pull()
 ```
-
-## Fitting
-
-Using the basics steps in the Examples section above, fit each of three models, regression, decision trees, and random forests to the `college_train` data. your goal is to fit models predicting `Grad.Rate`
-
-1. Look at the `college_train` dataset and decide which features you think are reasonable to include in a model.
-
-2. Using `trainControl()`, set your training control method to `"none"`. Save your object as `ctrl_none`
-
-3. Using `train()` fit a regression model called `grad_glm` predicting `Grad.Rate`, and using the features you think are reasonable.
-
-4. Explore your `grad_glm` object by looking at `grad_glm$finalModel` and using `summary()`, what do you find?
-
-5. Using `train()`, fit a decision tree model called `grad_dt` predicting `Grad.Rate` (using the same features as above).
-
-- Set the complexity parameter to `cp = 0.01`
 
 ```{r}
-grad_dt <- train(form = Grad.Rate ~ .,    # Make sure to specify your features here!
-                 data = data_train,
-                 method = "rpart",
-                 trControl = train_control,
-                 tuneGrid = expand.grid(cp = .01))   # Set complexity parameter
+# Select predictors
+pima_train_pred <- pima_train %>% select(-diabetes)
+
+# Select criterion
+pima_train_crit <- pima_train %>% select(diabetes) %>% pull()
 ```
 
+7. Although, this data set is rather small and rather well curated, test if there are any excessively correlated features using `cor()` and `findCorrelation()` using the code below. Are there any?
 
-6. Explore your `grad_dt` object by looking at `grad_dt$finalModel` and plotting it with `plot(as.party(grad_dt$finalModel))`, what do you find?
+```{r, echo = TRUE}
+# determine correlation matrix
+corr_matrix <- cor(XX_pred)
 
-7. Using `train()`, fit a random forest model called `grad_rf` predicting `Grad.Rate` (using the same features as above).
-
-- Set the number of randomly sampled parameter to `mtry` = 2
-
-```{r, eval = FALSE, echo = TRUE}
-grad_rf <- train(form = Grad.Rate ~ .,    # Make sure to specify your features here!
-                 data = college_train,
-                 method = "rf",
-                 trControl = train_control,
-                 tuneGrid = expand.grid(mtry = 2))  # Set number of features randomly selected
+# find excessively correlated variables
+findCorrelation(corr_matrix)
 ```
-
-8. Using `postResample()`, determine the fitting performance of each of your models.
-
-9. Which one had the best fits? What was the fitting MAE of each model?
-
-10. If you'd like to, try visualizing the fitting results using the plotting code shown in the Examples tab above.
-
-##  Prediction
-
-1. Using `postResample()`, determine the *prediction* performance of each of your models on the `college_test` data.
-
-2. How does each model's prediction performance compare to its fitting performance? Is it worse? Better? The same?
-
-3. Which of the three models has the best prediction performance?
-
-4. If you had to use one of these three models in the real-world, which one would it be? Why?
-
-5. If someone came to you and asked "If I use your model in the future to predict the graduation rate of a new college, how accurate do you think it would be?", what would you say?
-
-# House Prices in King County, Washington
-
-In this section, we will predict the prices of houses in King County Washington (home of Seattle, [which you can thank for this](https://qz.com/208457/a-cartographic-guide-to-starbucks-global-domination/)) using the `house_train` and `house_test` datasets. Here's how they should look:
-
-```{r, results = 'asis', echo = FALSE, eval = TRUE}
-knitr::kable(house_train[1:10,])
-```
-
-## Fitting
-
-Your goal in the following models is to predict `price`
-
-1. Look at the `house_train` dataset and decide which features you think are reasonable to include in a model.
-
-2. Using `trainControl()`, set your training control method to `"none"`. Save your object as `ctrl_none`
-
-3. Using `train()` fit a regression model called `price_glm` predicting `price` using the features you think are reasonable.
-
-4. Explore your `price_glm` object by looking at `price_glm$finalModel` and using `summary()`, what do you find?
-
-5. Using `train()`, fit a decision tree model called `price_dt` predicting `price` and using the same features as above.
-
-- Set the complexity parameter to `cp = 0.01`
-
-6. Explore your `price_dt` object by looking at `price_dt$finalModel` and plotting it with `plot(as.party(price_dt$finalModel))`, what do you find?
-
-7. Using `train()`, fit a random forest model called `price_rf` predicting `price` and using the same features as above.
-
-- Set the number of randomly sampled parameter to `mtry` = 2
-
-8. Using `postResample()`, determine the fitting performance of each of your models
-
-9. Which one had the best fits? What was the fitting MAE of each model?
-
-10. If you'd like to, try visualizing the fitting results using the plotting code in the Examples
-
-##  Prediction
-
-1. Using `postResample()`, determine the prediction performance of each of your models on the `house_test` data.
-
-2. How does each model's prediction performance compare to its fitting performance? Is it worse? Better? The same?
-
-3. Which of the three models has the best prediction performance?
-
-4. If you had to use one of these three models in the real-world, which one would it be? Why?
-
-5. If someone came to you and asked "If I use your model in the future to predict house selling prices, how accurate do you think it would be?", what would you say?
-
-# Exploring model tuning parameters
-
-1. In all of your decision tree models so far, you have been setting the complexity parameter to 0.01. Try setting it to a largre value of 0.2 and see how your decision trees change (by plotting them). Do they get more or less complicated? How does increasing this value affect fitting and prediction performance? If you are interested in learning more about this parameter, look at the help menu with `?rpart.control`.
-
-2. In each of your random forest models, you have been setting the `mtry` argument to 2. Try setting it to a larger value such as 5 and re-running your models. How does increasing this value affect fitting and prediction performance? If you are interested in learning more about this parameter, look at the help menu with `?randomForest`.
-
-3. By default, the `train()` function uses 500 trees in `method = "rf"`. How do the number of trees affect performance? To answer this, try setting the number of trees to 1,000 (see example below) and re-evaluating your model's training and test performance. What do you find? What if you set the number of trees to just 10?
-
-```{r, eval = FALSE}
-# Create random forest model with 1000 trees
-
-mod <- train(form = hwy ~ year + cyl + displ,
-             data = data_train,
-             method = "rf",
-             trControl = train_control,
-             ntree = 1000,   # use 1000 trees! (Instead of the default value of 500)
-             tuneGrid = expand.grid(mtry = 2))
-
-```
-
-# Challenges
-
-1. So far you've probably been using most, if not all, available features in predicting house sales. But imagine someone came to you and said "I need to know how much a set of new houses will sell for, but I only have access to three features `bedrooms`, `bathrooms`, and `sqft_living`. Which of your models should I use and how accurate will they be? How would you answer that question? Use your modelling techniques to find out!
-
-2. Repeat your modelling process, but now do a classification task. Specifically, predict whether or not a house sells for at least \$1,000,000. To do this, you'll first need to create a new column called `million` in both your `house_train` and `house_test` datasets (the code below should help you). Then, use your best modelling techniques to make this prediction. How accurate are your models in predicting whether or not a house will sell for over $1,000,000? Don't forget to use the `confusionMatrix()` function instead of `postResample()` to evaluate your model's accuracy!
 
 ```{r}
-# Add million column to house_train and house_test
-#  A factor indicating whether or not a house sells for
-#   over 1,000,0000
+# determine correlation matrix
+corr_matrix <- cor(pima_train_pred)
 
-house_train <- house_train %>%
-  mutate(million = factor(price > 1000000))
+# find excessively correlated variables
+findCorrelation(corr_matrix)
+```
 
-house_test <- house_test %>%
-  mutate(million = factor(price > 1000000))
+8. Now, test if there are any near-zero variance features Any of those?
+
+```{r, echo = TRUE}
+# find near zero variance predictors
+nearZeroVar(XX_pred)
+```
+
+```{r}
+# find near zero variance predictors
+nearZeroVar(pima_train_pred)
+```
+
+### Feature importance
+
+After having retained all features in the previous section section, this section explores feature selection on grounds of feature importance. To do this, we first need to fit our model. How about a simple logistic regression aka `method = 'glm'`? 
+
+9. Fit the `glm` to the training data.
+
+```{r, echo = TRUE}
+# fit random forest
+pima_glm <- train(diabetes ~ .,
+                data = XX,
+                method = XX
+                )
+```
+
+```{r}
+# fit random forest
+pima_glm <- train(diabetes ~ .,
+                data = pima_train,
+                method = 'glm')
+```
+
+10. Evaluate feature importance using `varImp()`. The function will show importance on a scale from 0 (least important feature) to 100 (most important feature). You can set `scale = TRUE` to see absolute importance measures in t-values.
+
+```{r, echo = TRUE}
+# determine variable importance
+varimp_glm <- varImp(XX)
+
+# print variable importance
+varimp_glm
+
+# print variable importance
+plot(varimp_glm)
+```
+
+```{r}
+# determine variable importance
+varimp_glm <- varImp(pima_glm)
+
+# print variable importance
+varimp_glm
+
+# print variable importance
+plot(varimp_glm)
+```
+
+## Model comparison
+
+11. Fit the glm a second time using only the four best features and store the result in a different fit object.
+
+```{r, echo = TRUE}
+# fit glm with best four features
+pima_glm4 = train(diabetes ~ XX + YY + ZZ + AA,
+                data = XX,
+                method = XX)
+```
+
+```{r}
+# fit glm with best four features
+pima_glm4 = train(diabetes ~ glucose + mass + pregnant + pedigree,
+                data = pima_train,
+                method = 'glm')
+```
+
+12. Using both fits, all features versus the best four, predict the criterion and evaluate the prediction using `confusionMatrix()`. Which model `glm` is better?
+
+```{r, echo = TRUE}
+# determine predictions for test data
+pima_glm_pred <- predict(XX, newdata = XX)
+pima_glm4_pred <- predict(XX, newdata = XX)
+
+# evaluate the results
+confusionMatrix(XX, reference = XX)
+confusionMatrix(XX, reference = XX)
+```
+
+```{r}
+# determine predictions for test data
+pima_glm_pred <- predict(pima_glm, newdata = pima_test)
+pima_glm4_pred <- predict(pima_glm4, newdata = pima_test)
+
+# evaluate the results
+confusionMatrix(pima_glm_pred, criterion)
+confusionMatrix(pima_glm4_pred, criterion)
+```
+
+13. You probably have observed that the model with two features less is actually slightly better than the full model. Why do you think is that the case?
+
+14. Play around: Up the proportion dedicated to training or use a different model, e.g., `random forest`, and see whether things change. 
+
+## C - Murders
+
+In this section, you will explore feature selection but with a data set with very different properties. The data combines socio-economic data from the '90 Census, data from Law Enforcement Management and Admin Stats survey, and crime data from the FBI, allowing to analyse the relationship between various socio-demographic variables and whether murders have been committed (`murders`), the criterion of this exercise.     
+
+1. Take a look at the first few rows of the `murders_crime` data frame by printing then to the console.
+
+2. Print the numbers of rows and columns of each data set using the `dim()` function.
+
+3. Look at the names of the data frame with the `names()` function.
+
+4. Open the data set in a new window using `View()`. Do they look OK?
+
+### Splitting
+
+5. Again, before you do anything you need to make sure that you separate a hold-out data set for later. Create `murders_train` and `murders_test` using `createDataPartition()` with again as little as <b>25% of cases going into the training set</b>. Also store the variable `diabetes` in the test set, which will be the criterion . 
+
+```{r}
+# split index
+train_index <- createDataPartition(murders_crime$murders, p = .25, list = FALSE)
+
+# train and test sets
+murders_train <- murders_crime %>% slice(train_index)
+murders_test  <- murders_crime %>% slice(-train_index)
+
+# test criterion
+criterion <- murders_test$murders
+```
+
+### Remove unwanted features
+
+OK, with the training set, let's get to work and remove some features.
+
+6. First split the training data into a data frame holding the predictors and the criterion using the code below.
+
+```{r}
+# Select predictors
+murders_train_pred <- murders_train %>% select(-murders)
+
+# Select criterion
+murders_train_crit <- murders_train %>% select(murders) %>% pull()
+```
+
+7. Test if there are any excessively correlated features using `cor()` and `findCorrelation()` using the code below. Are there any this time?
+
+```{r}
+# determine correlation matrix
+corr_matrix <- cor(murders_train_pred)
+
+# find excessively correlated variables
+findCorrelation(corr_matrix)
+```
+
+8. Remove the excessively correlated features from the training predictor set.
+
+```{r, echo = TRUE}
+# remove features
+murders_train_pred <- murders_train_pred %>% select(- XX)
+```
+
+```{r}
+# remove features
+murders_train_pred <- murders_train_pred %>% 
+  select(-findCorrelation(corr_matrix))
+```
+
+9. Test if there are any near-zero variance features Any of those this time?
+
+```{r}
+# find near zero variance predictors
+nearZeroVar(murders_train_pred)
+```
+
+10. There were plenty of excessively correlated features but no near-zero variance predictors. Bind the reduced predictor set together with the criterion into a new, clean version of the training set.
+
+```{r, echo = TRUE}
+# clean training set
+murders_train_clean <- murders_train_pred %>% 
+  add_column(murders = XX)
+```
+
+```{r}
+# combine clean predictor set with criterion
+murders_train_clean <- murders_train_pred %>% 
+  add_column(murders = murders_train_crit)
+```
+
+## Model comparison
+
+11. Fit a `glm` twice, once using the original training set and once using the clean training set, and store the fits in separate objects. 
+
+```{r, echo = TRUE}
+# fit glm with best four features
+murders_glm = train(murders ~ .,
+                    data = XX,
+                    method = 'glm')
+
+# fit glm with best four features
+murders_glm_clean = train(murders ~ .,
+                          data = XX,
+                          method = 'glm')
+```
+
+```{r}
+# fit glm with best four features
+murders_glm = train(murders ~ .,
+                    data = murders_train,
+                    method = 'glm')
+
+# fit glm with best four features
+murders_glm_clean = train(murders ~ .,
+                          data = murders_train_clean,
+                          method = 'glm')
+```
+
+12. You probably have noticed warning messages. The concern the very fact the features in both data sets, but especially the non-clean set, are still too highly correlated. Go ahead and evaluate the fits on the hold-out set. Which set of features predicts better?
+
+```{r}
+# determine predictions for test data
+murders_pred <- predict(murders_glm, newdata = murders_test)
+murders_clean_pred <- predict(murders_glm_clean, newdata = murders_test)
+
+# evaluate the results
+confusionMatrix(murders_pred, criterion)
+confusionMatrix(murders_clean_pred, criterion)
+```
+
+## Data compression with PCA
+
+13. Given the high features correlations it is sensible to compress the data using `principal component analysis` (PCA). Create a third fit object using the original training set with `preProcess = c('pca')` and `trainControl = trainControl(preProcOptions = list(thresh = 0.8))` in the training function. The first argument tells R to use PCA, the second specifies that exactly 80% of the variance should be retained. 
+
+```{r, echo = TRUE}
+# fit glm with best four features
+murders_glm_pca = train(murders ~ .,
+                        data = murders_train,
+                        method = 'glm',
+                        preProcess = c('pca'),
+                        trControl = trainControl(preProcOptions = list(thresh = 0.8)))
+```
+
+14. Compare the prediction performance to the previous to the previous two models. 
+
+```{r}
+# determine predictions for test data
+murders_pca <- predict(murders_glm_pca, newdata = murders_test)
+
+# evaluate the results
+confusionMatrix(murders_pca, criterion)
+```
+
+15. Play around: Alter the amount of variance explained by the `PCA` (using `thresh`), increase the proportion dedicated to training, use a different model, e.g., `random forest`, and see whether things change. 
+
+## Feature importance
+
+16. Evaluate the feature importance for each of the three models. 
+
+```{r}
+# determine variable importance
+varimp_glm <- varImp(murders_glm)
+varimp_glm_clean <- varImp(murders_glm_clean)
+varimp_glm_pca <- varImp(murders_glm_pca)
+
+# print variable importance
+varimp_glm
+varimp_glm_clean
+varimp_glm_pca
+
+# print variable importance
+plot(varimp_glm)
+plot(varimp_glm_clean)
+plot(varimp_glm_pca)
+
+
+```
+
+17. Can you select a set of features based on feature performance that reliably beats predictions based on the pca-compressed training set?
+
+
+## X - Violent & Non-violent Crime Data
+
+1. Run similar analyses for the Violent and non-violent crime data sets predicting either the number of violent crimes per 100k inhabitants (`ViolentCrimesPerPop`) or the number of non-violent crimes per 100k inhabitants (`nonViolPerPop`). This time the criterion is numeric, implying regression rather than classification. The features are identical to the murders analysis of the previous section. 
+
+2. Use the computer to find a good set of features using recursive feature elimination with `rfe()`. 
+
+```{r, echo = TRUE}
+
+# split index
+train_index <- createDataPartition(violent_crime$ViolentCrimesPerPop, 
+                                   p = .8, list = FALSE)
+
+# train and test sets
+violent_train <- violent_crime %>% slice(train_index)
+violent_test  <- violent_crime %>% slice(-train_index)
+
+# remove extreme correlations (OPTIONAL)
+# predictors <- violent_train %>% select(-ViolentCrimesPerPop)
+# predictors <- predictors %>% select(-findCorrelation(cor(predictors)))
+# violent_train_clean <- predictors %>% 
+#   add_column(ViolentCrimesPerPop = violent_train$ViolentCrimesPerPop)
+
+# Feature elimination settings 
+rfe_control <- rfeControl(functions = lmFuncs,  # linear model
+                          method = "cv",
+                          verbose = FALSE,
+                          rerank = FALSE)
+
+# Run feature elimination
+profile <- rfe(x = violent_train %>% select(-ViolentCrimesPerPop), 
+               y = violent_train$ViolentCrimesPerPop,
+               sizes = 1:(ncol(violent_train_clean)-1), # Features set sizes
+               rfeControl = rfe_control)
+
+# inspect cross-validation as a function of performance
+plot(profile)
 ```

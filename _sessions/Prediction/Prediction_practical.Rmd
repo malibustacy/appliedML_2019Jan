@@ -20,7 +20,7 @@ knitr::opts_chunk$set(comment = NA,
 options(digits = 3)
 ```
 
-```{r, echo = FALSE, fig.align = 'center', eval = TRUE, out.width = "70%", fig.cap="Source: Medium.com"}
+```{r, echo = FALSE, fig.align = 'center', eval = TRUE, out.width = "90%", fig.cap="Source: Medium.com"}
 knitr::include_graphics("https://cdn-images-1.medium.com/max/1200/0*F0y1bmOEzCFCcPE_")
 ```
 
@@ -100,7 +100,7 @@ library(ISLR)   # Load ISLR package
 <figure>
 <center>
 <a href="https://github.com/rstudio/cheatsheets/raw/master/caret.pdf">
-  <img src="https://www.rstudio.com/wp-content/uploads/2015/01/caret-cheatsheet-200x155@2x.png" alt="Trulli" style="width:70%">
+  <img src="https://www.rstudio.com/wp-content/uploads/2015/01/caret-cheatsheet.png" alt="Trulli" style="width:70%">
   <figcaption>hhttps://github.com/rstudio/cheatsheets/raw/master/caret.pdf</figcaption></a>
 </figure>
 
