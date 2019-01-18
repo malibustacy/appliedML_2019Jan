@@ -104,35 +104,43 @@ One important model assumptions concerns linearity.
 
 ]
 
-.pull-right55[
+.pull-right5[
 
 &lt;p align="center"&gt;
   &lt;br&gt;&lt;br&gt;&lt;br&gt;
-  &lt;img src="image/linearity.png" height=500px&gt;
+  &lt;img src="image/linearity.png" height=480px&gt;
 &lt;/p&gt;
 
 ]
 
 ---
 
-.pull-left4[
+.pull-left45[
 
 # Kernel trick
 
-Transforms "input space" into new "feature space"
-
+&lt;high&gt;Transforms "input space" into new "feature space"&lt;/high&gt; to allows for object separation.
 
 &lt;p align="center"&gt;
-  &lt;img src="image/kernel_bw.png" height=150px&gt;
+  &lt;img src="image/kernel_bw.png" height=160px&gt;
 &lt;/p&gt;
+
+Used in &lt;high&gt;Support Vector Machines&lt;/high&gt; (`method="svm"`) often using a &lt;high&gt;radial basis function&lt;/high&gt; (rdf).
+
+&lt;p align="center"&gt;
+  &lt;img src="image/rdf_kernel.png" width=300px&gt;
+&lt;/p&gt;
+
+Kernels &lt;high&gt;re-represent objects&lt;/high&gt; in terms of other objects!
 
 ]
 
-.pull-right55[
+
+.pull-right5[
 
 &lt;p align="center"&gt;
   &lt;br&gt;&lt;br&gt;&lt;br&gt;
-  &lt;img src="image/linearity.png" height=500px&gt;
+  &lt;img src="image/linearity.png" height=480px&gt;
 &lt;/p&gt;
 
 ]
@@ -142,16 +150,55 @@ Transforms "input space" into new "feature space"
 
 # Robustness
 
-complex but sometimes necessary
+.pull-left5[
 
+To nontheless produce robust predictions, machine learning models use a variety of `tricks`:
+
+Decrease error tolerance
+  SVM
+Regularization
+  Lasso
+  Ridge
+  Elastic Net
+Binarize data
+  Trees
+Ensemble
+Resampling
+
+]
+
+.pull-right5[
+
+&lt;p align="center"&gt;
+  &lt;img src="image/robustness_sel.png"&gt;
+&lt;/p&gt;
+
+]
 
 ---
 
 # Regularization
 
-complex but sometimes necessary
+.pull-left5[
+
+Regularization is the process of adding model terms, usually &lt;high&gt;penalties for complexity&lt;/high&gt;, in order to prevent overfitting (or solve a problem in the first place).
+
+|Name|Penalty|Caret|
+|:----|:-----|:-----|
+| AIC/BIC | `$$||\beta||_0$$` | - |
+| Lasso | `\(||\beta||_1\)` | `method = "lasso` |
+| Ridge | `\(||\beta||_2\)` | `method = "ridge` |
+| Elastic net | `\(||\beta||_2 + ||\beta||_2\)` | `method = "elasticnet` |
+
+]
 
 
+
+.pull-right5[
+
+&lt;img src="Models_files/figure-html/unnamed-chunk-3-1.png" style="display: block; margin: auto;" /&gt;
+
+]
 
 ---
 
@@ -189,6 +236,25 @@ complex but sometimes necessary
 complex but sometimes necessary
 
 
+
+
+---
+
+# Supervised learning
+
+
+Non-Linearities can
+
+
+---
+
+# Feature engineering
+
+Non-Linearities can
+
+
+
+Einstein
 
 
 ---
