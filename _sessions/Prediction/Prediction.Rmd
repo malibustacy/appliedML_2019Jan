@@ -25,6 +25,7 @@ layout: true
 ---
 
 ```{r setup, include=FALSE}
+library(tidyverse)
 options(htmltools.dir.version = FALSE)
 # see: https://github.com/yihui/xaringan
 # install.packages("xaringan")
@@ -35,6 +36,9 @@ options(width=110)
 options(digits = 4)
 
 source("https://raw.githubusercontent.com/therbootcamp/therbootcamp.github.io/master/_materials/code/baselrbootcamp_palettes.R")
+
+
+baselers <- read_csv("../../1_Data/baselers.csv")
 ```
 
 ```{r, echo = FALSE ,message = FALSE, warning = FALSE}
@@ -318,6 +322,41 @@ fit_gg
 
 
 
+
+---
+
+.pull-left5[
+
+## How do I get separate training and test data?
+
+Ideally, you should have two distinct. naturally occurring training and test datasets.
+
+|Domain|Training|Test|
+|:-------|:------|:------|
+|Stock prediction|2017 Trends | 2019 Trends|
+|Medical diagnosis| Patients from Hospital A| Patients from Hospital B|
+|Crime rates|Statistics from City X|Statistics from City Y|
+
+If you don't have two naturally occurring distinct training and test dataset, you can <high>randomly split</high> a dataset into an <high>X% training</high> set and <high>1-X% testing</high> set.
+
+The `caret` function `createDataPartition()` helps you do this automatically.
+
+]
+
+.pull-right45[
+
+
+```{r, echo = FALSE, out.width = "100%"}
+knitr::include_graphics("image/train_test_split.png")
+```
+
+Randomly split a dataset into an X% training set and 1-X% testing set.
+
+
+
+]
+
+
 ---
 class: center, middle
 
@@ -512,7 +551,7 @@ knitr::include_graphics("image/tree_crowd.png")
 
 # Random Forest
 
-In [Random Forest](https://en.wikipedia.org/wiki/Random_forest), the criterion is models as the <high>aggregate prediction of a large number of decision trees</high> each based on different features.
+In [Random Forest](https://en.wikipedia.org/wiki/Random_forest), the criterion is modeled as the <high>aggregate prediction of a large number of decision trees</high> each based on different features.
 <br>
 
 <p align="center">
@@ -631,7 +670,7 @@ data(cars)
 
 # Predict new data with predict()
 
-.pull-left4[
+.pull-left45[
 
 Testing model predictions with `caret` is very easy.
 
@@ -651,9 +690,9 @@ This returns a vector of predicted values for your new data!
 
 ]
 
-.pull-right55[
+.pull-right5[
 
-To get predictions, just use `predict()` combined with new data
+To get predictions, use `predict(mod, newdata = data_test)`
 
 ```{r, eval = FALSE}
 # Load training and test data
@@ -680,7 +719,7 @@ mod_pred <- predict(mod, newdata = data_test)
 
 # Predict new data with predict()
 
-.pull-left4[
+.pull-left45[
 
 Testing model predictions with `caret` is very easy.
 
@@ -700,9 +739,9 @@ This returns a vector of predicted values for your new data!
 
 ]
 
-.pull-right55[
+.pull-right5[
 
-Once you have a vector of predictions, you can compare them to the criterion with `postResample()`
+Compare predictions to the criterion with `postResample()`
 
 ```{r, eval = FALSE}
 # Define criterion
@@ -727,6 +766,66 @@ postResample(pred = mod_pred,
 
 ]
 
+---
+
+
+# Split data with createDataPartition()
+
+.pull-left4[
+
+Use `createDataPartition()` to <high>split a dataset</high> into separate training and test datasets
+
+```{r, echo = FALSE, warning=F, message=F}
+library(caret)
+data <- baselers %>% drop_na() # Drop missing cases
+```
+
+```{r, eval = FALSE, echo = TRUE}
+# Create a set of indices for random 
+# selection of 70% of data
+
+createDataPartition(y = data$Y
+                    p = .7,
+                    list = FALSE)
+```
+
+|Argument|Description|
+|:----|:-----|
+|y| The criterion|
+|p|Percent of data to select|
+
+This returns a vector of indices you can then use to select rows (see right)
+
+]
+
+.pull-right55[
+
+Create separate `XX_train` and `data_test` datasets from a single 'large' dataset
+
+```{r, eval = FALSE, echo = TRUE}
+# Set the randomisation seed to get the 
+#  same results each time
+set.seed(100)
+
+# Get indices for training
+index <- createDataPartition(y = baselers$income,
+                             p = .7,
+                             list = FALSE
+
+# Create training data
+baselers_train <- baselers %>% 
+  slice(index)
+
+# Create test data
+baselers_test <- baselers %>% 
+  slice(-index)
+```
+
+
+]
+
+
+
 
 
 ---
@@ -734,7 +833,7 @@ postResample(pred = mod_pred,
 
 # 5 steps with caret
 
-Step 0: Load training and test data
+Step 0: Load training and test data (or create with `createDataPartition()`)
 
 ```{r, eval = FALSE}
 data_train <- read_csv("1_Data/XXX_train.csv")
@@ -753,7 +852,7 @@ Step 2: Train model
 ```{r, eval = FALSE}
 mod <- train(form = Y ~ .,  
              data = data_train,
-             method = "rpart",
+             method = "My Favorite Model",
              trControl = ctrl,
              tuneGrid = expand.grid(mtry = 2))
 ```
