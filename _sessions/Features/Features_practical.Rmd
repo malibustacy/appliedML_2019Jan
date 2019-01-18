@@ -303,7 +303,7 @@ In this section, you will explore feature selection for the Pima Indians Diabete
 
 #### Splitting
 
-5. As always, before you do anything you need to make sure that you separate a hold-out data set for later. Create `pima_train` and `pima_test` using `createDataPartition()` with as little as <b>15% of cases going into the training set</b>. Also store the variable `diabetes` in the test set, which will be the criterion . 
+5. As always, before you do anything you need to make sure that you separate a hold-out data set for later. Create `pima_train` and `pima_test` using `createDataPartition()` with as little as <b>15% of cases going into the training set</b>. Also store the variable `diabetes` from the test set, which will be the criterion . 
 
 ```{r, echo = TRUE}
 # split index

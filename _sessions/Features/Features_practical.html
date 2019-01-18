@@ -532,7 +532,7 @@ nonviolent_crime &lt;- read_csv(file = &quot;1_Data/nonviolent_crime.csv&quot;)<
 <div id="splitting" class="section level4">
 <h4>Splitting</h4>
 <ol start="5" style="list-style-type: decimal">
-<li>As always, before you do anything you need to make sure that you separate a hold-out data set for later. Create <code>pima_train</code> and <code>pima_test</code> using <code>createDataPartition()</code> with as little as <b>15% of cases going into the training set</b>. Also store the variable <code>diabetes</code> in the test set, which will be the criterion .</li>
+<li>As always, before you do anything you need to make sure that you separate a hold-out data set for later. Create <code>pima_train</code> and <code>pima_test</code> using <code>createDataPartition()</code> with as little as <b>15% of cases going into the training set</b>. Also store the variable <code>diabetes</code> from the test set, which will be the criterion .</li>
 </ol>
 <pre class="r"><code># split index
 train_index &lt;- createDataPartition(XX$XX, p = .15, list = FALSE)
