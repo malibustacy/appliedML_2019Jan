@@ -264,7 +264,7 @@ ctrl_none <- trainControl(method = "none")
 
 ## C - Fit a regression model
 
-1. Using the code below, fit a regression model predicting graduation rate (`Grad_Rate`) as a function of one feature `PhD`, the percent of faculty with Ph.Ds). Save the result as an object `Grad_Rate_glm`
+1. Using the code below, fit a regression model predicting graduation rate (`Grad_Rate`) as a function of one feature `PhD`, the percent of faculty with PhDs). Save the result as an object `Grad_Rate_glm`
 
 ```{r}
 # Grad_Rate_glm: Regression Model
@@ -346,7 +346,7 @@ accuracy_agg <- accuracy %>%
 
 5. Print the `accuracy` and `accuracy_agg` objects to see how they look.
 
-6. Using the code below, create a scatterplot showing the relationship between the true criterion values and the model fits
+6. Using the code below, create a scatter plot showing the relationship between the true criterion values and the model fits
 
 ```{r}
 # Plot A) Scatterplot of criterion versus predictions
@@ -391,10 +391,13 @@ ggplot(data = accuracy,
 ## F - Add more features
 
 So far we have only used one feature (`PhD`), to predict `Grad_Rate`. Let's try again, but now we'll use a total of four features:
+
 - `PhD`: The percent of faculty with a PhD
 - `Room_Board`: Room and board costs
 - `Terminal`: Percent of faculty with a terminal degree
 - `S_F_Ratio`: Student to faculty ratio
+
+
 
 1. Using the same steps as above, create a regression model `Grad_Rate_glm` which predicts `Grad_Rate` using all 4 features (you can also call it something else if you want to save your original model!).
 
@@ -402,7 +405,7 @@ So far we have only used one feature (`PhD`), to predict `Grad_Rate`. Let's try 
 
 3. What is the Mean Absolute Error (MAE) of your new model that uses 4 features? How does this compare to your previous model that only used 1 feature?
 
-4 (Optional). Create a scatterplot showing the relationship between your new model fits and the true values. How does this plot compare to your previous one?
+4 (Optional). Create a scatter plot showing the relationship between your new model fits and the true values. How does this plot compare to your previous one?
 
 5 (Optional). Create a violin plot showing the distribution of absolute errors. How does this compare to your previous one?
 
@@ -425,7 +428,7 @@ Grad_Rate_glm <- train(form = Grad_Rate ~ . - XXX,   # Get rid of that one featu
 
 4. What is the Mean Absolute Error (MAE) of your new model that uses 6 features? How does this compare to your previous model that only used 1 feature?
 
-5 (Optional). Create a scatterplot showing the relationship between your new model fits and the true values. How does this plot compare to your previous one?
+5 (Optional). Create a scatter plot showing the relationship between your new model fits and the true values. How does this plot compare to your previous one?
 
 6 (Optional). Create a violin plot showing the distribution of absolute errors. How does this compare to your previous one?
 
@@ -506,7 +509,7 @@ confusionMatrix(data = glm_fit,        # This is the prediction!
 
 6. What is the specificity? How do you interpret this number?
 
-7. To visualise the accuracy of your classification models, use the following code to create a barplot:
+7. To visualize the accuracy of your classification models, use the following code to create a bar plot:
 
 ```{r}
 # Get overall accuracy from regression model
