@@ -99,7 +99,7 @@ One important model assumptions concerns linearity.
 &lt;br&gt;&lt;br&gt;
 &lt;high&gt;Linear models&lt;/high&gt; (`lm`, `glm`) make strong model assumptions. They are more often wrong, but also ceteris paribus &lt;high&gt;less prone to overfitting&lt;/high&gt;.
 
-&lt;high&gt;Non-linear moels&lt;/high&gt; (everything else) make weaker model assumptions, leaving the exact relationship (more) open. They are are closer to the truth, but also ceteris paribus &lt;high&gt;more prone to overfitting&lt;/high&gt;. 
+&lt;high&gt;Non-linear Models&lt;/high&gt; (everything else) make weaker model assumptions, leaving the exact relationship (more) open. They are are closer to the truth, but also ceteris paribus &lt;high&gt;more prone to overfitting&lt;/high&gt;. 
 
 
 ]
@@ -149,9 +149,9 @@ Kernels &lt;high&gt;re-represent objects&lt;/high&gt; in terms of other objects!
 
 # Automatic feature engineering
 
-&lt;high&gt;Deep learning&lt;/high&gt; aka neural networks and, espectially, &lt;high&gt;convolutional neural networks&lt;/high&gt;, excel because they generate their features. 
+&lt;high&gt;Deep learning&lt;/high&gt; aka neural networks and, especially, &lt;high&gt;convolutional neural networks&lt;/high&gt;, excel because they generate their features. 
 
-Neural networks are not the focus of `caret` and this course. Powerful implementations based on &lt;high&gt;Google's Tensorflow&lt;/high&gt; libarary are provided by `tensorflow`.
+Neural networks are not the focus of `caret` and this course. Powerful implementations based on &lt;high&gt;Google's Tensorflow&lt;/high&gt; library are provided by `tensorflow`.
 
 
 .pull-left3[
@@ -219,7 +219,7 @@ To produce &lt;high&gt;robust predictions&lt;/high&gt; that &lt;high&gt; suffer 
 &lt;tr style="background-color:#ffffff"&gt;
   &lt;td align="center"&gt;&lt;high&gt;Ensemble&lt;/high&gt;&lt;/td&gt;
   &lt;td align="center"&gt;Boosting&lt;/td&gt;
-  &lt;td align="center"&gt;&lt;mono&gt;adaboost&lt;/mono&gt;&lt;mono&gt;xgbTree&lt;/mono&gt;&lt;/td&gt;
+  &lt;td align="center"&gt;&lt;mono&gt;adaboost&lt;/mono&gt;, &lt;mono&gt;xgbTree&lt;/mono&gt;&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr style="background-color:#ffffff"&gt;
   &lt;td align="center"&gt;&lt;high&gt;Feature selection&lt;/high&gt;&lt;/td&gt;
@@ -298,7 +298,7 @@ Regularization is the process of adding model terms, usually &lt;high&gt;penalti
 
 &lt;high&gt;Aggregate predictions from multiple fits to resampled data.&lt;/high&gt;
 
-Especially beneficial for models that produce relatively instable solutions, e.g., regression trees. `rpart` &amp;#8594; `treebag`.
+Especially beneficial for models that produce relatively unstable solutions, e.g., regression trees. `rpart` &amp;#8594; `treebag`.
 
 Random forest adds sampling of features to reduce dependencies across trees.
 
@@ -386,7 +386,7 @@ As random forests select at any node the best of `mtry`-many randomly selected f
 
 .pull-left5[
 
-Unsupervised learning aims to &lt;high&gt;identify structure in the absence of labels&lt;/high&gt;, i.e., a criterian. 
+Unsupervised learning aims to &lt;high&gt;identify structure in the absence of labels&lt;/high&gt;, i.e., a Criterion. 
 
 There is &lt;high&gt;no ground truth&lt;/high&gt;, rendering unsupervised learning problems essentially &lt;high&gt;impossible to "solve"&lt;/high&gt;, i.e., you never quite know how good a solution is.
 
@@ -417,7 +417,7 @@ Are there &lt;high&gt;groups of features&lt;/high&gt;, which features belongs to
 
 .pull-left5[
 
-&lt;high&gt;Clustering algorithms&lt;/high&gt; attempt to find distributed membership to `\(k\)` groups (clusters) such that &lt;high&gt;groups are maximally homogenous&lt;/high&gt;.
+&lt;high&gt;Clustering algorithms&lt;/high&gt; attempt to find distributed membership to `\(k\)` groups (clusters) such that &lt;high&gt;groups are maximally homogeneous&lt;/high&gt;.
 
 &lt;u&gt;k-means&lt;/u&gt;
 
