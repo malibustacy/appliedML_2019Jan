@@ -894,11 +894,11 @@ postResample(pred = XXX, obs = XXX)
 
 6. If you had to use one of these three models in the real-world, which one would it be? Why?
 
-7. If someone came to you and asked "If I use your model in the future to predict the priceuation rate of a new college, how accurate do you think it would be?", what would you say?
+7. If someone came to you and asked "If I use your model in the future to predict the graduation rate of a new college, how accurate do you think it would be?", what would you say?
 
 # Exploring model tuning parameters
 
-1. In all of your decision tree models so far, you have been setting the complexity parameter to 0.01. Try setting it to a largre value of 0.2 and see how your decision trees change (by plotting them). Do they get more or less complicated? How does increasing this value affect fitting and prediction performance? If you are interested in learning more about this parameter, look at the help menu with `?rpart.control`.
+1. In all of your decision tree models so far, you have been setting the complexity parameter to 0.01. Try setting it to a larger value of 0.2 and see how your decision trees change (by plotting them). Do they get more or less complicated? How does increasing this value affect fitting and prediction performance? If you are interested in learning more about this parameter, look at the help menu with `?rpart.control`.
 
 2. In each of your random forest models, you have been setting the `mtry` argument to 2. Try setting it to a larger value such as 5 and re-running your models. How does increasing this value affect fitting and prediction performance? If you are interested in learning more about this parameter, look at the help menu with `?randomForest`.
 
