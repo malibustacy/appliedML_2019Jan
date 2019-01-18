@@ -9,7 +9,7 @@ output: html_document
 
 ## Downloads
 
-#### [**Data sets](https://raw.githubusercontent.com/therbootcamp/appliedML_2019Jan/master/1_Data/baselrbootcamp_appliedML_data.zip)
+#### [**Data sets**](https://raw.githubusercontent.com/therbootcamp/appliedML_2019Jan/master/1_Data/baselrbootcamp_appliedML_data.zip)
 
 
 

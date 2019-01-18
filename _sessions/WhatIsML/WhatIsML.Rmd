@@ -49,7 +49,7 @@ No Googling :)
 ---
 
 
-.pull-left6[
+.pull-left55[
 
 # What is Machine Learning?
 
@@ -60,9 +60,9 @@ Machine learning (ML) is a <high>field of artificial intelligence</high> that us
 
 .pull-right4[
 
-<br><br>
+<br><br><br><br>
 
-```{r, echo = FALSE, fig.align = 'center', out.width = "90%", fig.cap = "<font size = 4>www.towardsdatascience.com</font>"}
+```{r, echo = FALSE, fig.align = 'center', out.width = "90%", fig.cap = "<font size = 3>www.towardsdatascience.com</font>"}
 knitr::include_graphics("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSXjr_if5M3PSjd7Im1cLUNjqwKNd3bxjL9ym_MrOND7HF3nd1Z8w")
 ```
 
@@ -70,7 +70,7 @@ knitr::include_graphics("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS
 
 ---
 
-.pull-left6[
+.pull-left55[
 
 # What is Machine Learning?
 
@@ -90,9 +90,9 @@ Machine learning (ML) is a <high>field of artificial intelligence</high> that us
 
 .pull-right4[
 
-<br><br>
+<br><br><br><br>
 
-```{r, echo = FALSE, fig.align = 'center', out.width = "90%", fig.cap = "<font size = 4>www.towardsdatascience.com</font>"}
+```{r, echo = FALSE, fig.align = 'center', out.width = "90%", fig.cap = "<font size = 3>www.towardsdatascience.com</font>"}
 knitr::include_graphics("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSXjr_if5M3PSjd7Im1cLUNjqwKNd3bxjL9ym_MrOND7HF3nd1Z8w")
 ```
 
@@ -125,12 +125,12 @@ The executive team is considering whether or not to open a new retail location i
 
 .pull-right35[
 
-<br>
-```{r, echo = FALSE, fig.align = 'center', out.width = "70%", fig.cap = "<font size = 4>www.ucsf.edu</font>"}
+<br><br><br><br><br2>
+```{r, echo = FALSE, fig.align = 'center', out.width = "70%", fig.cap = "<font size = 3>ucsf.edu</font>"}
 knitr::include_graphics("https://www.ucsf.edu/sites/default/files/styles/2014_inline_5-col/public/fields/field_insert_file/news/Man-Chest-Pain-Doctor.jpg?itok=nRgCK8R_")
 ```
 
-```{r, echo = FALSE, fig.align = 'center', out.width = "85%", fig.cap = "<font size = 4>location.ch</font>"}
+```{r, echo = FALSE, fig.align = 'center', out.width = "70%", fig.cap = "<font size = 3>location.ch</font>"}
 knitr::include_graphics("http://www.location.ch/assets/images/f/Basel_Freie_Strasse_1_900x600-8f38558f.jpg")
 ```
 
@@ -138,10 +138,9 @@ knitr::include_graphics("http://www.location.ch/assets/images/f/Basel_Freie_Stra
 
 ---
 
+# Solution 1: Intuition
 
 .pull-left6[
-
-# Solution 1: Intuition
 
 Many decisions are based on an individual's intuitive 'gut' judgment.
 
@@ -158,12 +157,11 @@ Many decisions are based on an individual's intuitive 'gut' judgment.
 
 .pull-right35[
 
-<br>
-```{r, echo = FALSE, fig.align = 'center', out.width = "70%", fig.cap = "<font size = 4>www.ucsf.edu</font>"}
+```{r, echo = FALSE, fig.align = 'center', out.width = "70%", fig.cap = "<font size = 3>ucsf.edu</font>"}
 knitr::include_graphics("https://www.ucsf.edu/sites/default/files/styles/2014_inline_5-col/public/fields/field_insert_file/news/Man-Chest-Pain-Doctor.jpg?itok=nRgCK8R_")
 ```
 
-```{r, echo = FALSE, fig.align = 'center', out.width = "85%", fig.cap = "<font size = 4>location.ch</font>"}
+```{r, echo = FALSE, fig.align = 'center', out.width = "70%", fig.cap = "<font size = 3>location.ch</font>"}
 knitr::include_graphics("http://www.location.ch/assets/images/f/Basel_Freie_Strasse_1_900x600-8f38558f.jpg")
 ```
 
@@ -171,11 +169,9 @@ knitr::include_graphics("http://www.location.ch/assets/images/f/Basel_Freie_Stra
 
 ---
 
-
-.pull-left6[
-
 # Solution 1: Intuition
 
+.pull-left6[
 
 ### What are potential problems with intuition?
 
@@ -193,12 +189,11 @@ knitr::include_graphics("http://www.location.ch/assets/images/f/Basel_Freie_Stra
 
 .pull-right35[
 
-<br>
-```{r, echo = FALSE, fig.align = 'center', out.width = "70%", fig.cap = "<font size = 4>www.ucsf.edu</font>"}
+```{r, echo = FALSE, fig.align = 'center', out.width = "70%", fig.cap = "<font size = 3>ucsf.edu</font>"}
 knitr::include_graphics("https://www.ucsf.edu/sites/default/files/styles/2014_inline_5-col/public/fields/field_insert_file/news/Man-Chest-Pain-Doctor.jpg?itok=nRgCK8R_")
 ```
 
-```{r, echo = FALSE, fig.align = 'center', out.width = "85%", fig.cap = "<font size = 4>location.ch</font>"}
+```{r, echo = FALSE, fig.align = 'center', out.width = "70%", fig.cap = "<font size = 3>location.ch</font>"}
 knitr::include_graphics("http://www.location.ch/assets/images/f/Basel_Freie_Strasse_1_900x600-8f38558f.jpg")
 ```
 
@@ -237,20 +232,17 @@ knitr::include_graphics("image/heartdisease_data_ss.jpg")
 ```
 
 
-- Based on historical <high>data</high> from past patients <high>at this hospital</high>...
-- A <high>regression model</high> ...
-- Using the patient's <high>age, cholesterol level, and ecg</high>...
-- <high>Predicts</high> the probability that this patient is having a heart attack is only <high>20%</high>.
+Based on <high>historical data</high> from past patients <high>at this hospital</high>, a <high>regression model</high>, using the patient's <high>age, cholesterol level, and ecg</high>, <high>predicts</high> the probability that this patient is having a heart attack is only <high>20%</high>.
 
 ] 
 
 .pull-right35[
 
-```{r, echo = FALSE, fig.align = 'center', out.width = "100%", fig.cap = "<font size = 4>gstatic.com</font>"}
+```{r, echo = FALSE, fig.align = 'center', out.width = "100%", fig.cap = "<font size = 3>gstatic.com</font>"}
 knitr::include_graphics("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS795QtyFgYH6vRDqhlhu9WtQKLJw11iNyAfGteNoiaTzZE3f-v")
 ```
 
-```{r, echo = FALSE, fig.align = 'center', out.width = "100%", fig.cap = "<font size = 4>WK Digital</font>"}
+```{r, echo = FALSE, fig.align = 'center', out.width = "80%", fig.cap = "<font size = 3>WK Digital</font>"}
 knitr::include_graphics("https://wkdigital.com.au/wp-content/uploads/2016/06/How-To-Profile-Your-Customer.jpg")
 ```
 
@@ -281,11 +273,11 @@ knitr::include_graphics("https://wkdigital.com.au/wp-content/uploads/2016/06/How
 
 .pull-right35[
 
-```{r, echo = FALSE, fig.align = 'center', out.width = "100%", fig.cap = "<font size = 4>gstatic.com<font>"}
+```{r, echo = FALSE, fig.align = 'center', out.width = "100%", fig.cap = "<font size = 3>gstatic.com<font>"}
 knitr::include_graphics("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS795QtyFgYH6vRDqhlhu9WtQKLJw11iNyAfGteNoiaTzZE3f-v")
 ```
 
-```{r, echo = FALSE, fig.align = 'center', out.width = "100%", fig.cap = "<font size = 4>WK Digital</font>"}
+```{r, echo = FALSE, fig.align = 'center', out.width = "80%", fig.cap = "<font size = 3>WK Digital</font>"}
 knitr::include_graphics("https://wkdigital.com.au/wp-content/uploads/2016/06/How-To-Profile-Your-Customer.jpg")
 ```
 
@@ -304,11 +296,12 @@ knitr::include_graphics("image/trump_gut_edited.jpg")
 
 ---
 
+# Data Terminology
+
 
 .pull-left5[
 
-# Data Terminology
-
+<br>
 
 |Term| Definition| Example|
 |:------|:-----|:------|
@@ -320,9 +313,8 @@ knitr::include_graphics("image/trump_gut_edited.jpg")
 ]
 
 
-.pull-right5[
-
-<br><br><br><br>
+.pull-right45[
+<br><br>
 ```{r, echo = FALSE, fig.align = 'center', out.width = "100%"}
 knitr::include_graphics("image/terminology_data.png")
 ```
@@ -336,7 +328,7 @@ knitr::include_graphics("image/terminology_data.png")
 
 # What are the steps of machine learning?
 
-```{r, echo = FALSE, fig.align = 'center', out.width = "90%", fig.cap = "<font size = 4>Medium.com</font>"}
+```{r, echo = FALSE, fig.align = 'center', out.width = "90%", fig.cap = "<font size = 3>Medium.com</font>"}
 knitr::include_graphics("https://cdn-images-1.medium.com/max/1600/1*_QGyIwpgq831xI54cIe_GQ.jpeg")
 ```
 
@@ -346,13 +338,15 @@ knitr::include_graphics("https://cdn-images-1.medium.com/max/1600/1*_QGyIwpgq831
 
 ---
 
-# What types of machine learning tasks are there?
+# Types of machine learning tasks
 
 .pull-left4[
 
-There are many types of machine learning tasks, each of which call for different models
+There are many types of machine learning tasks, each of which call for different models.
 
-Three general categories
+We will focus on <high>Supervised</high> tasks.
+
+<u>Three general categories</u>
 
 |Type|Example|
 |:----|:-----|
@@ -360,13 +354,13 @@ Three general categories
 |Unsupervised|Customer segmentation|
 |Supervised|Classification, regression|
 
-In this course, we focus on <high>Supervised</high> tasks
-
 ]
 
 .pull-right55[
 
-```{r, echo = FALSE, fig.align = 'center', out.width = "100%", fig.cap = "<font size = 4>Wordstream.com</font>"}
+<br2>
+
+```{r, echo = FALSE, fig.align = 'center', out.width = "85%", fig.cap = "<font size = 3>Wordstream.com</font>"}
 knitr::include_graphics("https://wordstream-files-prod.s3.amazonaws.com/s3fs-public/styles/simple_image/public/images/machine-learning1.png?SnePeroHk5B9yZaLY7peFkULrfW8Gtaf&itok=yjEJbEKD")
 ```
 
@@ -376,33 +370,33 @@ knitr::include_graphics("https://wordstream-files-prod.s3.amazonaws.com/s3fs-pub
 
 ---
 
-# What types of machine learning tasks are there?
+# Types of machine learning tasks
 
 .pull-left4[
 
-There are many types of machine learning tasks, each of which call for different models
+There are many types of machine learning tasks, each of which call for different models.
 
-Three general categories
+We will focus on <high>Supervised</high> tasks.
+
+<u>Three general categories</u>
 
 |Type|Example|
 |:----|:-----|
-|<high>Reinforcement Learning</high>|Robot navigation, game playing AI|
+|Reinforcement Learning|Robot navigation, game playing AI|
 |Unsupervised|Customer segmentation|
 |Supervised|Classification, regression|
-
-In this course, we focus on <high>Supervised</high> tasks
 
 ]
 
 .pull-right55[
 
-### Reinforcement Learning
+<p align="center"><font size=5><b> Reinforcement Learning</b></font></p>
 
-```{r, echo = FALSE, fig.align = 'center', out.width = "45%", fig.cap = "<font size = 4>towardsdatascience.com</font>"}
+```{r, echo = FALSE, fig.align = 'center', out.width = "45%", fig.cap = "<font size = 3>towardsdatascience.com</font>"}
 knitr::include_graphics("https://cdn-images-1.medium.com/max/1600/1*6sE---UY4iiCDPA2kdYQkg.gif")
 ```
 
-```{r, echo = FALSE, fig.align = 'center', out.width = "45%", fig.cap = "<font size = 4>MIT Technology Review</font>"}
+```{r, echo = FALSE, fig.align = 'center', out.width = "45%", fig.cap = "<font size = 3>MIT Technology Review</font>"}
 knitr::include_graphics("https://cdn.technologyreview.com/i/images/alphagotopper2.jpg?sw=1200")
 ```
 
@@ -410,29 +404,30 @@ knitr::include_graphics("https://cdn.technologyreview.com/i/images/alphagotopper
 
 ---
 
-# What types of machine learning tasks are there?
+# Types of machine learning tasks
 
 .pull-left4[
 
-There are many types of machine learning tasks, each of which call for different models
+There are many types of machine learning tasks, each of which call for different models.
 
-Three general categories
+We will focus on <high>Supervised</high> tasks.
+
+<u>Three general categories</u>
 
 |Type|Example|
 |:----|:-----|
 |Reinforcement Learning|Robot navigation, game playing AI|
-|<high>Unsupervised</high>|Customer segmentation|
+|Unsupervised|Customer segmentation|
 |Supervised|Classification, regression|
-
-In this course, we focus on <high>Supervised</high> tasks
 
 
 ]
 
 .pull-right55[
 
-### Unsupervised
-```{r, echo = FALSE, fig.align = 'center', out.width = "100%", fig.cap = "<font size = 4>iotforall.com</font>"}
+<p align="center"><font size=5><b>Unsupervised learning</b></font></p>
+
+```{r, echo = FALSE, fig.align = 'center', out.width = "100%", fig.cap = "<font size = 3>iotforall.com</font>"}
 knitr::include_graphics("https://www.iotforall.com/wp-content/uploads/2018/01/Screen-Shot-2018-01-17-at-8.10.14-PM.png")
 ```
 
@@ -443,30 +438,30 @@ knitr::include_graphics("https://www.iotforall.com/wp-content/uploads/2018/01/Sc
 
 ---
 
-# What types of machine learning tasks are there?
+# Types of machine learning tasks
 
 .pull-left4[
 
-There are many types of machine learning tasks, each of which call for different models
+There are many types of machine learning tasks, each of which call for different models.
 
-Three general categories
+We will focus on <high>Supervised</high> tasks.
+
+<u>Three general categories</u>
 
 |Type|Example|
 |:----|:-----|
 |Reinforcement Learning|Robot navigation, game playing AI|
 |Unsupervised|Customer segmentation|
-|<high>Supervised</high>|Classification, regression|
-
-In this course, we focus on <high>Supervised</high> tasks
+|Supervised|Classification, regression|
 
 
 ]
 
 .pull-right55[
 
-### Supervised
+<p align="center"><font size=5><b>Supervised learning</b></font></p>
 
-```{r, echo = FALSE, fig.cap = "<font size = 4>medium.com</font>"}
+```{r, echo = FALSE, fig.cap = "<font size = 3>medium.com</font>"}
 knitr::include_graphics("https://cdn-images-1.medium.com/max/1600/1*ASYpFfDh7XnreU-ygqXonw.png")
 ```
 
@@ -476,33 +471,32 @@ knitr::include_graphics("https://cdn-images-1.medium.com/max/1600/1*ASYpFfDh7Xnr
 
 ---
 
-# What types of machine learning tasks are there?
+# Types of machine learning tasks
 
 .pull-left4[
 
-There are many types of machine learning tasks, each of which call for different models
+There are many types of machine learning tasks, each of which call for different models.
 
-Three general categories
+We will focus on <high>Supervised</high> tasks.
+
+<u>Three general categories</u>
 
 |Type|Example|
 |:----|:-----|
 |Reinforcement Learning|Robot navigation, game playing AI|
 |Unsupervised|Customer segmentation|
-|<high>Supervised</high>|Classification, regression|
-
-In this course, we focus on <high>Supervised</high> tasks
+|Supervised|Classification, regression|
 
 
 ]
 
 .pull-right55[
 
-### Unsupervised vs. Supervised
+<p align="center"><font size=5><b>Unsupervised vs. Supervised learning</b></font></p>
 
-```{r, echo = FALSE}
+```{r, echo = FALSE, fig.cap = "<font size = 3>leonardoaraujosantos.gitbooks.io</font>"}
 knitr::include_graphics("https://leonardoaraujosantos.gitbooks.io/artificial-inteligence/content/Images/supervised_unsupervised.png")
 ```
-<font size = 4>leonardoaraujosantos.gitbooks.io</font>
 ]
 
 
@@ -553,7 +547,7 @@ knitr::include_graphics("image/three_models.png")
 
 ---
 
-.pull-left6[
+.pull-left55[
 
 # Why do we need a model at all?
 
@@ -592,7 +586,7 @@ knitr::include_graphics("https://github.com/therbootcamp/appliedML_2019Jan/blob/
 
 ---
 
-.pull-left6[
+.pull-left55[
 
 # Why do we need a model at all?
 
@@ -602,7 +596,7 @@ Need a computational / mathematical representation of the data that can be progr
 
 A model is like a <high>step-by-step recipe</high>, telling you exactly what data you need, and how to combine it. 
 
-```{r, echo = FALSE, fig.align = 'center', out.width = "70%", fig.cap= "<font size = 4>amazon.com</font>"}
+```{r, echo = FALSE, fig.align = 'center', out.width = "60%", fig.cap= "<font size = 3>amazon.com</font>"}
 knitr::include_graphics("https://images-na.ssl-images-amazon.com/images/I/91%2BGl%2B3LRHL.jpg")
 ```
 
@@ -627,9 +621,7 @@ knitr::include_graphics("https://github.com/therbootcamp/appliedML_2019Jan/blob/
 ---
 class: middle, center
 
-<h1> Questions? Comments?</h1>
-
-<h1>R you ready?</h1>
+<h1> Questions?</h1>
 
 <h1><a href=https://therbootcamp.github.io/appliedML_2019Jan/index.html>Schedule</a></h1>
 
