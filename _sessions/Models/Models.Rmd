@@ -80,7 +80,7 @@ Given a finite set $V$ and a finite set $S$ of real numbers, <high>assume that $
 
 <u>Bias-variance trade-off</u>
 
-<font size=5><high>Error = Bias + Variance</high></font>
+<font size=5><high>Error</high> = <high>Bias</high> + <high>Variance</high></font>
 
 <br>
 Simply put...
@@ -140,7 +140,7 @@ One important model assumptions concerns linearity.
   <img src="image/kernel_bw.png" height=160px>
 </p>
 
-Used in <high>Support Vector Machines</high> (`method="svm"`) often using a <high>radial basis function</high> (rdf).
+Used in <high>Support Vector Machines</high> (e.g., `method = "svmRadial"`) often using a <high>radial basis function</high> (rdf).
 
 <p align="center">
   <img src="image/rdf_kernel.png" width=300px>
@@ -160,50 +160,140 @@ Kernels <high>re-represent objects</high> in terms of other objects!
 
 ]
 
+---
+
+# Automatic feature engineering
+
+<high>Deep learning</high> aka neural networks and, espectially, <high>convolutional neural networks</high>, excel because they generate their features. 
+
+Neural networks are not the focus of `caret` and this course. Powerful implementations based on <high>Google's Tensorflow</high> libarary are provided by `tensorflow`.
+
+
+.pull-left3[
+
+<p align="center">
+  <br>
+  <img src="image/tf.png">
+</p>
+
+
+]
+
+.pull-right65[
+
+<p align="center">
+  <img src="image/power_of_deeplearning.png" height=300px>
+</p>
+
+
+]
+
 
 ---
 
 # Robustness
 
-.pull-left5[
+.pull-left4[
 
-To nontheless produce robust predictions, machine learning models use a variety of `tricks`:
-
-Decrease error tolerance
-  SVM
-Regularization
-  Lasso
-  Ridge
-  Elastic Net
-Binarize data
-  Trees
-Ensemble
-Resampling
-
-]
-
-.pull-right5[
+To produce <high>robust predictions</high> that <high> suffer less from variance</high> ML models use a variety of <high>tricks</high>.
 
 <p align="center">
-  <img src="image/robustness_sel.png">
+  <br><br>
+  <img src="image/robustness_sel.png" width=350px>
 </p>
 
 ]
+
+
+
+.pull-right55[
+<table style="cellspacing:0; cellpadding:0; border:none;">
+  <col width="210">
+  <col width="210">
+  <col width="210">
+<tr>
+  <th>Approach</th>
+  <th>Implementation</th>
+  <th>Examples</th>
+</tr>
+<tr style="background-color:#ffffff">
+  <td align="center"><high>Tolerance</high></td>
+  <td align="center">Decrease error tolerance</td>
+  <td align="center"><mono>svmRadial</mono></td>
+</tr>
+<tr style="background-color:#ffffff">
+  <td align="center"><high>Regularization</high></td>
+  <td align="center">Penalize for complexity</td>
+  <td align="center"><mono>lasso</mono>, <mono>ridge</mono>, <mono>elasticnet</mono></td>
+</tr>
+<tr style="background-color:#ffffff">
+  <td align="center"><high>Ensemble</high></td>
+  <td align="center">Bagging</td>
+  <td align="center"><mono>treebag</mono>, <mono>randomGLM</mono>, <mono>randomForest</mono></td>
+</tr>
+<tr style="background-color:#ffffff">
+  <td align="center"><high>Ensemble</high></td>
+  <td align="center">Boosting</td>
+  <td align="center"><mono>adaboost</mono><mono>xgbTree</mono></td>
+</tr>
+<tr style="background-color:#ffffff">
+  <td align="center"><high>Feature selection</high></td>
+  <td align="center">Regularization</td>
+  <td align="center"><mono>lasso</mono></td>
+</tr>
+<tr style="background-color:#ffffff">
+  <td align="center"><high>Feature selection</high></td>
+  <td align="center">Importance</td>
+  <td align="center"><mono>random forest</mono></td>
+</tr>
+</table>
+
+]
+
+
 
 ---
 
 # Regularization
 
-.pull-left5[
+.pull-left45[
 
 Regularization is the process of adding model terms, usually <high>penalties for complexity</high>, in order to prevent overfitting (or solve a problem in the first place).
 
-|Name|Penalty|Caret|
-|:----|:-----|:-----|
-| AIC/BIC | $$||\beta||_0$$ | - |
-| Lasso | $||\beta||_1$ | `method = "lasso` |
-| Ridge | $||\beta||_2$ | `method = "ridge` |
-| Elastic net | $||\beta||_2 + ||\beta||_2$ | `method = "elasticnet` |
+<br2>
+<p align = 'center'><font size=5><high>Loss</high> = <high>Misfit</high> + <high>Penalty</high></font></p>
+<br>
+
+<table style="cellspacing:0; cellpadding:0; border:none;">
+  <col width="160">
+  <col width="160">
+  <col width="160">
+<tr>
+  <th>Name</th>
+  <th>Penalty</th>
+  <th>`caret`</th>
+</tr>
+<tr style="background-color:#ffffff">
+  <td align="center"><high>AIC/BIC</high></td>
+  <td align="center"><img src="image/regularization/aicbic.png" height=24px></td>
+  <td align="center">-</td>
+</tr>
+<tr style="background-color:#ffffff">
+  <td align="center"><high>Lasso</high></td>
+  <td align="center"><img src="image/regularization/lasso.png" height=24px></td>
+  <td align="center">`method = "lasso"`</td>
+</tr>
+<tr style="background-color:#ffffff">
+  <td align="center"><high>Ridge</high></td>
+  <td align="center"><img src="image/regularization/ridge.png" height=24px></td>
+  <td align="center">`method = "ridge"`</td>
+</tr>
+<tr style="background-color:#ffffff">
+  <td align="center"><high>Elastic Net</high></td>
+  <td align="center"><img src="image/regularization/ridge.png" height=24px></td>
+  <td align="center">`method = "elasticnet"`</td>
+</tr>
+</table>
 
 ]
 
@@ -211,7 +301,7 @@ Regularization is the process of adding model terms, usually <high>penalties for
 
 .pull-right5[
 
-```{r, fig.width = 8, fig.height = 3.5, echo = FALSE, eval = TRUE, warning = FALSE, dpi = 200}
+```{r, fig.width = 6, fig.height = 5, echo = FALSE, eval = TRUE, warning = FALSE}
 set.seed(5)
 
 N <- 40
@@ -265,87 +355,170 @@ overfit_gg
 
 ---
 
-# Hedging
+.pull-left45[
 
-complex but sometimes necessary
+# Bagging
+
+<high>Aggregate predictions from multiple fits to resampled data.</high>
+
+Especially beneficial for models that produce relatively instable solutions, e.g., regression trees. `rpart` &#8594; `treebag`.
+
+Random forest adds sampling of features to reduce dependencies across trees.
+
+<br>
+<u>Algorithm</u>
+1. <high>Resample</high> data (without replacement)
+2. <high>Fit</high> model to resampled data
+3. <high>Average</high> predictions
+
+]
+
+.pull-right45[
+
+<p align="center">
+  <br><br><br>
+  <img src="image/münchhausen.jpg" height=450px>
+</p>
+
+]
+
+---
+
+# Boosting
+
+.pull-left4[
+
+Iterative algorithm that adaptively increases the weight given to previously misclassified samples.
+
+New versions of the classic `adaboost` algorithm, e.g., `xgbTree`, <high>belong to the best ML models out there</high>. 
+
+<u>Algorithm</u>
+1. Assign <high>equal weight</high> to samples
+2. <high>Fit</high> simple model
+3. <high>Increase weight of misfit samples</high> by model misfit for next iteration
+5. <high>Average predictions weighted by model misfit</high> 
+
+]
+
+
+.pull-right5[
+
+<p align="center">
+  
+  <img src="image/bagg_boost.png" height=410px>
+
+</p>
+
+]
+
+---
+
+# Automatic feature selection
+
+.pull-left45[
+
+Many models reduce complexity by automatically relying on a subset of good features. 
+
+<u>Two examples</u>
+
+<high>LASSO</high>
+
+Regularization, in particular via `lasso`, frequently <high>estimates <mono>beta = 0</mono></high> and, thus, essentially deselects that feature. 
+
+<high>Random forests</high>
+
+As random forests select at any node the best of `mtry`-many randomly selected features, <high>unpredictive features may never come to action</high>. This is especially true for large `mtry`. 
+
+
+]
+
+
+.pull-right45[
+
+<p align="center">
+  
+  <img src="image/self_tuning.png" height=420px>
+  
+</p>
+
+]
+
+---
+
+# Excursus: Unsupervised learning
+
+.pull-left5[
+
+Unsupervised learning aims to <high>identify structure in the absence of labels</high>, i.e., a criterian. 
+
+There is <high>no ground truth</high>, rendering unsupervised learning problems essentially <high>impossible to "solve"</high>, i.e., you never quite know how good a solution is.
+
+<u>Common questions</u>
+
+Are there <high>groups of cases</high>, which case belongs to which group, and how many groups are there? &#8594; `k-means` or `hierarchical clustering`
+
+Are there <high>groups of features</high>, which features belongs to which group, and how many groups are there? &#8594; `pca` or `svd`
+
+]
+
+
+.pull-right45[
+
+<p align="center">
+  
+  <img src="image/clustering.png" height=400px>
+  
+</p>
+
+]
 
 
 
 ---
 
-# Binarization
-
-complex but sometimes necessary
+# Excurse: Unsupervised learning
 
 
----
+k-means
 
-# Feature selection
-
-complex but sometimes necessary
+hierarchical
 
 
 ---
 
-# Feature generation
+# Unsupervised learning
 
-complex but sometimes necessary
-
-
----
-
-# Deep learning
-
-complex but sometimes necessary
+pca & svd
 
 
 
 
 ---
 
-# Supervised learning
+# Remember
 
+.pull-left45[
 
-Non-Linearities can
+<i>"…some machine learning projects succeed and some fail. What makes the difference? Easily the most important factor is the features used."</i>
 
+Pedro Domingos
 
----
+<br><br>
 
-# Feature engineering
+<i>"The algorithms we used are very standard for Kagglers. […] We spent most of our efforts in feature engineering. [...] We were also very careful to discard features likely to expose us to the risk of over-fitting our model."</i>
 
-Non-Linearities can
+Xavier Conort
 
+]
 
+.pull-right45[
 
-Einstein
+<p align="center">
+  <img src="image/albert.jpeg" >
+</p>
 
+]
 
----
-
-Supervised learning
-
-Regularization
-  automatic feature selection
-
-Kernel trick
-
-Ensembles
-  Bagging
-  Ensemble
-  Boosting
-
-Feature generation
-  Random Forest
-  Neural networks
-  CNN
-
-Unspervised learning
-
-  kernel trick
-
-  k-means
-  SVD
-  PCA
 
 
 
@@ -355,8 +528,9 @@ Unspervised learning
 
 # Practical
 
-<font size=6><b><a href="https://therbootcamp.github.io/Intro2DataScience_2018Oct/_sessions/Plotting/Plotting_practical.html">Link to practical</a>
+class: middle, center
 
+<h1><a href=https://therbootcamp.github.io/appliedML_2019Jan/_sessions/Models/Models_practical.html>Practical</a></h1>
 
 
 

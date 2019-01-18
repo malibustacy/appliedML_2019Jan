@@ -286,6 +286,9 @@ pima_diabetes <- read_csv(file = "1_Data/pima_diabetes.csv")
 # (Non-) violent crime statistics
 violent_crime    <- read_csv(file = "1_Data/violent_crime.csv")
 nonviolent_crime <- read_csv(file = "1_Data/nonviolent_crime.csv")
+
+# murders crime statistics
+murders_crime <- read_csv(file = "1_Data/murders_crime.csv")
 ```
 
 
@@ -484,7 +487,7 @@ In this section, you will explore feature selection but use a data set with very
 
 #### Splitting
 
-5. Again, before you do anything you need to make sure that you separate a hold-out data set for later. Create `murders_train` and `murders_test` using `createDataPartition()` with again as little as <b>25% of cases going into the training set</b>. Also store the variable `diabetes` in the test set, which will be the criterion . 
+5. Again, before you do anything you need to make sure that you separate a hold-out data set for later. Create `murders_train` and `murders_test` using `createDataPartition()` with again as little as <b>25% of cases going into the training set</b>. Also store the variable `murders` from the test set as a factor, which will be the criterion. 
 
 ```{r}
 # split index
@@ -495,7 +498,7 @@ murders_train <- murders_crime %>% slice(train_index)
 murders_test  <- murders_crime %>% slice(-train_index)
 
 # test criterion
-criterion <- murders_test$murders
+criterion <- as.factor(murders_test$murders)
 ```
 
 #### Remove unwanted features
@@ -584,7 +587,7 @@ murders_glm_clean = train(murders ~ .,
                           method = 'glm')
 ```
 
-12. You probably have noticed warning messages. The concern the very fact the features in both data sets, but especially the non-clean set, are still too highly correlated. Go ahead and evaluate the fits on the hold-out set. Which set of features predicts better?
+12. You probably have noticed warning messages. They concern the very fact the features in both data sets, but especially the non-clean set, are still too highly correlated. Go ahead and evaluate the fits on the hold-out set. Which set of features predicts better?
 
 ```{r}
 # determine predictions for test data
