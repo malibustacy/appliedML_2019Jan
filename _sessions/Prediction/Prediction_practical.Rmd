@@ -107,7 +107,7 @@ library(ISLR)   # Load ISLR package
 ### Examples
 
 ```{r, eval = FALSE, echo = TRUE}
-# Fitting and evaluating a regression model ------------------------------------
+# Fitting and evaluating regression, decision trees, and random forests
 
 # Step 0: Load packages-----------
 

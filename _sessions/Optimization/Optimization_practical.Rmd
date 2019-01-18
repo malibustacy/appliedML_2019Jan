@@ -105,7 +105,7 @@ library(ISLR)   # Load ISLR package
 ### Examples
 
 ```{r, eval = FALSE, echo = TRUE}
-# Fitting and evaluating a regression model ------------------------------------
+# Model optimization with Regression
 
 # Step 0: Load packages-----------
 
@@ -114,7 +114,7 @@ library(caret)        # For ML mastery
 library(partykit)     # For decision trees
 library(party)        # For decision trees
 
-# Step 1: Load and Clean, and Explore Training data ----------------------
+# Step 1: Load, clean, and explore data ----------------------
 
 # training data
 data_train <- read_csv("1_Data/diamonds_train.csv")
@@ -151,7 +151,7 @@ criterion_test <- data_test$price
 ctrl_cv <- trainControl(method = "cv", 
                         number = 10) 
 
-# Step 3: Train model: -----------------------------
+# Step 3: Train models: -----------------------------
 #   Criterion: hwy
 #   Features: year, cyl, displ
 
@@ -162,9 +162,6 @@ price_glm <- train(form = price ~ carat + depth + table + x + y,
                    method = "glm",
                    trControl = ctrl_cv)
 
-# Predictions
-glm_pred <- predict(price_glm, 
-                    newdata = data_test)
 
 # Coefficients
 coef(price_glm$finalModel)
@@ -172,11 +169,6 @@ coef(price_glm$finalModel)
 # (Intercept)       carat       depth       table           x           y 
 #    16571.06    10229.91     -165.30      -82.52    -3958.62     2937.76 
 
-# Prediction accuracy
-
-# Calculate fitting accuracies
-postResample(pred = glm_pred, 
-             obs = criterion_test)
 
 # Lasso --------------------------
 
@@ -208,16 +200,6 @@ coef(price_lasso$finalModel,
 # x           -3152.51
 # y            2152.05
 
-# Predictions
-lasso_pred <- predict(price_lasso, 
-                      newdata = data_test)
-
-# Calculate fitting accuracies
-postResample(pred = lasso_pred, 
-             obs = criterion_test)
-
-#      RMSE  Rsquared       MAE 
-# 1543.6057    0.8464  966.8914 
 
 
 # Ridge --------------------------
@@ -236,16 +218,63 @@ price_ridge <- train(form = price ~ carat + depth + table + x + y,
 coef(price_ridge$finalModel, 
      price_ridge$bestTune$lambda)
 
+# Step 3: Estimate prediction accuracy from folds ----
+
+# Get accuracy statistics across folds
+resamples_price <- resamples(list(ridge = price_ridge, 
+                                  lasso = price_lasso, 
+                                  glm = price_glm))
+
+# Print summary of accuracies
+summary(resamples_price)
+
+# MAE 
+#         Min. 1st Qu. Median   Mean 3rd Qu.   Max. NA's
+# ridge 1057.9  1078.9 1083.2 1090.1  1112.0 1118.5    0
+# lasso  865.7   892.7  897.2  902.9   914.2  944.8    0
+# glm    839.7   910.0  920.5  905.9   922.7  936.7    0
+
+# Step 4: Measure prediction Accuracy -------------------
+
+# GLM ================================
+
+# Predictions
+glm_pred <- predict(price_glm, 
+                    newdata = data_test)
+
+# Calculate aggregate accuracy
+postResample(pred = glm_pred, 
+             obs = criterion_test)
+
+#      RMSE  Rsquared       MAE 
+# 1542.4046    0.8467  969.5960 
+
+# Ridge ================================
+
 # Predictions
 ridge_pred <- predict(price_ridge, 
                       newdata = data_test)
 
-# Calculate fitting accuracies
+# Calculate aggregate accuracy
 postResample(pred = ridge_pred, 
              obs = criterion_test)
 
 #      RMSE  Rsquared       MAE 
 # 1652.5079    0.8256 1129.1944 
+
+
+# Lasso ================================
+
+# Predictions
+lasso_pred <- predict(price_lasso, 
+                      newdata = data_test)
+
+# Calculate aggregate accuracy
+postResample(pred = lasso_pred, 
+             obs = criterion_test)
+
+#      RMSE  Rsquared       MAE 
+# 1543.6057    0.8464  966.8914 
 
 
 # Visualise Accuracy -------------------------
@@ -377,6 +406,9 @@ house_train <- house_train %>%
 house_test <- house_test %>%
           mutate_if(is.character, factor)
 ```
+
+## 
+
 
 ## B - Fitting
 

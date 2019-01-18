@@ -1047,10 +1047,10 @@ library(party)        # For decision trees
 # Step 1: Load and Clean, and Explore Training data ----------------------
 
 # training data
-data_train &lt;- read_csv(&quot;1_Data/mpg_train.csv&quot;)
+data_train &lt;- read_csv(&quot;1_Data/diamonds_train.csv&quot;)
 
 # test data
-data_test &lt;- read_csv(&quot;1_Data/mpg_test.csv&quot;)
+data_test &lt;- read_csv(&quot;1_Data/diamonds_test.csv&quot;)
 
 # Convert all characters to factor
 #  Some ML models require factors
@@ -1071,137 +1071,151 @@ names(data_train) # Print the names
 # Define criterion_train
 #   We'll use this later to evaluate model accuracy
 
-criterion_train &lt;- data_train$hwy
+criterion_train &lt;- data_train$price
+criterion_test &lt;- data_test$price
 
 # Step 2: Define training control parameters -------------
 
-# In this case, I will set method = &quot;none&quot; to fit to 
-#  the entire dataset without any fancy methods
+# Use 10-fold cross validation
 
-ctrl_none &lt;- trainControl(method = &quot;none&quot;) 
+ctrl_cv &lt;- trainControl(method = &quot;cv&quot;, 
+                        number = 10) 
 
 # Step 3: Train model: -----------------------------
 #   Criterion: hwy
 #   Features: year, cyl, displ
 
-# Regression --------------------------
+# Normal Regression --------------------------
 
-hwy_glm &lt;- train(form = hwy ~ year + cyl + displ,
-                 data = data_train,
-                 method = &quot;glm&quot;,
-                 trControl = ctrl_none)
+price_glm &lt;- train(form = price ~ carat + depth + table + x + y,
+                   data = data_train,
+                   method = &quot;glm&quot;,
+                   trControl = ctrl_cv)
 
-# Look at summary information
-hwy_glm$finalModel
-summary(hwy_glm)
 
-# Save fitted values
-glm_fit &lt;- predict(hwy_glm)
+# Coefficients
+coef(price_glm$finalModel)
 
-#  Calculate fitting accuracies
-postResample(pred = glm_fit, 
-             obs = criterion_train)
+# (Intercept)       carat       depth       table           x           y 
+#    16571.06    10229.91     -165.30      -82.52    -3958.62     2937.76 
 
-# Decision Trees ----------------
 
-hwy_dt &lt;- train(form = hwy ~ year + cyl + displ,
-                data = data_train,
-                method = &quot;rpart&quot;,
-                trControl = ctrl_none,
-                tuneGrid = expand.grid(cp = .01))   # Set complexity parameter
+# Lasso --------------------------
 
-# Look at summary information
-hwy_dt$finalModel
-plot(as.party(hwy_dt$finalModel))   # Visualise your trees
+# Vector of lambda values to try
+lambda_vec &lt;- 10 ^ seq(-3, 3, length = 100)
 
-# Save fitted values
-dt_fit &lt;- predict(hwy_dt)
+price_lasso &lt;- train(form = price ~ carat + depth + table + x + y,
+                   data = data_train,
+                   method = &quot;glmnet&quot;,
+                   trControl = ctrl_cv,
+                   tuneGrid = expand.grid(alpha = 1,  # Lasso
+                                          lambda = lambda_vec))
 
-# Calculate fitting accuracies
-postResample(pred = dt_fit, obs = criterion_train)
 
-# Random Forests -------------------------
+# What was the best lambda value?
+price_lasso$bestTune$lambda
 
-hwy_rf &lt;- train(form = hwy ~ year + cyl + displ,
-                data = data_train,
-                method = &quot;rf&quot;,
-                trControl = ctrl_none,
-                tuneGrid = expand.grid(mtry = 2))   # Set number of features randomly selected
+# Get coefficients from best lambda value
 
-# Look at summary information
-hwy_rf$finalModel
+coef(price_lasso$finalModel, 
+     price_lasso$bestTune$lambda)
 
-# Save fitted values
-rf_fit &lt;- predict(hwy_rf)
+# 6 x 1 sparse Matrix of class &quot;dgCMatrix&quot;
+#                    1
+# (Intercept) 16722.33
+# carat       10168.30
+# depth        -166.64
+# table         -84.88
+# x           -3152.51
+# y            2152.05
 
-# Calculate fitting accuracies
-postResample(pred = rf_fit, obs = criterion_train)
 
-# Visualise Accuracy -------------------------
 
-# Tidy competition results
-accuracy &lt;- tibble(criterion_train = criterion_train,
-                   Regression = glm_fit,
-                   DecisionTrees = dt_fit,
-                   RandomForest = rf_fit) %&gt;%
-               gather(model, prediction, -criterion_train) %&gt;%
-  
-  # Add error measures
-  mutate(se = prediction - criterion_train,
-         ae = abs(prediction - criterion_train))
+# Ridge --------------------------
 
-# Calculate summaries
-accuracy_agg &lt;- accuracy %&gt;%
-                  group_by(model) %&gt;%
-                  summarise(mae = mean(ae))   # Calculate MAE (mean absolute error)
+# Vector of lambda values to try
+lambda_vec &lt;- 10 ^ seq(-3, 3, length = 100)
 
-# Plot A) Scatterplot of truth versus predictions
+price_ridge &lt;- train(form = price ~ carat + depth + table + x + y,
+                     data = data_train,
+                     method = &quot;glmnet&quot;,
+                     trControl = ctrl_cv,
+                     tuneGrid = expand.grid(alpha = 0,  # Ridge penalty
+                                            lambda = lambda_vec))
 
-ggplot(data = accuracy,
-       aes(x = criterion_train, y = prediction, col = model)) +
-  geom_point(alpha = .2) +
-  geom_abline(slope = 1, intercept = 0) +
-  labs(title = &quot;Predicting mpg$hwy&quot;,
-       subtitle = &quot;Black line indicates perfect performance&quot;)
+# Get coefficients from best lambda value
+coef(price_ridge$finalModel, 
+     price_ridge$bestTune$lambda)
 
-# Plot B) Violin plot of absolute errors
 
-ggplot(data = accuracy, 
-       aes(x = model, y = ae, fill = model)) + 
-  geom_violin() + 
-  geom_jitter(width = .05, alpha = .2) +
-  labs(title = &quot;Fitting Absolute Errors&quot;,
-       subtitle = &quot;Numbers indicate means&quot;,
-       x = &quot;Model&quot;,
-       y = &quot;Absolute Error&quot;) +
-  guides(fill = FALSE) +
-  annotate(geom = &quot;label&quot;, 
-           x = accuracy_agg$model, 
-           y = accuracy_agg$mae, 
-           label = round(accuracy_agg$mae, 2))
 
-# Step 5: Access prediction ------------------------------
+# Estimate prediction accuracy ---------------
 
-# Define criterion_train
-criterion_test &lt;- data_test$hwy
+# Get accuracy statistics across folds
+resamples_price &lt;- resamples(list(ridge = price_ridge, 
+                                  lasso = price_lasso, 
+                                  glm = price_glm))
 
-# Save predicted values
-glm_pred &lt;- predict(hwy_glm, newdata = data_test)
-dt_pred &lt;- predict(hwy_dt, newdata = data_test)
-rf_pred &lt;- predict(hwy_rf, newdata = data_test)
+# Print summary of accuracies
+summary(resamples_price)
 
-#  Calculate fitting accuracies
-postResample(pred = glm_pred, obs = criterion_test)
-postResample(pred = dt_pred, obs = criterion_test)
-postResample(pred = rf_pred, obs = criterion_test)
+# MAE 
+#         Min. 1st Qu. Median   Mean 3rd Qu.   Max. NA's
+# ridge 1057.9  1078.9 1083.2 1090.1  1112.0 1118.5    0
+# lasso  865.7   892.7  897.2  902.9   914.2  944.8    0
+# glm    839.7   910.0  920.5  905.9   922.7  936.7    0
+
+# Prediction Accuracy -------------------
+
+# GLM ================================
+
+# Predictions
+glm_pred &lt;- predict(price_glm, 
+                    newdata = data_test)
+
+# Calculate aggregate accuracy
+postResample(pred = glm_pred, 
+             obs = criterion_test)
+
+#      RMSE  Rsquared       MAE 
+# 1542.4046    0.8467  969.5960 
+
+# Ridge ================================
+
+# Predictions
+ridge_pred &lt;- predict(price_ridge, 
+                      newdata = data_test)
+
+# Calculate aggregate accuracy
+postResample(pred = ridge_pred, 
+             obs = criterion_test)
+
+#      RMSE  Rsquared       MAE 
+# 1652.5079    0.8256 1129.1944 
+
+
+# Lasso================================
+
+# Predictions
+lasso_pred &lt;- predict(price_lasso, 
+                      newdata = data_test)
+
+# Calculate aggregate accuracy
+postResample(pred = lasso_pred, 
+             obs = criterion_test)
+
+#      RMSE  Rsquared       MAE 
+# 1543.6057    0.8464  966.8914 
+
 
 # Visualise Accuracy -------------------------
 
 # Tidy competition results
 accuracy &lt;- tibble(criterion_test = criterion_test,
                    Regression = glm_pred,
-                   DecisionTrees = dt_pred,
-                   RandomForest = rf_pred) %&gt;%
+                   Ridge = ridge_pred,
+                   Lasso = lasso_pred) %&gt;%
                gather(model, prediction, -criterion_test) %&gt;%
   
   # Add error measures
@@ -1228,7 +1242,7 @@ ggplot(data = accuracy,
        aes(x = model, y = ae, fill = model)) + 
   geom_violin() + 
   geom_jitter(width = .05, alpha = .2) +
-  labs(title = &quot;Prediction Absolute Errors&quot;,
+  labs(title = &quot;Fitting Absolute Errors&quot;,
        subtitle = &quot;Numbers indicate means&quot;,
        x = &quot;Model&quot;,
        y = &quot;Absolute Error&quot;) +
@@ -1483,13 +1497,13 @@ ggplot(data = accuracy,
 <h2>A - Setup</h2>
 <ol style="list-style-type: decimal">
 <li><p>Open your <code>BaselRBootcamp</code> R project. It should already have the folders <code>1_Data</code> and <code>2_Code</code>. Make sure that the data file(s) listed in the <code>Datasets</code> section above are in your <code>1_Data</code> folder</p></li>
-<li>Open a new R script. At the top of the script, using comments, write your name and the date. Save it as a new file called <code>Prediction_College_practical.R</code> in the <code>2_Code</code> folder.<br />
+<li>Open a new R script. At the top of the script, using comments, write your name and the date. Save it as a new file called <code>Optimization_practical.R</code> in the <code>2_Code</code> folder.<br />
 </li>
 <li><p>Using <code>library()</code> load the set of packages for this practical listed in the packages section above.</p></li>
 </ol>
 <pre class="r"><code>## NAME
 ## DATE
-## Prediction Practical - With regression, decision trees, and random forests
+## Optimization Practical - With regression, decision trees, and random forests
 
 library(tidyverse)
 library(caret)
@@ -1498,16 +1512,16 @@ library(partykit)</code></pre>
 <ol start="4" style="list-style-type: decimal">
 <li>Run the code below to load each of the datasets listed in the <code>Datasets</code> as new objects</li>
 </ol>
-<pre class="r"><code># College data
-college_train &lt;- read_csv(file = &quot;1_Data/college_train.csv&quot;)
-college_test &lt;- read_csv(file = &quot;1_Data/college_test.csv&quot;)</code></pre>
+<pre class="r"><code># House price data
+house_train &lt;- read_csv(file = &quot;1_Data/house_train.csv&quot;)
+house_test &lt;- read_csv(file = &quot;1_Data/house_test.csv&quot;)</code></pre>
 <ol start="5" style="list-style-type: decimal">
 <li>Take a look at the first few rows of each dataframe by printing them to the console.</li>
 </ol>
 <pre class="r"><code># Print dataframes to the console
 
-college_train
-college_test</code></pre>
+house_train
+house_test</code></pre>
 <ol start="6" style="list-style-type: decimal">
 <li>Print the numbers of rows and columns of each dataset using the <code>dim()</code> function</li>
 </ol>
@@ -1530,17 +1544,18 @@ names(XXX)</code></pre>
 View(XXX)
 View(XXX)</code></pre>
 <ol start="9" style="list-style-type: decimal">
-<li>We need to do a little bit of data cleaning before starting. Specifically, we need to convert all character columns to factors, and delete the college_name column to make it easier to work with the data: Do this by running the following code:</li>
+<li>We need to do a little bit of data cleaning before starting. Specifically, we need to convert all character columns to factors: Do this by running the following code:</li>
 </ol>
 <pre class="r"><code># Convert all character columns to factor
 
-college_train &lt;- college_train %&gt;%
-          mutate_if(is.character, factor) %&gt;%
-          select(-college_name)
+house_train &lt;- house_train %&gt;%
+          mutate_if(is.character, factor)
 
-college_test &lt;- college_test %&gt;%
-          mutate_if(is.character, factor) %&gt;%
-          select(-college_name)</code></pre>
+house_test &lt;- house_test %&gt;%
+          mutate_if(is.character, factor)</code></pre>
+</div>
+<div id="section-1" class="section level2">
+<h2></h2>
 </div>
 <div id="b---fitting" class="section level2">
 <h2>B - Fitting</h2>
