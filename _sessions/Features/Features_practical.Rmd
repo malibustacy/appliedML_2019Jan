@@ -60,7 +60,7 @@ nonviolent_crime <- read_csv("https://raw.githubusercontent.com/therbootcamp/app
 
 - The `pima_diabetes` is a subset of the `PimaIndiansDiabetes2` data set in the `mlbench` package. To see column descriptions, run the following:
 
-```{r, eval = FALSE}
+```{r, eval = FALSE, echo = TRUE}
 library(mlbench)       # Load ISLR package
 ?PimaIndiansDiabetes2  # Look at help menu for College
 ```
@@ -280,7 +280,7 @@ library(tidyverse)
 4. In the code below, we will load each of the data sets listed in the `Datasets` as new objects.
 
 ```{r, echo = TRUE, eval = FALSE, message = FALSE, warning = FALSE}
-# Pimo Indians diabetes
+# Pima Indians diabetes
 pima_diabetes <- read_csv(file = "1_Data/pima_diabetes.csv")
 
 # (Non-) violent crime statistics

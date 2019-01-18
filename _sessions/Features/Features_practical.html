@@ -98,6 +98,9 @@ img {
 button.code-folding-btn:focus {
   outline: none;
 }
+summary {
+  display: list-item;
+}
 </style>
 
 
@@ -105,14 +108,74 @@ button.code-folding-btn:focus {
 <div class="container-fluid main-container">
 
 <!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
 <script>
 $(document).ready(function () {
   window.buildTabsets("TOC");
 });
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
 </script>
 
 <!-- code folding -->
-
 
 
 
@@ -175,8 +238,12 @@ $(document).ready(function () {
 </tbody>
 </table>
 <ul>
-<li><p>The <code>pima_diabetes</code> is a subset of the <code>PimaIndiansDiabetes2</code> data set in the <code>mlbench</code> package. To see column descriptions, run the following:</p></li>
-<li><p>The <code>murders_crime</code>, <code>violent_crime</code>, and <code>non_violent_crime</code> data are subsets of the Communities and Crime Unnormalized Data Set data set from the UCI Machine Learning Repository. To see column descriptions, visit this site: <a href="https://archive.ics.uci.edu/ml/datasets/Communities+and+Crime+Unnormalized">Communities and Crime Unnormalized Data Set</a></p></li>
+<li>The <code>pima_diabetes</code> is a subset of the <code>PimaIndiansDiabetes2</code> data set in the <code>mlbench</code> package. To see column descriptions, run the following:</li>
+</ul>
+<pre class="r"><code>library(mlbench)       # Load ISLR package
+?PimaIndiansDiabetes2  # Look at help menu for College</code></pre>
+<ul>
+<li>The <code>murders_crime</code>, <code>violent_crime</code>, and <code>non_violent_crime</code> data are subsets of the Communities and Crime Unnormalized Data Set data set from the UCI Machine Learning Repository. To see column descriptions, visit this site: <a href="https://archive.ics.uci.edu/ml/datasets/Communities+and+Crime+Unnormalized">Communities and Crime Unnormalized Data Set</a></li>
 </ul>
 </div>
 <div id="glossary" class="section level3">
@@ -446,7 +513,7 @@ library(caret)</code></pre>
 <ol start="4" style="list-style-type: decimal">
 <li>In the code below, we will load each of the data sets listed in the <code>Datasets</code> as new objects.</li>
 </ol>
-<pre class="r"><code># Pimo Indians diabetes
+<pre class="r"><code># Pima Indians diabetes
 pima_diabetes &lt;- read_csv(file = &quot;1_Data/pima_diabetes.csv&quot;)
 
 # (Non-) violent crime statistics
