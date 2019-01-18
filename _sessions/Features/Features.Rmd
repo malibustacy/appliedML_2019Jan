@@ -129,7 +129,7 @@ As the number of features grows...
 
 <high>Efficiency</high> - the amount of computations grows (how much depends on the model).
 
-<high>Redundancy</high> - the amount of redudancy grows (how much depends on the) 
+<high>Redundancy</high> - the amount of redudancy grows (how much depends on the model). 
 
 &#8594; <high>Small set of good predictors<high>
 

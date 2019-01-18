@@ -79,7 +79,7 @@ As the number of features grows...
 
 &lt;high&gt;Efficiency&lt;/high&gt; - the amount of computations grows (how much depends on the model).
 
-&lt;high&gt;Redundancy&lt;/high&gt; - the amount of redudancy grows (how much depends on the) 
+&lt;high&gt;Redundancy&lt;/high&gt; - the amount of redudancy grows (how much depends on the model). 
 
 &amp;#8594; &lt;high&gt;Small set of good predictors&lt;high&gt;
 
@@ -165,17 +165,17 @@ varImp(income_lm)
 ```
 lm variable importance
 
-           Overall
-age       100.0000
-food       43.3038
-alcohol    25.4166
-happiness  11.4773
-tattoos     6.8564
-height      2.7772
-children    2.6603
-weight      0.2702
-fitness     0.0258
-datause     0.0000
+          Overall
+age        100.00
+food        46.19
+alcohol     28.57
+happiness   12.24
+tattoos      6.68
+children     3.56
+fitness      2.90
+height       2.85
+weight       1.90
+datause      0.00
 ```
 
 ]
@@ -226,14 +226,14 @@ Outer resampling method: Bootstrapped (25 reps)
 Resampling performance over subset size:
 
  Variables  RMSE Rsquared   MAE RMSESD RsquaredSD  MAESD Selected
-         3 0.371    0.859 0.293 0.0185     0.0152 0.0144         
-         4 0.367    0.862 0.289 0.0198     0.0155 0.0159         
-         5 0.367    0.862 0.289 0.0202     0.0156 0.0161        *
-        10 0.369    0.861 0.289 0.0195     0.0155 0.0156         
-        14 0.369    0.861 0.290 0.0192     0.0152 0.0156         
+         3 0.368    0.865 0.291 0.0124     0.0153 0.0105         
+         4 0.366    0.867 0.289 0.0130     0.0153 0.0111        *
+         5 0.367    0.866 0.289 0.0128     0.0148 0.0114         
+        10 0.370    0.864 0.291 0.0116     0.0139 0.0104         
+        14 0.370    0.864 0.291 0.0114     0.0139 0.0104         
 
-The top 5 variables (out of 5):
-   age, food, alcohol, happiness, tattoos
+The top 4 variables (out of 4):
+   age, food, alcohol, happiness
 ```
 
 ]
