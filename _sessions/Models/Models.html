@@ -99,7 +99,7 @@ One important model assumptions concerns linearity.
 &lt;br&gt;&lt;br&gt;
 &lt;high&gt;Linear models&lt;/high&gt; (`lm`, `glm`) make strong model assumptions. They are more often wrong, but also ceteris paribus &lt;high&gt;less prone to overfitting&lt;/high&gt;.
 
-&lt;high&gt;Non-linear moels&lt;/high&gt; (everything else) make weaker model assumptions, leaving the exact relationship (more) open. They are are closer to the truth, but also ceteris paribus &lt;high&gt;more prone to overfitting&lt;/high&gt;. 
+&lt;high&gt;Non-linear Models&lt;/high&gt; (everything else) make weaker model assumptions, leaving the exact relationship (more) open. They are are closer to the truth, but also ceteris paribus &lt;high&gt;more prone to overfitting&lt;/high&gt;. 
 
 
 ]
@@ -149,9 +149,9 @@ Kernels &lt;high&gt;re-represent objects&lt;/high&gt; in terms of other objects!
 
 # Automatic feature engineering
 
-&lt;high&gt;Deep learning&lt;/high&gt; aka neural networks and, espectially, &lt;high&gt;convolutional neural networks&lt;/high&gt;, excel because they generate their features. 
+&lt;high&gt;Deep learning&lt;/high&gt; aka neural networks and, especially, &lt;high&gt;convolutional neural networks&lt;/high&gt;, excel because they generate their features. 
 
-Neural networks are not the focus of `caret` and this course. Powerful implementations based on &lt;high&gt;Google's Tensorflow&lt;/high&gt; libarary are provided by `tensorflow`.
+Neural networks are not the focus of `caret` and this course. Powerful implementations based on &lt;high&gt;Google's Tensorflow&lt;/high&gt; library are provided by `tensorflow`.
 
 
 .pull-left3[
@@ -219,7 +219,7 @@ To produce &lt;high&gt;robust predictions&lt;/high&gt; that &lt;high&gt; suffer 
 &lt;tr style="background-color:#ffffff"&gt;
   &lt;td align="center"&gt;&lt;high&gt;Ensemble&lt;/high&gt;&lt;/td&gt;
   &lt;td align="center"&gt;Boosting&lt;/td&gt;
-  &lt;td align="center"&gt;&lt;mono&gt;adaboost&lt;/mono&gt;&lt;mono&gt;xgbTree&lt;/mono&gt;&lt;/td&gt;
+  &lt;td align="center"&gt;&lt;mono&gt;adaboost&lt;/mono&gt;, &lt;mono&gt;xgbTree&lt;/mono&gt;&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr style="background-color:#ffffff"&gt;
   &lt;td align="center"&gt;&lt;high&gt;Feature selection&lt;/high&gt;&lt;/td&gt;
@@ -298,7 +298,7 @@ Regularization is the process of adding model terms, usually &lt;high&gt;penalti
 
 &lt;high&gt;Aggregate predictions from multiple fits to resampled data.&lt;/high&gt;
 
-Especially beneficial for models that produce relatively instable solutions, e.g., regression trees. `rpart` &amp;#8594; `treebag`.
+Especially beneficial for models that produce relatively unstable solutions, e.g., regression trees. `rpart` &amp;#8594; `treebag`.
 
 Random forest adds sampling of features to reduce dependencies across trees.
 
@@ -386,13 +386,13 @@ As random forests select at any node the best of `mtry`-many randomly selected f
 
 .pull-left5[
 
-Unsupervised learning aims to &lt;high&gt;identify structure in the absence of labels&lt;/high&gt;, i.e., a criterian. 
+Unsupervised learning aims to &lt;high&gt;identify structure in the absence of labels&lt;/high&gt;, i.e., a Criterion. 
 
 There is &lt;high&gt;no ground truth&lt;/high&gt;, rendering unsupervised learning problems essentially &lt;high&gt;impossible to "solve"&lt;/high&gt;, i.e., you never quite know how good a solution is.
 
 &lt;u&gt;Common questions&lt;/u&gt;
 
-Are there &lt;high&gt;groups of cases&lt;/high&gt;, which case belongs to which group, and how many groups are there? &amp;#8594; `k-means` or `hierarchical clustering`
+Are there &lt;high&gt;groups of cases&lt;/high&gt; (clusters), which case belongs to which group, and how many groups are there? &amp;#8594; `k-means` or `hierarchical clustering`
 
 Are there &lt;high&gt;groups of features&lt;/high&gt;, which features belongs to which group, and how many groups are there? &amp;#8594; `pca` or `svd`
 
@@ -413,22 +413,55 @@ Are there &lt;high&gt;groups of features&lt;/high&gt;, which features belongs to
 
 ---
 
-# Excurse: Unsupervised learning
+# Excurse: Clustering
 
+.pull-left5[
 
-k-means
+&lt;high&gt;Clustering algorithms&lt;/high&gt; attempt to find distributed membership to `\(k\)` groups (clusters) such that &lt;high&gt;groups are maximally homogeneous&lt;/high&gt;.
 
-hierarchical
+&lt;u&gt;k-means&lt;/u&gt;
 
+Assign cases to the closest cluster means, while iteratively shifting them around to &lt;high&gt;minimize within-group variance&lt;/high&gt;. 
+
+&lt;u&gt;hierarchical clustering&lt;/u&gt;
+
+Place every case in one group. &lt;high&gt;Join clusters according to a pre-specified distance function&lt;/high&gt; until the desired number of `\(k\)` clusters is reached.  
+
+&lt;u&gt;R packages&lt;/u&gt;
+[cstab](https://arxiv.org/abs/1608.07494)
+
+]
+
+.pull-right45[
+
+&lt;p align="center"&gt;
+  
+  &lt;img src="image/iris_kmeans.png" height=400px&gt;
+  
+&lt;/p&gt;
+
+]
 
 ---
 
-# Unsupervised learning
+# Excurse: Dimensionality reduction
 
-pca &amp; svd
+.pull-left45[
+&lt;high&gt;Principal component analysis&lt;/high&gt; (PCA) is an &lt;high&gt;unsupervised&lt;/high&gt; algorithm that re-represents the data in a &lt;high&gt;new feature space&lt;/high&gt;.  
 
+The new features aka &lt;high&gt;principal components are greedy&lt;/high&gt; in that they attempt to explain and, thus, group together as many features as they can (leaving as few as possible for the next component). 
 
+&lt;high&gt;Singular value decomposition&lt;/high&gt; (SVD) is the general mathematical approach underlying PCA and other methods.
 
+]
+
+.pull-right45[
+
+&lt;p align = "center"&gt;
+&lt;img src="image/pca.png"&gt;
+&lt;/p&gt;
+
+]
 
 ---
 
@@ -462,9 +495,6 @@ Xavier Conort
 
 ---
 
-
-# Practical
-
 class: middle, center
 
 &lt;h1&gt;&lt;a href=https://therbootcamp.github.io/appliedML_2019Jan/_sessions/Models/Models_practical.html&gt;Practical&lt;/a&gt;&lt;/h1&gt;
@@ -486,12 +516,23 @@ if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
   d.head.appendChild(s);
 })();</script>
 
-<script type="text/x-mathjax-config">
-MathJax.Hub.Config({
-  tex2jax: {
-    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+<script>
+(function() {
+  var i, text, code, codes = document.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
   }
-});
+})();
 </script>
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>
