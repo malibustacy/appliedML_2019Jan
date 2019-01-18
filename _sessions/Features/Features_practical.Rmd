@@ -31,7 +31,7 @@ knitr::include_graphics("image/wrongdata.gif")
 By the end of this practical you will:
 
 1. Understand the importance the curse of dimensionality.
-2. Know how eliminate unwanted features.
+2. Know how to eliminate unwanted features.
 3. Explore and use feature importance.
 4. Use dimensionality reduction.
 
