@@ -391,7 +391,7 @@ train(form = income ~ .,
 
 Decision trees have a <high>complexity parameter</high> called <high>cp</high>
 
-This control show complex (large) trees are allowed to grow
+This controls how complex (large) trees are allowed to grow
 
 - Small cp (< 0.01) = Complex Trees
 - Large cp (> 0.10) = Simple Trees
