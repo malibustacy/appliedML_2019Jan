@@ -303,7 +303,7 @@ In this section, you will explore feature selection for the Pima Indians Diabete
 
 #### Splitting
 
-5. As always, before you do anything you need to make sure that you separate a hold-out data set for later. Create `pima_train` and `pima_test` using `createDataPartition()` with as little as <b>15% of cases going into the training set</b>. Also store the variable `diabetes` from the test set, which will be the criterion . 
+5. As always, before you do anything you need to make sure that you separate a hold-out data set for later. Create `pima_train` and `pima_test` using `createDataPartition()` with as little as <b>15% of cases going into the training set</b>. Also store the variable `diabetes` from the test set as a factor, which will be the criterion. 
 
 ```{r, echo = TRUE}
 # split index
@@ -314,7 +314,7 @@ pima_train <- XX %>% slice(train_index)
 pima_test  <- XX %>% slice(-train_index)
 
 # test criterion
-criterion <- pima_test$XX
+criterion <- as.factor(pima_test$XX)
 ```
 
 ```{r}
@@ -326,7 +326,7 @@ pima_train <- pima_diabetes %>% slice(train_index)
 pima_test  <- pima_diabetes %>% slice(-train_index)
 
 # test criterion
-criterion <- pima_test$diabetes
+criterion <- as.factor(pima_test$diabetes)
 ```
 
 #### Remove unwanted features
