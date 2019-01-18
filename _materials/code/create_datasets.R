@@ -75,3 +75,16 @@ write_csv(house_train, path = "1_Data/house_train.csv")
 write_csv(house_test, path = "1_Data/house_test.csv")
 
 
+
+###  diamonds  - From dplyr dataset
+
+diamonds <- diamonds %>%
+  sample_n(nrow(.))
+
+diamonds_train <- diamonds[1:5000,]
+diamonds_test <- diamonds[5001:6000,]
+
+write_csv(diamonds_train, path = "1_Data/diamonds_train.csv")
+write_csv(diamonds_test, path = "1_Data/diamonds_test.csv")
+
+

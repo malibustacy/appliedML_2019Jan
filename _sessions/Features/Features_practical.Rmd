@@ -31,7 +31,7 @@ knitr::include_graphics("image/wrongdata.gif")
 By the end of this practical you will:
 
 1. Understand the importance the curse of dimensionality.
-2. Know how eliminate unwanted features.
+2. Know how to eliminate unwanted features.
 3. Explore and use feature importance.
 4. Use dimensionality reduction.
 
@@ -60,7 +60,7 @@ nonviolent_crime <- read_csv("https://raw.githubusercontent.com/therbootcamp/app
 
 - The `pima_diabetes` is a subset of the `PimaIndiansDiabetes2` data set in the `mlbench` package. To see column descriptions, run the following:
 
-```{r, eval = FALSE}
+```{r, eval = FALSE, echo = TRUE}
 library(mlbench)       # Load ISLR package
 ?PimaIndiansDiabetes2  # Look at help menu for College
 ```
@@ -280,12 +280,15 @@ library(tidyverse)
 4. In the code below, we will load each of the data sets listed in the `Datasets` as new objects.
 
 ```{r, echo = TRUE, eval = FALSE, message = FALSE, warning = FALSE}
-# Pimo Indians diabetes
+# Pima Indians diabetes
 pima_diabetes <- read_csv(file = "1_Data/pima_diabetes.csv")
 
 # (Non-) violent crime statistics
 violent_crime    <- read_csv(file = "1_Data/violent_crime.csv")
 nonviolent_crime <- read_csv(file = "1_Data/nonviolent_crime.csv")
+
+# murders crime statistics
+murders_crime <- read_csv(file = "1_Data/murders_crime.csv")
 ```
 
 
@@ -303,7 +306,7 @@ In this section, you will explore feature selection for the Pima Indians Diabete
 
 #### Splitting
 
-5. As always, before you do anything you need to make sure that you separate a hold-out data set for later. Create `pima_train` and `pima_test` using `createDataPartition()` with as little as <b>15% of cases going into the training set</b>. Also store the variable `diabetes` in the test set, which will be the criterion . 
+5. As always, before you do anything you need to make sure that you separate a hold-out data set for later. Create `pima_train` and `pima_test` using `createDataPartition()` with as little as <b>15% of cases going into the training set</b>. Also store the variable `diabetes` from the test set as a factor, which will be the criterion. 
 
 ```{r, echo = TRUE}
 # split index
@@ -314,7 +317,7 @@ pima_train <- XX %>% slice(train_index)
 pima_test  <- XX %>% slice(-train_index)
 
 # test criterion
-criterion <- pima_test$XX
+criterion <- as.factor(pima_test$XX)
 ```
 
 ```{r}
@@ -326,7 +329,7 @@ pima_train <- pima_diabetes %>% slice(train_index)
 pima_test  <- pima_diabetes %>% slice(-train_index)
 
 # test criterion
-criterion <- pima_test$diabetes
+criterion <- as.factor(pima_test$diabetes)
 ```
 
 #### Remove unwanted features
@@ -388,7 +391,7 @@ After having retained all features in the previous section section, this section
 9. Fit the `glm` to the training data.
 
 ```{r, echo = TRUE}
-# fit random forest
+# fit regression
 pima_glm <- train(diabetes ~ .,
                 data = XX,
                 method = XX
@@ -396,7 +399,7 @@ pima_glm <- train(diabetes ~ .,
 ```
 
 ```{r}
-# fit random forest
+# fit regression
 pima_glm <- train(diabetes ~ .,
                 data = pima_train,
                 method = 'glm')
@@ -466,13 +469,13 @@ confusionMatrix(pima_glm_pred, criterion)
 confusionMatrix(pima_glm4_pred, criterion)
 ```
 
-13. You probably have observed that the model with two features less is actually slightly better than the full model. Why do you think is that the case?
+13. You might have observed that the model with two features less is actually slightly better than the full model (if this is not the case, keep in mind that the partitioning of the dataset was done randomly, i.e., if you do it a second time, your results may slightly change). Why do you think is that the case?
 
 14. Play around: Up the proportion dedicated to training or use a different model, e.g., `random forest`, and see whether things change. 
 
 ## C - Murders
 
-In this section, you will explore feature selection but with a data set with very different properties. The data combines socio-economic data from the '90 Census, data from Law Enforcement Management and Admin Stats survey, and crime data from the FBI, allowing to analyse the relationship between various socio-demographic variables and whether murders have been committed (`murders`), the criterion of this exercise.     
+In this section, you will explore feature selection but use a data set with very different properties. The data combines socio-economic data from the '90 Census, data from Law Enforcement Management and Admin Stats survey, and crime data from the FBI, allowing to analyse the relationship between various socio-demographic variables and whether murders have been committed (`murders`), the criterion of this exercise.     
 
 1. Take a look at the first few rows of the `murders_crime` data frame by printing then to the console.
 
@@ -484,7 +487,7 @@ In this section, you will explore feature selection but with a data set with ver
 
 #### Splitting
 
-5. Again, before you do anything you need to make sure that you separate a hold-out data set for later. Create `murders_train` and `murders_test` using `createDataPartition()` with again as little as <b>25% of cases going into the training set</b>. Also store the variable `diabetes` in the test set, which will be the criterion . 
+5. Again, before you do anything you need to make sure that you separate a hold-out data set for later. Create `murders_train` and `murders_test` using `createDataPartition()` with again as little as <b>25% of cases going into the training set</b>. Also store the variable `murders` from the test set as a factor, which will be the criterion. 
 
 ```{r}
 # split index
@@ -495,7 +498,7 @@ murders_train <- murders_crime %>% slice(train_index)
 murders_test  <- murders_crime %>% slice(-train_index)
 
 # test criterion
-criterion <- murders_test$murders
+criterion <- as.factor(murders_test$murders)
 ```
 
 #### Remove unwanted features
@@ -584,7 +587,7 @@ murders_glm_clean = train(murders ~ .,
                           method = 'glm')
 ```
 
-12. You probably have noticed warning messages. The concern the very fact the features in both data sets, but especially the non-clean set, are still too highly correlated. Go ahead and evaluate the fits on the hold-out set. Which set of features predicts better?
+12. You probably have noticed warning messages. They concern the very fact the features in both data sets, but especially the non-clean set, are still too highly correlated. Go ahead and evaluate the fits on the hold-out set. Which set of features predicts better?
 
 ```{r}
 # determine predictions for test data

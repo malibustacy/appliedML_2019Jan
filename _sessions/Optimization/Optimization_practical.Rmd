@@ -1,6 +1,5 @@
 ---
-title: "Prediction"
-subtitle: "With regression, decision trees, and random forests"
+title: "Optimization"
 author: "Applied Machine Learning with R<br/><a href='https://therbootcamp.github.io'>www.therbootcamp.com</a><br/><a href='https://twitter.com/therbootcamp'>@therbootcamp</a>"
 output:
   html_document:
@@ -20,8 +19,8 @@ knitr::opts_chunk$set(comment = NA,
 options(digits = 3)
 ```
 
-```{r, echo = FALSE, fig.align = 'center', eval = TRUE, out.width = "90%", fig.cap="Source: Medium.com"}
-knitr::include_graphics("https://cdn-images-1.medium.com/max/1200/0*F0y1bmOEzCFCcPE_")
+```{r, echo = FALSE, fig.align = 'center', eval = TRUE, out.width = "90%", fig.cap="Wikipedia"}
+knitr::include_graphics("https://upload.wikimedia.org/wikipedia/commons/1/1c/K-fold_cross_validation_EN.jpg")
 ```
 
 ## {.tabset}
@@ -30,10 +29,9 @@ knitr::include_graphics("https://cdn-images-1.medium.com/max/1200/0*F0y1bmOEzCFC
 
 By the end of this practical you will know how to:
 
-1. Fit regression, decision trees and random forests to training data
-2. Evaluate model fitting *and* prediction performance in a test set
-3. Compare the fitting and prediction performance of two models
-4. Explore the effects of features on model predictions
+1. Use cross-validation to select optimal model tuning parameters
+2. Compare 'standard' regression with lasso and ridge regression
+3. Use cross-validation to predict test accuracy
 
 ### Datasets
 
@@ -107,7 +105,7 @@ library(ISLR)   # Load ISLR package
 ### Examples
 
 ```{r, eval = FALSE, echo = TRUE}
-# Fitting and evaluating regression, decision trees, and random forests
+# Model optimization with Regression
 
 # Step 0: Load packages-----------
 
@@ -116,13 +114,13 @@ library(caret)        # For ML mastery
 library(partykit)     # For decision trees
 library(party)        # For decision trees
 
-# Step 1: Load and Clean, and Explore Training data ----------------------
+# Step 1: Load, clean, and explore data ----------------------
 
 # training data
-data_train <- read_csv("1_Data/mpg_train.csv")
+data_train <- read_csv("1_Data/diamonds_train.csv")
 
 # test data
-data_test <- read_csv("1_Data/mpg_test.csv")
+data_test <- read_csv("1_Data/diamonds_test.csv")
 
 # Convert all characters to factor
 #  Some ML models require factors
@@ -143,137 +141,149 @@ names(data_train) # Print the names
 # Define criterion_train
 #   We'll use this later to evaluate model accuracy
 
-criterion_train <- data_train$hwy
+criterion_train <- data_train$price
+criterion_test <- data_test$price
 
 # Step 2: Define training control parameters -------------
 
-# In this case, I will set method = "none" to fit to 
-#  the entire dataset without any fancy methods
+# Use 10-fold cross validation
 
-ctrl_none <- trainControl(method = "none") 
+ctrl_cv <- trainControl(method = "cv", 
+                        number = 10) 
 
-# Step 3: Train model: -----------------------------
+# Step 3: Train models: -----------------------------
 #   Criterion: hwy
 #   Features: year, cyl, displ
 
-# Regression --------------------------
+# Normal Regression --------------------------
 
-hwy_glm <- train(form = hwy ~ year + cyl + displ,
-                 data = data_train,
-                 method = "glm",
-                 trControl = ctrl_none)
+price_glm <- train(form = price ~ carat + depth + table + x + y,
+                   data = data_train,
+                   method = "glm",
+                   trControl = ctrl_cv)
 
-# Look at summary information
-hwy_glm$finalModel
-summary(hwy_glm)
 
-# Save fitted values
-glm_fit <- predict(hwy_glm)
+# Coefficients
+coef(price_glm$finalModel)
 
-#  Calculate fitting accuracies
-postResample(pred = glm_fit, 
-             obs = criterion_train)
+# (Intercept)       carat       depth       table           x           y 
+#    16571.06    10229.91     -165.30      -82.52    -3958.62     2937.76 
 
-# Decision Trees ----------------
 
-hwy_dt <- train(form = hwy ~ year + cyl + displ,
-                data = data_train,
-                method = "rpart",
-                trControl = ctrl_none,
-                tuneGrid = expand.grid(cp = .01))   # Set complexity parameter
+# Lasso --------------------------
 
-# Look at summary information
-hwy_dt$finalModel
-plot(as.party(hwy_dt$finalModel))   # Visualise your trees
+# Vector of lambda values to try
+lambda_vec <- 10 ^ seq(-3, 3, length = 100)
 
-# Save fitted values
-dt_fit <- predict(hwy_dt)
+price_lasso <- train(form = price ~ carat + depth + table + x + y,
+                   data = data_train,
+                   method = "glmnet",
+                   trControl = ctrl_cv,
+                   tuneGrid = expand.grid(alpha = 1,  # Lasso
+                                          lambda = lambda_vec))
 
-# Calculate fitting accuracies
-postResample(pred = dt_fit, obs = criterion_train)
 
-# Random Forests -------------------------
+# What was the best lambda value?
+price_lasso$bestTune$lambda
 
-hwy_rf <- train(form = hwy ~ year + cyl + displ,
-                data = data_train,
-                method = "rf",
-                trControl = ctrl_none,
-                tuneGrid = expand.grid(mtry = 2))   # Set number of features randomly selected
+# Get coefficients from best lambda value
 
-# Look at summary information
-hwy_rf$finalModel
+coef(price_lasso$finalModel, 
+     price_lasso$bestTune$lambda)
 
-# Save fitted values
-rf_fit <- predict(hwy_rf)
+# 6 x 1 sparse Matrix of class "dgCMatrix"
+#                    1
+# (Intercept) 16722.33
+# carat       10168.30
+# depth        -166.64
+# table         -84.88
+# x           -3152.51
+# y            2152.05
 
-# Calculate fitting accuracies
-postResample(pred = rf_fit, obs = criterion_train)
 
-# Visualise Accuracy -------------------------
 
-# Tidy competition results
-accuracy <- tibble(criterion_train = criterion_train,
-                   Regression = glm_fit,
-                   DecisionTrees = dt_fit,
-                   RandomForest = rf_fit) %>%
-               gather(model, prediction, -criterion_train) %>%
-  
-  # Add error measures
-  mutate(se = prediction - criterion_train,
-         ae = abs(prediction - criterion_train))
+# Ridge --------------------------
 
-# Calculate summaries
-accuracy_agg <- accuracy %>%
-                  group_by(model) %>%
-                  summarise(mae = mean(ae))   # Calculate MAE (mean absolute error)
+# Vector of lambda values to try
+lambda_vec <- 10 ^ seq(-3, 3, length = 100)
 
-# Plot A) Scatterplot of truth versus predictions
+price_ridge <- train(form = price ~ carat + depth + table + x + y,
+                     data = data_train,
+                     method = "glmnet",
+                     trControl = ctrl_cv,
+                     tuneGrid = expand.grid(alpha = 0,  # Ridge penalty
+                                            lambda = lambda_vec))
 
-ggplot(data = accuracy,
-       aes(x = criterion_train, y = prediction, col = model)) +
-  geom_point(alpha = .2) +
-  geom_abline(slope = 1, intercept = 0) +
-  labs(title = "Predicting mpg$hwy",
-       subtitle = "Black line indicates perfect performance")
+# Get coefficients from best lambda value
+coef(price_ridge$finalModel, 
+     price_ridge$bestTune$lambda)
 
-# Plot B) Violin plot of absolute errors
+# Step 3: Estimate prediction accuracy from folds ----
 
-ggplot(data = accuracy, 
-       aes(x = model, y = ae, fill = model)) + 
-  geom_violin() + 
-  geom_jitter(width = .05, alpha = .2) +
-  labs(title = "Fitting Absolute Errors",
-       subtitle = "Numbers indicate means",
-       x = "Model",
-       y = "Absolute Error") +
-  guides(fill = FALSE) +
-  annotate(geom = "label", 
-           x = accuracy_agg$model, 
-           y = accuracy_agg$mae, 
-           label = round(accuracy_agg$mae, 2))
+# Get accuracy statistics across folds
+resamples_price <- resamples(list(ridge = price_ridge, 
+                                  lasso = price_lasso, 
+                                  glm = price_glm))
 
-# Step 5: Access prediction ------------------------------
+# Print summary of accuracies
+summary(resamples_price)
 
-# Define criterion_train
-criterion_test <- data_test$hwy
+# MAE 
+#         Min. 1st Qu. Median   Mean 3rd Qu.   Max. NA's
+# ridge 1057.9  1078.9 1083.2 1090.1  1112.0 1118.5    0
+# lasso  865.7   892.7  897.2  902.9   914.2  944.8    0
+# glm    839.7   910.0  920.5  905.9   922.7  936.7    0
 
-# Save predicted values
-glm_pred <- predict(hwy_glm, newdata = data_test)
-dt_pred <- predict(hwy_dt, newdata = data_test)
-rf_pred <- predict(hwy_rf, newdata = data_test)
+# Step 4: Measure prediction Accuracy -------------------
 
-#  Calculate fitting accuracies
-postResample(pred = glm_pred, obs = criterion_test)
-postResample(pred = dt_pred, obs = criterion_test)
-postResample(pred = rf_pred, obs = criterion_test)
+# GLM ================================
+
+# Predictions
+glm_pred <- predict(price_glm, 
+                    newdata = data_test)
+
+# Calculate aggregate accuracy
+postResample(pred = glm_pred, 
+             obs = criterion_test)
+
+#      RMSE  Rsquared       MAE 
+# 1542.4046    0.8467  969.5960 
+
+# Ridge ================================
+
+# Predictions
+ridge_pred <- predict(price_ridge, 
+                      newdata = data_test)
+
+# Calculate aggregate accuracy
+postResample(pred = ridge_pred, 
+             obs = criterion_test)
+
+#      RMSE  Rsquared       MAE 
+# 1652.5079    0.8256 1129.1944 
+
+
+# Lasso ================================
+
+# Predictions
+lasso_pred <- predict(price_lasso, 
+                      newdata = data_test)
+
+# Calculate aggregate accuracy
+postResample(pred = lasso_pred, 
+             obs = criterion_test)
+
+#      RMSE  Rsquared       MAE 
+# 1543.6057    0.8464  966.8914 
+
 
 # Visualise Accuracy -------------------------
 
 # Tidy competition results
 accuracy <- tibble(criterion_test = criterion_test,
                    Regression = glm_pred,
-                   DecisionTrees = dt_pred,
-                   RandomForest = rf_pred) %>%
+                   Ridge = ridge_pred,
+                   Lasso = lasso_pred) %>%
                gather(model, prediction, -criterion_test) %>%
   
   # Add error measures
@@ -300,7 +310,7 @@ ggplot(data = accuracy,
        aes(x = model, y = ae, fill = model)) + 
   geom_violin() + 
   geom_jitter(width = .05, alpha = .2) +
-  labs(title = "Prediction Absolute Errors",
+  labs(title = "Fitting Absolute Errors",
        subtitle = "Numbers indicate means",
        x = "Model",
        y = "Absolute Error") +
@@ -323,13 +333,13 @@ knitr::kable(college_train[1:10,])
 
 1. Open your `BaselRBootcamp` R project. It should already have the folders `1_Data` and `2_Code`. Make sure that the data file(s) listed in the `Datasets` section above are in your `1_Data` folder
 
-2. Open a new R script. At the top of the script, using comments, write your name and the date. Save it as a new file called `Prediction_College_practical.R` in the `2_Code` folder.  
+2. Open a new R script. At the top of the script, using comments, write your name and the date. Save it as a new file called `Optimization_practical.R` in the `2_Code` folder.  
 3. Using `library()` load the set of packages for this practical listed in the packages section above.
 
 ```{r, eval = FALSE, echo = TRUE}
 ## NAME
 ## DATE
-## Prediction Practical - With regression, decision trees, and random forests
+## Optimization Practical - With regression, decision trees, and random forests
 
 library(tidyverse)
 library(caret)
@@ -344,9 +354,9 @@ library(tidyverse)
 4. Run the code below to load each of the datasets listed in the `Datasets` as new objects
 
 ```{r, echo = TRUE, eval = FALSE, message = FALSE, warning = FALSE}
-# College data
-college_train <- read_csv(file = "1_Data/college_train.csv")
-college_test <- read_csv(file = "1_Data/college_test.csv")
+# House price data
+house_train <- read_csv(file = "1_Data/house_train.csv")
+house_test <- read_csv(file = "1_Data/house_test.csv")
 ```
 
 5. Take a look at the first few rows of each dataframe by printing them to the console.
@@ -354,8 +364,8 @@ college_test <- read_csv(file = "1_Data/college_test.csv")
 ```{r, echo = TRUE, eval = FALSE}
 # Print dataframes to the console
 
-college_train
-college_test
+house_train
+house_test
 ```
 
 6. Print the numbers of rows and columns of each dataset using the `dim()` function
@@ -390,12 +400,15 @@ View(XXX)
 ```{r}
 # Convert all character columns to factor
 
-college_train <- college_train %>%
+house_train <- house_train %>%
           mutate_if(is.character, factor)
 
-college_test <- college_test %>%
+house_test <- house_test %>%
           mutate_if(is.character, factor)
 ```
+
+## 
+
 
 ## B - Fitting
 
@@ -414,9 +427,9 @@ ctrl_none <- trainControl(method = "XXX")
 
 ### Regression
 
-2. Using `train()` fit a regression model called `grad_glm` predicting `Grad_Rate` as a function of all features except for `college_name`
+2. Using `train()` fit a regression model called `grad_glm` predicting `Grad_Rate` as a function of all features
 
-- For the `form` argument, use `Grad_Rate ~ . -college_name`
+- For the `form` argument, use `Grad_Rate ~ .`
 - For the `data` argument, use  `college_train` in the data argument
 - For the `method` argument, use `method = "glm"` for regression
 - For the `trControl` argument, use your `ctrl_none` object you created before
@@ -493,14 +506,14 @@ hist(XXX)
 
 8. Using `train()`, fit a random forest model called `grad_rf`
 
-- For the `form` argument, use `Grad_Rate ~ . - college_name`
+- For the `form` argument, use `Grad_Rate ~ .`
 - For the `data` argument, use  `college_train` in the data argument
 - For the `method` argument, use `method = "rf"` to fit random forests
 - For the `trControl` argument, use your `ctrl_none` object you created before
 - For the `mtry` parameter, use `mtry` = 2. This is a relatively low value, so the forest will not be very diverse
 
 ```{r, eval = FALSE, echo = TRUE}
-grad_rf <- train(form = XX ~ . -XX,   # Predict grad and exclude college_name
+grad_rf <- train(form = XX ~ .,   # Predict grad and exclude college_name
                  data = XX,
                  method = "XX",
                  trControl = XX,
@@ -678,16 +691,17 @@ View(XXX)
 View(XXX)
 ```
 
-9. We need to do a little bit of data cleaning before starting. Specifically, we need to convert all character columsn to factor: Do this by running the following code:
+
+9. We need to do a little bit of data cleaning before starting. Specifically, we need to delete the id column to make it easier to work with the data: Do this by running the following code:
 
 ```{r, echo = TRUE, eval = FALSE}
 # Convert all character columns to factor
 
 house_train <- house_train %>%
-          mutate_if(is.character, factor)
+          select(-id)
 
 house_test <- house_test %>%
-          mutate_if(is.character, factor)
+          select(-id)
 ```
 
 ## B - Fitting
@@ -706,9 +720,9 @@ ctrl_none <- trainControl(method = "XXX")
 
 ### Regression
 
-2. Using `train()` fit a regression model called `price_glm` predicting `price` as a function of all features *except* for id and date (Ask yourself, why do you think we are excluding this?).
+2. Using `train()` fit a regression model called `price_glm` predicting `price` as a function of all features *except* for date (Ask yourself, why do you think we are excluding this?).
 
-- For the `form` argument, use `price ~ . - id - date`
+- For the `form` argument, use `price ~ . - date`
 - For the `data` argument, use  `house_train` in the data argument
 - For the `method` argument, use `method = "glm"` for regression
 - For the `trControl` argument, use your `ctrl_none` object you created before
@@ -748,7 +762,7 @@ hist(XXX)
 
 4. Using `train()`, fit a decision tree model called `price_dt` predicting `price` (using the same features as above).
 
-- For the `form` argument, use `price ~ . -id - date`
+- For the `form` argument, use `price ~ . - date`
 - For the `data` argument, use  `house_train` in the data argument
 - For the `method` argument, use `method = "rpart"` to create decision trees
 - For the `trControl` argument, use your `ctrl_none` object you created before
@@ -785,7 +799,7 @@ hist(XXX)
 
 8. Using `train()`, fit a random forest model called `price_rf` predicting `price` (using the same features as above).
 
-- For the `form` argument, use `price ~ . - id - date`
+- For the `form` argument, use `price ~ . - date`
 - For the `data` argument, use  `house_train` in the data argument
 - For the `method` argument, use `method = "rf"` to fit random forests
 - For the `trControl` argument, use your `ctrl_none` object you created before

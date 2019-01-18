@@ -400,7 +400,6 @@ So far we have only used one feature (`PhD`), to predict `Grad_Rate`. Let's try 
 - `S_F_Ratio`: Student to faculty ratio
 
 
-
 1. Using the same steps as above, create a regression model `Grad_Rate_glm` which predicts `Grad_Rate` using all 4 features (you can also call it something else if you want to save your original model!).
 
 2. Explore your model using `summary()`, which features seem to be important?
@@ -549,9 +548,9 @@ college_train <- college_train %>%
   mutate(hot = factor(Apps >= 10000))
 ```
 
-3. Did you notice anything strange in your model when doing the previous task? If you used all available predictors you will have gotten a warning that your model did not converge. That can happen if the maximum number of iteartions (glm uses an iterative procedure when fitting the model) is reached. The default is a maximum of 25 iterations, see `?glm.control`. To fix it just add the following code in your `train()` function `control = list(maxit = 75)`, and run it again.
+3. Did you notice anything strange in your model when doing the previous task? If you used all available predictors you will have gotten a warning that your model did not converge. That can happen if the maximum number of iterations (glm uses an iterative procedure when fitting the model) is reached. The default is a maximum of 25 iterations, see `?glm.control`. To fix it just add the following code in your `train()` function `control = list(maxit = 75)`, and run it again.
 
-4. Now the model should have converged, but there is still another warning occuring: `glm.fit: fitted probabilities numerically 0 or 1 occurred`. This can happen if very strong predictors occur in the dataset (see [Venables & Ripley, 2002](http://www.bagualu.net/wordpress/wp-content/uploads/2015/10/Modern_Applied_Statistics_With_S.pdf), p. 197). If you addedd all predictors (except again the college names), then this problem occurs because the `Apps` variable, used to create the criterion, was also part of the predictors (plus some other variables that highly correlate with `Apps`). Check the variable correlations (the code below will give you a matrix of bivariate correlations).
+4. Now the model should have converged, but there is still another warning occurring: `glm.fit: fitted probabilities numerically 0 or 1 occurred`. This can happen if very strong predictors occur in the dataset (see [Venables & Ripley, 2002](http://www.bagualu.net/wordpress/wp-content/uploads/2015/10/Modern_Applied_Statistics_With_S.pdf), p. 197). If you added all predictors (except again the college names), then this problem occurs because the `Apps` variable, used to create the criterion, was also part of the predictors (plus some other variables that highly correlate with `Apps`). Check the variable correlations (the code below will give you a matrix of bivariate correlations).
 
 ```{r, eval = FALSE, echo = TRUE}
 # get correlation matrix of numeric variables
@@ -560,7 +559,7 @@ cor(college_train[,sapply(college_train, is.numeric)])
 ```
 
 
-5. Now fit the model again but only select variables that are not directly related to the number of applications (here several solutions are possible, there is nor clearcut criterion abouth which variables to include and which to discard).
+5. Now fit the model again but only select variables that are not directly related to the number of applications (here several solutions are possible, there is nor clear cut criterion about which variables to include and which to discard).
 
 ```{r, eval = FALSE, echo = FALSE}
 Private_glm <- train(form = hot ~. - college_name - Apps -Enroll -Accept - F_Undergrad,
