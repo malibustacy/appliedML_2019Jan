@@ -388,7 +388,7 @@ After having retained all features in the previous section section, this section
 9. Fit the `glm` to the training data.
 
 ```{r, echo = TRUE}
-# fit random forest
+# fit regression
 pima_glm <- train(diabetes ~ .,
                 data = XX,
                 method = XX
@@ -396,7 +396,7 @@ pima_glm <- train(diabetes ~ .,
 ```
 
 ```{r}
-# fit random forest
+# fit regression
 pima_glm <- train(diabetes ~ .,
                 data = pima_train,
                 method = 'glm')
