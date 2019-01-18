@@ -72,23 +72,90 @@ Given a finite set $V$ and a finite set $S$ of real numbers, <high>assume that $
 
 ---
 
-# Know your environment
+.pull-left4[
 
-Bias variance
+# Know your problem
+
+<u>Bias-variance trade-off</u>
+
+<font size=5><high>Error = Bias + Variance</high></font>
+
+<br>
+Simply put...
+
+<high>Bias</high> arises from strong <high>model assumptions</high> not being met by the environment.
+
+<high>Bias</high> arises from high <high>model flexibility</high> fitting the noise in the data (i.e., overfitting).
+
+<br><br>
+&#8594; <high>Make strong assumptions</high> (use simple models), if possible.
+
+]
+
+.pull-right45[
+
+<p align="left">
+  <br>
+  <img src="image/bias_variance.png" height=580px>
+</p>
+
+]
 
 
 ---
 
-# Non-linearity
+.pull-left4[
+# Linear or non-linear
+<br>
 
-complex but sometimes necessary
+One important model assumptions concerns linearity.
+<br><br>
+<high>Linear models</high> (`lm`, `glm`) make strong model assumptions. They are more often wrong, but also ceteris paribus <high>less prone to overfitting</high>.
 
+<high>Non-linear moels</high> (everything else) make weaker model assumptions, leaving the exact relationship (more) open. They are are closer to the truth, but also ceteris paribus <high>more prone to overfitting</high>. 
+
+
+]
+
+.pull-right55[
+
+<p align="center">
+  <br><br><br>
+  <img src="image/linearity.png" height=500px>
+</p>
+
+]
 
 ---
+
+.pull-left4[
 
 # Kernel trick
 
-complex but sometimes necessary
+Transforms "input space" into new "feature space".
+
+
+<p align="center">
+  <img src="image/rdf_kernel.png" height=180px>
+</p>
+
+
+
+<p align="center">
+  <img src="image/kernel_bw.png" height=180px>
+</p>
+
+]
+
+
+.pull-right55[
+
+<p align="center">
+  <br><br><br>
+  <img src="image/linearity.png" height=500px>
+</p>
+
+]
 
 
 ---

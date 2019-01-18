@@ -484,71 +484,13 @@ ggplot(data = accuracy,
            label = round(accuracy_agg$mae, 2))</code></pre>
 </div>
 </div>
-<div id="tasks" class="section level1">
-<h1>Tasks</h1>
-<div id="a---setup" class="section level2">
-<h2>A - Setup</h2>
-<ol style="list-style-type: decimal">
-<li><p>Open your <code>BaselRBootcamp</code> R project. It should already have the folders <code>1_Data</code> and <code>2_Code</code>. Make sure that the data file(s) listed in the <code>Datasets</code> section above are in your <code>1_Data</code> folder</p></li>
-<li>Open a new R script. At the top of the script, using comments, write your name and the date. Save it as a new file called <code>Fitting_practical.R</code> in the <code>2_Code</code> folder.<br />
-</li>
-<li><p>Using <code>library()</code> load the set of packages for this practical listed in the packages section above.</p></li>
-</ol>
-<pre class="r"><code>## NAME
-## DATE
-## Prediction Practical
-
-library(tidyverse)
-library(caret)
-library(party)
-library(partykit)</code></pre>
-<ol start="4" style="list-style-type: decimal">
-<li>In the code below, we will load each of the datasets listed in the <code>Datasets</code> as new objects</li>
-</ol>
-<pre class="r"><code># College data
-college_train &lt;- read_csv(file = &quot;1_Data/college_train.csv&quot;)
-college_test &lt;- read_csv(file = &quot;1_Data/college_train.csv&quot;)
-
-# House data
-house_train &lt;- read_csv(file = &quot;1_Data/house_train.csv&quot;)
-house_test &lt;- read_csv(file = &quot;1_Data/house_test.csv&quot;)</code></pre>
-<ol start="5" style="list-style-type: decimal">
-<li>Take a look at the first few rows of each dataframe by printing then to the console.</li>
-</ol>
-<pre class="r"><code># Print dataframes to the console
-
-college_train
-college_test
-
-house_train
-house_test</code></pre>
-<ol start="6" style="list-style-type: decimal">
-<li><p>Print the numbers of rows and columns of each dataset using the <code>dim()</code> function</p></li>
-<li><p>Look at the names of the dataframe with the <code>names()</code> function.</p></li>
-<li><p>Open the dataset in a new window using <code>View()</code>. Do they look ok?</p></li>
-<li><p>We need to do a little bit of data cleaning before starting. Specifically, we need to convert all columns to factors: Do this by running the following code:</p></li>
-</ol>
-<pre class="r"><code># Convert all character columns to factor
-
-college_train &lt;- college_train %&gt;%
-          mutate_if(is.character, factor)
-
-college_test &lt;- college_test %&gt;%
-          mutate_if(is.character, factor)
-
-house_train &lt;- house_train %&gt;%
-          mutate_if(is.character, factor)
-
-house_test &lt;- house_test %&gt;%
-          mutate_if(is.character, factor)</code></pre>
-</div>
-</div>
 <div id="college-graduation-rates" class="section level1">
 <h1>College Graduation Rates</h1>
 <p>In this section, we will again predict college graduation rates <code>Grad_Rate</code> from the <code>college_train</code> and <code>college_test</code> datasets. Here’s how the first few rows of <code>college_train</code> should look:</p>
 <table>
 <thead>
 <tr class="header">
+<th align="left">college_name</th>
 <th align="left">Private</th>
 <th align="right">Apps</th>
 <th align="right">Accept</th>
@@ -571,222 +513,304 @@ house_test &lt;- house_test %&gt;%
 </thead>
 <tbody>
 <tr class="odd">
+<td align="left">Abilene Christian University</td>
 <td align="left">Yes</td>
-<td align="right">1202</td>
-<td align="right">1054</td>
-<td align="right">326</td>
-<td align="right">18</td>
-<td align="right">44</td>
-<td align="right">1410</td>
-<td align="right">299</td>
-<td align="right">13404</td>
-<td align="right">5160</td>
+<td align="right">1660</td>
+<td align="right">1232</td>
+<td align="right">721</td>
+<td align="right">23</td>
+<td align="right">52</td>
+<td align="right">2885</td>
+<td align="right">537</td>
+<td align="right">7440</td>
+<td align="right">3300</td>
 <td align="right">450</td>
-<td align="right">1050</td>
+<td align="right">2200</td>
+<td align="right">70</td>
 <td align="right">78</td>
-<td align="right">86</td>
-<td align="right">15.6</td>
-<td align="right">30</td>
-<td align="right">9114</td>
+<td align="right">18.1</td>
+<td align="right">12</td>
+<td align="right">7041</td>
+<td align="right">60</td>
+</tr>
+<tr class="even">
+<td align="left">Agnes Scott College</td>
+<td align="left">Yes</td>
+<td align="right">417</td>
+<td align="right">349</td>
+<td align="right">137</td>
+<td align="right">60</td>
+<td align="right">89</td>
+<td align="right">510</td>
+<td align="right">63</td>
+<td align="right">12960</td>
+<td align="right">5450</td>
+<td align="right">450</td>
+<td align="right">875</td>
+<td align="right">92</td>
+<td align="right">97</td>
+<td align="right">7.7</td>
+<td align="right">37</td>
+<td align="right">19016</td>
+<td align="right">59</td>
+</tr>
+<tr class="odd">
+<td align="left">Alaska Pacific University</td>
+<td align="left">Yes</td>
+<td align="right">193</td>
+<td align="right">146</td>
+<td align="right">55</td>
+<td align="right">16</td>
+<td align="right">44</td>
+<td align="right">249</td>
+<td align="right">869</td>
+<td align="right">7560</td>
+<td align="right">4120</td>
+<td align="right">800</td>
+<td align="right">1500</td>
+<td align="right">76</td>
+<td align="right">72</td>
+<td align="right">11.9</td>
+<td align="right">2</td>
+<td align="right">10922</td>
+<td align="right">15</td>
+</tr>
+<tr class="even">
+<td align="left">Albertus Magnus College</td>
+<td align="left">Yes</td>
+<td align="right">353</td>
+<td align="right">340</td>
+<td align="right">103</td>
+<td align="right">17</td>
+<td align="right">45</td>
+<td align="right">416</td>
+<td align="right">230</td>
+<td align="right">13290</td>
+<td align="right">5720</td>
+<td align="right">500</td>
+<td align="right">1500</td>
+<td align="right">90</td>
+<td align="right">93</td>
+<td align="right">11.5</td>
+<td align="right">26</td>
+<td align="right">8861</td>
+<td align="right">63</td>
+</tr>
+<tr class="odd">
+<td align="left">Allegheny College</td>
+<td align="left">Yes</td>
+<td align="right">2652</td>
+<td align="right">1900</td>
+<td align="right">484</td>
+<td align="right">44</td>
+<td align="right">77</td>
+<td align="right">1707</td>
+<td align="right">44</td>
+<td align="right">17080</td>
+<td align="right">4440</td>
+<td align="right">400</td>
+<td align="right">600</td>
+<td align="right">73</td>
+<td align="right">91</td>
+<td align="right">9.9</td>
+<td align="right">41</td>
+<td align="right">11711</td>
+<td align="right">76</td>
+</tr>
+<tr class="even">
+<td align="left">Alma College</td>
+<td align="left">Yes</td>
+<td align="right">1267</td>
+<td align="right">1080</td>
+<td align="right">385</td>
+<td align="right">44</td>
+<td align="right">73</td>
+<td align="right">1306</td>
+<td align="right">28</td>
+<td align="right">12572</td>
+<td align="right">4552</td>
+<td align="right">400</td>
+<td align="right">400</td>
+<td align="right">79</td>
+<td align="right">87</td>
+<td align="right">15.3</td>
+<td align="right">32</td>
+<td align="right">9305</td>
+<td align="right">68</td>
+</tr>
+<tr class="odd">
+<td align="left">Angelo State University</td>
+<td align="left">No</td>
+<td align="right">3540</td>
+<td align="right">2001</td>
+<td align="right">1016</td>
+<td align="right">24</td>
+<td align="right">54</td>
+<td align="right">4190</td>
+<td align="right">1512</td>
+<td align="right">5130</td>
+<td align="right">3592</td>
+<td align="right">500</td>
+<td align="right">2000</td>
+<td align="right">60</td>
+<td align="right">62</td>
+<td align="right">23.1</td>
+<td align="right">5</td>
+<td align="right">4010</td>
+<td align="right">34</td>
+</tr>
+<tr class="even">
+<td align="left">Antioch University</td>
+<td align="left">Yes</td>
+<td align="right">713</td>
+<td align="right">661</td>
+<td align="right">252</td>
+<td align="right">25</td>
+<td align="right">44</td>
+<td align="right">712</td>
+<td align="right">23</td>
+<td align="right">15476</td>
+<td align="right">3336</td>
+<td align="right">400</td>
+<td align="right">1100</td>
+<td align="right">69</td>
+<td align="right">82</td>
+<td align="right">11.3</td>
+<td align="right">35</td>
+<td align="right">42926</td>
+<td align="right">48</td>
+</tr>
+<tr class="odd">
+<td align="left">Aquinas College</td>
+<td align="left">Yes</td>
+<td align="right">619</td>
+<td align="right">516</td>
+<td align="right">219</td>
+<td align="right">20</td>
+<td align="right">51</td>
+<td align="right">1251</td>
+<td align="right">767</td>
+<td align="right">11208</td>
+<td align="right">4124</td>
+<td align="right">350</td>
+<td align="right">1615</td>
+<td align="right">55</td>
+<td align="right">65</td>
+<td align="right">12.7</td>
+<td align="right">25</td>
+<td align="right">6584</td>
 <td align="right">65</td>
 </tr>
 <tr class="even">
+<td align="left">Assumption College</td>
 <td align="left">Yes</td>
-<td align="right">1415</td>
-<td align="right">714</td>
-<td align="right">338</td>
-<td align="right">18</td>
-<td align="right">52</td>
-<td align="right">1345</td>
-<td align="right">44</td>
-<td align="right">5120</td>
-<td align="right">3200</td>
-<td align="right">500</td>
-<td align="right">2140</td>
-<td align="right">52</td>
-<td align="right">60</td>
-<td align="right">18.1</td>
-<td align="right">9</td>
-<td align="right">3930</td>
-<td align="right">69</td>
-</tr>
-<tr class="odd">
-<td align="left">Yes</td>
-<td align="right">4778</td>
-<td align="right">2767</td>
-<td align="right">678</td>
-<td align="right">50</td>
-<td align="right">89</td>
-<td align="right">2587</td>
-<td align="right">120</td>
-<td align="right">19670</td>
-<td align="right">5820</td>
-<td align="right">575</td>
-<td align="right">1119</td>
-<td align="right">77</td>
-<td align="right">96</td>
-<td align="right">10.1</td>
-<td align="right">47</td>
-<td align="right">16593</td>
-<td align="right">83</td>
-</tr>
-<tr class="even">
-<td align="left">Yes</td>
-<td align="right">1220</td>
-<td align="right">974</td>
-<td align="right">481</td>
-<td align="right">28</td>
-<td align="right">67</td>
-<td align="right">1964</td>
-<td align="right">623</td>
-<td align="right">7800</td>
-<td align="right">3664</td>
-<td align="right">650</td>
-<td align="right">900</td>
-<td align="right">61</td>
-<td align="right">61</td>
-<td align="right">11.1</td>
-<td align="right">19</td>
-<td align="right">7614</td>
-<td align="right">49</td>
-</tr>
-<tr class="odd">
-<td align="left">Yes</td>
-<td align="right">1981</td>
-<td align="right">1541</td>
-<td align="right">514</td>
-<td align="right">18</td>
-<td align="right">36</td>
-<td align="right">1927</td>
-<td align="right">1084</td>
-<td align="right">12500</td>
-<td align="right">6200</td>
-<td align="right">375</td>
-<td align="right">1000</td>
-<td align="right">73</td>
-<td align="right">75</td>
-<td align="right">16.8</td>
-<td align="right">22</td>
-<td align="right">8707</td>
-<td align="right">80</td>
-</tr>
-<tr class="even">
-<td align="left">Yes</td>
-<td align="right">1217</td>
-<td align="right">1088</td>
-<td align="right">496</td>
-<td align="right">36</td>
-<td align="right">69</td>
-<td align="right">1773</td>
-<td align="right">884</td>
-<td align="right">11505</td>
-<td align="right">3255</td>
-<td align="right">1000</td>
-<td align="right">2075</td>
-<td align="right">35</td>
-<td align="right">46</td>
-<td align="right">16.7</td>
+<td align="right">2135</td>
+<td align="right">1700</td>
+<td align="right">491</td>
 <td align="right">23</td>
-<td align="right">7140</td>
-<td align="right">67</td>
-</tr>
-<tr class="odd">
-<td align="left">No</td>
-<td align="right">8579</td>
-<td align="right">5561</td>
-<td align="right">3681</td>
-<td align="right">25</td>
-<td align="right">50</td>
-<td align="right">17880</td>
-<td align="right">1673</td>
-<td align="right">6994</td>
-<td align="right">3384</td>
-<td align="right">700</td>
-<td align="right">2681</td>
-<td align="right">88</td>
-<td align="right">94</td>
-<td align="right">13.7</td>
-<td align="right">17</td>
-<td align="right">9657</td>
-<td align="right">57</td>
-</tr>
-<tr class="even">
-<td align="left">No</td>
-<td align="right">833</td>
-<td align="right">669</td>
-<td align="right">279</td>
-<td align="right">3</td>
-<td align="right">13</td>
-<td align="right">1224</td>
-<td align="right">345</td>
-<td align="right">7656</td>
-<td align="right">4690</td>
+<td align="right">59</td>
+<td align="right">1708</td>
+<td align="right">689</td>
+<td align="right">12000</td>
+<td align="right">5920</td>
 <td align="right">500</td>
-<td align="right">624</td>
-<td align="right">80</td>
-<td align="right">91</td>
-<td align="right">14.4</td>
-<td align="right">15</td>
-<td align="right">6564</td>
-<td align="right">36</td>
-</tr>
-<tr class="odd">
-<td align="left">No</td>
-<td align="right">10706</td>
-<td align="right">7219</td>
-<td align="right">2397</td>
-<td align="right">12</td>
-<td align="right">37</td>
-<td align="right">14826</td>
-<td align="right">1979</td>
-<td align="right">7799</td>
-<td align="right">3296</td>
-<td align="right">470</td>
-<td align="right">1750</td>
-<td align="right">73</td>
-<td align="right">78</td>
-<td align="right">17.3</td>
-<td align="right">11</td>
-<td align="right">6086</td>
-<td align="right">56</td>
-</tr>
-<tr class="even">
-<td align="left">Yes</td>
-<td align="right">938</td>
-<td align="right">864</td>
-<td align="right">511</td>
-<td align="right">29</td>
-<td align="right">62</td>
-<td align="right">1715</td>
-<td align="right">103</td>
-<td align="right">12247</td>
-<td align="right">4221</td>
 <td align="right">500</td>
-<td align="right">600</td>
-<td align="right">70</td>
+<td align="right">93</td>
+<td align="right">93</td>
+<td align="right">13.8</td>
+<td align="right">30</td>
+<td align="right">7100</td>
 <td align="right">88</td>
-<td align="right">13.1</td>
-<td align="right">26</td>
-<td align="right">8847</td>
-<td align="right">72</td>
 </tr>
 </tbody>
 </table>
-<div id="fitting" class="section level2">
-<h2>Fitting</h2>
-<p>Using the basics steps in the Examples section above, fit each of three models, regression, decision trees, and random forests to the <code>college_train</code> data. your goal is to fit models predicting <code>Grad.Rate</code></p>
+<div id="a---setup" class="section level2">
+<h2>A - Setup</h2>
+<ol style="list-style-type: decimal">
+<li><p>Open your <code>BaselRBootcamp</code> R project. It should already have the folders <code>1_Data</code> and <code>2_Code</code>. Make sure that the data file(s) listed in the <code>Datasets</code> section above are in your <code>1_Data</code> folder</p></li>
+<li>Open a new R script. At the top of the script, using comments, write your name and the date. Save it as a new file called <code>Fitting_College_practical.R</code> in the <code>2_Code</code> folder.<br />
+</li>
+<li><p>Using <code>library()</code> load the set of packages for this practical listed in the packages section above.</p></li>
+</ol>
+<pre class="r"><code>## NAME
+## DATE
+## Fitting Practical - College Graduation Rates Prediction
+
+library(tidyverse)
+library(caret)
+library(party)
+library(partykit)</code></pre>
+<ol start="4" style="list-style-type: decimal">
+<li>Run the code below to load each of the datasets listed in the <code>Datasets</code> as new objects</li>
+</ol>
+<pre class="r"><code># College data
+college_train &lt;- read_csv(file = &quot;1_Data/college_train.csv&quot;)
+college_test &lt;- read_csv(file = &quot;1_Data/college_train.csv&quot;)</code></pre>
+<ol start="5" style="list-style-type: decimal">
+<li>Take a look at the first few rows of each dataframe by printing then to the console.</li>
+</ol>
+<pre class="r"><code># Print dataframes to the console
+
+college_train
+college_test</code></pre>
+<ol start="6" style="list-style-type: decimal">
+<li>Print the numbers of rows and columns of each dataset using the <code>dim()</code> function</li>
+</ol>
+<pre class="r"><code># Print numbers of rows and columns
+
+dim(XXX)
+dim(XXX)</code></pre>
+<ol start="7" style="list-style-type: decimal">
+<li>Look at the names of the dataframes with the <code>names()</code> function.</li>
+</ol>
+<pre class="r"><code># Print the names of each dataframe
+
+names(XXX)
+names(XXX)</code></pre>
+<ol start="8" style="list-style-type: decimal">
+<li>Open each dataset in a new window using <code>View()</code>. Do they look ok?</li>
+</ol>
+<pre class="r"><code># Open each dataset in a window.
+
+View(XXX)
+View(XXX)</code></pre>
+<ol start="9" style="list-style-type: decimal">
+<li>We need to do a little bit of data cleaning before starting. Specifically, we need to convert all columns to factors: Do this by running the following code:</li>
+</ol>
+<pre class="r"><code># Convert all character columns to factor
+
+college_train &lt;- college_train %&gt;%
+          mutate_if(is.character, factor)
+
+college_test &lt;- college_test %&gt;%
+          mutate_if(is.character, factor)</code></pre>
+</div>
+<div id="b---fitting" class="section level2">
+<h2>B - Fitting</h2>
+<p>Your goal in this task is to fit models predicting <code>Grad.Rate</code>, the percentage of attendees who graduate from each college</p>
 <ol style="list-style-type: decimal">
 <li>Using <code>trainControl()</code>, set your training control method to <code>&quot;none&quot;</code>. Save your object as <code>ctrl_none</code>.</li>
 </ol>
-<pre class="r"><code>ctrl_none &lt;- trainControl(method = &quot;XXX&quot;)</code></pre>
+<pre class="r"><code># Set training method to &quot;none&quot; for simple fitting
+#  Note: This is for demonstration purposes, you would almost
+#   never do this for a 'real' prediction task!
+
+ctrl_none &lt;- trainControl(method = &quot;XXX&quot;)</code></pre>
 <div id="regression" class="section level3">
 <h3>Regression</h3>
 <ol start="2" style="list-style-type: decimal">
-<li>Using <code>train()</code> fit a regression model called <code>grad_glm</code> predicting <code>Grad.Rate</code> as a function of all features.</li>
+<li>Using <code>train()</code> fit a regression model called <code>grad_glm</code> predicting <code>Grad&gt;Rate</code> as a function of all features</li>
 </ol>
-<pre class="r"><code>grad_glm &lt;- train(form = XX ~ .,
+<ul>
+<li>For the <code>form</code> argument, use <code>Grad.Rate ~ .</code></li>
+<li>For the <code>data</code> argument, use <code>college_train</code> in the data argument</li>
+<li>For the <code>method</code> argument, use <code>method = &quot;glm&quot;</code> for regression</li>
+<li>For the <code>trControl</code> argument, use your <code>ctrl_none</code> object you created before</li>
+</ul>
+<pre class="r"><code>grad_glm &lt;- train(form = XX ~ . - XX - XX,
                   data = XX,
-                  method = &quot;XXX&quot;)</code></pre>
+                  method = &quot;XXX&quot;,
+                  trControl = ctrl_none)</code></pre>
 <ol start="3" style="list-style-type: decimal">
 <li>Explore your <code>grad_glm</code> object by looking at <code>grad_glm$finalModel</code> and using <code>summary()</code>, what do you find?</li>
 </ol>
@@ -809,16 +833,20 @@ hist(XXX)</code></pre>
 <div id="decision-trees" class="section level3">
 <h3>Decision Trees</h3>
 <ol start="4" style="list-style-type: decimal">
-<li>Using <code>train()</code>, fit a decision tree model called <code>grad_dt</code> predicting <code>Grad.Rate</code> (using the same features as above).</li>
+<li>Using <code>train()</code>, fit a decision tree model called <code>grad_dt</code></li>
 </ol>
 <ul>
-<li>Set the complexity parameter to <code>cp = 0.01</code></li>
+<li>For the <code>form</code> argument, use <code>Grad.Rate ~ .</code></li>
+<li>For the <code>data</code> argument, use <code>college_train</code> in the data argument</li>
+<li>For the <code>method</code> argument, use <code>method = &quot;rpart&quot;</code> to create decision trees</li>
+<li>For the <code>trControl</code> argument, use your <code>ctrl_none</code> object you created before</li>
+<li>For the <code>tuneGrid</code> argument, use <code>cp = 0.01</code> to specify the value of the complexity parameter. This is a pretty low value which means your trees will be, relatively, complex.</li>
 </ul>
-<pre class="r"><code>grad_dt &lt;- train(form = Grad.Rate ~ .,    # Make sure to specify your features here!
-                 data = college_train,
-                 method = &quot;rpart&quot;,
-                 trControl = train_control,
-                 tuneGrid = expand.grid(cp = .01))   # Set complexity parameter</code></pre>
+<pre class="r"><code>grad_dt &lt;- train(form = XX ~ . - XX - XX,
+                  data = XXX,
+                  method = &quot;XX&quot;,
+                  trControl = XX,
+                  tuneGrid = expand.grid(cp = XX))   # Set complexity parameter</code></pre>
 <ol start="5" style="list-style-type: decimal">
 <li><p>Explore your <code>grad_dt</code> object by looking at <code>grad_dt$finalModel</code> and plotting it with <code>plot(as.party(grad_dt$finalModel))</code>, what do you find?</p></li>
 <li><p>Using <code>predict()</code> save the fitted values of <code>grad_dt</code> object as <code>dt_fit</code>:</p></li>
@@ -837,16 +865,20 @@ hist(XXX)</code></pre>
 <div id="random-forests" class="section level3">
 <h3>Random Forests</h3>
 <ol start="8" style="list-style-type: decimal">
-<li>Using <code>train()</code>, fit a random forest model called <code>grad_rf</code> predicting <code>Grad.Rate</code> (using the same features as above).</li>
+<li>Using <code>train()</code>, fit a random forest model called <code>grad_rf</code></li>
 </ol>
 <ul>
-<li>Set the number of randomly sampled parameter to <code>mtry</code> = 2</li>
+<li>For the <code>form</code> argument, use <code>Grad.Rate ~ . - id - date</code></li>
+<li>For the <code>data</code> argument, use <code>college_train</code> in the data argument</li>
+<li>For the <code>method</code> argument, use <code>method = &quot;rf&quot;</code> to fit random forests</li>
+<li>For the <code>trControl</code> argument, use your <code>ctrl_none</code> object you created before</li>
+<li>For the <code>mtry</code> parameter, use <code>mtry</code> = 2. This is a relatively low value, so the forest will not be very diverse</li>
 </ul>
-<pre class="r"><code>grad_rf &lt;- train(form = Grad.Rate ~ .,    # Make sure to specify your features here!
-                 data = college_train,
-                 method = &quot;rf&quot;,
-                 trControl = train_control,
-                 tuneGrid = expand.grid(mtry = 2))  # Set number of features randomly selected</code></pre>
+<pre class="r"><code>grad_rf &lt;- train(form = XX ~ . - XX - XX,   # Predict grad and exclude id and date
+                 data = XX,
+                 method = &quot;XX&quot;,
+                 trControl = XX,
+                 tuneGrid = expand.grid(mtry = XX))  # Set number of features randomly selected</code></pre>
 <ol start="9" style="list-style-type: decimal">
 <li>Using <code>predict()</code> save the fitted values of <code>grad_rf</code> object as <code>rf_fit</code>:</li>
 </ol>
@@ -889,8 +921,8 @@ postResample(pred = XXX, obs = XXX)</code></pre>
 <p>(Optional). If you’d like to, try visualizing the fitting results using the plotting code shown in the Examples tab above. Ask for help if you need it!</p>
 </div>
 </div>
-<div id="prediction" class="section level2">
-<h2>Prediction</h2>
+<div id="c---prediction" class="section level2">
+<h2>C - Prediction</h2>
 <ol style="list-style-type: decimal">
 <li>Save the criterion values from the test data set <code>college_test$Grad.Rate</code> as a new vector called <code>criterion_test</code>:</li>
 </ol>
@@ -926,7 +958,7 @@ postResample(pred = XXX, obs = XXX)
 # Random Forests
 postResample(pred = XXX, obs = XXX)</code></pre>
 <ol start="4" style="list-style-type: decimal">
-<li><p>How does each model’s prediction performance compare to its fitting performance? Is it worse? Better? The same? What does the change tell you about the models?</p></li>
+<li><p>How does each model’s <em>prediction / test</em> performance (on the <code>XXX_test</code> data) compare to its <em>fitting / training</em> performance (on the <code>XXX_train</code> data)? Is it worse? Better? The same? What does the change tell you about the models?</p></li>
 <li><p>Which of the three models has the best prediction performance?</p></li>
 <li><p>If you had to use one of these three models in the real-world, which one would it be? Why?</p></li>
 <li><p>If someone came to you and asked “If I use your model in the future to predict the graduation rate of a new college, how accurate do you think it would be?”, what would you say?</p></li>
@@ -1195,39 +1227,244 @@ postResample(pred = XXX, obs = XXX)</code></pre>
 </tr>
 </tbody>
 </table>
-<div id="fitting-1" class="section level2">
-<h2>Fitting</h2>
-<p>Your goal in the following models is to predict <code>price</code></p>
+<div id="a---setup-1" class="section level2">
+<h2>A - Setup</h2>
 <ol style="list-style-type: decimal">
-<li><p>Using <code>trainControl()</code>, set your training control method to <code>&quot;none&quot;</code>. Save your object as <code>ctrl_none</code></p></li>
-<li><p>Using <code>train()</code> fit a regression model called <code>price_glm</code> predicting <code>price</code> using all features <em>except</em> for <code>id</code> and <code>date</code>. To do this, use <code>form = price ~ . -id -date</code></p></li>
-<li><p>Explore your <code>price_glm</code> object by looking at <code>price_glm$finalModel</code> and using <code>summary()</code>, what do you find?</p></li>
-<li><p>Using <code>train()</code>, fit a decision tree model called <code>price_dt</code> predicting <code>price</code> and using the same features as above.</p></li>
+<li><p>Make sure you are still working in your <code>BaselRBootcamp</code> R project, with the folders <code>1_Data</code> and <code>2_Code</code>. Make sure that the data file(s) listed in the <code>Datasets</code> section above are in your <code>1_Data</code> folder</p></li>
+<li>Open a new R script. At the top of the script, using comments, write your name and the date. Save it as a new file called <code>Fitting_HousePrices_practical.R</code> in the <code>2_Code</code> folder.<br />
+</li>
+<li><p>Using <code>library()</code> load the set of packages for this practical listed in the packages section above.</p></li>
+</ol>
+<pre class="r"><code>## NAME
+## DATE
+## Fitting Practical - House Prices Prediction
+
+library(tidyverse)
+library(caret)
+library(party)
+library(partykit)</code></pre>
+<ol start="4" style="list-style-type: decimal">
+<li>Run the code below to load each of the datasets listed in the <code>Datasets</code> as new objects</li>
+</ol>
+<pre class="r"><code># house data
+house_train &lt;- read_csv(file = &quot;1_Data/house_train.csv&quot;)
+house_test &lt;- read_csv(file = &quot;1_Data/house_train.csv&quot;)</code></pre>
+<ol start="5" style="list-style-type: decimal">
+<li>Take a look at the first few rows of each dataframe by printing then to the console.</li>
+</ol>
+<pre class="r"><code># Print dataframes to the console
+
+house_train
+house_test</code></pre>
+<ol start="6" style="list-style-type: decimal">
+<li>Print the numbers of rows and columns of each dataset using the <code>dim()</code> function</li>
+</ol>
+<pre class="r"><code># Print numbers of rows and columns
+
+dim(XXX)
+dim(XXX)</code></pre>
+<ol start="7" style="list-style-type: decimal">
+<li>Look at the names of the dataframes with the <code>names()</code> function.</li>
+</ol>
+<pre class="r"><code># Print the names of each dataframe
+
+names(XXX)
+names(XXX)</code></pre>
+<ol start="8" style="list-style-type: decimal">
+<li>Open each dataset in a new window using <code>View()</code>. Do they look ok?</li>
+</ol>
+<pre class="r"><code># Open each dataset in a window.
+
+View(XXX)
+View(XXX)</code></pre>
+<ol start="9" style="list-style-type: decimal">
+<li>We need to do a little bit of data cleaning before starting. Specifically, we need to convert all columns to factors: Do this by running the following code:</li>
+</ol>
+<pre class="r"><code># Convert all character columns to factor
+
+house_train &lt;- house_train %&gt;%
+          mutate_if(is.character, factor)
+
+house_test &lt;- house_test %&gt;%
+          mutate_if(is.character, factor)</code></pre>
+</div>
+<div id="b---fitting-1" class="section level2">
+<h2>B - Fitting</h2>
+<p>Your goal in the following models is to predict <code>price</code>, the selling price of homes in King County WA.</p>
+<ol style="list-style-type: decimal">
+<li>Using <code>trainControl()</code>, set your training control method to <code>&quot;none&quot;</code>. Save your object as <code>ctrl_none</code>.</li>
+</ol>
+<pre class="r"><code># Set training method to &quot;none&quot; for simple fitting
+#  Note: This is for demonstration purposes, you would almost
+#   never do this for a 'real' prediction task!
+
+ctrl_none &lt;- trainControl(method = &quot;XXX&quot;)</code></pre>
+<div id="regression-1" class="section level3">
+<h3>Regression</h3>
+<ol start="2" style="list-style-type: decimal">
+<li>Using <code>train()</code> fit a regression model called <code>price_glm</code> predicting <code>price</code> as a function of all features <em>except</em> for id and date (As,k yourself, why do you think we are excluding these?).</li>
 </ol>
 <ul>
-<li>Set the complexity parameter to <code>cp = 0.01</code></li>
+<li>For the <code>form</code> argument, use <code>price ~ . - id - date</code></li>
+<li>For the <code>data</code> argument, use <code>house_train</code> in the data argument</li>
+<li>For the <code>method</code> argument, use <code>method = &quot;glm&quot;</code> for regression</li>
+<li>For the <code>trControl</code> argument, use your <code>ctrl_none</code> object you created before</li>
 </ul>
+<pre class="r"><code>price_glm &lt;- train(form = XX ~ . - XX - XX,
+                  data = XX,
+                  method = &quot;XXX&quot;,
+                  trControl = ctrl_none)</code></pre>
+<ol start="3" style="list-style-type: decimal">
+<li>Explore your <code>price_glm</code> object by looking at <code>price_glm$finalModel</code> and using <code>summary()</code>, what do you find?</li>
+</ol>
+<pre class="r"><code>price_glm$XXX
+summary(XXX)</code></pre>
+<ol start="4" style="list-style-type: decimal">
+<li>Using <code>predict()</code> save the fitted values of <code>price_glm</code> object as <code>glm_fit</code>:</li>
+</ol>
+<pre class="r"><code># Save fitted values of regression model
+glm_fit &lt;- predict(XXX)</code></pre>
+<ol start="5" style="list-style-type: decimal">
+<li>Print your <code>glm_fit</code> object, look at summary statistics with <code>summary(glm_fit)</code>, and create a histogram with <code>hist()</code> do they make sense?</li>
+</ol>
+<pre class="r"><code># Explore regression model fits
+
+XXX
+summary(XXX)
+hist(XXX)</code></pre>
+</div>
+<div id="decision-trees-1" class="section level3">
+<h3>Decision Trees</h3>
+<ol start="4" style="list-style-type: decimal">
+<li>Using <code>train()</code>, fit a decision tree model called <code>price_dt</code> predicting <code>price</code> (using the same features as above).</li>
+</ol>
+<ul>
+<li>For the <code>form</code> argument, use <code>price ~ . - id - date</code></li>
+<li>For the <code>data</code> argument, use <code>house_train</code> in the data argument</li>
+<li>For the <code>method</code> argument, use <code>method = &quot;rpart&quot;</code> to create decision trees</li>
+<li>For the <code>trControl</code> argument, use your <code>ctrl_none</code> object you created before</li>
+<li>For the <code>tuneGrid</code> argument, use <code>cp = 0.01</code> to specify the value of the complexity parameter. This is a pretty low value which means your trees will be, relatively, complex.</li>
+</ul>
+<pre class="r"><code>price_dt &lt;- train(form = XX ~ . - XX - XX,
+                  data = XXX,
+                  method = &quot;XX&quot;,
+                  trControl = XX,
+                  tuneGrid = expand.grid(cp = XX))   # Set complexity parameter</code></pre>
 <ol start="5" style="list-style-type: decimal">
 <li><p>Explore your <code>price_dt</code> object by looking at <code>price_dt$finalModel</code> and plotting it with <code>plot(as.party(price_dt$finalModel))</code>, what do you find?</p></li>
-<li><p>Using <code>train()</code>, fit a random forest model called <code>price_rf</code> predicting <code>price</code> and using the same features as above.</p></li>
+<li><p>Using <code>predict()</code> save the fitted values of <code>price_dt</code> object as <code>dt_fit</code>:</p></li>
+</ol>
+<pre class="r"><code># Save fitted values of decision tree model
+dt_fit &lt;- predict(XXX)</code></pre>
+<ol start="7" style="list-style-type: decimal">
+<li>Print your <code>dt_fit</code> object, look at summary statistics with <code>summary(dt_fit)</code>, and create a histogram with <code>hist()</code> do they make sense?</li>
+</ol>
+<pre class="r"><code># Explore decision tree fits
+
+XXX
+summary(XXX)
+hist(XXX)</code></pre>
+</div>
+<div id="random-forests-1" class="section level3">
+<h3>Random Forests</h3>
+<ol start="8" style="list-style-type: decimal">
+<li>Using <code>train()</code>, fit a random forest model called <code>price_rf</code> predicting <code>price</code> (using the same features as above).</li>
 </ol>
 <ul>
-<li>Set the number of randomly sampled parameter to <code>mtry</code> = 2</li>
+<li>For the <code>form</code> argument, use <code>price ~ . - id - date</code></li>
+<li>For the <code>data</code> argument, use <code>house_train</code> in the data argument</li>
+<li>For the <code>method</code> argument, use <code>method = &quot;rf&quot;</code> to fit random forests</li>
+<li>For the <code>trControl</code> argument, use your <code>ctrl_none</code> object you created before</li>
+<li>For the <code>mtry</code> parameter, use <code>mtry</code> = 2. This is a relatively low value, so the forest will not be very diverse</li>
 </ul>
-<ol start="7" style="list-style-type: decimal">
-<li><p>Using <code>postResample()</code>, determine the fitting performance of each of your models</p></li>
-<li><p>Which one had the best fits? What was the fitting MAE of each model?</p></li>
-<li><p>If you’d like to, try visualizing the fitting results using the plotting code in the Examples</p></li>
+<pre class="r"><code>price_rf &lt;- train(form = XX ~ . - XX - XX,   # Predict price and exclude id and date
+                 data = XX,
+                 method = &quot;XX&quot;,
+                 trControl = XX,
+                 tuneGrid = expand.grid(mtry = XX))  # Set number of features randomly selected</code></pre>
+<ol start="9" style="list-style-type: decimal">
+<li>Using <code>predict()</code> save the fitted values of <code>price_rf</code> object as <code>rf_fit</code>:</li>
 </ol>
+<pre class="r"><code># Save fitted values of random forest model
+rf_fit &lt;- predict(XXX)</code></pre>
+<ol start="10" style="list-style-type: decimal">
+<li>Print your <code>rf_fit</code> object, look at summary statistics with <code>summary(rf_fit)</code>, and create a histogram with <code>hist()</code> do they make sense?</li>
+</ol>
+<pre class="r"><code># Explore random forest fits
+
+XXX
+summary(XXX)
+hist(XXX)</code></pre>
 </div>
-<div id="prediction-1" class="section level2">
-<h2>Prediction</h2>
+<div id="assess-accuracy-1" class="section level3">
+<h3>Assess accuracy</h3>
+<ol start="11" style="list-style-type: decimal">
+<li>Save the true training criterion values (<code>college_train$price</code>) as a vector called <code>criterion_train</code></li>
+</ol>
+<pre class="r"><code># Save training criterion values
+criterion_train &lt;- XXX$XXX</code></pre>
+<ol start="12" style="list-style-type: decimal">
+<li>Using <code>postResample()</code>, determine the fitting performance of each of your models separately. Make sure to set your <code>criterion_train</code> values to the <code>obs</code> argument, and your true model fits <code>XX_fit</code> to the <code>pred</code> argument:</li>
+</ol>
+<pre class="r"><code># Calculate fitting accuracies of each model
+# pred = XX_mod
+# obs = criterion_train
+
+# Regression
+postResample(pred = XXX, obs = XXX)
+
+# Decision Trees
+postResample(pred = XXX, obs = XXX)
+
+# Random Forests
+postResample(pred = XXX, obs = XXX)</code></pre>
+<ol start="13" style="list-style-type: decimal">
+<li>Which one had the best fits? What was the fitting MAE of each model?</li>
+</ol>
+<p>(Optional). If you’d like to, try visualizing the fitting results using the plotting code shown in the Examples tab above. Ask for help if you need it!</p>
+</div>
+</div>
+<div id="c---prediction-1" class="section level2">
+<h2>C - Prediction</h2>
 <ol style="list-style-type: decimal">
-<li><p>Using <code>postResample()</code>, determine the prediction performance of each of your models on the <code>house_test</code> data.</p></li>
-<li><p>How does each model’s prediction performance compare to its fitting performance? Is it worse? Better? The same?</p></li>
+<li>Save the criterion values from the test data set <code>college_test$price</code> as a new vector called <code>criterion_test</code>:</li>
+</ol>
+<pre class="r"><code># Save criterion values
+criterion_test &lt;- XXX$XXX</code></pre>
+<ol start="2" style="list-style-type: decimal">
+<li>Using <code>predict()</code>, save the predicted values of each model for the test data <code>college_test</code> as <code>glm_pred</code>, <code>dt_pred</code> and <code>rf_pred</code>.</li>
+</ol>
+<pre class="r"><code># Save model predictions for test data
+# newdata = college_test
+
+# Regression
+glm_pred &lt;- predict(XXX, newdata = XXX)
+
+# Decision Trees
+dt_pred &lt;- predict(XXX, newdata = XXX)
+
+# Random Forests
+rf_pred &lt;- predict(XXX, newdata = XXX)</code></pre>
+<ol start="3" style="list-style-type: decimal">
+<li>Using <code>postResample()</code>, determine the <em>prediction</em> performance of each of your models against the test criterion <code>criterion_test</code>.</li>
+</ol>
+<pre class="r"><code># Calculate prediction accuracies of each model
+# obs = criterion_test
+# pred = XX_mod
+
+# Regression
+postResample(pred = XXX, obs = XXX)
+
+# Decision Trees
+postResample(pred = XXX, obs = XXX)
+
+# Random Forests
+postResample(pred = XXX, obs = XXX)</code></pre>
+<ol start="4" style="list-style-type: decimal">
+<li><p>How does each model’s <em>prediction / test</em> performance (on the <code>XXX_test</code> data) compare to its <em>fitting / training</em> performance (on the <code>XXX_train</code> data)? Is it worse? Better? The same? What does the change tell you about the models?</p></li>
 <li><p>Which of the three models has the best prediction performance?</p></li>
 <li><p>If you had to use one of these three models in the real-world, which one would it be? Why?</p></li>
-<li><p>If someone came to you and asked “If I use your model in the future to predict house selling prices, how accurate do you think it would be?”, what would you say?</p></li>
+<li><p>If someone came to you and asked “If I use your model in the future to predict the priceuation rate of a new college, how accurate do you think it would be?”, what would you say?</p></li>
 </ol>
 </div>
 </div>
