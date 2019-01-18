@@ -518,7 +518,10 @@ pima_diabetes &lt;- read_csv(file = &quot;1_Data/pima_diabetes.csv&quot;)
 
 # (Non-) violent crime statistics
 violent_crime    &lt;- read_csv(file = &quot;1_Data/violent_crime.csv&quot;)
-nonviolent_crime &lt;- read_csv(file = &quot;1_Data/nonviolent_crime.csv&quot;)</code></pre>
+nonviolent_crime &lt;- read_csv(file = &quot;1_Data/nonviolent_crime.csv&quot;)
+
+# murders crime statistics
+murders_crime &lt;- read_csv(file = &quot;1_Data/murders_crime.csv&quot;)</code></pre>
 </div>
 <div id="b---pima-indians-diabetes" class="section level2">
 <h2>B - Pima Indians Diabetes</h2>
@@ -629,7 +632,7 @@ confusionMatrix(XX, reference = XX)</code></pre>
 <div id="splitting-1" class="section level4">
 <h4>Splitting</h4>
 <ol start="5" style="list-style-type: decimal">
-<li>Again, before you do anything you need to make sure that you separate a hold-out data set for later. Create <code>murders_train</code> and <code>murders_test</code> using <code>createDataPartition()</code> with again as little as <b>25% of cases going into the training set</b>. Also store the variable <code>diabetes</code> in the test set, which will be the criterion .</li>
+<li>Again, before you do anything you need to make sure that you separate a hold-out data set for later. Create <code>murders_train</code> and <code>murders_test</code> using <code>createDataPartition()</code> with again as little as <b>25% of cases going into the training set</b>. Also store the variable <code>murders</code> from the test set as a factor, which will be the criterion.</li>
 </ol>
 </div>
 <div id="remove-unwanted-features-1" class="section level4">
@@ -665,7 +668,7 @@ murders_glm_clean = train(murders ~ .,
                           data = XX,
                           method = 'glm')</code></pre>
 <ol start="12" style="list-style-type: decimal">
-<li>You probably have noticed warning messages. The concern the very fact the features in both data sets, but especially the non-clean set, are still too highly correlated. Go ahead and evaluate the fits on the hold-out set. Which set of features predicts better?</li>
+<li>You probably have noticed warning messages. They concern the very fact the features in both data sets, but especially the non-clean set, are still too highly correlated. Go ahead and evaluate the fits on the hold-out set. Which set of features predicts better?</li>
 </ol>
 </div>
 <div id="data-compression-with-pca" class="section level4">
