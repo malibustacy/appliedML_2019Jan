@@ -466,7 +466,7 @@ confusionMatrix(pima_glm_pred, criterion)
 confusionMatrix(pima_glm4_pred, criterion)
 ```
 
-13. You probably have observed that the model with two features less is actually slightly better than the full model. Why do you think is that the case?
+13. You might have observed that the model with two features less is actually slightly better than the full model (if this is not the case, keep in mind that the partitioning of the dataset was done randomly, i.e., if you do it a second time, your results may slightly change). Why do you think is that the case?
 
 14. Play around: Up the proportion dedicated to training or use a different model, e.g., `random forest`, and see whether things change. 
 
