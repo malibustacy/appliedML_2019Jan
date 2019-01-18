@@ -79,7 +79,7 @@ As the number of features grows...
 
 &lt;high&gt;Efficiency&lt;/high&gt; - the amount of computations grows (how much depends on the model).
 
-&lt;high&gt;Redundancy&lt;/high&gt; - the amount of redudancy grows (how much depends on the model). 
+&lt;high&gt;Redundancy&lt;/high&gt; - the amount of redundancy grows (how much depends on the model). 
 
 &amp;#8594; &lt;high&gt;Small set of good predictors&lt;high&gt;
 
@@ -154,7 +154,7 @@ plot(varImp(income_lm))
 # `varImp()`
 
 .pull-left45[
-`varImp()` &lt;high&gt;automically selects appropriate measure&lt;/high&gt; of variable importance for a given algorithm. 
+`varImp()` &lt;high&gt;automatically selects appropriate measure&lt;/high&gt; of variable importance for a given algorithm. 
 
 
 ```r
@@ -167,15 +167,15 @@ lm variable importance
 
           Overall
 age       100.000
-food       42.324
-alcohol    24.698
-happiness  10.714
-tattoos     4.219
-height      2.452
-children    2.020
-fitness     0.619
-weight      0.208
-datause     0.000
+food       43.416
+alcohol    26.073
+happiness  11.499
+tattoos     6.442
+datause     1.135
+height      0.750
+children    0.284
+fitness     0.137
+weight      0.000
 ```
 
 ]
@@ -225,12 +225,12 @@ Outer resampling method: Bootstrapped (25 reps)
 
 Resampling performance over subset size:
 
- Variables  RMSE Rsquared   MAE RMSESD RsquaredSD  MAESD Selected
-         3 0.369    0.870 0.291 0.0114     0.0118 0.0107         
-         4 0.366    0.872 0.288 0.0123     0.0121 0.0114        *
-         5 0.368    0.871 0.289 0.0115     0.0121 0.0104         
-        10 0.370    0.869 0.291 0.0120     0.0124 0.0108         
-        14 0.370    0.869 0.291 0.0121     0.0125 0.0109         
+ Variables  RMSE Rsquared   MAE  RMSESD RsquaredSD   MAESD Selected
+         3 0.382    0.856 0.301 0.00889    0.01056 0.00751         
+         4 0.378    0.859 0.296 0.00836    0.01010 0.00745        *
+         5 0.378    0.858 0.297 0.00842    0.00997 0.00741         
+        10 0.379    0.858 0.297 0.00803    0.00976 0.00725         
+        14 0.379    0.858 0.297 0.00772    0.00955 0.00697         
 
 The top 4 variables (out of 4):
    age, food, alcohol, happiness
