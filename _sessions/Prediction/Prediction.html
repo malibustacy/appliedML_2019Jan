@@ -28,19 +28,14 @@ layout: true
 &lt;/span&gt;&lt;/div&gt; 
 
 ---
-class: center, middle
 
 
 
 
-
-
-
-
----
 
 
 ## Prediction...
+
 &lt;br&gt;
 &lt;i&gt;"Prediction is very difficult, especially if it's about the future."&lt;/i&gt;
 
@@ -66,41 +61,43 @@ Anonymous
 &lt;p class="caption"&gt;Source: Medium.com&lt;/p&gt;
 &lt;/div&gt;
 
+---
+class: middle, center
+
+# What is model prediction / testing?
+
+&lt;font size = 5&gt;Model prediction (aka, testing) is the process of accessing a model's predictions on &lt;i&gt;new&lt;/i&gt; &lt;high&gt;testing data&lt;/high&gt;.&lt;/font&gt;
+
+# What is test data? 
+
+&lt;font size = 5&gt;Testing data is a separate, 'hold-out' data set that the model *never saw during training*&lt;/font&gt;
 
 ---
 
-.pull-left45[
+# Model Training
 
-# What is model prediction?
+&lt;img src="image/model_training_flow.png" width="1442" style="display: block; margin: auto;" /&gt;
 
-Model prediction (aka, testing) is the process of accessing a model's predictions on *new, unseen* data.
-
-
-
-
-]
-
-.pull-right5[
-
-&lt;div class="figure" style="text-align: center"&gt;
-&lt;img src="https://cdn-images-1.medium.com/max/1600/1*_QGyIwpgq831xI54cIe_GQ.jpeg" alt="Source: Medium.com" width="100%" /&gt;
-&lt;p class="caption"&gt;Source: Medium.com&lt;/p&gt;
-&lt;/div&gt;
+---
+# Model Testing
 
 
-]
-
-
+&lt;img src="image/model_testing_flow.png" width="1439" style="display: block; margin: auto;" /&gt;
 
 
 ---
 
-# Why do we separate training from prediction?
+# Why do we separate training from testing?
 
 .pull-left35[
 &lt;br&gt;
 
-&lt;font size = 5&gt;Just because a model can &lt;high&gt;fit past data well&lt;/high&gt;, does &lt;i&gt;not&lt;/i&gt; necessarily mean that it will &lt;high&gt;predict new data well&lt;/high&gt;&lt;/font&gt;
+&lt;font size = 5&gt;Just because a model can &lt;high&gt;fit past data well&lt;/high&gt; (high training accuracy), does &lt;i&gt;not&lt;/i&gt; necessarily mean that it will &lt;high&gt;predict new data well&lt;/high&gt; (high testing accuracy)&lt;/font&gt;
+
+&lt;i&gt;"An economist is an expert who will know tomorrow why the things he predicted yesterday didn't happen today."&lt;/i&gt;
+
+Evan Esar
+
 
 ]
  
@@ -115,15 +112,13 @@ Model prediction (aka, testing) is the process of accessing a model's prediction
 
 ---
 &lt;br&gt;&lt;br&gt;&lt;br&gt;
-&lt;font size = 6&gt;"Can you come up with a model that will perfectly fit the training criterion but is worthless in predicting test data?"&lt;/font&gt;&lt;br&gt;&lt;br&gt;
-
+&lt;font size = 6&gt;Can you come up with a model that will perfectly fit the training criterion but is worthless in predicting test data?&lt;/font&gt;&lt;br&gt;&lt;br&gt;
 
 .pull-left45[
 
 &lt;br&gt;
 &lt;font size=5&gt;&lt;high&gt;Training&lt;/high&gt; Data&lt;/font&gt;
 
-&lt;br&gt;
 
 
 | id|sex | age|fam_history |smoking | criterion|
@@ -141,7 +136,6 @@ Model prediction (aka, testing) is the process of accessing a model's prediction
 &lt;br&gt;
 &lt;font size=5&gt;&lt;high&gt; Test&lt;/high&gt; Data&lt;/font&gt;
 
-&lt;br&gt;
 
 
 | id|sex | age|fam_history |smoking |criterion |
@@ -192,7 +186,7 @@ Overfitting typically occurs when a model 'mistakes' random noise for a predicta
 
 # Overfitting
 
-&lt;img src="Prediction_files/figure-html/unnamed-chunk-8-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="Prediction_files/figure-html/unnamed-chunk-9-1.png" style="display: block; margin: auto;" /&gt;
 
 
 
@@ -202,21 +196,33 @@ Overfitting typically occurs when a model 'mistakes' random noise for a predicta
 
 .pull-left45[
 
-### How do we prevent overfitting?
+### How do we account for overfitting?
 
-1 - Always evaluate models based on their performance on new, unseen data *never* on training data
+Always evaluate models based on their performance on new, unseen test data
 
-2 - 
+*Never evaluate models based only on training accuracy!*
 
+Use models with &lt;high&gt;regularisation&lt;/high&gt; terms, which explicitly punish models for being too complex.
+
+Use fitting methods such as &lt;high&gt;cross-validation&lt;/high&gt; to find optimal regularisation values.
+
+We will learn about these methods in a future session!
 
 ]
 
 .pull-right5[
 
+&lt;img src="Prediction_files/figure-html/unnamed-chunk-10-1.png" style="display: block; margin: auto;" /&gt;
 
 
 ]
 
+
+
+---
+class: center, middle
+
+# Two new models enter the ring...
 
 ---
 class: center, middle
@@ -504,7 +510,7 @@ class: center,  middle
 
 &lt;br&gt;&lt;br&gt;
 
-# Let's test model predictions with caret!
+# Evaluating model predictions with caret
 
 &lt;img src="https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/09/Caret-package-in-R.png" width="70%" style="display: block; margin: auto;" /&gt;
 

@@ -23,7 +23,6 @@ layout: true
 </span></div> 
 
 ---
-class: center, middle
 
 ```{r setup, include=FALSE}
 options(htmltools.dir.version = FALSE)
@@ -66,12 +65,8 @@ present <- tibble(id = 91:95,
 ```
 
 
-
-
----
-
-
 ## Prediction...
+
 <br>
 <i>"Prediction is very difficult, especially if it's about the future."</i>
 
@@ -96,40 +91,47 @@ Anonymous
 knitr::include_graphics("https://cdn-images-1.medium.com/max/1600/1*_QGyIwpgq831xI54cIe_GQ.jpeg")
 ```
 
+---
+class: middle, center
+
+# What is model prediction / testing?
+
+<font size = 5>Model prediction (aka, testing) is the process of accessing a model's predictions on <i>new</i> <high>testing data</high>.</font>
+
+# What is test data? 
+
+<font size = 5>Testing data is a separate, 'hold-out' data set that the model *never saw during training*</font>
 
 ---
 
-.pull-left45[
+# Model Training
 
-# What is model prediction?
+```{r, echo = FALSE}
+knitr::include_graphics("image/model_training_flow.png")
+```
 
-Model prediction (aka, testing) is the process of accessing a model's predictions on *new, unseen* data.
+---
+# Model Testing
 
 
-
-
-]
-
-.pull-right5[
-
-```{r, echo = FALSE, fig.align = 'center', out.width = "100%", fig.cap = "Source: Medium.com"}
-knitr::include_graphics("https://cdn-images-1.medium.com/max/1600/1*_QGyIwpgq831xI54cIe_GQ.jpeg")
+```{r, echo = FALSE}
+knitr::include_graphics("image/model_testing_flow.png")
 ```
 
 
-]
-
-
-
-
 ---
 
-# Why do we separate training from prediction?
+# Why do we separate training from testing?
 
 .pull-left35[
 <br>
 
-<font size = 5>Just because a model can <high>fit past data well</high>, does <i>not</i> necessarily mean that it will <high>predict new data well</high></font>
+<font size = 5>Just because a model can <high>fit past data well</high> (high training accuracy), does <i>not</i> necessarily mean that it will <high>predict new data well</high> (high testing accuracy)</font>
+
+<i>"An economist is an expert who will know tomorrow why the things he predicted yesterday didn't happen today."</i>
+
+Evan Esar
+
 
 ]
  
@@ -144,15 +146,13 @@ knitr::include_graphics("https://cdn-images-1.medium.com/max/1600/1*_QGyIwpgq831
 
 ---
 <br><br><br>
-<font size = 6>"Can you come up with a model that will perfectly fit the training criterion but is worthless in predicting test data?"</font><br><br>
-
+<font size = 6>Can you come up with a model that will perfectly fit the training criterion but is worthless in predicting test data?</font><br><br>
 
 .pull-left45[
 
 <br>
 <font size=5><high>Training</high> Data</font>
 
-<br>
 
 ```{r, results = 'asis', echo = FALSE}
 knitr::kable(past, format = "markdown")
@@ -165,7 +165,6 @@ knitr::kable(past, format = "markdown")
 <br>
 <font size=5><high> Test</high> Data</font>
 
-<br>
 
 ```{r, echo = FALSE}
 knitr::kable(present, format = "markdown")
@@ -234,7 +233,7 @@ poly_pred <- map_dfc(.x = c(1, 19), .f = function(degree) {
               x = iv,
               obs = obs) %>%
   gather(Degree, pred, -id, -x, -obs) %>%
-  mutate(`Fitting` = abs(pred - obs))
+  mutate(`Training` = abs(pred - obs))
 
 
 poly_pred <- poly_pred %>%
@@ -253,24 +252,26 @@ overfit_gg <- ggplot(poly_pred, aes(x = x, y = pred, col = Degree)) +
        subtitle = "Dashed line is TRUE model") +
   theme_bw() +
     theme(legend.position="bottom") +
-    scale_color_baselrbootcamp()
+  scale_color_baselrbootcamp()
   
 poly_pred <- poly_pred %>% mutate(
 
   obs_new = x + rnorm(1, mean = 0, sd = 2),
-  `Prediction` = abs(obs_new - pred)
+  `Testing` = abs(obs_new - pred)
   
 )
 
 
 poly_pred <- poly_pred %>%
-  select(Degree, `Fitting`, `Prediction`) %>%
+  select(Degree, `Training`, `Testing`) %>%
   gather(phase, Error, -Degree)
 
 agg <- poly_pred %>%
   group_by(Degree, phase) %>%
-  summarise(Error = mean(Error))
-
+  summarise(Error = mean(Error)) %>%
+  ungroup() %>%
+  mutate(phase = factor(phase, levels = c("Training", "Testing"), ordered = TRUE))
+ 
 fit_gg <- ggplot(agg, aes(x = phase, y = Error, fill = Degree)) +
   geom_bar(position = "dodge", stat = "identity") +
   labs(title = "Fitting versus Prediction Error",
@@ -279,7 +280,7 @@ fit_gg <- ggplot(agg, aes(x = phase, y = Error, fill = Degree)) +
   scale_y_continuous(limits=c(.75,1.25),oob = scales::rescale_none) +
   theme_bw() +
     theme(legend.position="bottom") +
-    scale_fill_baselrbootcamp()
+  scale_fill_baselrbootcamp()
 
 ggpubr::ggarrange(overfit_gg, fit_gg)
 ```
@@ -292,21 +293,35 @@ ggpubr::ggarrange(overfit_gg, fit_gg)
 
 .pull-left45[
 
-### How do we prevent overfitting?
+### How do we account for overfitting?
 
-1 - Always evaluate models based on their performance on new, unseen data *never* on training data
+Always evaluate models based on their performance on new, unseen test data
 
-2 - 
+*Never evaluate models based only on training accuracy!*
 
+Use models with <high>regularisation</high> terms, which explicitly punish models for being too complex.
+
+Use fitting methods such as <high>cross-validation</high> to find optimal regularisation values.
+
+We will learn about these methods in a future session!
 
 ]
 
 .pull-right5[
 
+```{r, echo = FALSE, fig.width = 4, fig.height = 3.5}
+fit_gg
+```
 
 
 ]
 
+
+
+---
+class: center, middle
+
+# Two new models enter the ring...
 
 ---
 class: center, middle
@@ -598,7 +613,7 @@ class: center,  middle
 
 <br><br>
 
-# Let's test model predictions with caret!
+# Evaluating model predictions with caret
 
 ```{r, echo = FALSE, out.width = "70%"}
 knitr::include_graphics("https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/09/Caret-package-in-R.png")
