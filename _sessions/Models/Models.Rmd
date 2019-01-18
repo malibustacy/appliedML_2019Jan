@@ -117,42 +117,43 @@ One important model assumptions concerns linearity.
 
 ]
 
-.pull-right55[
+.pull-right5[
 
 <p align="center">
   <br><br><br>
-  <img src="image/linearity.png" height=500px>
+  <img src="image/linearity.png" height=480px>
 </p>
 
 ]
 
 ---
 
-.pull-left4[
+.pull-left45[
 
 # Kernel trick
 
-Transforms "input space" into new "feature space".
-
-
-<p align="center">
-  <img src="image/rdf_kernel.png" height=180px>
-</p>
-
-
+<high>Transforms "input space" into new "feature space"</high> to allows for object separation.
 
 <p align="center">
-  <img src="image/kernel_bw.png" height=180px>
+  <img src="image/kernel_bw.png" height=160px>
 </p>
+
+Used in <high>Support Vector Machines</high> (`method="svm"`) often using a <high>radial basis function</high> (rdf).
+
+<p align="center">
+  <img src="image/rdf_kernel.png" width=300px>
+</p>
+
+Kernels <high>re-represent objects</high> in terms of other objects!
 
 ]
 
 
-.pull-right55[
+.pull-right5[
 
 <p align="center">
   <br><br><br>
-  <img src="image/linearity.png" height=500px>
+  <img src="image/linearity.png" height=480px>
 </p>
 
 ]
