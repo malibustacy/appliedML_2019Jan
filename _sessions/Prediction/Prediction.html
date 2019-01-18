@@ -637,7 +637,7 @@ Step 1: Define control parameters
 
 ```r
 # Use method = "none" for no advanced fitting
-ctl &lt;- trainControl(method = "none")
+ctrl &lt;- trainControl(method = "none")
 ```
 
 Step 2: Train model
@@ -647,7 +647,7 @@ Step 2: Train model
 mod &lt;- train(form = Y ~ .,  
              data = data_train,
              method = "rpart",
-             trControl = ctl,
+             trControl = ctrl,
              tuneGrid = expand.grid(mtry = 2))
 ```
 

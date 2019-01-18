@@ -730,7 +730,7 @@ Step 1: Define control parameters
 
 ```{r, eval = FALSE}
 # Use method = "none" for no advanced fitting
-ctl <- trainControl(method = "none")
+ctrl <- trainControl(method = "none")
 ```
 
 Step 2: Train model
@@ -739,7 +739,7 @@ Step 2: Train model
 mod <- train(form = Y ~ .,  
              data = data_train,
              method = "rpart",
-             trControl = ctl,
+             trControl = ctrl,
              tuneGrid = expand.grid(mtry = 2))
 ```
 
