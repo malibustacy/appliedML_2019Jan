@@ -173,7 +173,7 @@ coef(price_glm$finalModel)
 # Lasso --------------------------
 
 # Vector of lambda values to try
-lambda_vec <- 10 ^ seq(-3, 3, length = 100)
+lambda_vec <- seq(0, 1000, length = 100)
 
 price_lasso <- train(form = price ~ carat + depth + table + x + y,
                    data = data_train,
@@ -182,8 +182,10 @@ price_lasso <- train(form = price ~ carat + depth + table + x + y,
                    tuneGrid = expand.grid(alpha = 1,  # Lasso
                                           lambda = lambda_vec))
 
+# Plot regularisation parameter versus error
+plot(price_lasso)
 
-# What was the best lambda value?
+# Print best regularisation parameter
 price_lasso$bestTune$lambda
 
 # Get coefficients from best lambda value
@@ -201,11 +203,10 @@ coef(price_lasso$finalModel,
 # y            2152.05
 
 
-
 # Ridge --------------------------
 
 # Vector of lambda values to try
-lambda_vec <- 10 ^ seq(-3, 3, length = 100)
+lambda_vec <- seq(0, 1000, length = 100)
 
 price_ridge <- train(form = price ~ carat + depth + table + x + y,
                      data = data_train,
@@ -214,9 +215,41 @@ price_ridge <- train(form = price ~ carat + depth + table + x + y,
                      tuneGrid = expand.grid(alpha = 0,  # Ridge penalty
                                             lambda = lambda_vec))
 
+# Plot regularisation parameter versus error
+plot(price_ridge)
+
+# Print best regularisation parameter
+price_ridge$bestTune$lambda
+
 # Get coefficients from best lambda value
 coef(price_ridge$finalModel, 
      price_ridge$bestTune$lambda)
+
+# 6 x 1 sparse Matrix of class "dgCMatrix"
+#                   1
+# (Intercept) 1667.87
+# carat       4707.33
+# depth        -68.92
+# table        -66.79
+# x            537.01
+# y            615.86
+
+# Decision Trees --------------------------
+
+# Vector of cp values to try
+cp_vec <- seq(0, 1, length = 100)
+
+price_dt <- train(form = price ~ carat + depth + table + x + y,
+                  data = data_train,
+                  method = "rpart",
+                  trControl = ctrl_cv,
+                  tuneGrid = expand.grid(cp = cp_vec))
+
+# Plot complexity parameter vs. error
+plot(price_dt)
+
+# Print best complexity parameter
+price_dt$bestTune$cp
 
 # Step 3: Estimate prediction accuracy from folds ----
 
@@ -323,10 +356,10 @@ ggplot(data = accuracy,
 
 # College Graduation Rates
 
-In this section, we will again predict college graduation rates `Grad_Rate` from the `college_train` and `college_test` datasets. Here's how the first few rows of `college_train` should look:
+In this section, we will again predict the prices of houses in King County Washington from the `house_train` and `house_test` datasets. Here's how the first few rows of `house_train` should look:
 
 ```{r, results = 'asis', echo = FALSE, eval = TRUE}
-knitr::kable(college_train[1:10,])
+knitr::kable(house_train[1:10,])
 ```
 
 ## A - Setup
@@ -354,9 +387,9 @@ library(tidyverse)
 4. Run the code below to load each of the datasets listed in the `Datasets` as new objects
 
 ```{r, echo = TRUE, eval = FALSE, message = FALSE, warning = FALSE}
-# House price data
-house_train <- read_csv(file = "1_Data/house_train.csv")
-house_test <- read_csv(file = "1_Data/house_test.csv")
+# Carseats data
+carseats_train <- read_csv(file = "1_Data/carseats_train.csv")
+carseats_test <- read_csv(file = "1_Data/carseats_test.csv")
 ```
 
 5. Take a look at the first few rows of each dataframe by printing them to the console.
@@ -364,8 +397,8 @@ house_test <- read_csv(file = "1_Data/house_test.csv")
 ```{r, echo = TRUE, eval = FALSE}
 # Print dataframes to the console
 
-house_train
-house_test
+carseats_train
+carseats_test
 ```
 
 6. Print the numbers of rows and columns of each dataset using the `dim()` function
@@ -400,550 +433,365 @@ View(XXX)
 ```{r}
 # Convert all character columns to factor
 
-house_train <- house_train %>%
+carseats_train <- carseats_train %>%
           mutate_if(is.character, factor)
 
-house_test <- house_test %>%
+carseats_test <- carseats_test %>%
           mutate_if(is.character, factor)
 ```
 
-## 
-
-
-## B - Fitting
-
-Your goal in this task is to fit models predicting `Grad_Rate`, the percentage of attendees who graduate from each college
-
-1. Using `trainControl()`, set your training control method to `"none"`. Save your object as `ctrl_none`.
-
-```{r, echo = TRUE, eval = FALSE}
-# Set training method to "none" for simple fitting
-#  Note: This is for demonstration purposes, you would almost
-#   never do this for a 'real' prediction task!
-
-ctrl_none <- trainControl(method = "XXX")
-```
-
-
-### Regression
-
-2. Using `train()` fit a regression model called `grad_glm` predicting `Grad_Rate` as a function of all features
-
-- For the `form` argument, use `Grad_Rate ~ .`
-- For the `data` argument, use  `college_train` in the data argument
-- For the `method` argument, use `method = "glm"` for regression
-- For the `trControl` argument, use your `ctrl_none` object you created before
-
-```{r, echo = TRUE, eval = FALSE}
-grad_glm <- train(form = XX ~ .,
-                  data = XX,
-                  method = "XXX",
-                  trControl = ctrl_none)
-```
-
-3. Explore your `grad_glm` object by looking at `grad_glm$finalModel` and using `summary()`, what do you find?
-
-```{r, eval = FALSE, echo = TRUE}
-grad_glm$XXX
-summary(XXX)
-```
-
-4. Using `predict()` save the fitted values of `grad_glm` object as `glm_fit`:
-
-```{r, echo = TRUE, eval = FALSE}
-# Save fitted values of regression model
-glm_fit <- predict(XXX)
-```
-
-5. Print your `glm_fit` object, look at summary statistics with `summary(glm_fit)`, and create a histogram with `hist()` do they make sense?
 
 ```{r}
-# Explore regression model fits
+data_train <- read_csv(file = "1_Data/carseats_train.csv") %>%
+  slice(1:15)
 
-XXX
-summary(XXX)
-hist(XXX)
+data_test <- read_csv(file = "1_Data/carseats_test.csv")
 ```
 
-### Decision Trees
-
-4. Using `train()`, fit a decision tree model called `grad_dt`
-
-- For the `form` argument, use `Grad_Rate ~ .`
-- For the `data` argument, use  `college_train` in the data argument
-- For the `method` argument, use `method = "rpart"` to create decision trees
-- For the `trControl` argument, use your `ctrl_none` object you created before
-- For the `tuneGrid` argument, use `cp = 0.01` to specify the value of the complexity parameter. This is a pretty low value which means your trees will be, relatively, complex.
-
-```{r}
-grad_dt <- train(form = XX ~ .,
-                  data = XXX,
-                  method = "XX",
-                  trControl = XX,
-                  tuneGrid = expand.grid(cp = XX))   # Set complexity parameter
-```
-
-5. Explore your `grad_dt` object by looking at `grad_dt$finalModel` and plotting it with `plot(as.party(grad_dt$finalModel))`, what do you find?
-
-6. Using `predict()` save the fitted values of `grad_dt` object as `dt_fit`:
-
-```{r, echo = TRUE, eval = FALSE}
-# Save fitted values of decision tree model
-dt_fit <- predict(XXX)
-```
-
-7. Print your `dt_fit` object, look at summary statistics with `summary(dt_fit)`, and create a histogram with `hist()` do they make sense?
-
-```{r}
-# Explore decision tree fits
-
-XXX
-summary(XXX)
-hist(XXX)
-```
-
-### Random Forests
-
-8. Using `train()`, fit a random forest model called `grad_rf`
-
-- For the `form` argument, use `Grad_Rate ~ .`
-- For the `data` argument, use  `college_train` in the data argument
-- For the `method` argument, use `method = "rf"` to fit random forests
-- For the `trControl` argument, use your `ctrl_none` object you created before
-- For the `mtry` parameter, use `mtry` = 2. This is a relatively low value, so the forest will not be very diverse
-
-```{r, eval = FALSE, echo = TRUE}
-grad_rf <- train(form = XX ~ .,   # Predict grad and exclude college_name
-                 data = XX,
-                 method = "XX",
-                 trControl = XX,
-                 tuneGrid = expand.grid(mtry = XX))  # Set number of features randomly selected
-```
-
-9. Using `predict()` save the fitted values of `grad_rf` object as `rf_fit`:
-
-```{r, echo = TRUE, eval = FALSE}
-# Save fitted values of random forest model
-rf_fit <- predict(XXX)
-```
-
-10. Print your `rf_fit` object, look at summary statistics with `summary(rf_fit)`, and create a histogram with `hist()` do they make sense?
-
-```{r}
-# Explore random forest fits
-
-XXX
-summary(XXX)
-hist(XXX)
-```
-
-### Assess accuracy
-
-11. Save the true training criterion values (`college_train$Grad_Rate`) as a vector called `criterion_train`
-
-```{r, echo = TRUE, eval = FALSE}
-# Save training criterion values
-criterion_train <- XXX$XXX
-```
-
-12. Using `postResample()`, determine the fitting performance of each of your models separately. Make sure to set your `criterion_train` values to the `obs` argument, and your true model fits `XX_fit` to the `pred` argument:
-
-```{r, echo = TRUE, eval = FALSE}
-# Calculate fitting accuracies of each model
-# pred = XX_mod
-# obs = criterion_train
-
-# Regression
-postResample(pred = XXX, obs = XXX)
-
-# Decision Trees
-postResample(pred = XXX, obs = XXX)
-
-# Random Forests
-postResample(pred = XXX, obs = XXX)
-```
-
-13. Which one had the best fits? What was the fitting MAE of each model?
-
-(Optional). If you'd like to, try visualizing the fitting results using the plotting code shown in the Examples tab above. Ask for help if you need it!
-
-## C - Prediction
-
-1. Save the criterion values from the test data set `college_test$Grad_Rate` as a new vector called `criterion_test`:
-
-```{r}
-# Save criterion values
-criterion_test <- XXX$XXX
-```
-
-2. Using `predict()`, save the predicted values of each model for the test data `college_test` as `glm_pred`, `dt_pred` and `rf_pred`. 
-
-```{r, echo = TRUE, eval = FALSE}
-# Save model predictions for test data
-# newdata = college_test
-
-# Regression
-glm_pred <- predict(XXX, newdata = XXX)
-
-# Decision Trees
-dt_pred <- predict(XXX, newdata = XXX)
-
-# Random Forests
-rf_pred <- predict(XXX, newdata = XXX)
-```
-
-3. Using `postResample()`, determine the *prediction* performance of each of your models against the test criterion `criterion_test`. 
-
-```{r, echo = TRUE, eval = FALSE}
-# Calculate prediction accuracies of each model
-# obs = criterion_test
-# pred = XX_mod
-
-# Regression
-postResample(pred = XXX, obs = XXX)
-
-# Decision Trees
-postResample(pred = XXX, obs = XXX)
-
-# Random Forests
-postResample(pred = XXX, obs = XXX)
-```
-
-4. How does each model's *prediction / test* performance (on the `XXX_test` data) compare to its *fitting / training* performance (on the `XXX_train` data)? Is it worse? Better? The same? What does the change tell you about the models?
-
-5. Which of the three models has the best prediction performance?
-
-6. If you had to use one of these three models in the real-world, which one would it be? Why?
-
-7. If someone came to you and asked "If I use your model in the future to predict the graduation rate of a new college, how accurate do you think it would be?", what would you say?
-
-# House Prices in King County, Washington
-
-In this section, we will predict the prices of houses in King County Washington (home of Seattle, [which you can thank for this](https://qz.com/208457/a-cartographic-guide-to-starbucks-global-domination/)) using the `house_train` and `house_test` datasets. Here's how they should look:
-
-```{r, results = 'asis', echo = FALSE, eval = TRUE}
-knitr::kable(house_train[1:10,])
-```
 
 ## A - Setup
 
-1. Make sure you are still working in your `BaselRBootcamp` R project, with the folders `1_Data` and `2_Code`. Make sure that the data file(s) listed in the `Datasets` section above are in your `1_Data` folder
+1. Set up your training by specifying `ctrl_cv` as 10-fold cross-validaation
 
-2. Open a new R script. At the top of the script, using comments, write your name and the date. Save it as a new file called `Prediction_HousePrices_practical.R` in the `2_Code` folder.  
-3. Using `library()` load the set of packages for this practical listed in the packages section above.
+- Set method = "cv" to specify cross validation
+- Set number = 10 to specify 10 folds
 
-```{r, eval = FALSE, echo = TRUE}
-## NAME
-## DATE
-## Fitting Practical - House Prices Prediction
-
-library(tidyverse)
-library(caret)
-library(party)
-library(partykit)
+```{r}
+# Use 10-fold cross validation
+ctrl_cv <- trainControl(method = "XX", 
+                        number = XX) 
 ```
 
-```{r, message = FALSE, warning = FALSE, echo = FALSE, eval = TRUE}
-library(tidyverse)
-```
+## B - Regression (standard)
 
-4. Run the code below to load each of the datasets listed in the `Datasets` as new objects
+1. Fit a (standard) regression model predicting `Salary` as a function of all features
 
-```{r, echo = TRUE, eval = FALSE, message = FALSE, warning = FALSE}
-# house data
-house_train <- read_csv(file = "1_Data/house_train.csv")
-house_test <- read_csv(file = "1_Data/house_test.csv")
-```
-
-5. Take a look at the first few rows of each dataframe by printing then to the console.
-
-```{r, echo = FALSE, eval = FALSE}
-# Print dataframes to the console
-
-house_train
-house_test
-```
-
-6. Print the numbers of rows and columns of each dataset using the `dim()` function
-
-```{r, echo = FALSE, eval = FALSE}
-# Print numbers of rows and columns
-
-dim(XXX)
-dim(XXX)
-```
-
-7. Look at the names of the dataframes with the `names()` function.
-
-```{r, echo = FALSE, eval = FALSE}
-# Print the names of each dataframe
-
-names(XXX)
-names(XXX)
-```
-
-8. Open each dataset in a new window using `View()`. Do they look ok?
-
-```{r, echo = FALSE, eval = FALSE}
-# Open each dataset in a window.
-
-View(XXX)
-View(XXX)
-```
-
-
-9. We need to do a little bit of data cleaning before starting. Specifically, we need to delete the id column to make it easier to work with the data: Do this by running the following code:
+- Set the formula to `Salary ~ .`
+- Set the data to `hitters_train`
+- Set the method to `"glm"` for regular regression
+- Set the train control argument to `ctrl_cv`
 
 ```{r, echo = TRUE, eval = FALSE}
-# Convert all character columns to factor
+# Normal Regression --------------------------
 
-house_train <- house_train %>%
-          select(-id)
-
-house_test <- house_test %>%
-          select(-id)
+salary_glm <- train(form = XX ~ . -XX - XX,
+                    data = XX,
+                    method = "XX",
+                    trControl = XX)
 ```
 
-## B - Fitting
 
-Your goal in the following models is to predict `price`, the selling price of homes in King County WA.
+```{r, eval = FALSE, echo = FALSE}
 
-1. Using `trainControl()`, set your training control method to `"none"`. Save your object as `ctrl_none`.
-
-```{r, echo = FALSE, eval = FALSE}
-# Set training method to "none" for simple fitting
-#  Note: This is for demonstration purposes, you would almost
-#   never do this for a 'real' prediction task!
-
-ctrl_none <- trainControl(method = "XXX")
+salary_glm <- train(form = Salary ~ .,
+                   data = hitters_train,
+                   method = "glm",
+                   trControl = ctrl_cv)
 ```
 
-### Regression
+3. Try plotting your `price_glm` object. What happens? What does this error mean?
 
-2. Using `train()` fit a regression model called `price_glm` predicting `price` as a function of all features *except* for date (Ask yourself, why do you think we are excluding this?).
-
-- For the `form` argument, use `price ~ . - date`
-- For the `data` argument, use  `house_train` in the data argument
-- For the `method` argument, use `method = "glm"` for regression
-- For the `trControl` argument, use your `ctrl_none` object you created before
+4. Print your final model object with `price_glm$finalModel`
 
 ```{r, echo = TRUE, eval = FALSE}
-price_glm <- train(form = XX ~ . - XX - XX,
+# Print final regression model
+price_glm$finalModel
+```
+
+5. Perint your final regression model coefficients with `coef()`.
+
+```{r}
+coef(price_glm$finalModel)
+```
+
+## C - Ridge Regression
+
+It's time to fit an optimised regression model with a Ridge penalty!
+
+
+1. Before we can fit a ridge regression model, we need to specify which values of the lambda penalty parameter we want to try. Using the code below, create a vector called `lambda_vec` which contains 100 values between 0 and 2
+
+```{r, echo = TRUE, eval = FALSE}
+# Determine possible values of lambda
+
+lambda_vec <- seq(from = 0, to = 1000, length = 100)
+```
+
+2. Fit a ridge regression model predicting `Salary` as a function of all features
+
+- Set the formula to `Salary ~ .`
+- Set the data to `hitters_train`
+- Set the method to `"glmnet"` for regularised regression
+- Set the train control argument to `ctrl_cv`
+- Set the tuneGrid argument such that alpha is 0 (for ridge regression), and with all lambda values you specified in `lambda_vec` (we've done this for you below)
+
+```{r, echo = TRUE, eval = FALSE}
+# Ridge Regression --------------------------
+
+salary_ridge <- train(form = XX ~ . -XX - XX,
+                      data = XX,
+                      method = "XX",
+                      trControl = XX,
+                      tuneGrid = expand.grid(alpha = 0,  # Ridge penalty
+                                             lambda = lambda_vec))
+```
+
+```{r, eval = FALSE, echo = FALSE}
+# Fit a ridge regression
+
+salary_ridge <- train(form = Salary ~ .,
+                   data = hitters_train,
+                   method = "glmnet",
+                   trControl = ctrl_cv,
+                   tuneGrid = expand.grid(alpha = 0,  # Ridge penalty
+                                          lambda = lambda_vec))
+```
+
+3. Plot your `price_ridge` object. What do you see? Which value of the regularisation parameter seems to be the best?
+
+```{r, echo = TRUE, eval = FALSE}
+# Plot price_ridge object
+plot(XX)
+```
+
+4. Print the best value of lambda by running the following code. Does this match what you saw in the plot above?
+
+```{r, echo = TRUE, eval = FALSE}
+# Print best regularisation parameter
+price_ridge$bestTune$lambda
+```
+
+5. What were your final regression model coefficients for the best lambda value? Find them by running the following code:
+
+```{r, echo = TRUE, eval = FALSE}
+# Get coefficients from best lambda value
+coef(price_ridge$finalModel, 
+     price_ridge$bestTune$lambda)
+```
+
+6. How do these coefficients compare to what you found in regular regression? Are they similar? Different?
+
+## C - Lasso Regression
+
+It's time to fit an optimised regression model with a Lasso penalty!
+
+1. Before we can fit a ridge regression model, we need to specify which values of the lambda penalty parameter we want to try. Using the code below, create a vector called `lambda_vec` which contains 100 values between 0 and .5
+
+```{r, echo = TRUE, eval = FALSE}
+# Determine possible values of lambda
+
+lambda_vec <- seq(from = 0, to = 1000, length = 100)
+```
+
+2. Fit a lasso regression model predicting `Salary` as a function of all features
+
+- Set the formula to `Salary ~ .`
+- Set the data to `hitters_train`
+- Set the method to `"glmnet"` for regularised regression
+- Set the train control argument to `ctrl_cv`
+- Set the tuneGrid argument such that alpha is 1 (for lasso regression), and with all lambda values you specified in `lambda_vec` (we've done this for you below)
+
+```{r, echo = TRUE, eval = FALSE}
+# Lasso Regression --------------------------
+
+salary_lasso <- train(form = XX ~ . -XX - XX,
+                      data = XX,
+                      method = "XX",
+                      trControl = XX,
+                      tuneGrid = expand.grid(alpha = 1,  # Lasso penalty
+                                            lambda = lambda_vec))
+```
+
+```{r, eval = FALSE, echo = FALSE}
+# Fit a lasso regression
+
+salary_lasso <- train(form = Salary ~ .,
+                   data = hitters_train,
+                   method = "glmnet",
+                   trControl = ctrl_cv,
+                   tuneGrid = expand.grid(alpha = 1,  # Lasso penalty
+                                          lambda = lambda_vec))
+```
+
+3. Plot your `price_lasso` object. What do you see? Which value of the regularisation parameter seems to be the best?
+
+```{r, echo = TRUE, eval = FALSE}
+# Plot price_lasso object
+plot(XX)
+```
+
+4. Print the best value of lambda by running the following code. Does this match what you saw in the plot above?
+
+```{r, echo = TRUE, eval = FALSE}
+# Print best regularisation parameter
+price_lasso$bestTune$lambda
+```
+
+5. What were your final regression model coefficients for the best lambda value? Find them by running the following code:
+
+```{r, echo = TRUE, eval = FALSE}
+# Get coefficients from best lambda value
+coef(price_lasso$finalModel, 
+     price_lasso$bestTune$lambda)
+```
+
+6. How do these coefficients compare to what you found in regular regression? Are they similar? Different? Do you notice that any coefficients are now set to exactly 0?
+
+## C - Decision Tree
+
+It's time to fit an optimised decision tree model!!
+
+1. Before we can fit a decision treel, we need to specify which values of the complexity parameter `cp` we want to try. Using the code below, create a vector called `cp_vec` which contains 100 values between 0 and 1
+
+```{r, echo = TRUE, eval = FALSE}
+# Determine possible values of cp
+
+cp_vec <- seq(from = 0, to = .1, length = 100)
+```
+
+2. Fit a decision tree model predicting `Salary` as a function of all features
+
+- Set the formula to `Salary ~ .`
+- Set the data to `hitters_train`
+- Set the method to `"rpart"` for decision trees
+- Set the train control argument to `ctrl_cv`
+- Set the tuneGrid argument such that alpha is 1 (for lasso regression), and with all lambda values you specified in `cp_vec` (we've done this for you below)
+
+```{r, echo = TRUE, eval = FALSE}
+# Decision Tree --------------------------
+
+price_dt <- train(form = XX ~ . -XX - XX,
                   data = XX,
-                  method = "XXX",
-                  trControl = ctrl_none)
-```
-
-3. Explore your `price_glm` object by looking at `price_glm$finalModel` and using `summary()`, what do you find?
-
-```{r, eval = FALSE, echo = TRUE}
-price_glm$XXX
-summary(XXX)
-```
-
-4. Using `predict()` save the fitted values of `price_glm` object as `glm_fit`:
-
-```{r, echo = FALSE, eval = FALSE}
-# Save fitted values of regression model
-glm_fit <- predict(XXX)
-```
-
-5. Print your `glm_fit` object, look at summary statistics with `summary(glm_fit)`, and create a histogram with `hist()` do they make sense?
-
-```{r, echo = FALSE, eval = FALSE}
-# Explore regression model fits
-
-XXX
-summary(XXX)
-hist(XXX)
-```
-
-### Decision Trees
-
-4. Using `train()`, fit a decision tree model called `price_dt` predicting `price` (using the same features as above).
-
-- For the `form` argument, use `price ~ . - date`
-- For the `data` argument, use  `house_train` in the data argument
-- For the `method` argument, use `method = "rpart"` to create decision trees
-- For the `trControl` argument, use your `ctrl_none` object you created before
-- For the `tuneGrid` argument, use `cp = 0.01` to specify the value of the complexity parameter. This is a pretty low value which means your trees will be, relatively, complex.
-
-```{r, echo = FALSE, eval = FALSE}
-price_dt <- train(form = XX ~ . - XX - XX,
-                  data = XXX,
                   method = "XX",
                   trControl = XX,
-                  tuneGrid = expand.grid(cp = XX))   # Set complexity parameter
+                  tuneGrid = expand.grid(cp = cp_vec))
 ```
 
-5. Explore your `price_dt` object by looking at `price_dt$finalModel` and plotting it with `plot(as.party(price_dt$finalModel))`, what do you find?
+```{r, eval = FALSE, echo = FALSE}
+# Fit a ridge regression
 
-6. Using `predict()` save the fitted values of `price_dt` object as `dt_fit`:
-
-```{r, echo = FALSE, eval = FALSE}
-# Save fitted values of decision tree model
-dt_fit <- predict(XXX)
+price_dt <- train(form = Salary ~ .,
+                  data = hitters_train,
+                  method = "rpart",
+                  trControl = ctrl_cv,
+                  tuneGrid = expand.grid(cp = cp_vec))
 ```
 
-7. Print your `dt_fit` object, look at summary statistics with `summary(dt_fit)`, and create a histogram with `hist()` do they make sense?
+3. Plot your `price_dt` object. What do you see? Which value of the regularisation parameter seems to be the best?
 
-```{r, echo = FALSE, eval = FALSE}
-# Explore decision tree fits
-
-XXX
-summary(XXX)
-hist(XXX)
+```{r, echo = TRUE, eval = FALSE}
+# Plot price_dt object
+plot(XX)
 ```
 
-### Random Forests
+4. Print the best value of lambda by running the following code. Does this match what you saw in the plot above?
 
-8. Using `train()`, fit a random forest model called `price_rf` predicting `price` (using the same features as above).
-
-- For the `form` argument, use `price ~ . - date`
-- For the `data` argument, use  `house_train` in the data argument
-- For the `method` argument, use `method = "rf"` to fit random forests
-- For the `trControl` argument, use your `ctrl_none` object you created before
-- For the `mtry` parameter, use `mtry` = 2. This is a relatively low value, so the forest will not be very diverse
-
-```{r, echo = FALSE, eval = FALSE}
-price_rf <- train(form = XX ~ . - XX - XX,   # Predict price and exclude id and date
-                 data = XX,
-                 method = "XX",
-                 trControl = XX,
-                 tuneGrid = expand.grid(mtry = XX))  # Set number of features randomly selected
+```{r, echo = TRUE, eval = FALSE}
+# Print best regularisation parameter
+price_dt$bestTune$cp
 ```
 
-9. Using `predict()` save the fitted values of `price_rf` object as `rf_fit`:
+5. Plot your final decision tree using the following code
 
-```{r, echo = FALSE, eval = FALSE}
-# Save fitted values of random forest model
-rf_fit <- predict(XXX)
+```{r, echo = TRUE, eval = FALSE}
+plot(as.party(price_dt$finalModel))   # Visualise your trees
 ```
 
-10. Print your `rf_fit` object, look at summary statistics with `summary(rf_fit)`, and create a histogram with `hist()` do they make sense?
+6. How do the nodes in the tree compare to the coefficients you found in your regression analyses? Do you see similarities or differences?
 
-```{r, echo = FALSE, eval = FALSE}
-# Explore random forest fits
+## D - Random Forests
 
-XXX
-summary(XXX)
-hist(XXX)
+It's time to fit an optimised random forest model!
+
+1. Before we can fit a random forest model, we need to specify which values of the diversity parameter `mtry` we want to try. Using the code below, create a vector called `mtry_vec` which is a sequence of numbers from 1 to 10
+
+```{r, echo = TRUE, eval = FALSE}
+# Determine possible values of mtry
+
+mtry_vec <- 1:10
 ```
 
-### Assess accuracy
+2. Fit a random forest model predicting `Salary` as a function of all features
 
-11. Save the true training criterion values (`house_train$price`) as a vector called `criterion_train`
+- Set the formula to `Salary ~ .`
+- Set the data to `hitters_train`
+- Set the method to `"rf"` for random forests
+- Set the train control argument to `ctrl_cv`
+- Set the tuneGrid argument such that mtry can take on the values you defined in `mtry_vec`
 
-```{r, echo = FALSE, eval = FALSE}
-# Save training criterion values
-criterion_train <- XXX$XXX
+```{r, echo = TRUE, eval = FALSE}
+# Random Forest --------------------------
+
+salary_rf <- train(form = XX ~ . -XX - XX,
+                   data = XX,
+                   method = "XX",
+                   trControl = XX,
+                   tuneGrid = expand.grid(mtry = mtry_vec))
 ```
 
-12. Using `postResample()`, determine the fitting performance of each of your models separately. Make sure to set your `criterion_train` values to the `obs` argument, and your true model fits `XX_fit` to the `pred` argument:
+```{r, eval = FALSE, echo = FALSE}
+# Fit a random forest regression
 
-```{r, echo = FALSE, eval = FALSE}
-# Calculate fitting accuracies of each model
-# pred = XX_mod
-# obs = criterion_train
-
-# Regression
-postResample(pred = XXX, obs = XXX)
-
-# Decision Trees
-postResample(pred = XXX, obs = XXX)
-
-# Random Forests
-postResample(pred = XXX, obs = XXX)
+salary_rf <- train(form = Salary ~ .,
+                   data = hitters_train,
+                   method = "rf",
+                   trControl = ctrl_cv,
+                   tuneGrid = expand.grid(mtry = mtry_vec))
 ```
 
-13. Which one had the best fits? What was the fitting MAE of each model?
+3. Plot your `salary_rf` object. What do you see? Which value of the regularisation parameter seems to be the best?
 
-(Optional). If you'd like to, try visualizing the fitting results using the plotting code shown in the Examples tab above. Ask for help if you need it!
-
-## C - Prediction
-
-1. Save the criterion values from the test data set `house_test$price` as a new vector called `criterion_test`:
-
-```{r, echo = FALSE, eval = FALSE}
-# Save criterion values
-criterion_test <- XXX$XXX
+```{r, echo = TRUE, eval = FALSE}
+# Plot salary_rf object
+plot(XX)
 ```
 
-2. Using `predict()`, save the predicted values of each model for the test data `house_test` as `glm_pred`, `dt_pred` and `rf_pred`. 
+4. Print the best value of mtry by running the following code. Does this match what you saw in the plot above?
 
-```{r, echo = FALSE, eval = FALSE}
-# Save model predictions for test data
-# newdata = college_test
+```{r, echo = TRUE, eval = FALSE}
+# Print best mtry parameter
+salary_rf$bestTune$mtry
+```
 
-# Regression
+## Estimate prediction accuracy
+
+1. Using `resamples()`, calculate the estimated prediction accuracy for each of your models. To do this, put your model objects in the named list (e.g.; `glm = salary_glm`, ...)
+
+```{r}
+# Summarise accuracy statistics across folds
+
+salary_resamples <- resamples(list(glm = XXX,
+                                   ridge = XXX, 
+                                   lasso = XXX, 
+                                   rf = XXX))
+```
+
+2. Look at the summary of your `salary_resamples` object with `summary(salary_resamples)`. What does this tell you? Which model do you expect to have the best prediction accuracy for the test data?
+
+```{r}
+summary(salary_resamples)
+```
+
+## Calculate prediction accuracy
+
+1. Using `predict()`, save the prediction of your regular regression model `salary_glm` for the `hitters_test` data as a new object called `glm_pred`:
+
+- Set the first argument to `salary_glm`
+- Set the newdata argument to `hitters_test`
+
+```{r}
+# Save the glm predicted salaries of hitters_test
 glm_pred <- predict(XXX, newdata = XXX)
+```
 
-# Decision Trees
+2. Now do the same with your ridge, lasso, decision tree, and random forest models to get the objects `ridge_pred`, `lasso_pred`, `dt_pred` and `rf_pred`
+
+```{r}
+ridge_pred <- predict(XXX, newdata = XXX)
+lasso_pred <- predict(XXX, newdata = XXX)
 dt_pred <- predict(XXX, newdata = XXX)
-
-# Random Forests
 rf_pred <- predict(XXX, newdata = XXX)
 ```
 
-3. Using `postResample()`, determine the *prediction* performance of each of your models against the test criterion `criterion_test`. 
 
-```{r, echo = FALSE, eval = FALSE}
-# Calculate prediction accuracies of each model
-# obs = criterion_test
-# pred = XX_mod
 
-# Regression
-postResample(pred = XXX, obs = XXX)
-
-# Decision Trees
-postResample(pred = XXX, obs = XXX)
-
-# Random Forests
-postResample(pred = XXX, obs = XXX)
-```
-
-4. How does each model's *prediction / test* performance (on the `XXX_test` data) compare to its *fitting / training* performance (on the `XXX_train` data)? Is it worse? Better? The same? What does the change tell you about the models?
-
-5. Which of the three models has the best prediction performance?
-
-6. If you had to use one of these three models in the real-world, which one would it be? Why?
-
-7. If someone came to you and asked "If I use your model in the future to predict the graduation rate of a new college, how accurate do you think it would be?", what would you say?
-
-# D Exploring model tuning parameters
-
-1. In all of your decision tree models so far, you have been setting the complexity parameter to 0.01. Try setting it to a larger value of 0.2 and see how your decision trees change (by plotting them). Do they get more or less complicated? How does increasing this value affect fitting and prediction performance? If you are interested in learning more about this parameter, look at the help menu with `?rpart.control`.
-
-2. In each of your random forest models, you have been setting the `mtry` argument to 2. Try setting it to a larger value such as 5 and re-running your models. How does increasing this value affect fitting and prediction performance? If you are interested in learning more about this parameter, look at the help menu with `?randomForest`.
-
-3. By default, the `train()` function uses 500 trees in `method = "rf"`. How do the number of trees affect performance? To answer this, try setting the number of trees to 1,000 (see example below) and re-evaluating your model's training and test performance. What do you find? What if you set the number of trees to just 10?
-
-```{r, eval = FALSE}
-# Create random forest model with 1000 trees
-
-mod <- train(form = hwy ~ year + cyl + displ,
-             data = data_train,
-             method = "rf",
-             trControl = train_control,
-             ntree = 1000,   # use 1000 trees! (Instead of the default value of 500)
-             tuneGrid = expand.grid(mtry = 2))
-
-```
-
-# E Challenges
-
-1. So far you've probably been using most, if not all, available features in predicting house sales. But imagine someone came to you and said "I need to know how much a set of new houses will sell for, but I only have access to three features `bedrooms`, `bathrooms`, and `sqft_living`. Which of your models should I use and how accurate will they be? How would you answer that question? Use your modelling techniques to find out!
-
-2. Repeat your modelling process, but now do a classification task. Specifically, predict whether or not a house sells for at least \$1,000,000. To do this, you'll first need to create a new column called `million` in both your `house_train` and `house_test` datasets (the code below should help you). Then, use your best modelling techniques to make this prediction. How accurate are your models in predicting whether or not a house will sell for over $1,000,000? Don't forget to use the `confusionMatrix()` function instead of `postResample()` to evaluate your model's accuracy!
-
-```{r}
-# Add million column to house_train and house_test
-#  A factor indicating whether or not a house sells for
-#   over 1,000,0000
-
-house_train <- house_train %>%
-  mutate(million = factor(price > 1000000))
-
-house_test <- house_test %>%
-  mutate(million = factor(price > 1000000))
-```

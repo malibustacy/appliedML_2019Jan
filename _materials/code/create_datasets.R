@@ -29,10 +29,26 @@ carseats <- carseats %>%
   sample_n(nrow(.))
 
 carseats_train <- carseats[1:100,]
-carseats_test <- carseats[101:nrow(carseats),]
+carseats_test <- carseats[101:400,]
 
 write_csv(carseats_train, path = "1_Data/carseats_train.csv")
 write_csv(carseats_test, path = "1_Data/carseats_test.csv")
+
+### Hitters - ISLR ----------------------------
+
+set.seed(100)
+
+hitters <- Hitters
+
+hitters <- hitters %>%
+  na.omit() %>%
+  sample_n(nrow(.))
+
+hitters_train <- hitters[1:50,]
+hitters_test <- hitters[51:nrow(hitters),]
+
+write_csv(hitters_train, path = "1_Data/hitters_train.csv")
+write_csv(hitters_test, path = "1_Data/hitters_test.csv")
 
 ### heartdisease -  FFTrees ------------------
 
@@ -53,11 +69,11 @@ mpg_d <- mpg %>%
   sample_n(nrow(.)) %>%
   select(-trans)
 
-carseats_train <- carseats[1:100,]
-carseats_test <- carseats[101:nrow(carseats),]
+mpg_train <- mpg_d[1:100,]
+mpg_test <- mpg_d[101:nrow(mpg_d),]
 
-write_csv(carseats_train, path = "1_Data/carseats_train.csv")
-write_csv(carseats_test, path = "1_Data/carseats_test.csv")
+write_csv(mpg_train, path = "1_Data/mpg_train.csv")
+write_csv(mpg_test, path = "1_Data/mpg_test.csv")
 
 
 
