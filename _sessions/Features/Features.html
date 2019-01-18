@@ -166,16 +166,16 @@ varImp(income_lm)
 lm variable importance
 
           Overall
-age        100.00
-food        43.96
-alcohol     25.73
-happiness   11.24
-tattoos      5.16
-height       3.94
-children     2.39
-weight       2.25
-fitness      1.62
-datause      0.00
+age       100.000
+food       42.714
+alcohol    25.468
+happiness  10.230
+tattoos     6.204
+fitness     4.867
+height      3.911
+children    3.563
+datause     0.565
+weight      0.000
 ```
 
 ]
@@ -226,14 +226,14 @@ Outer resampling method: Bootstrapped (25 reps)
 Resampling performance over subset size:
 
  Variables  RMSE Rsquared   MAE RMSESD RsquaredSD  MAESD Selected
-         3 0.373    0.862 0.293 0.0166     0.0167 0.0132         
-         4 0.371    0.863 0.291 0.0174     0.0167 0.0138        *
-         5 0.373    0.862 0.292 0.0170     0.0158 0.0133         
-        10 0.375    0.860 0.294 0.0158     0.0148 0.0124         
-        14 0.376    0.860 0.294 0.0156     0.0146 0.0125         
+         3 0.374    0.865 0.294 0.0152     0.0135 0.0114         
+         4 0.373    0.865 0.293 0.0161     0.0142 0.0122         
+         5 0.372    0.865 0.292 0.0158     0.0146 0.0123         
+        10 0.371    0.867 0.291 0.0157     0.0150 0.0119         
+        14 0.371    0.867 0.291 0.0160     0.0152 0.0121        *
 
-The top 4 variables (out of 4):
-   age, food, alcohol, happiness
+The top 5 variables (out of 14):
+   age, food, alcohol, happiness, consultations
 ```
 
 ]
@@ -478,7 +478,7 @@ duw
 
 class: middle, center
 
-&lt;h1&gt;&lt;a href=https://therbootcamp.github.io/appliedML_2019Jan/_sessions/Features/Features_practical.html&gt;Practical&lt;/a&gt;&lt;/h1&gt;
+&lt;h1&gt;&lt;a href="https://therbootcamp.github.io/appliedML_2019Jan/_sessions/Features/Features_practical.html&gt;Practical"&lt;/a&gt;&lt;/h1&gt;
     </textarea>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
 <script>var slideshow = remark.create({
@@ -520,7 +520,7 @@ if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
 (function () {
   var script = document.createElement('script');
   script.type = 'text/javascript';
-  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  script.src  = 'https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML';
   if (location.protocol !== 'file:' && /^https?:/.test(script.src))
     script.src  = script.src.replace(/^https?:/, '');
   document.getElementsByTagName('head')[0].appendChild(script);

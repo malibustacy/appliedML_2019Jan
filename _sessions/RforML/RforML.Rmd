@@ -775,18 +775,13 @@ baselers <- read_delim("baselers.txt",
 
 ---
 
-# Downloads
+class: middle, center
 
-# CHECK CHECK CHECK
+<h1><a href="https://raw.githubusercontent.com/therbootcamp/appliedML_2019Jan/master/1_Data/baselrbootcamp_appliedML_data.zip">Download data sets</a></h1>
 
-<font size="6" color="#F62D73"><a href="https://raw.githubusercontent.com/therbootcamp/Intro2DataScience_2018Oct/master/_sessions/_data/baselrbootcamp_data.zip">Data sets</a></font>
-
-# CHECK CHECK CHECK
 ---
 
-<div class="center_text_2">
-  <span>
-  Interactive
-  </span>
-</div> 
+class: middle, center
+
+<h1><a>Interactive</a></h1>
 

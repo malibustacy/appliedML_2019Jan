@@ -504,5 +504,5 @@ duw
 
 class: middle, center
 
-<h1><a href=https://therbootcamp.github.io/appliedML_2019Jan/_sessions/Features/Features_practical.html>Practical</a></h1>
+<h1><a href="https://therbootcamp.github.io/appliedML_2019Jan/_sessions/Features/Features_practical.html>Practical"</a></h1>
 
