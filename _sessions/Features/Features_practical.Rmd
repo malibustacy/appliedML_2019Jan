@@ -472,7 +472,7 @@ confusionMatrix(pima_glm4_pred, criterion)
 
 ## C - Murders
 
-In this section, you will explore feature selection but with a data set with very different properties. The data combines socio-economic data from the '90 Census, data from Law Enforcement Management and Admin Stats survey, and crime data from the FBI, allowing to analyse the relationship between various socio-demographic variables and whether murders have been committed (`murders`), the criterion of this exercise.     
+In this section, you will explore feature selection but use a data set with very different properties. The data combines socio-economic data from the '90 Census, data from Law Enforcement Management and Admin Stats survey, and crime data from the FBI, allowing to analyse the relationship between various socio-demographic variables and whether murders have been committed (`murders`), the criterion of this exercise.     
 
 1. Take a look at the first few rows of the `murders_crime` data frame by printing then to the console.
 
