@@ -19,7 +19,7 @@ knitr::opts_chunk$set(comment = NA,
 options(digits = 3)
 ```
 
-```{r, echo = FALSE, fig.align = 'center', eval = TRUE, out.width = "90%", fig.cap="Wikipedia"}
+```{r, echo = FALSE, fig.align = 'center', eval = TRUE, out.width = "70%", fig.cap="Wikipedia"}
 knitr::include_graphics("https://upload.wikimedia.org/wikipedia/commons/1/1c/K-fold_cross_validation_EN.jpg")
 ```
 
@@ -367,7 +367,7 @@ ggplot(data = accuracy,
            label = round(accuracy_agg$mae, 2))
 ```
 
-# Baseball player salaries
+# 0 - Baseball player salaries
 
 In this section, we will predict the salaries of baseball players from the `hitters_train` and `hitters_test` datasets. Here's how the first few rows of `hitters_train` should look:
 
