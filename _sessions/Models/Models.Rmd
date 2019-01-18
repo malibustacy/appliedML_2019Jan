@@ -1,5 +1,5 @@
 ---
-title: "Features"
+title: "Models"
 author: "Applied Machine Learning with R<br/><a href='https://therbootcamp.github.io'>www.therbootcamp.com</a><br/><a href='https://twitter.com/therbootcamp'>@therbootcamp</a>"
 date: "January 2019"
 output:
@@ -48,6 +48,104 @@ library(baselers)
 library(ggthemes)
 ```
 
+
+# There is no free lunch
+
+.pull-left35[
+
+<u>Theorem</u>
+
+Given a finite set $V$ and a finite set $S$ of real numbers, <high>assume that $f:V\to S$ is chosen at random</high> according to uniform distribution on the set $S^{V}$ of all possible functions from $V$ to $S$. For the problem of optimizing $f$ over the set $V$, <high>then no algorithm performs better than blind search.</high>
+<br><br><br><br>
+<a href="https://ti.arc.nasa.gov/m/profile/dhw/papers/78.pdf">Wolpert & Macready, 1997, No Free Lunch Theorems for Optimization</a>
+
+]
+
+.pull-right55[
+
+<p align="left">
+  <br>
+  <img src="image/free_lunch.jpg" height=400px width=650px>
+</p>
+
+]
+
+---
+
+# Know your environment
+
+Bias variance
+
+
+---
+
+# Non-linearity
+
+complex but sometimes necessary
+
+
+---
+
+# Kernel trick
+
+complex but sometimes necessary
+
+
+---
+
+# Robustness
+
+complex but sometimes necessary
+
+
+---
+
+# Regularization
+
+complex but sometimes necessary
+
+
+
+---
+
+# Hedging
+
+complex but sometimes necessary
+
+
+
+---
+
+# Binarization
+
+complex but sometimes necessary
+
+
+---
+
+# Feature selection
+
+complex but sometimes necessary
+
+
+---
+
+# Feature generation
+
+complex but sometimes necessary
+
+
+---
+
+# Deep learning
+
+complex but sometimes necessary
+
+
+
+
+---
+
 Supervised learning
 
 Regularization
@@ -72,132 +170,6 @@ Unspervised learning
   k-means
   SVD
   PCA
-
-
-.pull-left4[
-
-# Recap: What are model tuning parameters?
-
-]
-
-.pull-right6[
-
-]
-
-
----
-
-.pull-left4[
-
-# Why do we have tuning parameters
-
-- Regularisation
-- Complexity
-
-]
-
-.pull-right6[
-
-]
-
-
----
-
-.pull-left4[
-
-# Bias-Variance Trade-off
-
-- A short introduction
-
-]
-
-.pull-right6[
-
-]
-
-
----
-
-.pull-left4[
-
-# Regularisation / complexity controlling methods
-
-- Regression
-  - Ridge (L1 penalty), Lasso (L2 penalty)
-  
-- Trees
-  - Max depth, minimum elements per node
-  
-- KNN
-   - Just try different values of K
-
-]
-
-.pull-right6[
-
-]
-
-
----
-
-.pull-left4[
-
-# How do you select best tuning parameters?
-
-- Crossvalidation
-
-]
-
-.pull-right6[
-
-]
-
-
----
-
-.pull-left4[
-
-# Cross-Validation
-
-]
-
-.pull-right6[
-
-]
-
----
-
-.pull-left4[
-
-# Estimating prediction accuracy with cross-validation
-
-]
-
-.pull-right6[
-
-]
-
----
-
-.pull-left4[
-
-# Estimating True prediction accuracy
-
-
-- Hold out set
-- Why do we always use a holdout set?
-
-]
-
-.pull-right6[
-
-]
-
-
----
-
-# Caret
-
 
 
 

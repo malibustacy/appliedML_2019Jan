@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Parameter Tuning</title>
+    <title>Models</title>
     <meta charset="utf-8">
     <meta name="author" content="Applied Machine Learning with R www.therbootcamp.com @therbootcamp" />
     <link href="libs/remark-css/default.css" rel="stylesheet" />
@@ -11,7 +11,7 @@
     <textarea id="source">
 class: center, middle, inverse, title-slide
 
-# Parameter Tuning
+# Models
 ### Applied Machine Learning with R<br/><a href='https://therbootcamp.github.io'>www.therbootcamp.com</a><br/><a href='https://twitter.com/therbootcamp'><span class="citation">@therbootcamp</span></a>
 ### January 2019
 
@@ -36,130 +36,54 @@ layout: true
 
 
 
-.pull-left4[
+# There is no free lunch
 
-# Recap: What are model tuning parameters?
+.pull-left35[
 
-]
+&lt;u&gt;Theorem&lt;/u&gt;
 
-.pull-right6[
-
-]
-
-
----
-
-.pull-left4[
-
-# Why do we have tuning parameters
-
-- Regularisation
-- Complexity
+Given a finite set `\(V\)` and a finite set `\(S\)` of real numbers, &lt;high&gt;assume that `\(f:V\to S\)` is chosen at random&lt;/high&gt; according to uniform distribution on the set `\(S^{V}\)` of all possible functions from `\(V\)` to `\(S\)`. For the problem of optimizing `\(f\)` over the set `\(V\)`, &lt;high&gt;then no algorithm performs better than blind search.&lt;/high&gt;
+&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;
+&lt;a href="https://ti.arc.nasa.gov/m/profile/dhw/papers/78.pdf"&gt;Wolpert &amp; Macready, 1997, No Free Lunch Theorems for Optimization&lt;/a&gt;
 
 ]
 
-.pull-right6[
+.pull-right55[
+
+&lt;p align="left"&gt;
+  &lt;br&gt;
+  &lt;img src="image/free_lunch.jpg" height=400px width=650px&gt;
+&lt;/p&gt;
 
 ]
 
 
 ---
 
-.pull-left4[
+Supervised learning
 
-# Bias-Variance Trade-off
+Regularization
+  automatic feature selection
 
-- A short introduction
+Kernel trick
 
-]
+Ensembles
+  Bagging
+  Ensemble
+  Boosting
 
-.pull-right6[
+Feature generation
+  Random Forest
+  Neural networks
+  CNN
 
-]
+Unspervised learning
 
+  kernel trick
 
----
-
-.pull-left4[
-
-# Regularisation / complexity controlling methods
-
-- Regression
-  - Ridge (L1 penalty), Lasso (L2 penalty)
-  
-- Trees
-  - Max depth, minimum elements per node
-  
-- KNN
-   - Just try different values of K
-
-]
-
-.pull-right6[
-
-]
-
-
----
-
-.pull-left4[
-
-# How do you select best tuning parameters?
-
-- Crossvalidation
-
-]
-
-.pull-right6[
-
-]
-
-
----
-
-.pull-left4[
-
-# Cross-Validation
-
-]
-
-.pull-right6[
-
-]
-
----
-
-.pull-left4[
-
-# Estimating prediction accuracy with cross-validation
-
-]
-
-.pull-right6[
-
-]
-
----
-
-.pull-left4[
-
-# Estimating True prediction accuracy
-
-
-- Hold out set
-- Why do we always use a holdout set?
-
-]
-
-.pull-right6[
-
-]
-
-
----
-
-# Caret
-
+  k-means
+  SVD
+  PCA
 
 
 
