@@ -262,6 +262,8 @@ In `caret`, we always need to define computational nuances of training using the
 ctrl_none <- trainControl(method = "none") 
 ```
 
+# Regression
+
 ## C - Fit a regression model
 
 1. Using the code below, fit a regression model predicting graduation rate (`Grad_Rate`) as a function of one feature `PhD`, the percent of faculty with PhDs). Save the result as an object `Grad_Rate_glm`
