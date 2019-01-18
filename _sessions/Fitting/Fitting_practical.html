@@ -476,7 +476,7 @@ ctrl_none &lt;- trainControl(method = &quot;none&quot;) </code></pre>
 <div id="c---fit-a-regression-model" class="section level2">
 <h2>C - Fit a regression model</h2>
 <ol style="list-style-type: decimal">
-<li>Using the code below, fit a regression model predicting graduation rate (<code>Grad_Rate</code>) as a function of one feature <code>PhD</code>, the percent of faculty with Ph.Ds). Save the result as an object <code>Grad_Rate_glm</code></li>
+<li>Using the code below, fit a regression model predicting graduation rate (<code>Grad_Rate</code>) as a function of one feature <code>PhD</code>, the percent of faculty with PhDs). Save the result as an object <code>Grad_Rate_glm</code></li>
 </ol>
 <pre class="r"><code># Grad_Rate_glm: Regression Model
 #   Criterion: Grad_Rate
@@ -543,7 +543,7 @@ accuracy_agg &lt;- accuracy %&gt;%
                   summarise(mae = mean(ae))   # Calculate MAE (mean absolute error)</code></pre>
 <ol start="5" style="list-style-type: decimal">
 <li><p>Print the <code>accuracy</code> and <code>accuracy_agg</code> objects to see how they look.</p></li>
-<li><p>Using the code below, create a scatterplot showing the relationship between the true criterion values and the model fits</p></li>
+<li><p>Using the code below, create a scatter plot showing the relationship between the true criterion values and the model fits</p></li>
 </ol>
 <pre class="r"><code># Plot A) Scatterplot of criterion versus predictions
 
@@ -593,9 +593,9 @@ ggplot(data = accuracy,
 <li><p>Using the same steps as above, create a regression model <code>Grad_Rate_glm</code> which predicts <code>Grad_Rate</code> using all 4 features (you can also call it something else if you want to save your original model!).</p></li>
 <li><p>Explore your model using <code>summary()</code>, which features seem to be important?</p></li>
 <li><p>What is the Mean Absolute Error (MAE) of your new model that uses 4 features? How does this compare to your previous model that only used 1 feature?</p></li>
+<li><p>(Optional). Create a scatter plot showing the relationship between your new model fits and the true values. How does this plot compare to your previous one?</p></li>
+<li><p>(Optional). Create a violin plot showing the distribution of absolute errors. How does this compare to your previous one?</p></li>
 </ol>
-<p>4 (Optional). Create a scatterplot showing the relationship between your new model fits and the true values. How does this plot compare to your previous one?</p>
-<p>5 (Optional). Create a violin plot showing the distribution of absolute errors. How does this compare to your previous one?</p>
 </div>
 <div id="f---use-almost-all-features" class="section level2">
 <h2>F - Use (almost) all features</h2>
@@ -611,9 +611,9 @@ ggplot(data = accuracy,
 <ol start="3" style="list-style-type: decimal">
 <li><p>Explore your model using <code>summary()</code>, which features seem to be important?</p></li>
 <li><p>What is the Mean Absolute Error (MAE) of your new model that uses 6 features? How does this compare to your previous model that only used 1 feature?</p></li>
+<li><p>(Optional). Create a scatter plot showing the relationship between your new model fits and the true values. How does this plot compare to your previous one?</p></li>
+<li><p>(Optional). Create a violin plot showing the distribution of absolute errors. How does this compare to your previous one?</p></li>
 </ol>
-<p>5 (Optional). Create a scatterplot showing the relationship between your new model fits and the true values. How does this plot compare to your previous one?</p>
-<p>6 (Optional). Create a violin plot showing the distribution of absolute errors. How does this compare to your previous one?</p>
 </div>
 </div>
 <div id="classification" class="section level1">
@@ -672,7 +672,7 @@ confusionMatrix(data = glm_fit,        # This is the prediction!
 <li><p>Look at the results, what is the overall accuracy of the model? How do you interpret this?</p></li>
 <li><p>What is the sensitivity? How do you interpret this number?</p></li>
 <li><p>What is the specificity? How do you interpret this number?</p></li>
-<li><p>To visualise the accuracy of your classification models, use the following code to create a barplot:</p></li>
+<li><p>To visualize the accuracy of your classification models, use the following code to create a bar plot:</p></li>
 </ol>
 <pre class="r"><code># Get overall accuracy from regression model
 glm_accuracy &lt;- confusionMatrix(data =  glm_fit,  
