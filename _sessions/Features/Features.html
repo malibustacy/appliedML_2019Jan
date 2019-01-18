@@ -102,11 +102,11 @@ As the number of features grows...
 
 &lt;u&gt;3 ways&lt;/u&gt;
 
-&lt;i&gt;A&lt;/i&gt; Reduce variables &lt;high&gt;manually&lt;/high&gt; based on statistical or intuitive considerations.
+&lt;i&gt;A)&lt;/i&gt; Reduce variables &lt;high&gt;manually&lt;/high&gt; based on statistical or intuitive considerations.
 
-&lt;i&gt;B&lt;/i&gt; Reduce variables &lt;high&gt;automatically&lt;/high&gt; using the right ML algorithms, e.g., `random forests` or `lasso regression`, or feature selection algorithms, e.g., `recursive feature selection`.
+&lt;i&gt;B)&lt;/i&gt; Reduce variables &lt;high&gt;automatically&lt;/high&gt; using the right ML algorithms, e.g., `random forests` or `lasso regression`, or feature selection algorithms, e.g., `recursive feature selection`.
 
-&lt;i&gt;C&lt;/i&gt; Compress variables using &lt;high&gt;dimensionality reduction algorithms&lt;/high&gt;, such `principal component analysis`(PCA).
+&lt;i&gt;C)&lt;/i&gt; Compress variables using &lt;high&gt;dimensionality reduction algorithms&lt;/high&gt;, such `principal component analysis` (PCA).
 
 ]
 
@@ -166,16 +166,16 @@ varImp(income_lm)
 lm variable importance
 
           Overall
-age        100.00
-food        46.19
-alcohol     28.57
-happiness   12.24
-tattoos      6.68
-children     3.56
-fitness      2.90
-height       2.85
-weight       1.90
-datause      0.00
+age       100.000
+food       42.324
+alcohol    24.698
+happiness  10.714
+tattoos     4.219
+height      2.452
+children    2.020
+fitness     0.619
+weight      0.208
+datause     0.000
 ```
 
 ]
@@ -226,11 +226,11 @@ Outer resampling method: Bootstrapped (25 reps)
 Resampling performance over subset size:
 
  Variables  RMSE Rsquared   MAE RMSESD RsquaredSD  MAESD Selected
-         3 0.368    0.865 0.291 0.0124     0.0153 0.0105         
-         4 0.366    0.867 0.289 0.0130     0.0153 0.0111        *
-         5 0.367    0.866 0.289 0.0128     0.0148 0.0114         
-        10 0.370    0.864 0.291 0.0116     0.0139 0.0104         
-        14 0.370    0.864 0.291 0.0114     0.0139 0.0104         
+         3 0.369    0.870 0.291 0.0114     0.0118 0.0107         
+         4 0.366    0.872 0.288 0.0123     0.0121 0.0114        *
+         5 0.368    0.871 0.289 0.0115     0.0121 0.0104         
+        10 0.370    0.869 0.291 0.0120     0.0124 0.0108         
+        14 0.370    0.869 0.291 0.0121     0.0125 0.0109         
 
 The top 4 variables (out of 4):
    age, food, alcohol, happiness

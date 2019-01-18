@@ -152,11 +152,11 @@ As the number of features grows...
 
 <u>3 ways</u>
 
-<i>A</i> Reduce variables <high>manually</high> based on statistical or intuitive considerations.
+<i>A)</i> Reduce variables <high>manually</high> based on statistical or intuitive considerations.
 
-<i>B</i> Reduce variables <high>automatically</high> using the right ML algorithms, e.g., `random forests` or `lasso regression`, or feature selection algorithms, e.g., `recursive feature selection`.
+<i>B)</i> Reduce variables <high>automatically</high> using the right ML algorithms, e.g., `random forests` or `lasso regression`, or feature selection algorithms, e.g., `recursive feature selection`.
 
-<i>C</i> Compress variables using <high>dimensionality reduction algorithms</high>, such `principal component analysis`(PCA).
+<i>C)</i> Compress variables using <high>dimensionality reduction algorithms</high>, such `principal component analysis` (PCA).
 
 ]
 
