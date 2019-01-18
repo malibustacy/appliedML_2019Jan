@@ -855,6 +855,9 @@ img {
 button.code-folding-btn:focus {
   outline: none;
 }
+summary {
+  display: list-item;
+}
 </style>
 
 
@@ -862,14 +865,74 @@ button.code-folding-btn:focus {
 <div class="container-fluid main-container">
 
 <!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
 <script>
 $(document).ready(function () {
   window.buildTabsets("TOC");
 });
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
 </script>
 
 <!-- code folding -->
-
 
 
 
@@ -1485,13 +1548,13 @@ ggplot(data = accuracy,
 <h2>A - Setup</h2>
 <ol style="list-style-type: decimal">
 <li><p>Open your <code>BaselRBootcamp</code> R project. It should already have the folders <code>1_Data</code> and <code>2_Code</code>. Make sure that the data file(s) listed in the <code>Datasets</code> section above are in your <code>1_Data</code> folder</p></li>
-<li>Open a new R script. At the top of the script, using comments, write your name and the date. Save it as a new file called <code>Fitting_College_practical.R</code> in the <code>2_Code</code> folder.<br />
+<li>Open a new R script. At the top of the script, using comments, write your name and the date. Save it as a new file called <code>Prediction_practical.R</code> in the <code>2_Code</code> folder.<br />
 </li>
 <li><p>Using <code>library()</code> load the set of packages for this practical listed in the packages section above.</p></li>
 </ol>
 <pre class="r"><code>## NAME
 ## DATE
-## Fitting Practical - College Graduation Rates Prediction
+## Prediction Practical - With regression, decision trees, and random forests
 
 library(tidyverse)
 library(caret)
