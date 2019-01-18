@@ -127,7 +127,8 @@ names(data) # Print the names
 
 # Create train index
 train_index <- createDataPartition(criterion, 
-                                  p = .8, list = FALSE)
+                                   p = .8, 
+                                   list = FALSE)
 
 # Create training and test sets
 data_train <- data %>% slice(train_index)
@@ -160,7 +161,7 @@ data_train <- predictors_train %>% add_column(hwy = criterion_train)
 # Step 4: Define training control parameters -------------
 
 # Train using cross-validation
-train_control <- trainControl(method = "cv") 
+ctrl_cv <- trainControl(method = "cv") 
 
 # Step 5: Fit models -------------
 
@@ -168,20 +169,20 @@ train_control <- trainControl(method = "cv")
 hwy_glm <- train(form = hwy ~ .,
                  data = data_train,
                  method = "glm",
-                 trControl = train_control)
+                 trControl = ctrl_cv)
 
 # Fit with pca transformation
 hwy_glm_pca <- train(form = hwy ~ .,
                      data = data_train,
                      method = "glm",
-                     trControl = train_control,
+                     trControl = ctrl_cv,
                      preProcess = c('pca'))
 
 # Fit scaling and centering
 hwy_glm_sca <- train(form = hwy ~ .,
                      data = data_train,
                      method = "glm",
-                     trControl = train_control,
+                     trControl = ctrl_cv,
                      preProcess = c('scale', 'center'))
 
 # Get fits
@@ -207,41 +208,41 @@ plot(imp_glm_sca)
 hwy_glm_sel <- train(form = hwy ~ cty,
                      data = data_train,
                      method = "glm",
-                     trControl = train_control)
+                     trControl = ctrl_cv)
 
 # Select by hand in data
 hwy_glm_sel <- train(form = hwy ~ cty,
                      data = data_train %>% 
                        select(-cyl, -displ, -year),
                      method = "glm",
-                     trControl = train_control)
+                     trControl = ctrl_cv)
 
 # Select by reducing pca criterion ---
 
 # Reduce criterion to 50% variance epxlained 
-train_control_pca <- trainControl(method = "cv",
-                                  preProcOptions = list(thresh = 0.50)) 
+ctrl_cv_pca <- trainControl(method = "cv",
+                            preProcOptions = list(thresh = 0.50)) 
 
 # Refit model with update
 hwy_glm_sel <- train(form = hwy ~ cty,
                      data = data_train %>% 
                        select(-cyl, -displ, -year),
                      method = "glm",
-                     trControl = train_control_pca,
+                     trControl = ctrl_cv_pca,
                      preProcess = c('pca'))
 
 # Step 8: Recursive feature elimination -------------
 
 # Feature elimination settings 
-rfe_control <- rfeControl(functions = lmFuncs,  # linear model
-                          method = "cv",
-                          verbose = FALSE)
+ctrl_rfe <- rfeControl(functions = lmFuncs,  # linear model
+                       method = "cv",
+                       verbose = FALSE)
 
 # Run feature elimination
 profile <- rfe(x = predictors_train, 
                y = criterion_train,
                sizes = c(1, 2, 3),     # Features set sizes should be considered
-               rfeControl = rfe_control)
+               rfeControl = ctrl_rfe)
 
 # plot result
 trellis.par.set(caretTheme())
@@ -597,7 +598,7 @@ confusionMatrix(murders_clean_pred, criterion)
 
 ## Data compression with PCA
 
-13. Given the high features correlations it is sensible to compress the data using `principal component analysis` (PCA). Create a third fit object using the original training set with `preProcess = c('pca')` and `trainControl = trainControl(preProcOptions = list(thresh = 0.8))` in the training function. The first argument tells R to use PCA, the second specifies that exactly 80% of the variance should be retained. 
+13. Given the high features correlations it is sensible to compress the data using `principal component analysis` (PCA). Create a third fit object using the original training set with `preProcess = c('pca')` and `trControl = trainControl(preProcOptions = list(thresh = 0.8))` in the training function. The first argument tells R to use PCA, the second specifies that exactly 80% of the variance should be retained. 
 
 ```{r, echo = TRUE}
 # fit glm with best four features
@@ -656,7 +657,8 @@ plot(varimp_glm_pca)
 
 # split index
 train_index <- createDataPartition(violent_crime$ViolentCrimesPerPop, 
-                                   p = .8, list = FALSE)
+                                   p = .8, 
+                                   list = FALSE)
 
 # train and test sets
 violent_train <- violent_crime %>% slice(train_index)
@@ -669,7 +671,7 @@ violent_test  <- violent_crime %>% slice(-train_index)
 #   add_column(ViolentCrimesPerPop = violent_train$ViolentCrimesPerPop)
 
 # Feature elimination settings 
-rfe_control <- rfeControl(functions = lmFuncs,  # linear model
+ctrl_rfe <- rfeControl(functions = lmFuncs,  # linear model
                           method = "cv",
                           verbose = FALSE,
                           rerank = FALSE)
@@ -678,7 +680,7 @@ rfe_control <- rfeControl(functions = lmFuncs,  # linear model
 profile <- rfe(x = violent_train %>% select(-ViolentCrimesPerPop), 
                y = violent_train$ViolentCrimesPerPop,
                sizes = 1:(ncol(violent_train_clean)-1), # Features set sizes
-               rfeControl = rfe_control)
+               rfeControl = ctrl_rfe)
 
 # inspect cross-validation as a function of performance
 plot(profile)
