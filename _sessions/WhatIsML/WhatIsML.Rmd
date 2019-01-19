@@ -306,7 +306,7 @@ knitr::include_graphics("image/trump_gut_edited.jpg")
 |Term| Definition| Example|
 |:------|:-----|:------|
 |Data (Tidy)|Data represented in a rectangular format with rows and columns|Excel spreadsheet, .`csv`|
-|Case|A specific case of data|A patient, a site|
+|Case|A specific observation of data|A patient, a site|
 |Feature|An individual, measurable property of cases|Age, temperature, country|
 |Criterion|Something you want to predict|Total sales, success (yes or no)|
 
@@ -582,8 +582,6 @@ knitr::include_graphics("https://github.com/therbootcamp/appliedML_2019Jan/blob/
 
 ]
 
-
-
 ---
 
 .pull-left55[
@@ -612,15 +610,9 @@ knitr::include_graphics("https://github.com/therbootcamp/appliedML_2019Jan/blob/
 
 ]
 
-
-
-
-
-
-
 ---
 class: middle, center
 
+<h1> Questions?</h1>
+
 <h1><a href=https://therbootcamp.github.io/appliedML_2019Jan/index.html>Schedule</a></h1>
-
-

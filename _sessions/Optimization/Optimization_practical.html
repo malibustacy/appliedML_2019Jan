@@ -424,7 +424,7 @@ coef(price_glm$finalModel)
 # Lasso --------------------------
 
 # Vector of lambda values to try
-lambda_vec &lt;- seq(0, 1000, length = 100)
+lambda_vec &lt;- seq(0, 100, length = 100)
 
 price_lasso &lt;- train(form = price ~ carat + depth + table + x + y,
                    data = data_train,
@@ -488,7 +488,7 @@ coef(price_ridge$finalModel,
 # Decision Trees --------------------------
 
 # Vector of cp values to try
-cp_vec &lt;- seq(0, 1, length = 100)
+cp_vec &lt;- seq(0, .4, length = 100)
 
 price_dt &lt;- train(form = price ~ carat + depth + table + x + y,
                   data = data_train,
@@ -583,9 +583,11 @@ accuracy_agg &lt;- accuracy %&gt;%
 
 ggplot(data = accuracy,
        aes(x = criterion_test, y = prediction, col = model)) +
-  geom_point(alpha = .2) +
+  geom_point(alpha = .5) +
   geom_abline(slope = 1, intercept = 0) +
-  labs(title = &quot;Predicting Diamond Prices&quot;,
+  labs(x = &quot;True Prices&quot;,
+       y = &quot;Predicted Prices&quot;,
+       title = &quot;Predicting Diamond Prices&quot;,
        subtitle = &quot;Black line indicates perfect performance&quot;)
 
 # Plot B) Violin plot of absolute errors
@@ -606,8 +608,8 @@ ggplot(data = accuracy,
 </div>
 </div>
 <div id="baseball-player-salaries" class="section level1">
-<h1>0 - Baseball player salaries</h1>
-<p>In this section, we will predict the salaries of baseball players from the <code>hitters_train</code> and <code>hitters_test</code> datasets. Here’s how the first few rows of <code>hitters_train</code> should look:</p>
+<h1>Baseball player salaries</h1>
+<p>In this practical, we will predict the salaries of baseball players from the <code>hitters_train</code> and <code>hitters_test</code> datasets. Here’s how the first few rows of <code>hitters_train</code> should look:</p>
 <table>
 <thead>
 <tr class="header">
@@ -856,6 +858,7 @@ ggplot(data = accuracy,
 </tr>
 </tbody>
 </table>
+<p>Our goal will be to predict <code>Salary</code>.</p>
 <div id="a---setup" class="section level2">
 <h2>A - Setup</h2>
 <ol style="list-style-type: decimal">
@@ -954,13 +957,14 @@ salary_glm &lt;- train(form = XX ~ .,
 <pre class="r"><code># Print final regression model
 salary_glm$finalModel</code></pre>
 <ol start="5" style="list-style-type: decimal">
-<li>Perint your final regression model coefficients with <code>coef()</code>.</li>
+<li>Print your final regression model coefficients with <code>coef()</code>.</li>
 </ol>
-<pre class="r"><code>coef(salary_glm$finalModel)</code></pre>
+<pre class="r"><code># Print glm coefficients
+coef(salary_glm$finalModel)</code></pre>
 </div>
 <div id="d---ridge-regression" class="section level2">
 <h2>D - Ridge Regression</h2>
-<p>It’s time to fit an optimised regression model with a Ridge penalty!</p>
+<p>It’s time to fit an optimized regression model with a Ridge penalty!</p>
 <ol style="list-style-type: decimal">
 <li>Before we can fit a ridge regression model, we need to specify which values of the lambda penalty parameter we want to try. Using the code below, create a vector called <code>lambda_vec</code> which contains 100 values between 0 and 2</li>
 </ol>
@@ -973,7 +977,7 @@ lambda_vec &lt;- seq(from = 0, to = 1000, length = 100)</code></pre>
 <ul>
 <li>Set the formula to <code>Salary ~ .</code></li>
 <li>Set the data to <code>hitters_train</code></li>
-<li>Set the method to <code>&quot;glmnet&quot;</code> for regularised regression</li>
+<li>Set the method to <code>&quot;glmnet&quot;</code> for regularized regression</li>
 <li>Set the train control argument to <code>ctrl_cv</code></li>
 <li>Set the tuneGrid argument such that alpha is 0 (for ridge regression), and with all lambda values you specified in <code>lambda_vec</code> (we’ve done this for you below)</li>
 </ul>
@@ -986,7 +990,7 @@ salary_ridge &lt;- train(form = XX ~ .,
                       tuneGrid = expand.grid(alpha = 0,  # Ridge penalty
                                              lambda = lambda_vec))</code></pre>
 <ol start="3" style="list-style-type: decimal">
-<li>Plot your <code>price_ridge</code> object. What do you see? Which value of the regularisation parameter seems to be the best?</li>
+<li>Plot your <code>salary_ridge</code> object. What do you see? Which value of the regularization parameter seems to be the best?</li>
 </ol>
 <pre class="r"><code># Plot price_ridge object
 plot(XX)</code></pre>
@@ -994,33 +998,33 @@ plot(XX)</code></pre>
 <li>Print the best value of lambda by running the following code. Does this match what you saw in the plot above?</li>
 </ol>
 <pre class="r"><code># Print best regularisation parameter
-price_ridge$bestTune$lambda</code></pre>
+salary_ridge$bestTune$lambda</code></pre>
 <ol start="5" style="list-style-type: decimal">
 <li>What were your final regression model coefficients for the best lambda value? Find them by running the following code:</li>
 </ol>
 <pre class="r"><code># Get coefficients from best lambda value
-coef(price_ridge$finalModel, 
-     price_ridge$bestTune$lambda)</code></pre>
+coef(salary_ridge$finalModel, 
+     salary_ridge$bestTune$lambda)</code></pre>
 <ol start="6" style="list-style-type: decimal">
 <li>How do these coefficients compare to what you found in regular regression? Are they similar? Different?</li>
 </ol>
 </div>
 <div id="e---lasso-regression" class="section level2">
 <h2>E - Lasso Regression</h2>
-<p>It’s time to fit an optimised regression model with a Lasso penalty!</p>
+<p>It’s time to fit an optimized regression model with a Lasso penalty!</p>
 <ol style="list-style-type: decimal">
 <li>Before we can fit a ridge regression model, we need to specify which values of the lambda penalty parameter we want to try. Using the code below, create a vector called <code>lambda_vec</code> which contains 100 values between 0 and .5</li>
 </ol>
 <pre class="r"><code># Determine possible values of lambda
 
-lambda_vec &lt;- seq(from = 0, to = 1000, length = 100)</code></pre>
+lambda_vec &lt;- seq(from = 0, to = .5, length = 100)</code></pre>
 <ol start="2" style="list-style-type: decimal">
 <li>Fit a lasso regression model predicting <code>Salary</code> as a function of all features</li>
 </ol>
 <ul>
 <li>Set the formula to <code>Salary ~ .</code></li>
 <li>Set the data to <code>hitters_train</code></li>
-<li>Set the method to <code>&quot;glmnet&quot;</code> for regularised regression</li>
+<li>Set the method to <code>&quot;glmnet&quot;</code> for regularized regression</li>
 <li>Set the train control argument to <code>ctrl_cv</code></li>
 <li>Set the tuneGrid argument such that alpha is 1 (for lasso regression), and with all lambda values you specified in <code>lambda_vec</code> (we’ve done this for you below)</li>
 </ul>
@@ -1033,7 +1037,7 @@ salary_lasso &lt;- train(form = XX ~ .,
                       tuneGrid = expand.grid(alpha = 1,  # Lasso penalty
                                             lambda = lambda_vec))</code></pre>
 <ol start="3" style="list-style-type: decimal">
-<li>Plot your <code>price_lasso</code> object. What do you see? Which value of the regularisation parameter seems to be the best?</li>
+<li>Plot your <code>salary_lasso</code> object. What do you see? Which value of the regularization parameter seems to be the best?</li>
 </ol>
 <pre class="r"><code># Plot price_lasso object
 plot(XX)</code></pre>
@@ -1041,26 +1045,26 @@ plot(XX)</code></pre>
 <li>Print the best value of lambda by running the following code. Does this match what you saw in the plot above?</li>
 </ol>
 <pre class="r"><code># Print best regularisation parameter
-price_lasso$bestTune$lambda</code></pre>
+salary_lasso$bestTune$lambda</code></pre>
 <ol start="5" style="list-style-type: decimal">
 <li>What were your final regression model coefficients for the best lambda value? Find them by running the following code:</li>
 </ol>
 <pre class="r"><code># Get coefficients from best lambda value
-coef(price_lasso$finalModel, 
-     price_lasso$bestTune$lambda)</code></pre>
+coef(salary_lasso$finalModel, 
+     salary_lasso$bestTune$lambda)</code></pre>
 <ol start="6" style="list-style-type: decimal">
 <li>How do these coefficients compare to what you found in regular regression? Are they similar? Different? Do you notice that any coefficients are now set to exactly 0?</li>
 </ol>
 </div>
 <div id="f---decision-tree" class="section level2">
 <h2>F - Decision Tree</h2>
-<p>It’s time to fit an optimised decision tree model!!</p>
+<p>It’s time to fit an optimized decision tree model!!</p>
 <ol style="list-style-type: decimal">
-<li>Before we can fit a decision treel, we need to specify which values of the complexity parameter <code>cp</code> we want to try. Using the code below, create a vector called <code>cp_vec</code> which contains 100 values between 0 and 1</li>
+<li>Before we can fit a decision tree, we need to specify which values of the complexity parameter <code>cp</code> we want to try. Using the code below, create a vector called <code>cp_vec</code> which contains 100 values between 0 and 1</li>
 </ol>
-<pre class="r"><code># Determine possible values of cp
+<pre class="r"><code># Determine possible values of the complexity parameter cp
 
-cp_vec &lt;- seq(from = 0, to = .1, length = 100)</code></pre>
+cp_vec &lt;- seq(from = 0, to = 1, length = 100)</code></pre>
 <ol start="2" style="list-style-type: decimal">
 <li>Fit a decision tree model predicting <code>Salary</code> as a function of all features</li>
 </ol>
@@ -1073,13 +1077,13 @@ cp_vec &lt;- seq(from = 0, to = .1, length = 100)</code></pre>
 </ul>
 <pre class="r"><code># Decision Tree --------------------------
 
-price_dt &lt;- train(form = XX ~ .,
+salary_dt &lt;- train(form = XX ~ .,
                   data = XX,
                   method = &quot;XX&quot;,
                   trControl = XX,
                   tuneGrid = expand.grid(cp = cp_vec))</code></pre>
 <ol start="3" style="list-style-type: decimal">
-<li>Plot your <code>price_dt</code> object. What do you see? Which value of the regularisation parameter seems to be the best?</li>
+<li>Plot your <code>price_dt</code> object. What do you see? Which value of the regularization parameter seems to be the best?</li>
 </ol>
 <pre class="r"><code># Plot price_dt object
 plot(XX)</code></pre>
@@ -1087,23 +1091,23 @@ plot(XX)</code></pre>
 <li>Print the best value of lambda by running the following code. Does this match what you saw in the plot above?</li>
 </ol>
 <pre class="r"><code># Print best regularisation parameter
-price_dt$bestTune$cp</code></pre>
+salary_dt$bestTune$cp</code></pre>
 <ol start="5" style="list-style-type: decimal">
 <li>Plot your final decision tree using the following code</li>
 </ol>
 <pre class="r"><code># Visualise your trees
-plot(as.party(price_dt$finalModel)) </code></pre>
+plot(as.party(salary_dt$finalModel)) </code></pre>
 <ol start="6" style="list-style-type: decimal">
 <li>How do the nodes in the tree compare to the coefficients you found in your regression analyses? Do you see similarities or differences?</li>
 </ol>
 </div>
 <div id="g---random-forests" class="section level2">
 <h2>G - Random Forests</h2>
-<p>It’s time to fit an optimised random forest model!</p>
+<p>It’s time to fit an optimized random forest model!</p>
 <ol style="list-style-type: decimal">
 <li>Before we can fit a random forest model, we need to specify which values of the diversity parameter <code>mtry</code> we want to try. Using the code below, create a vector called <code>mtry_vec</code> which is a sequence of numbers from 1 to 10</li>
 </ol>
-<pre class="r"><code># Determine possible values of mtry
+<pre class="r"><code># Determine possible values of the random forest diversity parameter mtry
 
 mtry_vec &lt;- 1:10</code></pre>
 <ol start="2" style="list-style-type: decimal">
@@ -1124,7 +1128,7 @@ salary_rf &lt;- train(form = XX ~ .,
                    trControl = XX,
                    tuneGrid = expand.grid(mtry = mtry_vec))</code></pre>
 <ol start="3" style="list-style-type: decimal">
-<li>Plot your <code>salary_rf</code> object. What do you see? Which value of the regularisation parameter seems to be the best?</li>
+<li>Plot your <code>salary_rf</code> object. What do you see? Which value of the regularization parameter seems to be the best?</li>
 </ol>
 <pre class="r"><code># Plot salary_rf object
 plot(XX)</code></pre>
@@ -1134,8 +1138,8 @@ plot(XX)</code></pre>
 <pre class="r"><code># Print best mtry parameter
 salary_rf$bestTune$mtry</code></pre>
 </div>
-<div id="h-estimate-prediction-accuracy-from-training-folds" class="section level2">
-<h2>H Estimate prediction accuracy from training folds</h2>
+<div id="h---estimate-prediction-accuracy-from-training-folds" class="section level2">
+<h2>H - Estimate prediction accuracy from training folds</h2>
 <ol style="list-style-type: decimal">
 <li>Using <code>resamples()</code>, calculate the estimated prediction accuracy for each of your models. To do this, put your model objects in the named list (e.g.; <code>glm = salary_glm</code>, …)</li>
 </ol>
@@ -1144,6 +1148,7 @@ salary_rf$bestTune$mtry</code></pre>
 salary_resamples &lt;- resamples(list(glm = XXX,
                                    ridge = XXX, 
                                    lasso = XXX, 
+                                   dt = XXX, 
                                    rf = XXX))</code></pre>
 <ol start="2" style="list-style-type: decimal">
 <li>Look at the summary of your <code>salary_resamples</code> object with <code>summary(salary_resamples)</code>. What does this tell you? Which model do you expect to have the best prediction accuracy for the test data?</li>
@@ -1151,8 +1156,8 @@ salary_resamples &lt;- resamples(list(glm = XXX,
 <pre class="r"><code># Print summaries of cross-validation accuracy 
 summary(salary_resamples)</code></pre>
 </div>
-<div id="i-calculate-prediction-accuracy" class="section level2">
-<h2>I Calculate prediction accuracy</h2>
+<div id="i---calculate-prediction-accuracy" class="section level2">
+<h2>I - Calculate prediction accuracy</h2>
 <ol style="list-style-type: decimal">
 <li>Save the criterion value for the test data as a new vector called <code>criterion_test</code></li>
 </ol>
@@ -1189,8 +1194,8 @@ postResample(pred = XXX,
 <li><p>How close were your model’ true prediction values to the values you estimated in the previous section when you ran <code>resamples()</code>?</p></li>
 </ol>
 </div>
-<div id="j-challenges" class="section level2">
-<h2>J Challenges</h2>
+<div id="z---challenges" class="section level2">
+<h2>Z - Challenges</h2>
 <ol style="list-style-type: decimal">
 <li>In addition to ‘regular’ 10 fold cross-validation, you can also do repeated 10-fold cross-validation, where the cross validation procedure is repeated many times. Do you think this will improve your models’ performance? To test this, create a new training control object called <code>ctrl_cv_rep</code> as below. Then, train your models again using <code>ctrl_cv_rep</code> (instead of <code>ctrl_cv</code>), and evaluate their prediction performance. Do they improve?</li>
 </ol>

@@ -186,7 +186,7 @@ coef(price_glm$finalModel)
 # Lasso --------------------------
 
 # Vector of lambda values to try
-lambda_vec <- seq(0, 1000, length = 100)
+lambda_vec <- seq(0, 100, length = 100)
 
 price_lasso <- train(form = price ~ carat + depth + table + x + y,
                    data = data_train,
@@ -250,7 +250,7 @@ coef(price_ridge$finalModel,
 # Decision Trees --------------------------
 
 # Vector of cp values to try
-cp_vec <- seq(0, 1, length = 100)
+cp_vec <- seq(0, .4, length = 100)
 
 price_dt <- train(form = price ~ carat + depth + table + x + y,
                   data = data_train,
@@ -345,9 +345,11 @@ accuracy_agg <- accuracy %>%
 
 ggplot(data = accuracy,
        aes(x = criterion_test, y = prediction, col = model)) +
-  geom_point(alpha = .2) +
+  geom_point(alpha = .5) +
   geom_abline(slope = 1, intercept = 0) +
-  labs(title = "Predicting Diamond Prices",
+  labs(x = "True Prices",
+       y = "Predicted Prices",
+       title = "Predicting Diamond Prices",
        subtitle = "Black line indicates perfect performance")
 
 # Plot B) Violin plot of absolute errors
@@ -367,13 +369,15 @@ ggplot(data = accuracy,
            label = round(accuracy_agg$mae, 2))
 ```
 
-# 0 - Baseball player salaries
+# Baseball player salaries
 
-In this section, we will predict the salaries of baseball players from the `hitters_train` and `hitters_test` datasets. Here's how the first few rows of `hitters_train` should look:
+In this practical, we will predict the salaries of baseball players from the `hitters_train` and `hitters_test` datasets. Here's how the first few rows of `hitters_train` should look:
 
 ```{r, results = 'asis', echo = FALSE, eval = TRUE}
 knitr::kable(hitters_train[1:10,])
 ```
+
+Our goal will be to predict `Salary`.
 
 ## A - Setup
 
@@ -511,15 +515,16 @@ salary_glm <- train(form = Salary ~ .,
 salary_glm$finalModel
 ```
 
-5. Perint your final regression model coefficients with `coef()`.
+5. Print your final regression model coefficients with `coef()`.
 
 ```{r}
+# Print glm coefficients
 coef(salary_glm$finalModel)
 ```
 
 ## D - Ridge Regression
 
-It's time to fit an optimised regression model with a Ridge penalty!
+It's time to fit an optimized regression model with a Ridge penalty!
 
 
 1. Before we can fit a ridge regression model, we need to specify which values of the lambda penalty parameter we want to try. Using the code below, create a vector called `lambda_vec` which contains 100 values between 0 and 2
@@ -534,7 +539,7 @@ lambda_vec <- seq(from = 0, to = 1000, length = 100)
 
 - Set the formula to `Salary ~ .`
 - Set the data to `hitters_train`
-- Set the method to `"glmnet"` for regularised regression
+- Set the method to `"glmnet"` for regularized regression
 - Set the train control argument to `ctrl_cv`
 - Set the tuneGrid argument such that alpha is 0 (for ridge regression), and with all lambda values you specified in `lambda_vec` (we've done this for you below)
 
@@ -560,7 +565,7 @@ salary_ridge <- train(form = Salary ~ .,
                                           lambda = lambda_vec))
 ```
 
-3. Plot your `price_ridge` object. What do you see? Which value of the regularisation parameter seems to be the best?
+3. Plot your `salary_ridge` object. What do you see? Which value of the regularization parameter seems to be the best?
 
 ```{r, echo = TRUE, eval = FALSE}
 # Plot price_ridge object
@@ -571,36 +576,36 @@ plot(XX)
 
 ```{r, echo = TRUE, eval = FALSE}
 # Print best regularisation parameter
-price_ridge$bestTune$lambda
+salary_ridge$bestTune$lambda
 ```
 
 5. What were your final regression model coefficients for the best lambda value? Find them by running the following code:
 
 ```{r, echo = TRUE, eval = FALSE}
 # Get coefficients from best lambda value
-coef(price_ridge$finalModel, 
-     price_ridge$bestTune$lambda)
+coef(salary_ridge$finalModel, 
+     salary_ridge$bestTune$lambda)
 ```
 
 6. How do these coefficients compare to what you found in regular regression? Are they similar? Different?
 
 ## E - Lasso Regression
 
-It's time to fit an optimised regression model with a Lasso penalty!
+It's time to fit an optimized regression model with a Lasso penalty!
 
 1. Before we can fit a ridge regression model, we need to specify which values of the lambda penalty parameter we want to try. Using the code below, create a vector called `lambda_vec` which contains 100 values between 0 and .5
 
 ```{r, echo = TRUE, eval = FALSE}
 # Determine possible values of lambda
 
-lambda_vec <- seq(from = 0, to = 1000, length = 100)
+lambda_vec <- seq(from = 0, to = .5, length = 100)
 ```
 
 2. Fit a lasso regression model predicting `Salary` as a function of all features
 
 - Set the formula to `Salary ~ .`
 - Set the data to `hitters_train`
-- Set the method to `"glmnet"` for regularised regression
+- Set the method to `"glmnet"` for regularized regression
 - Set the train control argument to `ctrl_cv`
 - Set the tuneGrid argument such that alpha is 1 (for lasso regression), and with all lambda values you specified in `lambda_vec` (we've done this for you below)
 
@@ -626,7 +631,7 @@ salary_lasso <- train(form = Salary ~ .,
                                           lambda = lambda_vec))
 ```
 
-3. Plot your `price_lasso` object. What do you see? Which value of the regularisation parameter seems to be the best?
+3. Plot your `salary_lasso` object. What do you see? Which value of the regularization parameter seems to be the best?
 
 ```{r, echo = TRUE, eval = FALSE}
 # Plot price_lasso object
@@ -637,29 +642,29 @@ plot(XX)
 
 ```{r, echo = TRUE, eval = FALSE}
 # Print best regularisation parameter
-price_lasso$bestTune$lambda
+salary_lasso$bestTune$lambda
 ```
 
 5. What were your final regression model coefficients for the best lambda value? Find them by running the following code:
 
 ```{r, echo = TRUE, eval = FALSE}
 # Get coefficients from best lambda value
-coef(price_lasso$finalModel, 
-     price_lasso$bestTune$lambda)
+coef(salary_lasso$finalModel, 
+     salary_lasso$bestTune$lambda)
 ```
 
 6. How do these coefficients compare to what you found in regular regression? Are they similar? Different? Do you notice that any coefficients are now set to exactly 0?
 
 ## F - Decision Tree
 
-It's time to fit an optimised decision tree model!!
+It's time to fit an optimized decision tree model!!
 
-1. Before we can fit a decision treel, we need to specify which values of the complexity parameter `cp` we want to try. Using the code below, create a vector called `cp_vec` which contains 100 values between 0 and 1
+1. Before we can fit a decision tree, we need to specify which values of the complexity parameter `cp` we want to try. Using the code below, create a vector called `cp_vec` which contains 100 values between 0 and 1
 
 ```{r, echo = TRUE, eval = FALSE}
-# Determine possible values of cp
+# Determine possible values of the complexity parameter cp
 
-cp_vec <- seq(from = 0, to = .1, length = 100)
+cp_vec <- seq(from = 0, to = 1, length = 100)
 ```
 
 2. Fit a decision tree model predicting `Salary` as a function of all features
@@ -673,7 +678,7 @@ cp_vec <- seq(from = 0, to = .1, length = 100)
 ```{r, echo = TRUE, eval = FALSE}
 # Decision Tree --------------------------
 
-price_dt <- train(form = XX ~ .,
+salary_dt <- train(form = XX ~ .,
                   data = XX,
                   method = "XX",
                   trControl = XX,
@@ -681,16 +686,16 @@ price_dt <- train(form = XX ~ .,
 ```
 
 ```{r, eval = FALSE, echo = FALSE}
-# Fit a ridge regression
+# Decision Tree --------------------------
 
-price_dt <- train(form = Salary ~ .,
+salary_dt <- train(form = Salary ~ .,
                   data = hitters_train,
                   method = "rpart",
                   trControl = ctrl_cv,
                   tuneGrid = expand.grid(cp = cp_vec))
 ```
 
-3. Plot your `price_dt` object. What do you see? Which value of the regularisation parameter seems to be the best?
+3. Plot your `price_dt` object. What do you see? Which value of the regularization parameter seems to be the best?
 
 ```{r, echo = TRUE, eval = FALSE}
 # Plot price_dt object
@@ -701,26 +706,26 @@ plot(XX)
 
 ```{r, echo = TRUE, eval = FALSE}
 # Print best regularisation parameter
-price_dt$bestTune$cp
+salary_dt$bestTune$cp
 ```
 
 5. Plot your final decision tree using the following code
 
 ```{r, echo = TRUE, eval = FALSE}
 # Visualise your trees
-plot(as.party(price_dt$finalModel)) 
+plot(as.party(salary_dt$finalModel)) 
 ```
 
 6. How do the nodes in the tree compare to the coefficients you found in your regression analyses? Do you see similarities or differences?
 
 ## G - Random Forests
 
-It's time to fit an optimised random forest model!
+It's time to fit an optimized random forest model!
 
 1. Before we can fit a random forest model, we need to specify which values of the diversity parameter `mtry` we want to try. Using the code below, create a vector called `mtry_vec` which is a sequence of numbers from 1 to 10
 
 ```{r, echo = TRUE, eval = FALSE}
-# Determine possible values of mtry
+# Determine possible values of the random forest diversity parameter mtry
 
 mtry_vec <- 1:10
 ```
@@ -744,7 +749,7 @@ salary_rf <- train(form = XX ~ .,
 ```
 
 ```{r, eval = FALSE, echo = FALSE}
-# Fit a random forest regression
+# Fit a random forest
 
 salary_rf <- train(form = Salary ~ .,
                    data = hitters_train,
@@ -753,7 +758,7 @@ salary_rf <- train(form = Salary ~ .,
                    tuneGrid = expand.grid(mtry = mtry_vec))
 ```
 
-3. Plot your `salary_rf` object. What do you see? Which value of the regularisation parameter seems to be the best?
+3. Plot your `salary_rf` object. What do you see? Which value of the regularization parameter seems to be the best?
 
 ```{r, echo = TRUE, eval = FALSE}
 # Plot salary_rf object
@@ -767,7 +772,7 @@ plot(XX)
 salary_rf$bestTune$mtry
 ```
 
-## H Estimate prediction accuracy from training folds
+## H - Estimate prediction accuracy from training folds
 
 1. Using `resamples()`, calculate the estimated prediction accuracy for each of your models. To do this, put your model objects in the named list (e.g.; `glm = salary_glm`, ...)
 
@@ -777,6 +782,7 @@ salary_rf$bestTune$mtry
 salary_resamples <- resamples(list(glm = XXX,
                                    ridge = XXX, 
                                    lasso = XXX, 
+                                   dt = XXX, 
                                    rf = XXX))
 ```
 
@@ -787,7 +793,7 @@ salary_resamples <- resamples(list(glm = XXX,
 summary(salary_resamples)
 ```
 
-## I Calculate prediction accuracy
+## I - Calculate prediction accuracy
 
 1. Save the criterion value for the test data as a new vector called `criterion_test`
 
@@ -830,7 +836,7 @@ postResample(pred = XXX,
 
 5. How close were your model' true prediction values to the values you estimated in the previous section when you ran `resamples()`?
 
-## J Challenges
+## Z - Challenges
 
 1. In addition to 'regular' 10 fold cross-validation, you can also do repeated 10-fold cross-validation, where the cross validation procedure is repeated many times. Do you think this will improve your models' performance? To test this, create a new training control object called `ctrl_cv_rep` as below. Then, train your models again using `ctrl_cv_rep` (instead of `ctrl_cv`), and evaluate their prediction performance. Do they improve?
 

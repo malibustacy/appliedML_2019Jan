@@ -231,7 +231,7 @@ accuracy_agg <- accuracy %>%
 
 ggplot(data = accuracy,
        aes(x = criterion_train, y = prediction, col = model)) +
-  geom_point(alpha = .2) +
+  geom_point(alpha = .5) +
   geom_abline(slope = 1, intercept = 0) +
   labs(title = "Predicting mpg$hwy",
        subtitle = "Black line indicates perfect performance")
@@ -289,7 +289,7 @@ accuracy_agg <- accuracy %>%
 
 ggplot(data = accuracy,
        aes(x = criterion_test, y = prediction, col = model)) +
-  geom_point(alpha = .2) +
+  geom_point(alpha = .5) +
   geom_abline(slope = 1, intercept = 0) +
   labs(title = "Predicting mpg$hwy",
        subtitle = "Black line indicates perfect performance")
@@ -916,7 +916,7 @@ mod <- train(form = hwy ~ year + cyl + displ,
 
 ```
 
-# E Challenges
+# Z - Challenges
 
 1. So far you've probably been using most, if not all, available features in predicting house sales. But imagine someone came to you and said "I need to know how much a set of new houses will sell for, but I only have access to three features `bedrooms`, `bathrooms`, and `sqft_living`. Which of your models should I use and how accurate will they be? How would you answer that question? Use your modelling techniques to find out!
 
