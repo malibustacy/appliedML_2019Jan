@@ -454,7 +454,7 @@ hitters_test <- hitters_test %>%
 ```
 
 
-```{r}
+```{r, echo = FALSE}
 data_train <- read_csv(file = "1_Data/hitters_train.csv") %>%
   slice(1:15)
 
@@ -462,9 +462,9 @@ data_test <- read_csv(file = "1_Data/hitters_test.csv")
 ```
 
 
-## A - Setup
+## B - Setup `trainControl`
 
-1. Set up your training by specifying `ctrl_cv` as 10-fold cross-validaation
+1. Set up your training by specifying `ctrl_cv` as 10-fold cross-validation
 
 - Set method = "cv" to specify cross validation
 - Set number = 10 to specify 10 folds
@@ -475,7 +475,7 @@ ctrl_cv <- trainControl(method = "XX",
                         number = XX) 
 ```
 
-## B - Regression (standard)
+## C - Regression (standard)
 
 1. Fit a (standard) regression model predicting `Salary` as a function of all features
 
@@ -502,22 +502,22 @@ salary_glm <- train(form = Salary ~ .,
                    trControl = ctrl_cv)
 ```
 
-3. Try plotting your `price_glm` object. What happens? What does this error mean?
+3. Try plotting your `salary_glm` object. What happens? What does this error mean?
 
-4. Print your final model object with `price_glm$finalModel`
+4. Print your final model object with `salary_glm$finalModel`
 
 ```{r, echo = TRUE, eval = FALSE}
 # Print final regression model
-price_glm$finalModel
+salary_glm$finalModel
 ```
 
 5. Perint your final regression model coefficients with `coef()`.
 
 ```{r}
-coef(price_glm$finalModel)
+coef(salary_glm$finalModel)
 ```
 
-## C - Ridge Regression
+## D - Ridge Regression
 
 It's time to fit an optimised regression model with a Ridge penalty!
 
@@ -584,7 +584,7 @@ coef(price_ridge$finalModel,
 
 6. How do these coefficients compare to what you found in regular regression? Are they similar? Different?
 
-## C - Lasso Regression
+## E - Lasso Regression
 
 It's time to fit an optimised regression model with a Lasso penalty!
 
@@ -650,7 +650,7 @@ coef(price_lasso$finalModel,
 
 6. How do these coefficients compare to what you found in regular regression? Are they similar? Different? Do you notice that any coefficients are now set to exactly 0?
 
-## C - Decision Tree
+## F - Decision Tree
 
 It's time to fit an optimised decision tree model!!
 
@@ -713,7 +713,7 @@ plot(as.party(price_dt$finalModel))
 
 6. How do the nodes in the tree compare to the coefficients you found in your regression analyses? Do you see similarities or differences?
 
-## D - Random Forests
+## G - Random Forests
 
 It's time to fit an optimised random forest model!
 
@@ -767,7 +767,7 @@ plot(XX)
 salary_rf$bestTune$mtry
 ```
 
-## Estimate prediction accuracy from training folds
+## H Estimate prediction accuracy from training folds
 
 1. Using `resamples()`, calculate the estimated prediction accuracy for each of your models. To do this, put your model objects in the named list (e.g.; `glm = salary_glm`, ...)
 
@@ -787,7 +787,7 @@ salary_resamples <- resamples(list(glm = XXX,
 summary(salary_resamples)
 ```
 
-## Calculate prediction accuracy
+## I Calculate prediction accuracy
 
 1. Save the criterion value for the test data as a new vector called `criterion_test`
 
@@ -830,7 +830,7 @@ postResample(pred = XXX,
 
 5. How close were your model' true prediction values to the values you estimated in the previous section when you ran `resamples()`?
 
-## Challenges
+## J Challenges
 
 1. In addition to 'regular' 10 fold cross-validation, you can also do repeated 10-fold cross-validation, where the cross validation procedure is repeated many times. Do you think this will improve your models' performance? To test this, create a new training control object called `ctrl_cv_rep` as below. Then, train your models again using `ctrl_cv_rep` (instead of `ctrl_cv`), and evaluate their prediction performance. Do they improve?
 
