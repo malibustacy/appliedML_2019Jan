@@ -563,7 +563,7 @@ What is the <high>relationship</high> between features and the criterion?
 
 Make <high>predictions</high> for new data.
 
-- Is this patient having a is having a heart attack?
+- Is this patient having a heart attack?
 - How much will this new site sell?
 
 Improve predictions over time with new data.
