@@ -1,5 +1,5 @@
 ---
-title: "Model Fitting"
+title: "Model Fitting (Training)"
 subtitle: "With Regression"
 author: "Applied Machine Learning with R<br/><a href='https://therbootcamp.github.io'>www.therbootcamp.com</a><br/><a href='https://twitter.com/therbootcamp'>@therbootcamp</a>"
 date: "January 2019"
@@ -537,18 +537,24 @@ knitr::include_graphics("https://github.com/therbootcamp/appliedML_2019Jan/blob/
 
 ]
 
+
 ---
-class: middle, center
 
+# Model Training (aka fitting)
 
-
-# Regression
-
-Undoubtedly the most widely used machine learning algorithm
-
-```{r, echo = FALSE, out.width = "60%"}
-knitr::include_graphics("https://www.rmurphyknives.com/store/media/Cooking/ChefsSelect/Chef8/CH8CIIHO2500x1667.jpg")
+```{r, echo = FALSE}
+knitr::include_graphics("image/model_training_flow.png")
 ```
+
+---
+class: center, middle
+
+<high><h1>Regression</h1></high>
+
+<font color = "gray"><h1>Decision Trees</h1></font>
+
+<font color = "gray"><h1>Random Forests</h1></font>
+
 
 ---
 
@@ -556,32 +562,33 @@ knitr::include_graphics("https://www.rmurphyknives.com/store/media/Cooking/Chefs
 
 # Regression
 
-$$\large \hat{Y} =  \beta_{0} + X1 \times \beta_{X1} + X2 \times \beta_{X2} + ...$$
+In [regression](https://en.wikipedia.org/wiki/Regression_analysis), the criterion Y is modeled as the <high>sum</high> of <high>predictors times weights</high> $\beta_{1}$, $\beta_{2}$</high>.
 
+$$\hat{Y} =  \beta_{0} + X1 \times \beta_{X1} + X2 \times \beta_{X2} + ...$$
 ```{r, echo = FALSE, out.width = "100%", fig.cap = "<font size = 4>James et al., Introduction to SL</font>"}
 knitr::include_graphics("image/regression_ISLR.jpg")
 ```
-
-
 
 ]
 
 .pull-right55[
 
-<br><br>
-
+<br><br><br><br><br>
 ### Interpretation
-
-In [regression](https://en.wikipedia.org/wiki/Regression_analysis), the criterion Y is modeled as the <high>sum</high> of <high>predictors times weights</high> $\beta_{1}$, $\beta_{2}$</high>.
-
-Often called a 'weighted additive model'
 
 $$\LARGE \hat{Y} =  \beta_{0} + X1 \times \beta_{X1} + X2 \times \beta_{X2} + ...$$
 
-Each beta weight $\beta$ can be interpreted as:
+Each beta weight $\beta_{i}$ can be interpreted as:
+
+<q>As the value of $X_{i}$ increases by 1, how does the criterion $Y$ change?</q>
+
+The more extreme $\beta_{i}$ is (either positive or negative), the more $X_{i}$ is used to predict the criterion $Y$ 
+- But always take into account the scale of $X_{i}$!
+
+If a value of $\beta_{i}$ is exactly 0, that means $X_{i}$ does not help us predict the criterion $Y$
 
 
-> As the value of X increases by 1, how does the criterion Y change?
+
 
 
 
@@ -1077,6 +1084,8 @@ geom_linerange(aes(x = fits, ymin = fits, ymax = truth), col = baselrbootcamp_co
 ---
 
 class: middle, center
+
+<h1> Questions?</h1>
 
 <h1><a href=https://therbootcamp.github.io/appliedML_2019Jan/_sessions/Fitting/Fitting_practical.html>Practical</a></h1>
 
