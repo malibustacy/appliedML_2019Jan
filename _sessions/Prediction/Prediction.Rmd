@@ -462,12 +462,12 @@ knitr::include_graphics("image/complexity_parameter.png")
 
 ### Complexity Parameter
 
-Decision trees have a <high>complexity parameter</high> called <high>cp</high>
+Decision trees have a <high>complexity parameter</high> called `cp`.
 
-This control show complex (large) trees are allowed to grow
+This controls how complex (large) trees are allowed to grow
 
-- Small cp (< 0.01) = Complex Trees
-- Large cp (> 0.10) = Simple Trees
+- <high>Small</high> cp (< 0.01) = <high>Complex</high> Trees
+- <high>Large</high> cp (> 0.10) = <high>Simple</high> Trees
 
 The best value of cp depends on your dataset!
 
@@ -481,13 +481,13 @@ The best value of cp depends on your dataset!
 When fitting a decision tree, the `cp` parameter can be defined by the user in the `tuneGrid` argument:
 
 ```{r, eval = FALSE}
-# Fit a random forest with a defined mtry = 4
+# Fit a decision tree with a defined cp = .10
 
 train(form = income ~ .,
       data = baselers,
-      method = "rf",  # Random Forest
+      method = "rpart",  # Decision Tree
       trControl = ctrl,
-      tuneGrid = expand.grid(mtry = 4)) # mtry
+      tuneGrid = expand.grid(cp = .10)) # cp
 ```
 
 - `mtry` can also be optimally determined through methods such as <high>cross-validation</high>, which we will learn later

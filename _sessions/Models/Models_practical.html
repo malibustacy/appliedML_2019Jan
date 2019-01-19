@@ -133,7 +133,7 @@ $(document).ready(function () {
 <h2></h2>
 <div id="overview" class="section level3">
 <h3>Overview</h3>
-<p>In this practical you will enter a model competition that will allow you to demonstrate your knwoledge of:</p>
+<p>In this practical, you will enter two model competitions, one on regression and one on classification, to demonstrate your knwoledge of:</p>
 <ol style="list-style-type: decimal">
 <li>Machine learning models</li>
 <li>Fitting and prediction</li>
@@ -180,13 +180,13 @@ hhttps://github.com/rstudio/cheatsheets/raw/master/caret.pdf
 </figure>
 </div>
 </div>
-<div id="tasks" class="section level1">
-<h1>Tasks</h1>
-<div id="a---setup" class="section level2">
-<h2>A - Setup</h2>
+<div id="mission-statment" class="section level1">
+<h1>Mission statment</h1>
+<div id="a---preliminaries" class="section level2">
+<h2>A - Preliminaries</h2>
 <ol style="list-style-type: decimal">
 <li><p>Open your <code>BaselRBootcamp</code> R project. It should already have the folders <code>1_Data</code> and <code>2_Code</code>. Make sure that the data file(s) listed in the <code>Datasets</code> section above are in your <code>1_Data</code> folder.</p></li>
-<li><p>Open a new R script. At the top of the script, using comments, write your name and the date. Save it as a new file called <code>Features_practical.R</code> in the <code>2_Code</code> folder.</p></li>
+<li><p>Open a new R script. At the top of the script, using comments, write your name and the date. Save it as a new file called <code>Models_practical.R</code> in the <code>2_Code</code> folder.</p></li>
 <li><p>Using <code>library()</code> load the set of packages for this practical listed in the packages section above.</p></li>
 </ol>
 <pre class="r"><code>## NAME
@@ -198,223 +198,61 @@ library(caret)</code></pre>
 <ol start="4" style="list-style-type: decimal">
 <li>In the code below, we will load each of the data sets listed in the <code>Datasets</code> as new objects.</li>
 </ol>
-<pre class="r"><code># Pima Indians diabetes
-pima_diabetes &lt;- read_csv(file = &quot;1_Data/pima_diabetes.csv&quot;)
-
-# (Non-) violent crime statistics
-violent_crime    &lt;- read_csv(file = &quot;1_Data/violent_crime.csv&quot;)
+<pre class="r"><code># REGRESSION: (Non-) violent crime statistics
 nonviolent_crime &lt;- read_csv(file = &quot;1_Data/nonviolent_crime.csv&quot;)
 
-# murders crime statistics
+# CLASSIFICATION: Murders crime statistics
 murders_crime &lt;- read_csv(file = &quot;1_Data/murders_crime.csv&quot;)</code></pre>
 </div>
-<div id="b---pima-indians-diabetes" class="section level2">
-<h2>B - Pima Indians Diabetes</h2>
-<p>In this section, you will explore feature selection for the Pima Indians Diabetes data set. The Pima are a group of Native Americans living in Arizona. A genetic predisposition allowed this group to survive normally to a diet poor of carbohydrates for years. In the recent years, because of a sudden shift from traditional agricultural crops to processed foods, together with a decline in physical activity, made them develop the highest prevalence of type 2 diabetes and for this reason they have been subject of many studies.</p>
+<div id="b-competition-rules" class="section level2">
+<h2>B Competition rules</h2>
 <ol style="list-style-type: decimal">
-<li><p>Take a look at the first few rows of the pima diabetes data frame by printing then to the console.</p></li>
-<li><p>Print the numbers of rows and columns of each data set using the <code>dim()</code> function.</p></li>
-<li><p>Look at the names of the data frame with the <code>names()</code> function.</p></li>
-<li><p>Open the data set in a new window using <code>View()</code>. Do they look OK?</p></li>
+<li><p>You may enter either one or both of two competitions, one on regression (<code>nonviolent_crime</code>) and on classification (<code>murders_crime</code>), for the price of 🍫🍫🍫.</p></li>
+<li><p>To enter the competitions, you must submit for each competition no more, no less than one caret <code>train</code>-object containing your candidate model. To submit the model, first save your model as an <code>.RDS</code>-file named <code>your_name_train.RDS</code> with <code>your_name</code> replaced by your name or pseudonym using the code below.</p></li>
+<li><p>Submit your <code>.RDS</code> file (containing your training object) via these following linkes sheets:</p></li>
 </ol>
-<div id="splitting" class="section level4">
-<h4>Splitting</h4>
-<ol start="5" style="list-style-type: decimal">
-<li>As always, before you do anything you need to make sure that you separate a hold-out data set for later. Create <code>pima_train</code> and <code>pima_test</code> using <code>createDataPartition()</code> with as little as <b>15% of cases going into the training set</b>. Also store the variable <code>diabetes</code> from the test set as a factor, which will be the criterion.</li>
-</ol>
-<pre class="r"><code># split index
-train_index &lt;- createDataPartition(XX$XX, p = .15, list = FALSE)
-
-# train and test sets
-pima_train &lt;- XX %&gt;% slice(train_index)
-pima_test  &lt;- XX %&gt;% slice(-train_index)
-
-# test criterion
-criterion &lt;- as.factor(pima_test$XX)</code></pre>
+<div align="center">
+<table>
+<tr>
+<td>
+Regression
+</td>
+<td>
+non-violent crimes
+</td>
+<td>
+<a href="https://docs.google.com/forms/d/e/1FAIpQLSevxp_hxSUrAYgiSU-Xv3hRw_get43qk15blw7QEeLHlbrNbA/viewform?usp=sf_link"><strong>Submit candidate</strong></a>
+</td>
+</tr>
+<tr>
+<td>
+Classification
+</td>
+<td>
+murders
+</td>
+<td>
+<a href="https://docs.google.com/forms/d/e/1FAIpQLSciw9WyTttmG9Oq93xjGKw_kxNJY9YmtLQvf_p35BcFNm1G-A/viewform?usp=sf_link"><strong>Submit candidate</strong></a>
+</td>
+</tr>
+</table>
 </div>
-<div id="remove-unwanted-features" class="section level4">
-<h4>Remove unwanted features</h4>
-<p>OK, with the training set, let’s get to work and remove some features.</p>
-<ol start="6" style="list-style-type: decimal">
-<li>First split the training data into a data frame holding the predictors and the criterion using the code below.</li>
+<ol start="4" style="list-style-type: decimal">
+<li><p>You may work alone or team up with fellow participants. We recommend the latter, but working alone may, of course, mean more 🍫🍫🍫.</p></li>
+<li><p>Use any trick in your bag (or <code>caret</code>’s bag). Feel free to try different models, use different tuning parameter settings, select any variables or variable selection methods that you deem useful.</p></li>
+<li><p>You may even consider creating new variables. The code below shows you how to create new variables for either data set. Note, the created variables are not created based on any knowledge of the data - pure random selection. So if you want to come up with new variables, create your own.</p></li>
 </ol>
-<pre class="r"><code># Select predictors
-pima_train_pred &lt;- pima_train %&gt;% select(-XX)
+<pre class="r"><code># (Non-) violent crime statistics
+nonviolent_crime &lt;- nonviolent_crime %&gt;% 
+  mutate(
+    pctUrbanXindianPerCap2 = pctUrban * indianPerCap ** 2,
+    FemalePctDiv^PctFam2Par = FemalePctDiv ** PctFam2Par)
 
-# Select criterion
-pima_train_crit &lt;- pima_train %&gt;% select(XX) %&gt;% pull()</code></pre>
-<ol start="7" style="list-style-type: decimal">
-<li>Although, this data set is rather small and rather well curated, test if there are any excessively correlated features using <code>cor()</code> and <code>findCorrelation()</code> using the code below. Are there any?</li>
-</ol>
-<pre class="r"><code># determine correlation matrix
-corr_matrix &lt;- cor(XX_pred)
-
-# find excessively correlated variables
-findCorrelation(corr_matrix)</code></pre>
-<ol start="8" style="list-style-type: decimal">
-<li>Now, test if there are any near-zero variance features Any of those?</li>
-</ol>
-<pre class="r"><code># find near zero variance predictors
-nearZeroVar(XX_pred)</code></pre>
-</div>
-<div id="feature-importance" class="section level4">
-<h4>Feature importance</h4>
-<p>After having retained all features in the previous section section, this section explores feature selection on grounds of feature importance. To do this, we first need to fit our model. How about a simple logistic regression aka <code>method = 'glm'</code>?</p>
-<ol start="9" style="list-style-type: decimal">
-<li>Fit the <code>glm</code> to the training data.</li>
-</ol>
-<pre class="r"><code># fit regression
-pima_glm &lt;- train(diabetes ~ .,
-                data = XX,
-                method = XX
-                )</code></pre>
-<ol start="10" style="list-style-type: decimal">
-<li>Evaluate feature importance using <code>varImp()</code>. The function will show importance on a scale from 0 (least important feature) to 100 (most important feature). You can set <code>scale = TRUE</code> to see absolute importance measures in t-values.</li>
-</ol>
-<pre class="r"><code># determine variable importance
-varimp_glm &lt;- varImp(XX)
-
-# print variable importance
-varimp_glm
-
-# print variable importance
-plot(varimp_glm)</code></pre>
-</div>
-<div id="model-comparison" class="section level4">
-<h4>Model comparison</h4>
-<ol start="11" style="list-style-type: decimal">
-<li>Fit the glm a second time using only the four best features and store the result in a different fit object.</li>
-</ol>
-<pre class="r"><code># fit glm with best four features
-pima_glm4 = train(diabetes ~ XX + YY + ZZ + AA,
-                data = XX,
-                method = XX)</code></pre>
-<ol start="12" style="list-style-type: decimal">
-<li>Using both fits, all features versus the best four, predict the criterion and evaluate the prediction using <code>confusionMatrix()</code>. Which model <code>glm</code> is better?</li>
-</ol>
-<pre class="r"><code># determine predictions for test data
-pima_glm_pred &lt;- predict(XX, newdata = XX)
-pima_glm4_pred &lt;- predict(XX, newdata = XX)
-
-# evaluate the results
-confusionMatrix(XX, reference = XX)
-confusionMatrix(XX, reference = XX)</code></pre>
-<ol start="13" style="list-style-type: decimal">
-<li><p>You might have observed that the model with two features less is actually slightly better than the full model (if this is not the case, keep in mind that the partitioning of the dataset was done randomly, i.e., if you do it a second time, your results may slightly change). Why do you think is that the case?</p></li>
-<li><p>Play around: Up the proportion dedicated to training or use a different model, e.g., <code>random forest</code>, and see whether things change.</p></li>
-</ol>
-</div>
-</div>
-<div id="c---murders" class="section level2">
-<h2>C - Murders</h2>
-<p>In this section, you will explore feature selection but use a data set with very different properties. The data combines socio-economic data from the ’90 Census, data from Law Enforcement Management and Admin Stats survey, and crime data from the FBI, allowing to analyse the relationship between various socio-demographic variables and whether murders have been committed (<code>murders</code>), the criterion of this exercise.</p>
-<ol style="list-style-type: decimal">
-<li><p>Take a look at the first few rows of the <code>murders_crime</code> data frame by printing then to the console.</p></li>
-<li><p>Print the numbers of rows and columns of each data set using the <code>dim()</code> function.</p></li>
-<li><p>Look at the names of the data frame with the <code>names()</code> function.</p></li>
-<li><p>Open the data set in a new window using <code>View()</code>. Do they look OK?</p></li>
-</ol>
-<div id="splitting-1" class="section level4">
-<h4>Splitting</h4>
-<ol start="5" style="list-style-type: decimal">
-<li>Again, before you do anything you need to make sure that you separate a hold-out data set for later. Create <code>murders_train</code> and <code>murders_test</code> using <code>createDataPartition()</code> with again as little as <b>25% of cases going into the training set</b>. Also store the variable <code>murders</code> from the test set as a factor, which will be the criterion.</li>
-</ol>
-</div>
-<div id="remove-unwanted-features-1" class="section level4">
-<h4>Remove unwanted features</h4>
-<p>OK, with the training set, let’s get to work and remove some features.</p>
-<ol start="6" style="list-style-type: decimal">
-<li><p>First split the training data into a data frame holding the predictors and the criterion using the code below.</p></li>
-<li><p>Test if there are any excessively correlated features using <code>cor()</code> and <code>findCorrelation()</code> using the code below. Are there any this time?</p></li>
-<li><p>Remove the excessively correlated features from the training predictor set.</p></li>
-</ol>
-<pre class="r"><code># remove features
-murders_train_pred &lt;- murders_train_pred %&gt;% select(- XX)</code></pre>
-<ol start="9" style="list-style-type: decimal">
-<li><p>Test if there are any near-zero variance features Any of those this time?</p></li>
-<li><p>There were plenty of excessively correlated features but no near-zero variance predictors. Bind the reduced predictor set together with the criterion into a new, clean version of the training set.</p></li>
-</ol>
-<pre class="r"><code># clean training set
-murders_train_clean &lt;- murders_train_pred %&gt;% 
-  add_column(murders = XX)</code></pre>
-</div>
-<div id="model-comparison-1" class="section level4">
-<h4>Model comparison</h4>
-<ol start="11" style="list-style-type: decimal">
-<li>Fit a <code>glm</code> twice, once using the original training set and once using the clean training set, and store the fits in separate objects.</li>
-</ol>
-<pre class="r"><code># fit glm with best four features
-murders_glm = train(murders ~ .,
-                    data = XX,
-                    method = 'glm')
-
-# fit glm with best four features
-murders_glm_clean = train(murders ~ .,
-                          data = XX,
-                          method = 'glm')</code></pre>
-<ol start="12" style="list-style-type: decimal">
-<li>You probably have noticed warning messages. They concern the very fact the features in both data sets, but especially the non-clean set, are still too highly correlated. Go ahead and evaluate the fits on the hold-out set. Which set of features predicts better?</li>
-</ol>
-</div>
-<div id="data-compression-with-pca" class="section level4">
-<h4>Data compression with PCA</h4>
-<ol start="13" style="list-style-type: decimal">
-<li>Given the high features correlations it is sensible to compress the data using <code>principal component analysis</code> (PCA). Create a third fit object using the original training set with <code>preProcess = c('pca')</code> and <code>trControl = trainControl(preProcOptions = list(thresh = 0.8))</code> in the training function. The first argument tells R to use PCA, the second specifies that exactly 80% of the variance should be retained.</li>
-</ol>
-<pre class="r"><code># fit glm with best four features
-murders_glm_pca = train(murders ~ .,
-                        data = murders_train,
-                        method = 'glm',
-                        preProcess = c('pca'),
-                        trControl = trainControl(preProcOptions = list(thresh = 0.8)))</code></pre>
-<ol start="14" style="list-style-type: decimal">
-<li><p>Compare the prediction performance to the previous to the previous two models.</p></li>
-<li><p>Play around: Alter the amount of variance explained by the <code>PCA</code> (using <code>thresh</code>), increase the proportion dedicated to training, use a different model, e.g., <code>random forest</code>, and see whether things change.</p></li>
-</ol>
-</div>
-<div id="feature-importance-1" class="section level4">
-<h4>Feature importance</h4>
-<ol start="16" style="list-style-type: decimal">
-<li><p>Evaluate the feature importance for each of the three models.</p></li>
-<li><p>Can you select a set of features based on feature performance that reliably beats predictions based on the pca-compressed training set?</p></li>
-</ol>
-</div>
-</div>
-<div id="x---violent-non-violent-crime-data" class="section level2">
-<h2>X - Violent &amp; Non-violent Crime Data</h2>
-<ol style="list-style-type: decimal">
-<li><p>Run similar analyses for the Violent and non-violent crime data sets predicting either the number of violent crimes per 100k inhabitants (<code>ViolentCrimesPerPop</code>) or the number of non-violent crimes per 100k inhabitants (<code>nonViolPerPop</code>). This time the criterion is numeric, implying regression rather than classification. The features are identical to the murders analysis of the previous section.</p></li>
-<li><p>Use the computer to find a good set of features using recursive feature elimination with <code>rfe()</code>.</p></li>
-</ol>
-<pre class="r"><code># split index
-train_index &lt;- createDataPartition(violent_crime$ViolentCrimesPerPop, 
-                                   p = .8, 
-                                   list = FALSE)
-
-# train and test sets
-violent_train &lt;- violent_crime %&gt;% slice(train_index)
-violent_test  &lt;- violent_crime %&gt;% slice(-train_index)
-
-# remove extreme correlations (OPTIONAL)
-# predictors &lt;- violent_train %&gt;% select(-ViolentCrimesPerPop)
-# predictors &lt;- predictors %&gt;% select(-findCorrelation(cor(predictors)))
-# violent_train_clean &lt;- predictors %&gt;% 
-#   add_column(ViolentCrimesPerPop = violent_train$ViolentCrimesPerPop)
-
-# Feature elimination settings 
-ctrl_rfe &lt;- rfeControl(functions = lmFuncs,  # linear model
-                          method = &quot;cv&quot;,
-                          verbose = FALSE,
-                          rerank = FALSE)
-
-# Run feature elimination
-profile &lt;- rfe(x = violent_train %&gt;% select(-ViolentCrimesPerPop), 
-               y = violent_train$ViolentCrimesPerPop,
-               sizes = 1:(ncol(violent_train_clean)-1), # Features set sizes
-               rfeControl = ctrl_rfe)
-
-# inspect cross-validation as a function of performance
-plot(profile)</code></pre>
+# Murders crime statistics
+murders_crime &lt;- murders_crime %&gt;% 
+  mutate(
+    AsianPerCapXHousVacant2 = AsianPerCap * HousVacant ** 2,
+    population%blackPerCap = population / blackPerCap)</code></pre>
 </div>
 </div>
 

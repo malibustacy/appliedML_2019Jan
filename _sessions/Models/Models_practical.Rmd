@@ -28,7 +28,7 @@ knitr::include_graphics("image/prediction.jpg")
 
 ### Overview
 
-In this practical, you will enter two model competitions that will allow you to demonstrate your knwoledge of:
+In this practical, you will enter two model competitions, one on regression and one on classification, to demonstrate your knwoledge of:
 
 1. Machine learning models
 2. Fitting and prediction
@@ -68,13 +68,13 @@ nonviolent_crime <- read_csv("https://raw.githubusercontent.com/therbootcamp/app
 </figure>
 
 
-# Tasks
+# Mission statment
 
-## A - Setup
+## A - Preliminaries
 
 1. Open your `BaselRBootcamp` R project. It should already have the folders `1_Data` and `2_Code`. Make sure that the data file(s) listed in the `Datasets` section above are in your `1_Data` folder.
 
-2. Open a new R script. At the top of the script, using comments, write your name and the date. Save it as a new file called `Features_practical.R` in the `2_Code` folder.  
+2. Open a new R script. At the top of the script, using comments, write your name and the date. Save it as a new file called `Models_practical.R` in the `2_Code` folder.  
 
 3. Using `library()` load the set of packages for this practical listed in the packages section above.
 
@@ -95,14 +95,62 @@ library(tidyverse)
 
 ```{r, echo = TRUE, eval = FALSE, message = FALSE, warning = FALSE}
 
-# (Non-) violent crime statistics
+# REGRESSION: (Non-) violent crime statistics
 nonviolent_crime <- read_csv(file = "1_Data/nonviolent_crime.csv")
 
-# murders crime statistics
+# CLASSIFICATION: Murders crime statistics
 murders_crime <- read_csv(file = "1_Data/murders_crime.csv")
 ```
 
-B Competition rules
+## B Competition rules
+
+1. You may enter either one or both of two competitions, one on regression (`nonviolent_crime`) and on classification (`murders_crime`), for the price of &#127851;&#127851;&#127851;.
+
+2. To enter the competitions, you must submit for each competition no more, no less than one caret `train`-object containing your candidate model. To submit the model, first save your model as an `.RDS`-file named `your_name_train.RDS` with `your_name` replaced by your name or pseudonym using the code below.
+
+```{r}
+# save trian obect as .RDS
+saveRDS('1_Data/your_name_train.RDS')
+
+```
+
+3. Submit your `.RDS` file (containing your training object) via these following linkes sheets:
+
+<div align = "center">
+<table>
+<tr>
+  <td>Regression</td> 
+  <td>non-violent crimes</td>
+  <td>[**Submit candidate**](https://docs.google.com/forms/d/e/1FAIpQLSevxp_hxSUrAYgiSU-Xv3hRw_get43qk15blw7QEeLHlbrNbA/viewform?usp=sf_link)</td>
+</tr>
+<tr>
+  <td>Classification</td> 
+  <td>murders</td>
+  <td>[**Submit candidate**](https://docs.google.com/forms/d/e/1FAIpQLSciw9WyTttmG9Oq93xjGKw_kxNJY9YmtLQvf_p35BcFNm1G-A/viewform?usp=sf_link)</td>
+</tr>
+</table>
+</div>
+
+4. You may work alone or team up with fellow participants. We recommend the latter, but working alone may, of course, mean more &#127851;&#127851;&#127851;.  
+
+5. Use any trick in your bag (or `caret`'s bag). Feel free to try different models, use different tuning parameter settings, select any variables or variable selection methods that you deem useful.
+
+6. You may even consider creating new variables. The code below shows you how to create new variables for either data set. Note, the created variables are not created based on any knowledge of the data - pure random selection. So if you want to come up with new variables, create your own. 
+
+```{r eval = F, echo = T}
+# (Non-) violent crime statistics
+nonviolent_crime <- nonviolent_crime %>% 
+  mutate(
+    pctUrbanXindianPerCap2 = pctUrban * indianPerCap ** 2,
+    FemalePctDiv^PctFam2Par = FemalePctDiv ** PctFam2Par)
+
+# Murders crime statistics
+murders_crime <- murders_crime %>% 
+  mutate(
+    AsianPerCapXHousVacant2 = AsianPerCap * HousVacant ** 2,
+    population%blackPerCap = population / blackPerCap)
+```
+
 
 
 

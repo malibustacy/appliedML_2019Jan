@@ -356,12 +356,12 @@ This controls how complex (large) trees are allowed to grow
 
 ### Complexity Parameter
 
-Decision trees have a &lt;high&gt;complexity parameter&lt;/high&gt; called &lt;high&gt;cp&lt;/high&gt;
+Decision trees have a &lt;high&gt;complexity parameter&lt;/high&gt; called `cp`.
 
-This control show complex (large) trees are allowed to grow
+This controls how complex (large) trees are allowed to grow
 
-- Small cp (&lt; 0.01) = Complex Trees
-- Large cp (&gt; 0.10) = Simple Trees
+- &lt;high&gt;Small&lt;/high&gt; cp (&lt; 0.01) = &lt;high&gt;Complex&lt;/high&gt; Trees
+- &lt;high&gt;Large&lt;/high&gt; cp (&gt; 0.10) = &lt;high&gt;Simple&lt;/high&gt; Trees
 
 The best value of cp depends on your dataset!
 
@@ -376,13 +376,13 @@ When fitting a decision tree, the `cp` parameter can be defined by the user in t
 
 
 ```r
-# Fit a random forest with a defined mtry = 4
+# Fit a decision tree with a defined cp = .10
 
 train(form = income ~ .,
       data = baselers,
-      method = "rf",  # Random Forest
+      method = "rpart",  # Decision Tree
       trControl = ctrl,
-      tuneGrid = expand.grid(mtry = 4)) # mtry
+      tuneGrid = expand.grid(cp = .10)) # cp
 ```
 
 - `mtry` can also be optimally determined through methods such as &lt;high&gt;cross-validation&lt;/high&gt;, which we will learn later
@@ -558,6 +558,8 @@ predict(mod, newdata = data_test)
 ]
 
 .pull-right5[
+
+&lt;high&gt;Get predictions&lt;/high&gt;, use `predict(mod, newdata = data_test)`
 
 
 ```r

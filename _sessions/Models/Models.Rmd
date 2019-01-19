@@ -528,6 +528,16 @@ The new features aka <high>principal components are greedy</high> in that they a
 
 ---
 
+# Some help in choosing models
+
+<p align = "center">
+<img src="image/mlmap.png" height = 450px><br>
+<font size=3>Source: scikit-learn</font>
+</p>
+
+
+---
+
 # Remember
 
 .pull-left45[
@@ -551,8 +561,6 @@ Xavier Conort
 </p>
 
 ]
-
-
 
 
 

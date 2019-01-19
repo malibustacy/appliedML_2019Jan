@@ -537,7 +537,7 @@ criterion_train <- XXX$XXX
 
 ```{r, echo = TRUE, eval = FALSE}
 # Calculate fitting accuracies of each model
-# pred = XX_mod
+# pred = XX_pred
 # obs = criterion_train
 
 # Regression
@@ -584,7 +584,7 @@ rf_pred <- predict(XXX, newdata = XXX)
 ```{r, echo = TRUE, eval = FALSE}
 # Calculate prediction accuracies of each model
 # obs = criterion_test
-# pred = XX_mod
+# pred = XX_pred
 
 # Regression
 postResample(pred = XXX, obs = XXX)
@@ -829,7 +829,7 @@ criterion_train <- XXX$XXX
 
 ```{r, echo = FALSE, eval = FALSE}
 # Calculate fitting accuracies of each model
-# pred = XX_mod
+# pred = XX_pred
 # obs = criterion_train
 
 # Regression
@@ -876,7 +876,7 @@ rf_pred <- predict(XXX, newdata = XXX)
 ```{r, echo = FALSE, eval = FALSE}
 # Calculate prediction accuracies of each model
 # obs = criterion_test
-# pred = XX_mod
+# pred = XX_pred
 
 # Regression
 postResample(pred = XXX, obs = XXX)
