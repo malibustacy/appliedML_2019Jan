@@ -395,7 +395,7 @@ ggplot(data = accuracy,
 So far we have only used one feature (`PhD`), to predict `Grad.Rate`. Let's try again, but now we'll use a total of four features:
 
 - `PhD`: The percent of faculty with a PhD
-- `Room_Board`: Room and board costs
+- `Room.Board`: Room and board costs
 - `Terminal`: Percent of faculty with a terminal degree
 - `S_F_Ratio`: Student to faculty ratio
 
