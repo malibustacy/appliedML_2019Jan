@@ -206,7 +206,7 @@ Use <high>cross-validation</high> to find <high>optimal tuning parameters</high>
 
 .pull-right55[
 
-### Regularised Regression
+### Regularized Regression
 
 ```{r, echo = FALSE, eval = TRUE, out.width = "100%", fig.cap = "L1 Lasso Penalty"}
 knitr::include_graphics("image/lasso_penalty_eq.jpg")
@@ -254,15 +254,15 @@ knitr::include_graphics("image/mtry_parameter.png")
 
 ---
 
-# Regularised Regression
+# Regularized Regression
 
-There are two common methods to fit penalised (aka regularised) regression models: Ridge and Lasso. Each penalises regression models for having large $\beta$ values using the <high>Lambda tuning parameter</high>
+There are two common methods to fit penalized (aka regularized) regression models: Ridge and Lasso. Each penalizes regression models for having large $\beta$ values using the <high>Lambda tuning parameter</high>
 
 .pull-left5[
 
 ### Ridge
 
-The Lasso penalty is known as the $\ell2$ norm, where Beta weights are selected by minimising the following equation:
+The Lasso penalty is known as the $\ell2$ norm, where Beta weights are selected by minimizing the following equation:
 
 ```{r, echo = FALSE, out.width = "100%"}
 knitr::include_graphics("image/ridge_penalty_eq.jpg")
@@ -286,15 +286,15 @@ knitr::include_graphics("image/ridge_penalty_plot.png")
 
 ---
 
-# Regularised Regression
+# Regularized Regression
 
-There are two common methods to fit penalised (aka regularised) regression models: Ridge and Lasso. Each penalises regression models for having large $\beta$ values using the <high>Lambda tuning parameter</high>
+There are two common methods to fit penalized (aka regularized) regression models: Ridge and Lasso. Each penalizes regression models for having large $\beta$ values using the <high>Lambda tuning parameter</high>
 
 .pull-left3[
 
 ### Ridge
 
-To fit Ridge penalised regression in R, use `method = "glmnet`.
+To fit Ridge penalized regression in R, use `method = "glmnet`.
 
 In the `tuneGrid` argument: 
 
@@ -320,15 +320,15 @@ train(form = criterion ~ .,
 
 ---
 
-# Regularised Regression
+# Regularized Regression
 
-There are two common methods to fit penalised (aka regularised) regression models: Ridge and Lasso. Each penalises regression models for having large $\beta$ values using the <high>Lambda tuning parameter</high>
+There are two common methods to fit penalized (aka regularized) regression models: Ridge and Lasso. Each penalizes regression models for having large $\beta$ values using the <high>Lambda tuning parameter</high>
 
 .pull-left5[
 
 ### Lasso
 
-The Lasso penalty is known as the $\ell1$ norm, where Beta weights are selected by minimising the following equation:
+The Lasso penalty is known as the $\ell1$ norm, where Beta weights are selected by minimizing the following equation:
 
 ```{r, echo = FALSE, out.width = "100%"}
 knitr::include_graphics("image/lasso_penalty_eq.jpg")
@@ -348,15 +348,15 @@ knitr::include_graphics("image/lasso_penalty_plot.png")
 
 ---
 
-# Regularised Regression
+# Regularized Regression
 
-There are two common methods to fit penalised (aka regularised) regression models: Ridge and Lasso. Each penalises regression models for having large $\beta$ values using the <high>Lambda tuning parameter</high>
+There are two common methods to fit penalized (aka regularized) regression models: Ridge and Lasso. Each penalizes regression models for having large $\beta$ values using the <high>Lambda tuning parameter</high>
 
 .pull-left3[
 
 ### Lasso
 
-To fit Lasso penalised regression in R, use `method = "glmnet`.
+To fit Lasso penalized regression in R, use `method = "glmnet`.
 
 In the `tuneGrid` argument: 
 
@@ -447,7 +447,7 @@ knitr::include_graphics("image/crossvalidation_4fold.png")
 
 ### Determining optimal Tuning parameters
 
-By trying different tuning parameters in each iteration, you can determine which value minimises prediction error
+By trying different tuning parameters in each iteration, you can determine which value minimizes prediction error
 
 Ex) Testing MAE values for values of `cp`
 
@@ -576,7 +576,7 @@ lasso_mod$bestTune$lambda
 
 ---
 
-# Regularised Regression
+# Regularized Regression
 
 .pull-left35[
 
