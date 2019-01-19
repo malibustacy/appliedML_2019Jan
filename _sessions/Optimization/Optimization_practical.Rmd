@@ -835,7 +835,7 @@ postResample(pred = XXX,
 
 5. How close were your model' true prediction values to the values you estimated in the previous section when you ran `resamples()`?
 
-## J - Challenges
+## Z - Challenges
 
 1. In addition to 'regular' 10 fold cross-validation, you can also do repeated 10-fold cross-validation, where the cross validation procedure is repeated many times. Do you think this will improve your models' performance? To test this, create a new training control object called `ctrl_cv_rep` as below. Then, train your models again using `ctrl_cv_rep` (instead of `ctrl_cv`), and evaluate their prediction performance. Do they improve?
 
