@@ -81,19 +81,32 @@ murders_crime = readr::type_convert(murders_crime)
 
 set.seed(100)
 
-sel = sample(1994,1000)
+sel = sample(1823,1000)
+sel2 = ((1:1823)[!(1:1800) %in% sel])[sample(1:823,800)]
 
 murders_crime = murders_crime %>% mutate_if(is.character, as.factor)
 violent_crime = violent_crime %>% mutate_if(is.character, as.factor)
 nonviolent_crime = nonviolent_crime %>% mutate_if(is.character, as.factor)
 
-murders_crime = murders_crime %>% slice(sel)
-violent_crime = violent_crime %>% slice(sel)
-nonviolent_crime = nonviolent_crime %>% slice(sel)
+murders_crime = murders_crime[sample(nrow(murders_crime)),]
+violent_crime = violent_crime[sample(nrow(violent_crime)),]
+nonviolent_crime = nonviolent_crime[sample(nrow(nonviolent_crime)),]
+
+murders_crime_test = murders_crime %>% slice(sel2)
+violent_crime_test = violent_crime %>% slice(sel2)
+nonviolent_crime_test = nonviolent_crime %>% slice(sel2)
+
+murders_crime_train = murders_crime %>% slice(sel)
+violent_crime_train = violent_crime %>% slice(sel)
+nonviolent_crime_train = nonviolent_crime %>% slice(sel)
 
 write_csv(murders_crime, '1_Data/murders_crime.csv')
 write_csv(violent_crime, '1_Data/violent_crime.csv')
 write_csv(nonviolent_crime, '1_Data/nonviolent_crime.csv')
+
+write_csv(murders_crime_test, '_sessions/Models/competition/1_Data/murders_crime_test.csv')
+write_csv(violent_crime_test, '_sessions/Models/competition/1_Data/violent_crime_test.csv')
+write_csv(nonviolent_crime_test, '_sessions/Models/competition/1_Data/nonviolent_crime_test.csv')
 
 
 # ----- prepare pima_diabetes
