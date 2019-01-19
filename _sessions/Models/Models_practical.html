@@ -98,9 +98,6 @@ img {
 button.code-folding-btn:focus {
   outline: none;
 }
-summary {
-  display: list-item;
-}
 </style>
 
 
@@ -108,74 +105,14 @@ summary {
 <div class="container-fluid main-container">
 
 <!-- tabsets -->
-
-<style type="text/css">
-.tabset-dropdown > .nav-tabs {
-  display: inline-table;
-  max-height: 500px;
-  min-height: 44px;
-  overflow-y: auto;
-  background: white;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-}
-
-.tabset-dropdown > .nav-tabs > li.active:before {
-  content: "";
-  font-family: 'Glyphicons Halflings';
-  display: inline-block;
-  padding: 10px;
-  border-right: 1px solid #ddd;
-}
-
-.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
-  content: "";
-  border: none;
-}
-
-.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
-  content: "";
-  font-family: 'Glyphicons Halflings';
-  display: inline-block;
-  padding: 10px;
-  border-right: 1px solid #ddd;
-}
-
-.tabset-dropdown > .nav-tabs > li.active {
-  display: block;
-}
-
-.tabset-dropdown > .nav-tabs > li > a,
-.tabset-dropdown > .nav-tabs > li > a:focus,
-.tabset-dropdown > .nav-tabs > li > a:hover {
-  border: none;
-  display: inline-block;
-  border-radius: 4px;
-}
-
-.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
-  display: block;
-  float: none;
-}
-
-.tabset-dropdown > .nav-tabs > li {
-  display: none;
-}
-</style>
-
 <script>
 $(document).ready(function () {
   window.buildTabsets("TOC");
 });
-
-$(document).ready(function () {
-  $('.tabset-dropdown > .nav-tabs > li').click(function () {
-    $(this).parent().toggleClass('nav-tabs-open')
-  });
-});
 </script>
 
 <!-- code folding -->
+
 
 
 
@@ -196,11 +133,7 @@ $(document).ready(function () {
 <h2></h2>
 <div id="overview" class="section level3">
 <h3>Overview</h3>
-<<<<<<< HEAD
 <p>In this practical, you will enter two model competitions, one on regression and one on classification, to demonstrate your knwoledge of:</p>
-=======
-<p>In this practical, you will enter two model competitions that will allow you to demonstrate your knowledge of:</p>
->>>>>>> 07bafa6c5c3f3db39935867a88d50cf817681efc
 <ol style="list-style-type: decimal">
 <li>Machine learning models</li>
 <li>Fitting and prediction</li>
@@ -265,16 +198,11 @@ library(caret)</code></pre>
 <ol start="4" style="list-style-type: decimal">
 <li>In the code below, we will load each of the data sets listed in the <code>Datasets</code> as new objects.</li>
 </ol>
-<<<<<<< HEAD
 <pre class="r"><code># REGRESSION: (Non-) violent crime statistics
-=======
-<pre class="r"><code># (Non-) violent crime statistics
->>>>>>> 07bafa6c5c3f3db39935867a88d50cf817681efc
 nonviolent_crime &lt;- read_csv(file = &quot;1_Data/nonviolent_crime.csv&quot;)
 
 # CLASSIFICATION: Murders crime statistics
 murders_crime &lt;- read_csv(file = &quot;1_Data/murders_crime.csv&quot;)</code></pre>
-<<<<<<< HEAD
 </div>
 <div id="b-competition-rules" class="section level2">
 <h2>B Competition rules</h2>
@@ -325,9 +253,6 @@ murders_crime &lt;- murders_crime %&gt;%
   mutate(
     AsianPerCapXHousVacant2 = AsianPerCap * HousVacant ** 2,
     population%blackPerCap = population / blackPerCap)</code></pre>
-=======
-<p>B Competition rules</p>
->>>>>>> 07bafa6c5c3f3db39935867a88d50cf817681efc
 </div>
 </div>
 

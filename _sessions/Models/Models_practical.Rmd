@@ -28,11 +28,7 @@ knitr::include_graphics("image/prediction.jpg")
 
 ### Overview
 
-<<<<<<< HEAD
 In this practical, you will enter two model competitions, one on regression and one on classification, to demonstrate your knwoledge of:
-=======
-In this practical, you will enter two model competitions that will allow you to demonstrate your knowledge of:
->>>>>>> 07bafa6c5c3f3db39935867a88d50cf817681efc
 
 1. Machine learning models
 2. Fitting and prediction
