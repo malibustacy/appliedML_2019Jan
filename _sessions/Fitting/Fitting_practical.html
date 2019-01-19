@@ -923,6 +923,11 @@ Source: wikipedia
 </tr>
 </tbody>
 </table>
+<ul>
+<li>The <code>college_train</code> data are taken from the <code>College</code> dataset in the <code>ISLR</code> package. To see column descriptions, run the following:</li>
+</ul>
+<pre class="r"><code>library(ISLR)   # Load ISLR package
+?College        # Look at help menu for College</code></pre>
 </div>
 <div id="glossary" class="section level3">
 <h3>Glossary</h3>
@@ -1042,7 +1047,7 @@ train_control &lt;- trainControl(method = &quot;none&quot;)
 
 # Regression
 
-hwy_glm &lt;- train(form = hwy ~ year + cyl + displ,
+hwy_glm &lt;- train(form = hwy ~ year + cyl + displ + trans,
                  data = data_train,
                  method = &quot;glm&quot;,
                  trControl = train_control)
@@ -1063,7 +1068,7 @@ postResample(pred = glm_fit,
              obs = criterion)
 
 #     RMSE Rsquared      MAE 
-# 3.825010 0.622349 2.767995 
+# 3.246182 0.678465 2.501346 
 
 # On average, the model fits are 2.8 away from the true
 #  criterion values
@@ -1154,7 +1159,7 @@ dim(college_train)</code></pre>
 <ol start="9" style="list-style-type: decimal">
 <li>We need to do a little bit of data cleaning before starting. Specifically, we need to convert all character columns to factors: Do this by running the following code:</li>
 </ol>
-<pre class="r"><code># Convert character to factor and remove college_name
+<pre class="r"><code># Convert character to factor
 
 college_train &lt;- college_train %&gt;%
           mutate_if(is.character, factor)</code></pre>
@@ -1282,9 +1287,9 @@ ggplot(data = accuracy,
 <p>So far we have only used one feature (<code>PhD</code>), to predict <code>Grad.Rate</code>. Let’s try again, but now we’ll use a total of four features:</p>
 <ul>
 <li><code>PhD</code>: The percent of faculty with a PhD</li>
-<li><code>Room_Board</code>: Room and board costs</li>
+<li><code>Room.Board</code>: Room and board costs</li>
 <li><code>Terminal</code>: Percent of faculty with a terminal degree</li>
-<li><code>S_F_Ratio</code>: Student to faculty ratio</li>
+<li><code>S.F.Ratio</code>: Student to faculty ratio</li>
 </ul>
 <ol style="list-style-type: decimal">
 <li><p>Using the same steps as above, create a regression model <code>Grad.Rate_glm</code> which predicts <code>Grad.Rate</code> using all 4 features (you can also call it something else if you want to save your original model!).</p></li>
@@ -1298,14 +1303,13 @@ ggplot(data = accuracy,
 <h2>F - Use (almost) all features</h2>
 <p>Alright now it’s time to use all features available!</p>
 <ol style="list-style-type: decimal">
-<li><p>Before we run the model, we need to make sure there aren’t any features we <em>don’t</em> want to include. Look at the <code>college_train</code> dataframe again – do you see the one feature that we definitely don’t want to include in the model?</p></li>
-<li><p>Using the same steps as above, create a regression model <code>glm_fit</code> which predicts <code>Grad.Rate</code> using all features <em>except</em> for that one we don’t want (remember, use Y ~ . - XXX to remove a feature XXX)</p></li>
+<li>Using the same steps as above, create a regression model <code>glm_fit</code> which predicts <code>Grad.Rate</code> using all features</li>
 </ol>
-<pre class="r"><code>Grad.Rate_glm &lt;- train(form = Grad.Rate ~ . - XXX,   # Get rid of that one feature!
+<pre class="r"><code>Grad.Rate_glm &lt;- train(form = Grad.Rate ~ .,
                        data = college_train,
                        method = &quot;glm&quot;,
                        trControl = ctrl_none)</code></pre>
-<ol start="3" style="list-style-type: decimal">
+<ol start="2" style="list-style-type: decimal">
 <li><p>Explore your model using <code>summary()</code>, which features seem to be important?</p></li>
 <li><p>What is the Mean Absolute Error (MAE) of your new model that uses 17 features? How does this compare to your previous model that only used 1 feature?</p></li>
 <li><p>(Optional). Create a scatter plot showing the relationship between your new model fits and the true values. How does this plot compare to your previous one?</p></li>
@@ -1334,7 +1338,7 @@ criterion &lt;- college_train$Private</code></pre>
 <div id="h---fit-a-classification-model" class="section level2">
 <h2>H - Fit a classification model</h2>
 <ol style="list-style-type: decimal">
-<li><p>Using <code>train()</code>, create <code>Private_glm</code>, a regression model predicting the variable <code>Private</code> (Don’t forget to ignore that one variable we don’t want to use!)</p></li>
+<li><p>Using <code>train()</code>, create <code>Private_glm</code>, a regression model predicting the variable <code>Private</code></p></li>
 <li><p>Explore the model using the <code>summary()</code> function.</p></li>
 </ol>
 <pre class="r"><code># Show summary information from the regression model

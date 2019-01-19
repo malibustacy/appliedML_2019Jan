@@ -64,8 +64,6 @@ present <- tibble(id = 91:95,
                fam_history = sample(c("Yes", "No"), size = 5, replace = TRUE),
                smoking = sample(c(TRUE, FALSE), size = 5, replace = TRUE),
                criterion = rep("?", 5))
-
-
 ```
 
 

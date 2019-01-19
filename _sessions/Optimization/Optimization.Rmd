@@ -1,0 +1,478 @@
+---
+title: "Optimization"
+subtitle: "Regularization and Cross-Validation"
+author: "Applied Machine Learning with R<br/><a href='https://therbootcamp.github.io'>www.therbootcamp.com</a><br/><a href='https://twitter.com/therbootcamp'>@therbootcamp</a>"
+date: "January 2019"
+output:
+  xaringan::moon_reader:
+    css: ["default", "baselrbootcamp.css"]
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+      ratio: '16:9'
+---
+
+layout: true
+
+<div class="my-footer"><span>
+<a href="https://therbootcamp.github.io/"><font color="#7E7E7E">Applied Machine Learning with R, January 2019</font></a>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+<a href="https://therbootcamp.github.io/"><font color="#7E7E7E">www.therbootcamp.com</font></a>
+</span></div> 
+
+---
+
+```{r, eval = TRUE, echo = FALSE, warning=F,message=F}
+# Code to knit slides
+baselers <- readr::read_csv("../../1_Data/baselers.csv")
+
+
+source("https://raw.githubusercontent.com/therbootcamp/therbootcamp.github.io/master/_materials/code/baselrbootcamp_palettes.R")
+```
+
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+# see: https://github.com/yihui/xaringan
+# install.packages("xaringan")
+# see: 
+# https://github.com/yihui/xaringan/wiki
+# https://github.com/gnab/remark/wiki/Markdown
+options(width=110)
+options(digits = 4)
+```
+
+```{r, echo = FALSE ,message = FALSE, warning = FALSE}
+knitr::opts_chunk$set(comment=NA, fig.width=6, fig.height=6, echo = TRUE, eval = TRUE, 
+                      message = FALSE, warning = FALSE, fig.align = 'center', dpi = 200)
+library(tidyverse)
+library(baselers)
+library(ggthemes)
+```
+
+
+
+.pull-left4[
+<br><br>
+# Where we are
+
+- <high>Train</high> one of several models (<high>regression</high>, <high>decision trees</high>, and <high>random forests</high>) on training data.
+
+- Explore models - show regression coefficients, plot decision trees (etc)
+
+- Assess model <high>prediction</high> performance on <high>test</high> data
+    - Mean Absolute Error (MAE)
+
+]
+
+.pull-right55[
+
+### Model Training
+
+```{r, echo = FALSE}
+knitr::include_graphics("image/model_training_flow.png")
+```
+
+### Model Testing
+
+```{r, echo = FALSE}
+knitr::include_graphics("image/model_testing_flow.png")
+```
+
+
+]
+
+
+---
+
+.pull-left4[
+<br><br>
+# But...
+
+- How can I estimate prediction performance during model training?
+
+- How can I <high>optimise</high> model training to <high>maximize prediction</high> (not fitting!) performance?
+
+- How do I <high>avoid overfitting</high>?
+
+
+## Answers
+
+- <high>Cross-Validation</high>
+
+- Model parameter <high>regularization</high>
+
+]
+
+.pull-right55[
+
+### Model Training
+
+```{r, echo = FALSE}
+knitr::include_graphics("image/model_training_flow.png")
+```
+
+### Model Testing
+
+```{r, echo = FALSE}
+knitr::include_graphics("image/model_testing_flow.png")
+```
+
+
+]
+
+
+---
+
+
+.pull-left4[
+<br><br>
+# Overfitting (Recap)
+
+When a model is consistently <high>less accurate in predicting future data</high> than in <high>fitting training data<high>, this is called <high>overfitting</high>
+
+Overfitting typically occurs when a model 'mistakes' random noise for a predictable signal
+
+
+]
+
+
+.pull-right55[
+<br><br>
+
+```{r, echo = FALSE, fig.cap = "<font size = 4>hackernoon.com</font>"}
+knitr::include_graphics("https://cdn-images-1.medium.com/max/1600/1*SBUK2QEfCP-zvJmKm14wGQ.png")
+```
+
+```{r, echo = FALSE,  fig.cap = "<font size = 4>Medium.com</font>"}
+knitr::include_graphics("https://cdn-images-1.medium.com/max/1200/1*cdvfzvpkJkUudDEryFtCnA.png")
+```
+
+
+]
+
+
+---
+
+# Overfitting (Recap)
+
+```{r, fig.width = 8, fig.height = 3.5, echo = FALSE, eval = TRUE, warning = FALSE, dpi = 200}
+set.seed(5)
+
+N <- 40
+
+iv <- rnorm(N, mean = 10, sd = 2)
+truth <- iv 
+noise <- rnorm(N, mean = 0, sd = 2)
+obs <- truth + noise
+
+data <- data.frame(iv, obs)
+
+
+poly_pred <- map_dfc(.x = c(1, 19), .f = function(degree) {
+  
+  output <- data.frame(lm(obs ~ poly(iv, degree), data = data)$fitted.values)
+  
+  names(output) <- paste0("d", degree)
+  
+  return(output)
+
+}) %>% mutate(id = 1:N,
+              x = iv,
+              obs = obs) %>%
+  gather(Degree, pred, -id, -x, -obs) %>%
+  mutate(`Training` = abs(pred - obs))
+
+
+poly_pred <- poly_pred %>%
+  mutate(Degree = case_when(Degree == "d1" ~ "Simple",
+                            TRUE ~ "Complex"))
+
+
+
+overfit_gg <- ggplot(poly_pred, aes(x = x, y = pred, col = Degree)) + 
+  geom_line(size = 1.5) +
+  geom_point(aes(x = x, y = obs), col = "black", pch = 21) +
+  annotate("segment", x = 5, y = 5, xend = 15, yend = 15, col = "black", linetype = 4, size = 1) +
+  xlim(5, 15) +
+  ylim(5, 15) +
+  labs(title = "Model overfitting",
+       subtitle = "Dashed line is TRUE model") +
+  theme_bw() +
+    theme(legend.position="bottom") +
+  scale_color_baselrbootcamp()
+  
+poly_pred <- poly_pred %>% mutate(
+
+  obs_new = x + rnorm(1, mean = 0, sd = 2),
+  `Testing` = abs(obs_new - pred)
+  
+)
+
+
+poly_pred <- poly_pred %>%
+  select(Degree, `Training`, `Testing`) %>%
+  gather(phase, Error, -Degree)
+
+agg <- poly_pred %>%
+  group_by(Degree, phase) %>%
+  summarise(Error = mean(Error)) %>%
+  ungroup() %>%
+  mutate(phase = factor(phase, levels = c("Training", "Testing"), ordered = TRUE))
+ 
+fit_gg <- ggplot(agg, aes(x = phase, y = Error, fill = Degree)) +
+  geom_bar(position = "dodge", stat = "identity") +
+  labs(title = "Fitting versus Prediction Error",
+       subtitle = "Smaller values are better!",
+       x = "Modelling Phase") +  
+  scale_y_continuous(limits=c(.75,1.25),oob = scales::rescale_none) +
+  theme_bw() +
+    theme(legend.position="bottom") +
+  scale_fill_baselrbootcamp()
+
+ggpubr::ggarrange(overfit_gg, fit_gg)
+```
+
+
+
+---
+
+# Overfitting (Recap)
+
+.pull-left45[
+
+### How do we account for overfitting?
+
+Always evaluate models based on their performance on new, unseen test data
+
+*Never evaluate models based only on training accuracy!*
+
+Use models with <high>regularization</high> terms, which explicitly punish models for being too complex.
+
+Use fitting methods such as <high>cross-validation</high> to find optimal regularization values.
+
+We will learn about these methods in a future session!
+
+]
+
+.pull-right5[
+
+```{r, echo = FALSE, fig.width = 4, fig.height = 3.5}
+fit_gg
+```
+
+
+]
+
+
+---
+
+.pull-left55[
+
+# Tuning parameters
+
+### What are tuning parameters?
+
+- Most ML models have <high>tuning parameters</high> which <high>guide</high> (aka. 'tune') a model during fitting.
+    - Decision trees: complexity tuning parameter <high>cp</high>
+    - Random forests diversity tuning parameter <high>mtry</high>
+    
+- Tuning parameters never show up in the final model! They are only used to guide fitting.
+
+
+```{r, echo = FALSE, eval = TRUE, out.width = "40%", fig.cap = "<font size = 4>okw.com</font>"}
+knitr::include_graphics("https://www.okw.com/en/Tuning-Knobs-classic-/tuning-knobs-with-aluminium-cap_TitleImageSwap500x408.jpg")
+```
+
+
+]
+
+
+.pull-right45[
+
+
+```{r, echo = FALSE, eval = TRUE, out.width = "80%"}
+knitr::include_graphics("image/complexity_parameter.png")
+```
+
+```{r, echo = FALSE, eval = TRUE, out.width = "80%"}
+knitr::include_graphics("image/mtry_parameter.png")
+```
+
+
+]
+
+
+
+
+
+
+---
+
+.pull-left55[
+
+### Problem
+
+How do I know the best tuning parameters?
+
+- Decision Trees: Should I use a low complexity parameter or a high one?
+- Random Forests: Should I use a low mtry value or a high one?
+
+### Answer
+
+Find optimal values using <high>cross-validation</high>
+
+
+]
+
+
+.pull-right45[
+
+
+```{r, echo = FALSE, eval = TRUE, out.width = "80%"}
+knitr::include_graphics("image/complexity_parameter.png")
+```
+
+```{r, echo = FALSE, eval = TRUE, out.width = "80%"}
+knitr::include_graphics("image/mtry_parameter.png")
+```
+
+
+]
+
+
+
+
+
+
+---
+
+.pull-left4[
+
+# Why do we have tuning parameters
+
+- Regularisation
+- Complexity
+
+]
+
+.pull-right6[
+
+]
+
+
+---
+
+.pull-left4[
+
+# Bias-Variance Trade-off
+
+- A short introduction
+
+]
+
+.pull-right6[
+
+]
+
+
+---
+
+.pull-left4[
+
+# Regularisation / complexity controlling methods
+
+- Regression
+  - Ridge (L1 penalty), Lasso (L2 penalty)
+  
+- Trees
+  - Max depth, minimum elements per node
+  
+- KNN
+   - Just try different values of K
+
+]
+
+.pull-right6[
+
+]
+
+
+---
+
+.pull-left4[
+
+# How do you select best tuning parameters?
+
+- Crossvalidation
+
+]
+
+.pull-right6[
+
+]
+
+
+---
+
+.pull-left4[
+
+# Cross-Validation
+
+]
+
+.pull-right6[
+
+]
+
+---
+
+.pull-left4[
+
+# Estimating prediction accuracy with cross-validation
+
+]
+
+.pull-right6[
+
+]
+
+---
+
+.pull-left4[
+
+# Estimating True prediction accuracy
+
+
+- Hold out set
+- Why do we always use a holdout set?
+
+]
+
+.pull-right6[
+
+]
+
+
+---
+
+# Caret
+
+
+
+
+
+---
+
+
+# Practical
+
+<font size=6><b><a href="https://therbootcamp.github.io/Intro2DataScience_2018Oct/_sessions/Plotting/Plotting_practical.html">Link to practical</a>
+
+
+
+
+
+
