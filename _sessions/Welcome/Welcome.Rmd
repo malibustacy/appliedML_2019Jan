@@ -152,7 +152,7 @@ We have an <high>ambitious schedule</high>!
 
 .pull-right4[
 
-<img src="https://github.com/therbootcamp/appliedML_2019Jan/blob/master/schedule_appliedML_2019Jan.png?raw=true" height="525" align="center">
+<img src="https://raw.githubusercontent.com/therbootcamp/therbootcamp.github.io/master/_sessions/_image/schedule_2019Jan_ML.png" height="525" align="center">
 
 ]
 

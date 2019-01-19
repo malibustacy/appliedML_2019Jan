@@ -303,7 +303,7 @@ Based on &lt;high&gt;historical data&lt;/high&gt; from past patients &lt;high&gt
 |Term| Definition| Example|
 |:------|:-----|:------|
 |Data (Tidy)|Data represented in a rectangular format with rows and columns|Excel spreadsheet, .`csv`|
-|Case|A specific case of data|A patient, a site|
+|Case|A specific observation of data|A patient, a site|
 |Feature|An individual, measurable property of cases|Age, temperature, country|
 |Criterion|Something you want to predict|Total sales, success (yes or no)|
 
@@ -557,7 +557,7 @@ What is the &lt;high&gt;relationship&lt;/high&gt; between features and the crite
 
 Make &lt;high&gt;predictions&lt;/high&gt; for new data.
 
-- Is this patient having a is having a heart attack?
+- Is this patient having a heart attack?
 - How much will this new site sell?
 
 Improve predictions over time with new data.
@@ -631,19 +631,30 @@ if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
   d.head.appendChild(s);
 })();</script>
 
-<script type="text/x-mathjax-config">
-MathJax.Hub.Config({
-  tex2jax: {
-    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+<script>
+(function() {
+  var i, text, code, codes = document.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
   }
-});
+})();
 </script>
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>
 (function () {
   var script = document.createElement('script');
   script.type = 'text/javascript';
-  script.src  = 'https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
   if (location.protocol !== 'file:' && /^https?:/.test(script.src))
     script.src  = script.src.replace(/^https?:/, '');
   document.getElementsByTagName('head')[0].appendChild(script);
