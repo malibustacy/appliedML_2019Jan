@@ -461,11 +461,11 @@ criterion <- college_train$Private
 
 ## H - Fit a classification model
 
-1. Using `train()`, create `Private_glm`, a regression model predicting the variable `Private` (Don't forget to ignore that one variable we don't want to use!)
+1. Using `train()`, create `Private_glm`, a regression model predicting the variable `Private`
 
 ```{r, echo = FALSE}
 # Fit regression model predicting private
-Private_glm <- train(form = Private ~ . -college_name,
+Private_glm <- train(form = Private ~ .,
                      data = college_train,
                      method = "glm",
                      trControl = ctrl_none)
