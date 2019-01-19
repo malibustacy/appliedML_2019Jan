@@ -338,9 +338,9 @@ knitr::include_graphics("https://raw.githubusercontent.com/therbootcamp/therboot
 
 4. What is your programming experience with R and in general?
 
-5. What is your experience with applied machine learning?
+5. What is your experience with ML?
 
-6. What would you most like to do with machine learning?
+6. What would you most like to do with ML?
 
 7. Coffee or tea?
 
