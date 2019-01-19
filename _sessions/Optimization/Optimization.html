@@ -61,42 +61,7 @@ layout: true
 
 &lt;img src="image/model_testing_flow.png" width="1439" style="display: block; margin: auto;" /&gt;
 
-
 ]
-
-
----
-
-.pull-left4[
-&lt;br&gt;&lt;br&gt;
-# But...
-
-How can I &lt;high&gt;estimate prediction error&lt;/high&gt; during model training?
-
-How can I &lt;high&gt;optimise&lt;/high&gt; model training to &lt;high&gt;maximize prediction&lt;/high&gt; (not fitting!) performance?
-
-How do I &lt;high&gt;avoid overfitting&lt;/high&gt; during training?
-
-&lt;div class="figure" style="text-align: center"&gt;
-&lt;img src="https://cdn-images-1.medium.com/max/1600/1*SBUK2QEfCP-zvJmKm14wGQ.png" alt="&amp;lt;font size = 4&amp;gt;hackernoon.com&amp;lt;/font&amp;gt;" width="100%" /&gt;
-&lt;p class="caption"&gt;&lt;font size = 4&gt;hackernoon.com&lt;/font&gt;&lt;/p&gt;
-&lt;/div&gt;
-
-]
-
-.pull-right55[
-
-### Model Training
-
-&lt;img src="image/model_training_flow.png" width="1442" style="display: block; margin: auto;" /&gt;
-
-### Model Testing
-
-&lt;img src="image/model_testing_flow.png" width="1439" style="display: block; margin: auto;" /&gt;
-
-
-]
-
 
 ---
 
@@ -412,9 +377,18 @@ Once the optimal value of a tuning parameter is determined through cross-validat
 &lt;img src="image/training_final_optimisation.png" width="90%" style="display: block; margin: auto;" /&gt;
 
 
----
 
-# Caret
+---
+class: center,  middle
+
+&lt;br&gt;&lt;br&gt;
+
+# caret
+
+## Cross-validation, and tuning parameter optimization
+
+&lt;img src="https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/09/Caret-package-in-R.png" width="60%" style="display: block; margin: auto;" /&gt;
+
 
 
 ---
@@ -435,8 +409,6 @@ When you pass this object to `train()` (for any model), caret will find best par
 
 .pull-right65[
 
-### Caret code
-
 
 ```r
 # Specify 10 fold cross-validation
@@ -445,7 +417,7 @@ ctrl_cv &lt;- trainControl(method = "cv",
 
 # Predict baselers income using lasso regression
 
-mod_lasso &lt;- train(form = income ~ .,
+lasso_mod &lt;- train(form = income ~ .,
                    data = baselers,
                    method = "glmnet",  # Penalised regression
                    trControl = ctrl_cv,
@@ -453,16 +425,14 @@ mod_lasso &lt;- train(form = income ~ .,
                                           lambda = 1:100))
 ```
 
-
 ]
-
 
 ---
 
 # K-Fold Cross validation
 
 
-.pull-left3[
+.pull-left45[
 
 If you plot your model object with `plot(XX_mod)` you will see a plot showing the relationship between the tuning parameter and error.
 
@@ -470,39 +440,127 @@ Print the best tuning parameter value with `XX_mod$bestTune$NAME`
 
 ]
 
-.pull-right65[
-
-### Caret code
+.pull-right5[
 
 
 ```r
 # Visualise tuning parameter error curve
-plot(mod_lasso)
+plot(lasso_mod)
 ```
 
-&lt;img src="Optimization_files/figure-html/unnamed-chunk-25-1.png" width="60%" style="display: block; margin: auto;" /&gt;
+&lt;img src="Optimization_files/figure-html/unnamed-chunk-23-1.png" width="60%" style="display: block; margin: auto;" /&gt;
 
 ```r
 # Print best tuning parameter values
-mod_lasso$bestTune$lambda
+lasso_mod$bestTune$lambda
 ```
 
 ```
 [1] 28
 ```
 
+]
 
+---
+
+# Regularised Regression
+
+.pull-left35[
+
+Your &lt;high&gt;final model&lt;/high&gt; is (as always) stored in `XX_mod$finalModel`. This is the model fit to the entire data using the &lt;high&gt;optimal tuning parameter(s)&lt;/high&gt;.
+
+To get the coefficients from a Ridge or Lasso regression model, use the `coef()` function, with `XX_mod$finalModel` as the first argument, and the best tuning value as the second argument
+
+In the output, values with . are coefficients that have been &lt;high&gt;removed with the lasso&lt;/high&gt;!
+
+]
+
+.pull-right6[
+
+
+```r
+# Print final model coefficients using best lambda
+coef(lasso_mod$finalModel,      # Final Lasso model
+     lasso_mod$bestTune$lambda) # Bets lambda value
+```
+
+```
+25 x 1 sparse Matrix of class "dgCMatrix"
+                                        1
+(Intercept)                     498.79998
+id                                .      
+sexmale                           .      
+age                             116.28163
+height                            1.64721
+weight                            .      
+educationobligatory_school        .      
+educationSEK_II                   .      
+educationSEK_III                  .      
+confessionconfessionless          0.52709
+confessionevangelical-reformed    .      
+confessionmuslim                  .      
+confessionother                   .      
+children                        -17.61816
+happiness                      -125.28635
+fitness                           .      
+food                              2.29687
+alcohol                          21.81538
+tattoos                         -23.69171
+rhine                             .      
+datause                           .      
+consultations                     7.87664
+hiking                           -0.05348
+fasnachtyes                     -21.07582
+eyecoryes                         .      
+```
 
 ]
 
 
-
 ---
 
+# Estimating prediction accuracy
 
-# Practical
+.pull-left35[
 
-&lt;font size=6&gt;&lt;b&gt;&lt;a href="https://therbootcamp.github.io/Intro2DataScience_2018Oct/_sessions/Plotting/Plotting_practical.html"&gt;Link to practical&lt;/a&gt;
+If you have fit many models with cross-validation, you can compare their estimated prediction performance with `resamples()`
+
+The main argument to `resamples()` should be a list of all of your models created with `train()`
+
+If you print the `summary()` of this object, it will print 'prediction' error statistics from cross-validation during training. This is your estimate of future prediction performance!
+
+]
+
+.pull-right6[
+
+
+```r
+# Get accuracy statistics across folds for three
+#  models that I have fit with cross validation
+
+resamples_mod &lt;- resamples(list(ridge = ridge_mod, 
+                                lasso = lasso_mod, 
+                                glm = glm_mod))
+
+# Print summary of accuracies
+summary(resamples_mod)
+
+# MAE 
+#         Min. 1st Qu. Median   Mean 3rd Qu.   Max. NA's
+# ridge 1057.9  1078.9 1083.2 1090.1  1112.0 1118.5    0
+# lasso  865.7   892.7  897.2  902.9   914.2  944.8    0
+# glm    839.7   910.0  920.5  905.9   922.7  936.7    0
+```
+
+]
+
+---
+class: middle, center
+
+&lt;h1&gt; Questions?&lt;/h1&gt;
+
+
+&lt;h1&gt;&lt;a href=https://therbootcamp.github.io/appliedML_2019Jan/_sessions/Optimization/Optimization_practical.html&gt;Practical&lt;/a&gt;&lt;/h1&gt;
     </textarea>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
 <script>var slideshow = remark.create({

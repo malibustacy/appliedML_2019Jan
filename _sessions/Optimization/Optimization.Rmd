@@ -1,4 +1,4 @@
-1---
+---
 title: "Optimization"
 subtitle: "Regularization and Cross-Validation"
 author: "Applied Machine Learning with R<br/><a href='https://therbootcamp.github.io'>www.therbootcamp.com</a><br/><a href='https://twitter.com/therbootcamp'>@therbootcamp</a>"
@@ -161,45 +161,7 @@ knitr::include_graphics("image/model_training_flow.png")
 knitr::include_graphics("image/model_testing_flow.png")
 ```
 
-
 ]
-
-
----
-
-.pull-left4[
-<br><br>
-# But...
-
-How can I <high>estimate prediction error</high> during model training?
-
-How can I <high>optimise</high> model training to <high>maximize prediction</high> (not fitting!) performance?
-
-How do I <high>avoid overfitting</high> during training?
-
-```{r, echo = FALSE, fig.cap = "<font size = 4>hackernoon.com</font>", out.width = "100%"}
-knitr::include_graphics("https://cdn-images-1.medium.com/max/1600/1*SBUK2QEfCP-zvJmKm14wGQ.png")
-```
-
-]
-
-.pull-right55[
-
-### Model Training
-
-```{r, echo = FALSE}
-knitr::include_graphics("image/model_training_flow.png")
-```
-
-### Model Testing
-
-```{r, echo = FALSE}
-knitr::include_graphics("image/model_testing_flow.png")
-```
-
-
-]
-
 
 ---
 
@@ -536,9 +498,20 @@ knitr::include_graphics("image/training_final_optimisation.png")
 ```
 
 
----
 
-# Caret
+---
+class: center,  middle
+
+<br><br>
+
+# caret
+
+## Cross-validation, and tuning parameter optimization
+
+```{r, echo = FALSE, out.width = "60%"}
+knitr::include_graphics("https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/09/Caret-package-in-R.png")
+```
+
 
 
 ---
@@ -559,8 +532,6 @@ When you pass this object to `train()` (for any model), caret will find best par
 
 .pull-right65[
 
-### Caret code
-
 ```{r}
 # Specify 10 fold cross-validation
 ctrl_cv <- trainControl(method = "cv", 
@@ -568,7 +539,7 @@ ctrl_cv <- trainControl(method = "cv",
 
 # Predict baselers income using lasso regression
 
-mod_lasso <- train(form = income ~ .,
+lasso_mod <- train(form = income ~ .,
                    data = baselers,
                    method = "glmnet",  # Penalised regression
                    trControl = ctrl_cv,
@@ -576,16 +547,14 @@ mod_lasso <- train(form = income ~ .,
                                           lambda = 1:100))
 ```
 
-
 ]
-
 
 ---
 
 # K-Fold Cross validation
 
 
-.pull-left3[
+.pull-left45[
 
 If you plot your model object with `plot(XX_mod)` you will see a plot showing the relationship between the tuning parameter and error.
 
@@ -593,30 +562,86 @@ Print the best tuning parameter value with `XX_mod$bestTune$NAME`
 
 ]
 
-.pull-right65[
+.pull-right5[
 
-### Caret code
-
-```{r, out.width = "60%", fig.width = 6, fig.height = 4}
+```{r, out.width = "60%", fig.width = 6, fig.height = 3}
 # Visualise tuning parameter error curve
-plot(mod_lasso)
+plot(lasso_mod)
 
 # Print best tuning parameter values
-mod_lasso$bestTune$lambda
+lasso_mod$bestTune$lambda
 ```
 
+]
 
+---
+
+# Regularised Regression
+
+.pull-left35[
+
+Your <high>final model</high> is (as always) stored in `XX_mod$finalModel`. This is the model fit to the entire data using the <high>optimal tuning parameter(s)</high>.
+
+To get the coefficients from a Ridge or Lasso regression model, use the `coef()` function, with `XX_mod$finalModel` as the first argument, and the best tuning value as the second argument
+
+In the output, values with . are coefficients that have been <high>removed with the lasso</high>!
+
+]
+
+.pull-right6[
+
+```{r, out.width = "60%", fig.width = 6, fig.height = 3}
+# Print final model coefficients using best lambda
+coef(lasso_mod$finalModel,      # Final Lasso model
+     lasso_mod$bestTune$lambda) # Bets lambda value
+```
 
 ]
 
 
-
 ---
 
+# Estimating prediction accuracy
 
-# Practical
+.pull-left35[
 
-<font size=6><b><a href="https://therbootcamp.github.io/Intro2DataScience_2018Oct/_sessions/Plotting/Plotting_practical.html">Link to practical</a>
+If you have fit many models with cross-validation, you can compare their estimated prediction performance with `resamples()`
+
+The main argument to `resamples()` should be a list of all of your models created with `train()`
+
+If you print the `summary()` of this object, it will print 'prediction' error statistics from cross-validation during training. This is your estimate of future prediction performance!
+
+]
+
+.pull-right6[
+
+```{r, out.width = "60%", fig.width = 6, eval = FALSE}
+# Get accuracy statistics across folds for three
+#  models that I have fit with cross validation
+
+resamples_mod <- resamples(list(ridge = ridge_mod, 
+                                lasso = lasso_mod, 
+                                glm = glm_mod))
+
+# Print summary of accuracies
+summary(resamples_mod)
+
+# MAE 
+#         Min. 1st Qu. Median   Mean 3rd Qu.   Max. NA's
+# ridge 1057.9  1078.9 1083.2 1090.1  1112.0 1118.5    0
+# lasso  865.7   892.7  897.2  902.9   914.2  944.8    0
+# glm    839.7   910.0  920.5  905.9   922.7  936.7    0
+```
+
+]
+
+---
+class: middle, center
+
+<h1> Questions?</h1>
+
+
+<h1><a href=https://therbootcamp.github.io/appliedML_2019Jan/_sessions/Optimization/Optimization_practical.html>Practical</a></h1>
 
 
 
