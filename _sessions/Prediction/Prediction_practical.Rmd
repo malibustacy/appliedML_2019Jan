@@ -399,7 +399,7 @@ college_test <- college_test %>%
 
 ## B - Fitting
 
-Your goal in this task is to fit models predicting `Grad_Rate`, the percentage of attendees who graduate from each college
+Your goal in this task is to fit models predicting `Grad.Rate`, the percentage of attendees who graduate from each college
 
 1. Using `trainControl()`, set your training control method to `"none"`. Save your object as `ctrl_none`.
 
@@ -414,9 +414,9 @@ ctrl_none <- trainControl(method = "XXX")
 
 ### Regression
 
-2. Using `train()` fit a regression model called `grad_glm` predicting `Grad_Rate` as a function of all features except for `college_name`
+2. Using `train()` fit a regression model called `grad_glm` predicting `Grad.Rate` as a function of all features
 
-- For the `form` argument, use `Grad_Rate ~ . -college_name`
+- For the `form` argument, use `Grad.Rate ~ .`
 - For the `data` argument, use  `college_train` in the data argument
 - For the `method` argument, use `method = "glm"` for regression
 - For the `trControl` argument, use your `ctrl_none` object you created before
@@ -456,7 +456,7 @@ hist(XXX)
 
 4. Using `train()`, fit a decision tree model called `grad_dt`
 
-- For the `form` argument, use `Grad_Rate ~ .`
+- For the `form` argument, use `Grad.Rate ~ .`
 - For the `data` argument, use  `college_train` in the data argument
 - For the `method` argument, use `method = "rpart"` to create decision trees
 - For the `trControl` argument, use your `ctrl_none` object you created before
@@ -493,14 +493,14 @@ hist(XXX)
 
 8. Using `train()`, fit a random forest model called `grad_rf`
 
-- For the `form` argument, use `Grad_Rate ~ . - college_name`
+- For the `form` argument, use `Grad.Rate ~ .`
 - For the `data` argument, use  `college_train` in the data argument
 - For the `method` argument, use `method = "rf"` to fit random forests
 - For the `trControl` argument, use your `ctrl_none` object you created before
 - For the `mtry` parameter, use `mtry` = 2. This is a relatively low value, so the forest will not be very diverse
 
 ```{r, eval = FALSE, echo = TRUE}
-grad_rf <- train(form = XX ~ . -XX,   # Predict grad and exclude college_name
+grad_rf <- train(form = XX ~ .,   # Predict grad and exclude college_name
                  data = XX,
                  method = "XX",
                  trControl = XX,
@@ -526,7 +526,7 @@ hist(XXX)
 
 ### Assess accuracy
 
-11. Save the true training criterion values (`college_train$Grad_Rate`) as a vector called `criterion_train`
+11. Save the true training criterion values (`college_train$Grad.Rate`) as a vector called `criterion_train`
 
 ```{r, echo = TRUE, eval = FALSE}
 # Save training criterion values
@@ -556,7 +556,7 @@ postResample(pred = XXX, obs = XXX)
 
 ## C - Prediction
 
-1. Save the criterion values from the test data set `college_test$Grad_Rate` as a new vector called `criterion_test`:
+1. Save the criterion values from the test data set `college_test$Grad.Rate` as a new vector called `criterion_test`:
 
 ```{r}
 # Save criterion values

@@ -98,6 +98,9 @@ img {
 button.code-folding-btn:focus {
   outline: none;
 }
+summary {
+  display: list-item;
+}
 </style>
 
 
@@ -105,14 +108,74 @@ button.code-folding-btn:focus {
 <div class="container-fluid main-container">
 
 <!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
 <script>
 $(document).ready(function () {
   window.buildTabsets("TOC");
 });
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
 </script>
 
 <!-- code folding -->
-
 
 
 
@@ -776,7 +839,7 @@ college_test &lt;- college_test %&gt;%
 </div>
 <div id="b---fitting" class="section level2">
 <h2>B - Fitting</h2>
-<p>Your goal in this task is to fit models predicting <code>Grad_Rate</code>, the percentage of attendees who graduate from each college</p>
+<p>Your goal in this task is to fit models predicting <code>Grad.Rate</code>, the percentage of attendees who graduate from each college</p>
 <ol style="list-style-type: decimal">
 <li>Using <code>trainControl()</code>, set your training control method to <code>&quot;none&quot;</code>. Save your object as <code>ctrl_none</code>.</li>
 </ol>
@@ -788,10 +851,10 @@ ctrl_none &lt;- trainControl(method = &quot;XXX&quot;)</code></pre>
 <div id="regression" class="section level3">
 <h3>Regression</h3>
 <ol start="2" style="list-style-type: decimal">
-<li>Using <code>train()</code> fit a regression model called <code>grad_glm</code> predicting <code>Grad_Rate</code> as a function of all features except for <code>college_name</code></li>
+<li>Using <code>train()</code> fit a regression model called <code>grad_glm</code> predicting <code>Grad.Rate</code> as a function of all features</li>
 </ol>
 <ul>
-<li>For the <code>form</code> argument, use <code>Grad_Rate ~ . -college_name</code></li>
+<li>For the <code>form</code> argument, use <code>Grad.Rate ~ .</code></li>
 <li>For the <code>data</code> argument, use <code>college_train</code> in the data argument</li>
 <li>For the <code>method</code> argument, use <code>method = &quot;glm&quot;</code> for regression</li>
 <li>For the <code>trControl</code> argument, use your <code>ctrl_none</code> object you created before</li>
@@ -825,7 +888,7 @@ hist(XXX)</code></pre>
 <li>Using <code>train()</code>, fit a decision tree model called <code>grad_dt</code></li>
 </ol>
 <ul>
-<li>For the <code>form</code> argument, use <code>Grad_Rate ~ .</code></li>
+<li>For the <code>form</code> argument, use <code>Grad.Rate ~ .</code></li>
 <li>For the <code>data</code> argument, use <code>college_train</code> in the data argument</li>
 <li>For the <code>method</code> argument, use <code>method = &quot;rpart&quot;</code> to create decision trees</li>
 <li>For the <code>trControl</code> argument, use your <code>ctrl_none</code> object you created before</li>
@@ -857,13 +920,13 @@ hist(XXX)</code></pre>
 <li>Using <code>train()</code>, fit a random forest model called <code>grad_rf</code></li>
 </ol>
 <ul>
-<li>For the <code>form</code> argument, use <code>Grad_Rate ~ . - college_name</code></li>
+<li>For the <code>form</code> argument, use <code>Grad.Rate ~ .</code></li>
 <li>For the <code>data</code> argument, use <code>college_train</code> in the data argument</li>
 <li>For the <code>method</code> argument, use <code>method = &quot;rf&quot;</code> to fit random forests</li>
 <li>For the <code>trControl</code> argument, use your <code>ctrl_none</code> object you created before</li>
 <li>For the <code>mtry</code> parameter, use <code>mtry</code> = 2. This is a relatively low value, so the forest will not be very diverse</li>
 </ul>
-<pre class="r"><code>grad_rf &lt;- train(form = XX ~ . -XX,   # Predict grad and exclude college_name
+<pre class="r"><code>grad_rf &lt;- train(form = XX ~ .,   # Predict grad and exclude college_name
                  data = XX,
                  method = &quot;XX&quot;,
                  trControl = XX,
@@ -885,7 +948,7 @@ hist(XXX)</code></pre>
 <div id="assess-accuracy" class="section level3">
 <h3>Assess accuracy</h3>
 <ol start="11" style="list-style-type: decimal">
-<li>Save the true training criterion values (<code>college_train$Grad_Rate</code>) as a vector called <code>criterion_train</code></li>
+<li>Save the true training criterion values (<code>college_train$Grad.Rate</code>) as a vector called <code>criterion_train</code></li>
 </ol>
 <pre class="r"><code># Save training criterion values
 criterion_train &lt;- XXX$XXX</code></pre>
@@ -913,7 +976,7 @@ postResample(pred = XXX, obs = XXX)</code></pre>
 <div id="c---prediction" class="section level2">
 <h2>C - Prediction</h2>
 <ol style="list-style-type: decimal">
-<li>Save the criterion values from the test data set <code>college_test$Grad_Rate</code> as a new vector called <code>criterion_test</code>:</li>
+<li>Save the criterion values from the test data set <code>college_test$Grad.Rate</code> as a new vector called <code>criterion_test</code>:</li>
 </ol>
 <pre class="r"><code># Save criterion values
 criterion_test &lt;- XXX$XXX</code></pre>
