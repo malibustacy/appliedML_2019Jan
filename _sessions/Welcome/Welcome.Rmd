@@ -174,7 +174,7 @@ We have an <high>ambitious schedule</high>!
 <high>All available online</high>. Follow along, and don't worry about memorizing
 
 <br><br>
-<a href="https://therbootcamp.github.io/Intro2DataScience_2018Oct/">This is a Link to our materials</a>.
+<a href="https://therbootcamp.github.io/appliedML_2019Jan/">This is a Link to our materials</a>.
 <br><br>
 
 Be interactive! Ask questions!
