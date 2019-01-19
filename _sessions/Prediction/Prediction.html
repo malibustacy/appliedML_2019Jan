@@ -559,6 +559,8 @@ predict(mod, newdata = data_test)
 
 .pull-right5[
 
+&lt;high&gt;Get predictions&lt;/high&gt;, use `predict(mod, newdata = data_test)`
+
 
 ```r
 # Load training and test data
@@ -677,7 +679,7 @@ set.seed(100)
 # Get indices for training
 index &lt;- createDataPartition(y = baselers$income,
                              p = .7,
-                             list = FALSE
+                             list = FALSE)
 
 # Create training data
 baselers_train &lt;- baselers %&gt;% 
@@ -805,7 +807,7 @@ if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
 (function () {
   var script = document.createElement('script');
   script.type = 'text/javascript';
-  script.src  = 'https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
   if (location.protocol !== 'file:' && /^https?:/.test(script.src))
     script.src  = script.src.replace(/^https?:/, '');
   document.getElementsByTagName('head')[0].appendChild(script);
