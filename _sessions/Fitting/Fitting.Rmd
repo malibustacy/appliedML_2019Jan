@@ -337,7 +337,7 @@ ggarrange(bad_err, great_err, ncol = 2, nrow = 1)
 
 #### MAE: Mean Absolute Error
 
-$$\large MSE = \frac{1}{n}\sum_{i=1}^{n} \lvert Prediction_{i} - Truth_{i} \rvert$$
+$$\large MAE = \frac{1}{n}\sum_{i=1}^{n} \lvert Prediction_{i} - Truth_{i} \rvert$$
 
 > On average, how far are predictions away from true values?
 

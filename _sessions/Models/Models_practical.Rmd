@@ -20,20 +20,23 @@ knitr::opts_chunk$set(comment = NA,
 options(digits = 3)
 ```
 
-```{r, echo = FALSE, fig.align = 'center', eval = TRUE, out.width = "60%", fig.cap=""}
-knitr::include_graphics("image/prediction.jpg")
+```{r, echo = FALSE, fig.align = 'center', eval = TRUE, out.width = "90%", fig.cap=""}
+knitr::include_graphics("image/minority.gif")
 ```
 
 ## {.tabset}
 
 ### Overview
 
-In this practical, you will enter two model competitions, one on regression and one on classification, to demonstrate your knwoledge of:
+In this practical, you will enter two model competitions, one on regression and one on classification, to demonstrate your knowledge of:
 
 1. Machine learning models
 2. Fitting and prediction
 3. Cross-validation and optimization
 4. Data preprocessing and feature selection
+
+...and be like Tom Cruise!
+
 
 ### Datasets
 
@@ -70,6 +73,11 @@ nonviolent_crime <- read_csv("https://raw.githubusercontent.com/therbootcamp/app
 
 # Mission statement
 
+The members of governing council of Basel Stadt recently met at the comfortable, yet luxurious home of Elisabeth Ackerman's, the council's president, to watch the latest science-fiction blockbuster, <a href="https://de.wikipedia.org/wiki/Minority_Report">Minority report</a>. In this bright, utopian movie Chief John Anderton, marvelously played by Tom Cruise, works together with friendly, but slightly introverted super-beings with the rare (but scientifically proven - see rigorous academic [paper](2011-01894-001.pdf)) ability to see into the future to arrest perpetrators not after they committed a crime (boring!) but before. Aside from spending a wonderful evening with his colleagues, Baschi Dürr, head of justice and homeland security department and the one who proposed the movie, was hoping to win over his fellow council members for a revolutionary program to tackle an unprecedented swell in non-violent crimes and murders in Basel-Stadt in recent months. Baschi Dürr knew, of course, that precogs - this is how the super-beings were called - belonged to the land of fairy tails, but during his visit to the recent useR! conference in Brisbane he had learned of the next best thing: machine learning. His goal was, thus, to hire an elite team of programmers and to equip them with a maximally informative data set of past crimes to predict where future crimes would occur. Knowing that Basel is just like the United States, Baschi Dürr had already spent a significant amount of money to acquire a data set of murders and non-violent crimes across American counties. Now, he only needed to convince his colleagues. And Fortuna was on his side. The movie and the few bottles of Napoleon French Brandy that he had bought at Coop earlier in the day impressed so much that Elisabeth Ackerman decided to dissolve the regular police and invest all of its budget on the new ML task force. The next morning, with a slight, but manageable hangover, Baschi Dürr announced an international ML modeling competition promising that whoever built the best model would head the task force and be in addition rewarded with a lot of &#127851;&#127851;&#127851;. 
+
+(Names, characters, businesses, places, events, locales, and incidents are either the products of the author's imagination or used in a fictitious manner. Any resemblance to actual persons, living or dead, or actual events is purely coincidental.)
+
+
 ## A - Preliminaries
 
 1. Open your `BaselRBootcamp` R project. It should already have the folders `1_Data` and `2_Code`. Make sure that the data file(s) listed in the `Datasets` section above are in your `1_Data` folder.
@@ -91,7 +99,7 @@ library(caret)
 library(tidyverse)
 ```
 
-4. In the code below, we will load each of the data sets listed in the `Datasets` as new objects.
+4. With the code below load each of the data sets listed in the `Datasets` as new objects.
 
 ```{r, echo = TRUE, eval = FALSE, message = FALSE, warning = FALSE}
 
@@ -114,18 +122,26 @@ saveRDS('1_Data/your_name_train.RDS')
 
 ```
 
-3. Submit your `.RDS` file (containing your training object) via these following linkes sheets:
+3. Submit your `.RDS` file (containing your training object) via these following Links sheets:
 
 <div align = "center">
 <table>
 <tr>
+<th>Task type</th>
+<th>Criterion</th>
+<th>Performance measure</th>
+<th>Submission link</th>
+</tr>
+<tr>
   <td>Regression</td> 
-  <td>non-violent crimes</td>
+  <td>non-violent crimes (`nonViolPerPop`)</td>
+  <td>Accuracy</td>
   <td>[**Submit candidate**](https://docs.google.com/forms/d/e/1FAIpQLSevxp_hxSUrAYgiSU-Xv3hRw_get43qk15blw7QEeLHlbrNbA/viewform?usp=sf_link)</td>
 </tr>
 <tr>
   <td>Classification</td> 
-  <td>murders</td>
+  <td>murders (`muders`)</td>
+  <td>MAE</td>
   <td>[**Submit candidate**](https://docs.google.com/forms/d/e/1FAIpQLSciw9WyTttmG9Oq93xjGKw_kxNJY9YmtLQvf_p35BcFNm1G-A/viewform?usp=sf_link)</td>
 </tr>
 </table>
