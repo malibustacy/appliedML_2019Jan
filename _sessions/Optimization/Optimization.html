@@ -71,18 +71,16 @@ layout: true
 &lt;br&gt;&lt;br&gt;
 # But...
 
-- How can I estimate prediction performance during model training?
+How can I &lt;high&gt;estimate prediction error&lt;/high&gt; during model training?
 
-- How can I &lt;high&gt;optimise&lt;/high&gt; model training to &lt;high&gt;maximize prediction&lt;/high&gt; (not fitting!) performance?
+How can I &lt;high&gt;optimise&lt;/high&gt; model training to &lt;high&gt;maximize prediction&lt;/high&gt; (not fitting!) performance?
 
-- How do I &lt;high&gt;avoid overfitting&lt;/high&gt;?
+How do I &lt;high&gt;avoid overfitting&lt;/high&gt; during training?
 
-
-## Answers
-
-- &lt;high&gt;Cross-Validation&lt;/high&gt;
-
-- Model parameter &lt;high&gt;regularization&lt;/high&gt;
+&lt;div class="figure" style="text-align: center"&gt;
+&lt;img src="https://cdn-images-1.medium.com/max/1600/1*SBUK2QEfCP-zvJmKm14wGQ.png" alt="&amp;lt;font size = 4&amp;gt;hackernoon.com&amp;lt;/font&amp;gt;" width="100%" /&gt;
+&lt;p class="caption"&gt;&lt;font size = 4&gt;hackernoon.com&lt;/font&gt;&lt;/p&gt;
+&lt;/div&gt;
 
 ]
 
@@ -104,250 +102,316 @@ layout: true
 
 
 .pull-left4[
-&lt;br&gt;&lt;br&gt;
+&lt;br&gt;&lt;br&gt;&lt;br&gt;
 # Overfitting (Recap)
 
 When a model is consistently &lt;high&gt;less accurate in predicting future data&lt;/high&gt; than in &lt;high&gt;fitting training data&lt;high&gt;, this is called &lt;high&gt;overfitting&lt;/high&gt;
 
-Overfitting typically occurs when a model 'mistakes' random noise for a predictable signal
+Just because model A is better than model B in training, does not mean it will be better in testing!
 
+Extremely flexible models that tend to overfit are like 'wolves in sheep's clothing'
 
 ]
 
 
 .pull-right55[
+
+
 &lt;br&gt;&lt;br&gt;
-
 &lt;div class="figure" style="text-align: center"&gt;
-&lt;img src="https://cdn-images-1.medium.com/max/1600/1*SBUK2QEfCP-zvJmKm14wGQ.png" alt="&amp;lt;font size = 4&amp;gt;hackernoon.com&amp;lt;/font&amp;gt;"  /&gt;
-&lt;p class="caption"&gt;&lt;font size = 4&gt;hackernoon.com&lt;/font&gt;&lt;/p&gt;
+&lt;img src="image/wolf_complex.png" alt="&amp;lt;font size = 4&amp;gt;victoriarollison.com (adapted)&amp;lt;/font&amp;gt;" width="100%" /&gt;
+&lt;p class="caption"&gt;&lt;font size = 4&gt;victoriarollison.com (adapted)&lt;/font&gt;&lt;/p&gt;
 &lt;/div&gt;
 
+
+]
+
+---
+
+
+.pull-left4[
+&lt;br&gt;&lt;br&gt;&lt;br&gt;
+
+# Overfitting (Recap)
+
+### How will we try to avoid overfitting?
+
+Use regression models with &lt;high&gt;regularization&lt;/high&gt; terms, such as &lt;high&gt;ridge&lt;/high&gt; and &lt;high&gt;lasso&lt;/high&gt; which explicitly &lt;high&gt;punish model complexity&lt;/high&gt;.
+
+Use &lt;high&gt;cross-validation&lt;/high&gt; to find &lt;high&gt;optimal tuning parameters&lt;/high&gt;, including regularization.
+
+]
+
+.pull-right55[
+
+### Regularised Regression
+
 &lt;div class="figure" style="text-align: center"&gt;
-&lt;img src="https://cdn-images-1.medium.com/max/1200/1*cdvfzvpkJkUudDEryFtCnA.png" alt="&amp;lt;font size = 4&amp;gt;Medium.com&amp;lt;/font&amp;gt;"  /&gt;
-&lt;p class="caption"&gt;&lt;font size = 4&gt;Medium.com&lt;/font&gt;&lt;/p&gt;
+&lt;img src="image/lasso_penalty_eq.jpg" alt="L1 Lasso Penalty" width="100%" /&gt;
+&lt;p class="caption"&gt;L1 Lasso Penalty&lt;/p&gt;
 &lt;/div&gt;
 
+### Cross Validation
+
+&lt;img src="image/crossvalidation_4fold.png" width="90%" style="display: block; margin: auto;" /&gt;
+
+]
+
+---
+
+.pull-left55[
+
+# Tuning parameters (Recap)
+
+### What are tuning parameters?
+
+&lt;high&gt;Tuning parameters&lt;/high&gt; are parameters that &lt;high&gt;guide&lt;/high&gt; (aka. 'tune') a model during fitting.
+
+- Decision trees: complexity tuning parameter &lt;high&gt;cp&lt;/high&gt;
+- Random forests diversity tuning parameter &lt;high&gt;mtry&lt;/high&gt;
+    
+Tuning parameters never show up in the final model! They are only used to guide fitting.
+
+There is not one 'best' tuning parameter, it always depends on your specific dataset.
+
+]
+
+.pull-right45[
+
+&lt;img src="image/complexity_parameter.png" width="80%" style="display: block; margin: auto;" /&gt;
+
+&lt;img src="image/mtry_parameter.png" width="80%" style="display: block; margin: auto;" /&gt;
 
 ]
 
 
 ---
 
-# Overfitting (Recap)
+# Regularised Regression
 
-&lt;img src="Optimization_files/figure-html/unnamed-chunk-9-1.png" style="display: block; margin: auto;" /&gt;
+There are two common methods to fit penalised (aka regularised) regression models: Ridge and Lasso. Each penalises regression models for having large `\(\beta\)` values using the &lt;high&gt;Lambda tuning parameter&lt;/high&gt;
+
+.pull-left5[
+
+### Ridge
+
+The Lasso penalty is known as the `\(\ell2\)` norm, where Beta weights are selected by minimising the following equation:
+
+&lt;img src="image/ridge_penalty_eq.jpg" width="100%" style="display: block; margin: auto;" /&gt;
+
+As `\(\lambda\)` increases, coefficients are pushed towards (but not necessarily exactly to) 0.
+
+]
+
+.pull-right45[
+
+
+&lt;div class="figure" style="text-align: center"&gt;
+&lt;img src="image/ridge_penalty_plot.png" alt="&amp;lt;font size = 4&amp;gt;James et al., ISLR&amp;lt;/font&amp;gt;" width="80%" /&gt;
+&lt;p class="caption"&gt;&lt;font size = 4&gt;James et al., ISLR&lt;/font&gt;&lt;/p&gt;
+&lt;/div&gt;
+
+]
+
 
 
 
 ---
 
-# Overfitting (Recap)
+# Regularised Regression
+
+There are two common methods to fit penalised (aka regularised) regression models: Ridge and Lasso. Each penalises regression models for having large `\(\beta\)` values using the &lt;high&gt;Lambda tuning parameter&lt;/high&gt;
+
+.pull-left3[
+
+### Ridge
+
+To fit Ridge penalised regression in R, use `method = "glmnet`.
+
+In the `tuneGrid` argument: 
+
+- `alpha = 0` indicates the `\(\ell2\)` Ridge penalty.
+- `lambda` = Vector of lambda tuning parameters values to try.
+
+]
+
+.pull-right65[
+&lt;br&gt;
+
+```r
+# Train ridge penalised regression model in R
+
+train(form = criterion ~ .,
+      data = data_train,
+      method = "glmnet",
+      trControl = ctrl,
+      tuneGrid = expand.grid(alpha = 0, # Ridge penalty
+                              lambda = 1:100)) # Lambda
+```
+
+]
+
+---
+
+# Regularised Regression
+
+There are two common methods to fit penalised (aka regularised) regression models: Ridge and Lasso. Each penalises regression models for having large `\(\beta\)` values using the &lt;high&gt;Lambda tuning parameter&lt;/high&gt;
+
+.pull-left5[
+
+### Lasso
+
+The Lasso penalty is known as the `\(\ell1\)` norm, where Beta weights are selected by minimising the following equation:
+
+&lt;img src="image/lasso_penalty_eq.jpg" width="100%" style="display: block; margin: auto;" /&gt;
+
+As `\(\lambda\)` increases, coefficients are pushed towards 0, with some being forced to &lt;high&gt;exactly 0&lt;/high&gt;.
+
+]
+
+.pull-right45[
+
+&lt;div class="figure" style="text-align: center"&gt;
+&lt;img src="image/lasso_penalty_plot.png" alt="&amp;lt;font size = 4&amp;gt;James et al., ISLR&amp;lt;/font&amp;gt;" width="80%" /&gt;
+&lt;p class="caption"&gt;&lt;font size = 4&gt;James et al., ISLR&lt;/font&gt;&lt;/p&gt;
+&lt;/div&gt;
+
+]
+
+---
+
+# Regularised Regression
+
+There are two common methods to fit penalised (aka regularised) regression models: Ridge and Lasso. Each penalises regression models for having large `\(\beta\)` values using the &lt;high&gt;Lambda tuning parameter&lt;/high&gt;
+
+.pull-left3[
+
+### Lasso
+
+To fit Lasso penalised regression in R, use `method = "glmnet`.
+
+In the `tuneGrid` argument: 
+
+- `alpha = 1` indicates the `\(\ell1\)` Lasso penalty
+- `lambda` = Vector of lambda tuning parameters values to try.
+
+]
+
+.pull-right65[
+&lt;br&gt;
+
+```r
+# Train Lasso penalised regression model in R
+
+train(form = criterion ~ .,
+      data = data_train,
+      method = "glmnet",
+      trControl = ctrl,
+      tuneGrid = expand.grid(alpha = 1, # Lasso penalty
+                              lambda = 1:100)) # Lambda
+```
+
+]
+
+
+---
 
 .pull-left45[
 
-### How do we account for overfitting?
+# K-Fold Cross-Validation
 
-Always evaluate models based on their performance on new, unseen test data
+### What is it?
 
-*Never evaluate models based only on training accuracy!*
+Cross-validation is a sampling procedure performed on training data used to &lt;high&gt;estimate a model's prediction performance&lt;/high&gt; in future test data, and to determine &lt;high&gt;optimal tuning parameters&lt;/high&gt; selected to minimize prediction error.
 
-Use models with &lt;high&gt;regularization&lt;/high&gt; terms, which explicitly punish models for being too complex.
+Cross-validation is not "cheating: because it is only performed on the training data (never on the true test dataset)
 
-Use fitting methods such as &lt;high&gt;cross-validation&lt;/high&gt; to find optimal regularization values.
-
-We will learn about these methods in a future session!
+After cross-validation is complete, the model is trained on the entire dataset, using optimal tuning parameters, resulting in a &lt;high&gt;final model&lt;/high&gt; which can be used for future model testing.
 
 ]
 
 .pull-right5[
+&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;
 
-&lt;img src="Optimization_files/figure-html/unnamed-chunk-10-1.png" style="display: block; margin: auto;" /&gt;
+### Cross Validation
 
-
-]
-
-
----
-
-.pull-left55[
-
-# Tuning parameters
-
-### What are tuning parameters?
-
-- Most ML models have &lt;high&gt;tuning parameters&lt;/high&gt; which &lt;high&gt;guide&lt;/high&gt; (aka. 'tune') a model during fitting.
-    - Decision trees: complexity tuning parameter &lt;high&gt;cp&lt;/high&gt;
-    - Random forests diversity tuning parameter &lt;high&gt;mtry&lt;/high&gt;
-    
-- Tuning parameters never show up in the final model! They are only used to guide fitting.
-
-
-&lt;div class="figure" style="text-align: center"&gt;
-&lt;img src="https://www.okw.com/en/Tuning-Knobs-classic-/tuning-knobs-with-aluminium-cap_TitleImageSwap500x408.jpg" alt="&amp;lt;font size = 4&amp;gt;okw.com&amp;lt;/font&amp;gt;" width="40%" /&gt;
-&lt;p class="caption"&gt;&lt;font size = 4&gt;okw.com&lt;/font&gt;&lt;/p&gt;
-&lt;/div&gt;
-
-
-]
-
-
-.pull-right45[
-
-
-&lt;img src="image/complexity_parameter.png" width="80%" style="display: block; margin: auto;" /&gt;
-
-&lt;img src="image/mtry_parameter.png" width="80%" style="display: block; margin: auto;" /&gt;
-
-
-]
-
-
-
-
-
-
----
-
-.pull-left55[
-
-### Problem
-
-How do I know the best tuning parameters?
-
-- Decision Trees: Should I use a low complexity parameter or a high one?
-- Random Forests: Should I use a low mtry value or a high one?
-
-### Answer
-
-Find optimal values using &lt;high&gt;cross-validation&lt;/high&gt;
-
-
-]
-
-
-.pull-right45[
-
-
-&lt;img src="image/complexity_parameter.png" width="80%" style="display: block; margin: auto;" /&gt;
-
-&lt;img src="image/mtry_parameter.png" width="80%" style="display: block; margin: auto;" /&gt;
-
-
-]
-
-
-
-
-
-
----
-
-.pull-left4[
-
-# Why do we have tuning parameters
-
-- Regularisation
-- Complexity
-
-]
-
-.pull-right6[
-
-]
-
-
----
-
-.pull-left4[
-
-# Bias-Variance Trade-off
-
-- A short introduction
-
-]
-
-.pull-right6[
-
-]
-
-
----
-
-.pull-left4[
-
-# Regularisation / complexity controlling methods
-
-- Regression
-  - Ridge (L1 penalty), Lasso (L2 penalty)
-  
-- Trees
-  - Max depth, minimum elements per node
-  
-- KNN
-   - Just try different values of K
-
-]
-
-.pull-right6[
-
-]
-
-
----
-
-.pull-left4[
-
-# How do you select best tuning parameters?
-
-- Crossvalidation
-
-]
-
-.pull-right6[
-
-]
-
-
----
-
-.pull-left4[
-
-# Cross-Validation
-
-]
-
-.pull-right6[
+&lt;img src="image/crossvalidation_4fold.png" width="888" style="display: block; margin: auto;" /&gt;
 
 ]
 
 ---
 
-.pull-left4[
+.pull-left45[
 
-# Estimating prediction accuracy with cross-validation
+# K-Fold Cross-Validation
+
+### Steps
+
+1) Split the original training data into K 'folds' (mutually exclusive groups of cases)
+
+2) Select K - 1 folds for training, and 1 fold for testing.
+
+3) Fit the model to the K - 1 training folds, and evaluate its testing accuracy on the test fold.
+
+4) Repeat the process K times, so each fold is used once for testing.
+
+5) Average the model's prediction error across all K folds
 
 ]
 
-.pull-right6[
+.pull-right5[
+&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;
+
+### Cross Validation
+
+&lt;img src="image/crossvalidation_4fold.png" width="888" style="display: block; margin: auto;" /&gt;
 
 ]
 
 ---
 
-.pull-left4[
+.pull-left45[
 
-# Estimating True prediction accuracy
+# K-Fold Cross-Validation
+
+### Determining optimal Tuning parameters
+
+By trying different tuning parameters in each iteration, you can determine which value minimises prediction error
+
+Ex) Testing MAE values for values of `cp`
 
 
-- Hold out set
-- Why do we always use a holdout set?
+
+|Fold | cp = .05| cp = .10| &lt;high&gt;cp = .15&lt;/high&gt;| cp = .20|
+|:----|--------:|--------:|--------:|--------:|
+|1    |     5.13|     4.76|     4.24|     5.38|
+|2    |     4.96|     4.54|     4.39|     5.72|
+|3    |     5.34|     4.96|     4.13|     6.17|
+|4    |     4.76|     5.13|     4.35|     5.20|
+|Mean |     5.05|     4.85|     &lt;high&gt;4.28&lt;/high&gt;|     5.62|
+
+Conclusion: `cp = .15` leads to the lowest test MAE
 
 ]
 
-.pull-right6[
+.pull-right5[
+&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;
+
+### Cross Validation
+
+&lt;img src="image/crossvalidation_4fold.png" width="888" style="display: block; margin: auto;" /&gt;
 
 ]
+
+---
+
+# K-Fold Cross-Validation
+
+### Determining optimal Tuning parameters
+
+Once the optimal value of a tuning parameter is determined through cross-validation, the algorithm is fit to the &lt;high&gt;entire training dataset&lt;/high&gt; using the &lt;high&gt;optimal tuning parameter&lt;/high&gt; resulting in the &lt;high&gt;Final Model&lt;/high&gt;
+
+&lt;img src="image/training_final_optimisation.png" width="90%" style="display: block; margin: auto;" /&gt;
 
 
 ---
@@ -382,23 +446,12 @@ if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
   d.head.appendChild(s);
 })();</script>
 
-<script>
-(function() {
-  var i, text, code, codes = document.getElementsByTagName('code');
-  for (i = 0; i < codes.length;) {
-    code = codes[i];
-    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
-      text = code.textContent;
-      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
-          /^\$\$(.|\s)+\$\$$/.test(text) ||
-          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
-        code.outerHTML = code.innerHTML;  // remove <code></code>
-        continue;
-      }
-    }
-    i++;
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  tex2jax: {
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre']
   }
-})();
+});
 </script>
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>
