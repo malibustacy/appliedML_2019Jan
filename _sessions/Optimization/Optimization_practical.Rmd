@@ -598,7 +598,7 @@ It's time to fit an optimized regression model with a Lasso penalty!
 ```{r, echo = TRUE, eval = FALSE}
 # Determine possible values of lambda
 
-lambda_vec <- seq(from = 0, to = 1000, length = 100)
+lambda_vec <- seq(from = 0, to = .5, length = 100)
 ```
 
 2. Fit a lasso regression model predicting `Salary` as a function of all features
@@ -631,7 +631,7 @@ salary_lasso <- train(form = Salary ~ .,
                                           lambda = lambda_vec))
 ```
 
-3. Plot your `price_lasso` object. What do you see? Which value of the regularization parameter seems to be the best?
+3. Plot your `salary_lasso` object. What do you see? Which value of the regularization parameter seems to be the best?
 
 ```{r, echo = TRUE, eval = FALSE}
 # Plot price_lasso object
@@ -642,15 +642,15 @@ plot(XX)
 
 ```{r, echo = TRUE, eval = FALSE}
 # Print best regularisation parameter
-price_lasso$bestTune$lambda
+salary_lasso$bestTune$lambda
 ```
 
 5. What were your final regression model coefficients for the best lambda value? Find them by running the following code:
 
 ```{r, echo = TRUE, eval = FALSE}
 # Get coefficients from best lambda value
-coef(price_lasso$finalModel, 
-     price_lasso$bestTune$lambda)
+coef(salary_lasso$finalModel, 
+     salary_lasso$bestTune$lambda)
 ```
 
 6. How do these coefficients compare to what you found in regular regression? Are they similar? Different? Do you notice that any coefficients are now set to exactly 0?
@@ -664,7 +664,7 @@ It's time to fit an optimized decision tree model!!
 ```{r, echo = TRUE, eval = FALSE}
 # Determine possible values of the complexity parameter cp
 
-cp_vec <- seq(from = 0, to = .1, length = 100)
+cp_vec <- seq(from = 0, to = 1, length = 100)
 ```
 
 2. Fit a decision tree model predicting `Salary` as a function of all features
@@ -678,7 +678,7 @@ cp_vec <- seq(from = 0, to = .1, length = 100)
 ```{r, echo = TRUE, eval = FALSE}
 # Decision Tree --------------------------
 
-price_dt <- train(form = XX ~ .,
+salary_dt <- train(form = XX ~ .,
                   data = XX,
                   method = "XX",
                   trControl = XX,
@@ -686,9 +686,9 @@ price_dt <- train(form = XX ~ .,
 ```
 
 ```{r, eval = FALSE, echo = FALSE}
-# Fit a ridge regression
+# Decision Tree --------------------------
 
-price_dt <- train(form = Salary ~ .,
+salary_dt <- train(form = Salary ~ .,
                   data = hitters_train,
                   method = "rpart",
                   trControl = ctrl_cv,
@@ -706,14 +706,14 @@ plot(XX)
 
 ```{r, echo = TRUE, eval = FALSE}
 # Print best regularisation parameter
-price_dt$bestTune$cp
+salary_dt$bestTune$cp
 ```
 
 5. Plot your final decision tree using the following code
 
 ```{r, echo = TRUE, eval = FALSE}
 # Visualise your trees
-plot(as.party(price_dt$finalModel)) 
+plot(as.party(salary_dt$finalModel)) 
 ```
 
 6. How do the nodes in the tree compare to the coefficients you found in your regression analyses? Do you see similarities or differences?
@@ -749,7 +749,7 @@ salary_rf <- train(form = XX ~ .,
 ```
 
 ```{r, eval = FALSE, echo = FALSE}
-# Fit a random forest regression
+# Fit a random forest
 
 salary_rf <- train(form = Salary ~ .,
                    data = hitters_train,
@@ -782,6 +782,7 @@ salary_rf$bestTune$mtry
 salary_resamples <- resamples(list(glm = XXX,
                                    ridge = XXX, 
                                    lasso = XXX, 
+                                   dt = XXX, 
                                    rf = XXX))
 ```
 
