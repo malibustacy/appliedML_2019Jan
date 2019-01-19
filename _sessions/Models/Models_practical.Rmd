@@ -68,7 +68,7 @@ nonviolent_crime <- read_csv("https://raw.githubusercontent.com/therbootcamp/app
 </figure>
 
 
-# Mission statment
+# Mission statement
 
 ## A - Preliminaries
 
