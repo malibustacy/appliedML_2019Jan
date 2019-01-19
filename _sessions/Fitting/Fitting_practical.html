@@ -923,6 +923,11 @@ Source: wikipedia
 </tr>
 </tbody>
 </table>
+<ul>
+<li>The <code>college_train</code> data are taken from the <code>College</code> dataset in the <code>ISLR</code> package. To see column descriptions, run the following:</li>
+</ul>
+<pre class="r"><code>library(ISLR)   # Load ISLR package
+?College        # Look at help menu for College</code></pre>
 </div>
 <div id="glossary" class="section level3">
 <h3>Glossary</h3>
@@ -1284,7 +1289,7 @@ ggplot(data = accuracy,
 <li><code>PhD</code>: The percent of faculty with a PhD</li>
 <li><code>Room.Board</code>: Room and board costs</li>
 <li><code>Terminal</code>: Percent of faculty with a terminal degree</li>
-<li><code>S_F_Ratio</code>: Student to faculty ratio</li>
+<li><code>S.F.Ratio</code>: Student to faculty ratio</li>
 </ul>
 <ol style="list-style-type: decimal">
 <li><p>Using the same steps as above, create a regression model <code>Grad.Rate_glm</code> which predicts <code>Grad.Rate</code> using all 4 features (you can also call it something else if you want to save your original model!).</p></li>
@@ -1298,14 +1303,13 @@ ggplot(data = accuracy,
 <h2>F - Use (almost) all features</h2>
 <p>Alright now it’s time to use all features available!</p>
 <ol style="list-style-type: decimal">
-<li><p>Before we run the model, we need to make sure there aren’t any features we <em>don’t</em> want to include. Look at the <code>college_train</code> dataframe again – do you see the one feature that we definitely don’t want to include in the model?</p></li>
-<li><p>Using the same steps as above, create a regression model <code>glm_fit</code> which predicts <code>Grad.Rate</code> using all features <em>except</em> for that one we don’t want (remember, use Y ~ . - XXX to remove a feature XXX)</p></li>
+<li>Using the same steps as above, create a regression model <code>glm_fit</code> which predicts <code>Grad.Rate</code> using all features</li>
 </ol>
-<pre class="r"><code>Grad.Rate_glm &lt;- train(form = Grad.Rate ~ . - XXX,   # Get rid of that one feature!
+<pre class="r"><code>Grad.Rate_glm &lt;- train(form = Grad.Rate ~ .,
                        data = college_train,
                        method = &quot;glm&quot;,
                        trControl = ctrl_none)</code></pre>
-<ol start="3" style="list-style-type: decimal">
+<ol start="2" style="list-style-type: decimal">
 <li><p>Explore your model using <code>summary()</code>, which features seem to be important?</p></li>
 <li><p>What is the Mean Absolute Error (MAE) of your new model that uses 17 features? How does this compare to your previous model that only used 1 feature?</p></li>
 <li><p>(Optional). Create a scatter plot showing the relationship between your new model fits and the true values. How does this plot compare to your previous one?</p></li>

@@ -48,6 +48,13 @@ library(ggthemes)
 |:----|:-----|:------|
 |[college_train.csv](https://raw.githubusercontent.com/therbootcamp/appliedML_2019Jan/master/_sessions/_data/college_train.csv)| 1000 | 21|
 
+- The `college_train` data are taken from the `College` dataset in the `ISLR` package. To see column descriptions, run the following:
+
+```{r, eval = FALSE}
+library(ISLR)   # Load ISLR package
+?College        # Look at help menu for College
+```
+
 ### Glossary
 
 | Function| Package | Description |
@@ -397,8 +404,7 @@ So far we have only used one feature (`PhD`), to predict `Grad.Rate`. Let's try 
 - `PhD`: The percent of faculty with a PhD
 - `Room.Board`: Room and board costs
 - `Terminal`: Percent of faculty with a terminal degree
-- `S_F_Ratio`: Student to faculty ratio
-
+- `S.F.Ratio`: Student to faculty ratio
 
 1. Using the same steps as above, create a regression model `Grad.Rate_glm` which predicts `Grad.Rate` using all 4 features (you can also call it something else if you want to save your original model!).
 
@@ -414,24 +420,22 @@ So far we have only used one feature (`PhD`), to predict `Grad.Rate`. Let's try 
 
 Alright now it's time to use all features available!
 
-1. Before we run the model, we need to make sure there aren't any features we *don't* want to include. Look at the `college_train` dataframe again -- do you see the one feature that we definitely don't want to include in the model?
-
-2. Using the same steps as above, create a regression model `glm_fit` which predicts `Grad.Rate` using all features *except* for that one we don't want (remember, use Y ~ . - XXX to remove a feature XXX)
+1. Using the same steps as above, create a regression model `glm_fit` which predicts `Grad.Rate` using all features
 
 ```{r, echo = TRUE}
-Grad.Rate_glm <- train(form = Grad.Rate ~ . - XXX,   # Get rid of that one feature!
+Grad.Rate_glm <- train(form = Grad.Rate ~ .,
                        data = college_train,
                        method = "glm",
                        trControl = ctrl_none)
 ```
 
-3. Explore your model using `summary()`, which features seem to be important?
+2. Explore your model using `summary()`, which features seem to be important?
 
-4. What is the Mean Absolute Error (MAE) of your new model that uses 17 features? How does this compare to your previous model that only used 1 feature?
+3. What is the Mean Absolute Error (MAE) of your new model that uses 17 features? How does this compare to your previous model that only used 1 feature?
 
-5. (Optional). Create a scatter plot showing the relationship between your new model fits and the true values. How does this plot compare to your previous one?
+4. (Optional). Create a scatter plot showing the relationship between your new model fits and the true values. How does this plot compare to your previous one?
 
-6. (Optional). Create a violin plot showing the distribution of absolute errors. How does this compare to your previous one?
+5. (Optional). Create a violin plot showing the distribution of absolute errors. How does this compare to your previous one?
 
 # Classification
 
