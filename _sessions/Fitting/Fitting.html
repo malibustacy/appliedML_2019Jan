@@ -250,7 +250,7 @@ Classification accuracy measures all come from the &lt;high&gt; "confusion matri
 
 The confusion matrix is a cross tabulation table showing predictions versus true classes.
 
-### Confusion Matrix
+#### Confusion Matrix
 
 |    |      Y is Positive      | Y is Negative |
 |--------------|:-------------:|:------:|
@@ -390,23 +390,23 @@ Our model is 67% accurate in catching true repayments
 
 Now we're ready to fit models to data!
 
-In this course will cover three commonly used models, Regression, Decision Trees, and Random Forest
+In this course will cover three commonly used models, &lt;high&gt;Regression&lt;/high&gt;, &lt;high&gt;Decision Trees&lt;/high&gt;, and &lt;high&gt;Random Forest&lt;/high&gt;.
 
 These models can be used in both regression and classification tasks.
 
-As you'll see, they differ in complexity (interpretability, computational demands)
+As you'll see, they differ in complexity in important regards.
 
 |Model|Complexity|
 |:----|:---- |
-|Regression|&lt;font color = "orange"&gt;Medium&lt;/font&gt;|
-|Decision Tree|&lt;font color = "green"&gt;Low&lt;/font&gt; (usually)|
-|Random Forests|&lt;font color = "red"&gt;High&lt;/font&gt;|
+|Regression|&lt;font color = "#EACC48"&gt;Medium&lt;/font&gt;|
+|Decision Tree|&lt;font color = "#6ABA9A"&gt;Low&lt;/font&gt; (usually)|
+|Random Forests|&lt;font color = "#EA4B68"&gt;High&lt;/font&gt;|
 
 ]
 
 .pull-right5[
-
-&lt;img src="https://github.com/therbootcamp/appliedML_2019Jan/blob/master/_sessions/Fitting/image/three_models_vert.jpg?raw=true" width="100%" style="display: block; margin: auto;" /&gt;
+&lt;br&gt;
+&lt;img src="https://github.com/therbootcamp/appliedML_2019Jan/blob/master/_sessions/Fitting/image/three_models_vert.jpg?raw=true" width="90%" style="display: block; margin: auto;" /&gt;
 
 ]
 
@@ -429,13 +429,15 @@ class: center, middle
 
 ---
 
-.pull-left4[
-
 # Regression
+
+.pull-left4[
 
 In [regression](https://en.wikipedia.org/wiki/Regression_analysis), the criterion Y is modeled as the &lt;high&gt;sum&lt;/high&gt; of &lt;high&gt;predictors times weights&lt;/high&gt; `\(\beta_{1}\)`, `\(\beta_{2}\)`&lt;/high&gt;.
 
 `$$\hat{Y} =  \beta_{0} + X1 \times \beta_{X1} + X2 \times \beta_{X2} + ...$$`
+&lt;br&gt;
+
 &lt;div class="figure" style="text-align: center"&gt;
 &lt;img src="https://afit-r.github.io/public/images/analytics/regression/sq.errors-1.png" alt="&amp;lt;font size = 3&amp;gt;James et al., Introduction to SL&amp;lt;/font&amp;gt;" width="100%" /&gt;
 &lt;p class="caption"&gt;&lt;font size = 3&gt;James et al., Introduction to SL&lt;/font&gt;&lt;/p&gt;
@@ -445,8 +447,7 @@ In [regression](https://en.wikipedia.org/wiki/Regression_analysis), the criterio
 
 .pull-right55[
 
-&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;
-### Interpretation
+#### Interpretation
 
 `$$\LARGE \hat{Y} =  \beta_{0} + X1 \times \beta_{X1} + X2 \times \beta_{X2} + ...$$`
 
@@ -454,8 +455,7 @@ Each beta weight `\(\beta_{i}\)` can be interpreted as:
 
 &lt;q&gt;As the value of `\(X_{i}\)` increases by 1, how does the criterion `\(Y\)` change?&lt;/q&gt;
 
-The more extreme `\(\beta_{i}\)` is (either positive or negative), the more `\(X_{i}\)` is used to predict the criterion `\(Y\)` 
-- But always take into account the scale of `\(X_{i}\)`!
+The more extreme `\(\beta_{i}\)` is (either positive or negative), the more `\(X_{i}\)` is used to predict the criterion `\(Y\)` (Note: take into account the scale of `\(X_{i}\)`!).
 
 If a value of `\(\beta_{i}\)` is exactly 0, that means `\(X_{i}\)` does not help us predict the criterion `\(Y\)`
 
@@ -468,13 +468,15 @@ If a value of `\(\beta_{i}\)` is exactly 0, that means `\(X_{i}\)` does not help
 
 ---
 
-.pull-left4[
-
 # Regression
+
+.pull-left4[
 
 In [regression](https://en.wikipedia.org/wiki/Regression_analysis), the criterion Y is modeled as the &lt;high&gt;sum&lt;/high&gt; of &lt;high&gt;predictors times weights&lt;/high&gt; `\(\beta_{1}\)`, `\(\beta_{2}\)`&lt;/high&gt;.
 
 `$$\hat{Y} =  \beta_{0} + X1 \times \beta_{X1} + X2 \times \beta_{X2} + ...$$`
+&lt;br&gt;
+
 &lt;div class="figure" style="text-align: center"&gt;
 &lt;img src="https://afit-r.github.io/public/images/analytics/regression/sq.errors-1.png" alt="&amp;lt;font size = 3&amp;gt;James et al., Introduction to SL&amp;lt;/font&amp;gt;" width="100%" /&gt;
 &lt;p class="caption"&gt;&lt;font size = 3&gt;James et al., Introduction to SL&lt;/font&gt;&lt;/p&gt;
@@ -484,19 +486,17 @@ In [regression](https://en.wikipedia.org/wiki/Regression_analysis), the criterio
 
 .pull-right55[
 
-## Sales Example
+### Sales Example
 
 &lt;img src="image/Carseats_ss.jpg" width="100%" style="display: block; margin: auto;" /&gt;
 
 
-#### Regression Model
+&lt;u&gt;Regression Model&lt;/u&gt;
 
 `$$\large Sales =  \beta_{0} + CompPrice \times \beta_{CompPrice} + Income \times \beta_{Income} + ...$$`
-#### Example coefficients
+&lt;u&gt;Estimates&lt;/u&gt;
 
-|Parameter| `\(\beta_{0}\)`| `\(\beta_{CompPrice}\)` | `\(\beta_{Income}\)` | `\(\beta_{Advertising}\)` |
-|:-----|:-----|:-----|:----|:----|
-| Estimate| 10 | 5.4 | 1.3 |2.4 |
+`$$\large Sales =  10 + CompPrice \times 5.4 + Income \times  1.3 + ...$$`
 
 ]
 
@@ -517,11 +517,12 @@ class: center,  middle
 
 ---
 
-.pull-left55[
+
+.pull-left4[
 
 # `caret`
 
-Main caret fitting functions:
+&lt;u&gt;Main caret fitting functions&lt;/u&gt;
 
 | Function| Purpose|
 |--------|----------|
@@ -532,8 +533,9 @@ Main caret fitting functions:
 
 ]
 
-.pull-right4[
+.pull-right5[
 
+&lt;br&gt;
 
 
 ```r
@@ -575,9 +577,9 @@ ggplot(...)
 
 ---
 
-.pull-left55[
+# `trainControl()`
 
-## trainControl()
+.pull-left55[
 
 Use `trainControl()` to define how `caret` should, generally, &lt;high&gt;select the best parameters&lt;/high&gt; for an ML model.
 
@@ -587,9 +589,7 @@ Here you can tell `caret` to do things like repeated &lt;high&gt;cross validatio
 |:-----|:----|
 |`method`|How should fitting be done?|
 
-For now, we'll set `method = "none"` to keep things simple. 
-
-This means "Fit the model without advanced parameter tuning"
+For now, we'll set `method = "none"` to keep things simple to &lt;high&gt;fit the model without advanced parameter tuning&lt;/high&gt;.
 
 
 ```r
@@ -602,8 +602,11 @@ ctrl &lt;- trainControl(method = "none")
 ]
 
 .pull-right4[
-&lt;br&gt;&lt;br&gt;
-Help menu for `?trainControl()`
+
+
+```r
+?trainControl
+```
 
 &lt;img src="image/traincontrol_help.jpg" width="100%" style="display: block; margin: auto;" /&gt;
 
@@ -611,18 +614,13 @@ Help menu for `?trainControl()`
 
 ---
 
+# `train()`
 
 .pull-left4[
 
-## `train()`
-
 `train()` is the workhorse fitting function of `caret`.
 
-With just this one function, you can &lt;high&gt;fit any of 200+ models&lt;/high&gt;...
-
-...just by changing the &lt;high&gt;method&lt;/high&gt; argument!
-
-### train() Arguments
+With just this one function, you can &lt;high&gt;fit any of 200+ models&lt;/high&gt; just by changing the &lt;high&gt;method&lt;/high&gt; argument!
 
 
 |Argument|Description|
@@ -637,8 +635,7 @@ With just this one function, you can &lt;high&gt;fit any of 200+ models&lt;/high
 
 .pull-right55[
 
-&lt;br&gt;&lt;br&gt;&lt;br&gt;
-### Train a Regression model
+#### Train a Regression model
 
 Regression: `method = "glm"`
 
@@ -658,19 +655,13 @@ mod &lt;- train(form = income ~ ., # Formula
 
 ---
 
+# `train()`
 
 .pull-left4[
 
-## `train()`
-
 `train()` is the workhorse fitting function of `caret`.
 
-With just this one function, you can &lt;high&gt;fit any of 200+ models&lt;/high&gt;...
-
-...just by changing the &lt;high&gt;method&lt;/high&gt; argument!
-
-### train() Arguments
-
+With just this one function, you can &lt;high&gt;fit any of 200+ models&lt;/high&gt; just by changing the &lt;high&gt;method&lt;/high&gt; argument!
 
 |Argument|Description|
 |:-----|:----|
@@ -683,9 +674,7 @@ With just this one function, you can &lt;high&gt;fit any of 200+ models&lt;/high
 
 .pull-right55[
 
-&lt;br&gt;&lt;br&gt;&lt;br&gt;
-
-### Train a Random Forest model
+#### Train a Random Forest model
 
 Random Forest: `method = "rf"`
 
@@ -706,41 +695,29 @@ mod &lt;- train(form = income ~ ., # Formula
 
 .pull-left4[
 
-## `train()`
+# `train()`
 
 `train()` is the workhorse fitting function of `caret`.
 
-With just this one function, you can &lt;high&gt;fit any of 200+ models&lt;/high&gt;...
+With just this one function, you can &lt;high&gt;fit any of 200+ models&lt;/high&gt; just by changing the &lt;high&gt;method&lt;/high&gt; argument!
 
-...just by changing the &lt;high&gt;method&lt;/high&gt; argument!
-
-### train() Arguments
-
-
-|Argument|Description|
-|:-----|:----|
-|`form`|Formula specifying criterion|
-|`data`|Training data|
-|`method`| Model|
-|`trControl`| Control parameters|
+Find all 280+ models [here](http://topepo.github.io/caret/available-models.html).
 
 ]
 
 
 .pull-right55[
 
-Find all 280+ models [here](http://topepo.github.io/caret/available-models.html)
-
+&lt;br&gt;
 &lt;img src="image/caret_models_ss.jpg" width="80%" style="display: block; margin: auto;" /&gt;
 
 
 ]
 
 ---
-
 .pull-left4[
 
-## `train()`
+# `train()`
 
 Make sure your criterion is the correct class for your type of modelling task
 
@@ -771,7 +748,8 @@ See that the column Default is 0's and 1's, but is coded as numeric.
 
 .pull-right55[
 
-&lt;br&gt;&lt;br&gt;
+&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;
+
 This code will think that Default is a continuous number, not a category (probably not what you want)
 
 
@@ -803,7 +781,7 @@ mod &lt;- train(form = factor(Default) ~ .,
 ---
 .pull-left35[
 
-# Getting final models: .$finalModel
+# .$finalModel
 
 The `train()` function returns a list with a key object called `finalModel` - this is your final machine learning model!
 
@@ -819,14 +797,12 @@ You can access the model with `mod$finalModel`, and explore the object with gene
 
 .pull-right6[
 
-
+&lt;br&gt;
 
 ```r
 # Create a regression object
 mod &lt;- train(form = income ~ age + height + fitness,
-             data = baselers,   # Training data
-             method = "glm",    # Regression
-             trControl = ctrl)  # Control Parameters
+             data = baselers)   # Training data
 
 # Look at final model
 mod$finalModel
@@ -869,13 +845,13 @@ mod$finalModel$coefficients
 
 ---
 
+# `predict()`
+
 .pull-left5[
 
-## `predict()`
+The `predict()` function is allows you to return predictions from a model.
 
-The `predict()` function is a generic function in R for returning predictions from a model.
-
-Put your model object as the first argument. If you don't specify a new dataset with `newdata`, the function returns *fitted values from training*
+Put your model object as the first argument. If you don't specify a new dataset with `newdata`, the function returns &lt;high&gt;fitted values from training&lt;/high&gt;
 
 
 
@@ -897,29 +873,25 @@ glm_fits[1:5]
 5507 6971 6969 8643 5324 
 ```
 
-You can use this vector to compare the model fits to the true values (see plot to right)
-
 ]
 
 .pull-right45[
 
-### Plot of fits versus Truth
+#### Plot of fits versus Truth
 
 If the model was perfect, all points would be on diagonal
 
-*Code Hidden*
 
-
-&lt;img src="Fitting_files/figure-html/unnamed-chunk-35-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="Fitting_files/figure-html/unnamed-chunk-36-1.png" style="display: block; margin: auto;" /&gt;
 
 
 ]
 
 ---
 
-.pull-left5[
+# `postResample()`
 
-## `postResample()`
+.pull-left5[
 
 To calculate aggregate model performance, use `postResample()`
 
@@ -927,6 +899,8 @@ To calculate aggregate model performance, use `postResample()`
 |:----|:----|
 |pred|Model predictions (or fits)|
 |obs|The observed (true) values|
+
+&lt;br&gt;
 
 
 ```r
@@ -943,19 +917,16 @@ postResample(pred = glm_fits, # Predictions
 
 
 
-This tells us that the Mean Absolute Error (MAE) of the model in fitting was 936.99
-
 ]
 
 .pull-right45[
 
-### Plot of fits versus Truth
+#### Plot of fits versus Truth
 
 Red lines indicate absolute error(s)
 
-*Code Hidden*
 
-&lt;img src="Fitting_files/figure-html/unnamed-chunk-38-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="Fitting_files/figure-html/unnamed-chunk-39-1.png" style="display: block; margin: auto;" /&gt;
 
 ]
 

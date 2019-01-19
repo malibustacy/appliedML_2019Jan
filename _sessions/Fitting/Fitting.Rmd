@@ -374,7 +374,7 @@ Classification accuracy measures all come from the <high> "confusion matrix"</hi
 
 The confusion matrix is a cross tabulation table showing predictions versus true classes.
 
-### Confusion Matrix
+#### Confusion Matrix
 
 |    |      Y is Positive      | Y is Negative |
 |--------------|:-------------:|:------:|
@@ -514,23 +514,23 @@ $$\large Specificity = \frac{2}{ 2 + 1 }= 0.67$$
 
 Now we're ready to fit models to data!
 
-In this course will cover three commonly used models, Regression, Decision Trees, and Random Forest
+In this course will cover three commonly used models, <high>Regression</high>, <high>Decision Trees</high>, and <high>Random Forest</high>.
 
 These models can be used in both regression and classification tasks.
 
-As you'll see, they differ in complexity (interpretability, computational demands)
+As you'll see, they differ in complexity in important regards.
 
 |Model|Complexity|
 |:----|:---- |
-|Regression|<font color = "orange">Medium</font>|
-|Decision Tree|<font color = "green">Low</font> (usually)|
-|Random Forests|<font color = "red">High</font>|
+|Regression|<font color = "#EACC48">Medium</font>|
+|Decision Tree|<font color = "#6ABA9A">Low</font> (usually)|
+|Random Forests|<font color = "#EA4B68">High</font>|
 
 ]
 
 .pull-right5[
-
-```{r, echo = FALSE, fig.align = 'center', out.width = "100%"}
+<br>
+```{r, echo = FALSE, fig.align = 'center', out.width = "90%"}
 knitr::include_graphics("https://github.com/therbootcamp/appliedML_2019Jan/blob/master/_sessions/Fitting/image/three_models_vert.jpg?raw=true")
 ```
 
@@ -557,13 +557,15 @@ class: center, middle
 
 ---
 
-.pull-left4[
-
 # Regression
+
+.pull-left4[
 
 In [regression](https://en.wikipedia.org/wiki/Regression_analysis), the criterion Y is modeled as the <high>sum</high> of <high>predictors times weights</high> $\beta_{1}$, $\beta_{2}$</high>.
 
 $$\hat{Y} =  \beta_{0} + X1 \times \beta_{X1} + X2 \times \beta_{X2} + ...$$
+<br>
+
 ```{r, echo = FALSE, out.width = "100%", fig.cap = "<font size = 3>James et al., Introduction to SL</font>"}
 knitr::include_graphics("https://afit-r.github.io/public/images/analytics/regression/sq.errors-1.png")
 ```
@@ -572,8 +574,7 @@ knitr::include_graphics("https://afit-r.github.io/public/images/analytics/regres
 
 .pull-right55[
 
-<br><br><br><br><br>
-### Interpretation
+#### Interpretation
 
 $$\LARGE \hat{Y} =  \beta_{0} + X1 \times \beta_{X1} + X2 \times \beta_{X2} + ...$$
 
@@ -581,8 +582,7 @@ Each beta weight $\beta_{i}$ can be interpreted as:
 
 <q>As the value of $X_{i}$ increases by 1, how does the criterion $Y$ change?</q>
 
-The more extreme $\beta_{i}$ is (either positive or negative), the more $X_{i}$ is used to predict the criterion $Y$ 
-- But always take into account the scale of $X_{i}$!
+The more extreme $\beta_{i}$ is (either positive or negative), the more $X_{i}$ is used to predict the criterion $Y$ (Note: take into account the scale of $X_{i}$!).
 
 If a value of $\beta_{i}$ is exactly 0, that means $X_{i}$ does not help us predict the criterion $Y$
 
@@ -595,13 +595,15 @@ If a value of $\beta_{i}$ is exactly 0, that means $X_{i}$ does not help us pred
 
 ---
 
-.pull-left4[
-
 # Regression
+
+.pull-left4[
 
 In [regression](https://en.wikipedia.org/wiki/Regression_analysis), the criterion Y is modeled as the <high>sum</high> of <high>predictors times weights</high> $\beta_{1}$, $\beta_{2}$</high>.
 
 $$\hat{Y} =  \beta_{0} + X1 \times \beta_{X1} + X2 \times \beta_{X2} + ...$$
+<br>
+
 ```{r, echo = FALSE, out.width = "100%", fig.cap = "<font size = 3>James et al., Introduction to SL</font>"}
 knitr::include_graphics("https://afit-r.github.io/public/images/analytics/regression/sq.errors-1.png")
 ```
@@ -610,21 +612,19 @@ knitr::include_graphics("https://afit-r.github.io/public/images/analytics/regres
 
 .pull-right55[
 
-## Sales Example
+### Sales Example
 
 ```{r, echo = FALSE, out.width = "100%"}
 knitr::include_graphics("image/Carseats_ss.jpg")
 ```
 
 
-#### Regression Model
+<u>Regression Model</u>
 
 $$\large Sales =  \beta_{0} + CompPrice \times \beta_{CompPrice} + Income \times \beta_{Income} + ...$$
-#### Example coefficients
+<u>Estimates</u>
 
-|Parameter| $\beta_{0}$| $\beta_{CompPrice}$ | $\beta_{Income}$ | $\beta_{Advertising}$ |
-|:-----|:-----|:-----|:----|:----|
-| Estimate| 10 | 5.4 | 1.3 |2.4 |
+$$\large Sales =  10 + CompPrice \times 5.4 + Income \times  1.3 + ...$$
 
 ]
 
@@ -650,11 +650,12 @@ data(cars)
 
 ---
 
-.pull-left55[
+
+.pull-left4[
 
 # `caret`
 
-Main caret fitting functions:
+<u>Main caret fitting functions</u>
 
 | Function| Purpose|
 |--------|----------|
@@ -665,8 +666,9 @@ Main caret fitting functions:
 
 ]
 
-.pull-right4[
+.pull-right5[
 
+<br>
 
 ```{r, eval = FALSE}
 # Step 1: Load data
@@ -707,9 +709,9 @@ ggplot(...)
 
 ---
 
-.pull-left55[
+# `trainControl()`
 
-## trainControl()
+.pull-left55[
 
 Use `trainControl()` to define how `caret` should, generally, <high>select the best parameters</high> for an ML model.
 
@@ -719,9 +721,7 @@ Here you can tell `caret` to do things like repeated <high>cross validation</hig
 |:-----|:----|
 |`method`|How should fitting be done?|
 
-For now, we'll set `method = "none"` to keep things simple. 
-
-This means "Fit the model without advanced parameter tuning"
+For now, we'll set `method = "none"` to keep things simple to <high>fit the model without advanced parameter tuning</high>.
 
 ```{r}
 # Fit the model without any 
@@ -733,8 +733,10 @@ ctrl <- trainControl(method = "none")
 ]
 
 .pull-right4[
-<br><br>
-Help menu for `?trainControl()`
+
+```{r, eval = F}
+?trainControl
+```
 
 ```{r, echo = FALSE, out.width = "100%"}
 knitr::include_graphics("image/traincontrol_help.jpg")
@@ -744,18 +746,13 @@ knitr::include_graphics("image/traincontrol_help.jpg")
 
 ---
 
+# `train()`
 
 .pull-left4[
 
-## `train()`
-
 `train()` is the workhorse fitting function of `caret`.
 
-With just this one function, you can <high>fit any of 200+ models</high>...
-
-...just by changing the <high>method</high> argument!
-
-### train() Arguments
+With just this one function, you can <high>fit any of 200+ models</high> just by changing the <high>method</high> argument!
 
 
 |Argument|Description|
@@ -770,8 +767,7 @@ With just this one function, you can <high>fit any of 200+ models</high>...
 
 .pull-right55[
 
-<br><br><br>
-### Train a Regression model
+#### Train a Regression model
 
 Regression: `method = "glm"`
 
@@ -790,19 +786,13 @@ mod <- train(form = income ~ ., # Formula
 
 ---
 
+# `train()`
 
 .pull-left4[
 
-## `train()`
-
 `train()` is the workhorse fitting function of `caret`.
 
-With just this one function, you can <high>fit any of 200+ models</high>...
-
-...just by changing the <high>method</high> argument!
-
-### train() Arguments
-
+With just this one function, you can <high>fit any of 200+ models</high> just by changing the <high>method</high> argument!
 
 |Argument|Description|
 |:-----|:----|
@@ -815,9 +805,7 @@ With just this one function, you can <high>fit any of 200+ models</high>...
 
 .pull-right55[
 
-<br><br><br>
-
-### Train a Random Forest model
+#### Train a Random Forest model
 
 Random Forest: `method = "rf"`
 
@@ -837,31 +825,20 @@ mod <- train(form = income ~ ., # Formula
 
 .pull-left4[
 
-## `train()`
+# `train()`
 
 `train()` is the workhorse fitting function of `caret`.
 
-With just this one function, you can <high>fit any of 200+ models</high>...
+With just this one function, you can <high>fit any of 200+ models</high> just by changing the <high>method</high> argument!
 
-...just by changing the <high>method</high> argument!
-
-### train() Arguments
-
-
-|Argument|Description|
-|:-----|:----|
-|`form`|Formula specifying criterion|
-|`data`|Training data|
-|`method`| Model|
-|`trControl`| Control parameters|
+Find all 280+ models [here](http://topepo.github.io/caret/available-models.html).
 
 ]
 
 
 .pull-right55[
 
-Find all 280+ models [here](http://topepo.github.io/caret/available-models.html)
-
+<br>
 ```{r, echo = FALSE, out.width = "80%"}
 knitr::include_graphics("image/caret_models_ss.jpg")
 ```
@@ -870,10 +847,9 @@ knitr::include_graphics("image/caret_models_ss.jpg")
 ]
 
 ---
-
 .pull-left4[
 
-## `train()`
+# `train()`
 
 Make sure your criterion is the correct class for your type of modelling task
 
@@ -902,7 +878,8 @@ See that the column Default is 0's and 1's, but is coded as numeric.
 
 .pull-right55[
 
-<br><br>
+<br><br><br><br>
+
 This code will think that Default is a continuous number, not a category (probably not what you want)
 
 ```{r, eval = FALSE}
@@ -932,7 +909,7 @@ mod <- train(form = factor(Default) ~ .,
 ---
 .pull-left35[
 
-# Getting final models: .$finalModel
+# .$finalModel
 
 The `train()` function returns a list with a key object called `finalModel` - this is your final machine learning model!
 
@@ -948,13 +925,11 @@ You can access the model with `mod$finalModel`, and explore the object with gene
 
 .pull-right6[
 
-
+<br>
 ```{r, eval = FALSE, echo = TRUE}
 # Create a regression object
 mod <- train(form = income ~ age + height + fitness,
-             data = baselers,   # Training data
-             method = "glm",    # Regression
-             trControl = ctrl)  # Control Parameters
+             data = baselers)   # Training data
 
 # Look at final model
 mod$finalModel
@@ -984,13 +959,13 @@ mod$finalModel$coefficients
 
 ---
 
+# `predict()`
+
 .pull-left5[
 
-## `predict()`
+The `predict()` function is allows you to return predictions from a model.
 
-The `predict()` function is a generic function in R for returning predictions from a model.
-
-Put your model object as the first argument. If you don't specify a new dataset with `newdata`, the function returns *fitted values from training*
+Put your model object as the first argument. If you don't specify a new dataset with `newdata`, the function returns <high>fitted values from training</high>
 
 
 ```{r}
@@ -1005,17 +980,13 @@ The result is a vector
 glm_fits[1:5]
 ```
 
-You can use this vector to compare the model fits to the true values (see plot to right)
-
 ]
 
 .pull-right45[
 
-### Plot of fits versus Truth
+#### Plot of fits versus Truth
 
 If the model was perfect, all points would be on diagonal
-
-*Code Hidden*
 
 
 ```{r, fig.width = 4, fig.height = 3, fig.align = 'center', echo = FALSE}
@@ -1033,9 +1004,9 @@ ggplot(aes(x = fits, y = truth)) +
 
 ---
 
-.pull-left5[
+# `postResample()`
 
-## `postResample()`
+.pull-left5[
 
 To calculate aggregate model performance, use `postResample()`
 
@@ -1043,6 +1014,8 @@ To calculate aggregate model performance, use `postResample()`
 |:----|:----|
 |pred|Model predictions (or fits)|
 |obs|The observed (true) values|
+
+<br>
 
 ```{r}
 # Assess performance with postResample()
@@ -1056,17 +1029,14 @@ x <- postResample(pred = glm_fits,
                  obs = baselers$income)
 ```
 
-This tells us that the Mean Absolute Error (MAE) of the model in fitting was `r round(x[3], 2)`
-
 ]
 
 .pull-right45[
 
-### Plot of fits versus Truth
+#### Plot of fits versus Truth
 
 Red lines indicate absolute error(s)
 
-*Code Hidden*
 
 ```{r, fig.width = 4, fig.height = 3, fig.align = 'center', echo = FALSE}
 tibble(fits = glm_fits[1:100],
