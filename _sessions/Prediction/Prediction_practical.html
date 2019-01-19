@@ -2115,8 +2115,8 @@ mod &lt;- train(form = hwy ~ year + cyl + displ,
              ntree = 1000,   # use 1000 trees! (Instead of the default value of 500)
              tuneGrid = expand.grid(mtry = 2))</code></pre>
 </div>
-<div id="e-challenges" class="section level1">
-<h1>E Challenges</h1>
+<div id="z---challenges" class="section level1">
+<h1>Z - Challenges</h1>
 <ol style="list-style-type: decimal">
 <li><p>So far you’ve probably been using most, if not all, available features in predicting house sales. But imagine someone came to you and said &quot;I need to know how much a set of new houses will sell for, but I only have access to three features <code>bedrooms</code>, <code>bathrooms</code>, and <code>sqft_living</code>. Which of your models should I use and how accurate will they be? How would you answer that question? Use your modelling techniques to find out!</p></li>
 <li><p>Repeat your modelling process, but now do a classification task. Specifically, predict whether or not a house sells for at least $1,000,000. To do this, you’ll first need to create a new column called <code>million</code> in both your <code>house_train</code> and <code>house_test</code> datasets (the code below should help you). Then, use your best modelling techniques to make this prediction. How accurate are your models in predicting whether or not a house will sell for over $1,000,000? Don’t forget to use the <code>confusionMatrix()</code> function instead of <code>postResample()</code> to evaluate your model’s accuracy!</p></li>
