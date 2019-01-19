@@ -98,6 +98,9 @@ img {
 button.code-folding-btn:focus {
   outline: none;
 }
+summary {
+  display: list-item;
+}
 </style>
 
 
@@ -105,14 +108,74 @@ button.code-folding-btn:focus {
 <div class="container-fluid main-container">
 
 <!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
 <script>
 $(document).ready(function () {
   window.buildTabsets("TOC");
 });
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
 </script>
 
 <!-- code folding -->
-
 
 
 
@@ -543,7 +606,7 @@ ggplot(data = accuracy,
 </div>
 </div>
 <div id="baseball-player-salaries" class="section level1">
-<h1>Baseball player salaries</h1>
+<h1>0 - Baseball player salaries</h1>
 <p>In this section, we will predict the salaries of baseball players from the <code>hitters_train</code> and <code>hitters_test</code> datasets. Here’s how the first few rows of <code>hitters_train</code> should look:</p>
 <table>
 <thead>
@@ -853,15 +916,11 @@ hitters_train &lt;- hitters_train %&gt;%
 
 hitters_test &lt;- hitters_test %&gt;%
           mutate_if(is.character, factor)</code></pre>
-<pre class="r"><code>data_train &lt;- read_csv(file = &quot;1_Data/hitters_train.csv&quot;) %&gt;%
-  slice(1:15)
-
-data_test &lt;- read_csv(file = &quot;1_Data/hitters_test.csv&quot;)</code></pre>
 </div>
-<div id="a---setup-1" class="section level2">
-<h2>A - Setup</h2>
+<div id="b---setup-traincontrol" class="section level2">
+<h2>B - Setup <code>trainControl</code></h2>
 <ol style="list-style-type: decimal">
-<li>Set up your training by specifying <code>ctrl_cv</code> as 10-fold cross-validaation</li>
+<li>Set up your training by specifying <code>ctrl_cv</code> as 10-fold cross-validation</li>
 </ol>
 <ul>
 <li>Set method = “cv” to specify cross validation</li>
@@ -871,8 +930,8 @@ data_test &lt;- read_csv(file = &quot;1_Data/hitters_test.csv&quot;)</code></pre
 ctrl_cv &lt;- trainControl(method = &quot;XX&quot;, 
                         number = XX) </code></pre>
 </div>
-<div id="b---regression-standard" class="section level2">
-<h2>B - Regression (standard)</h2>
+<div id="c---regression-standard" class="section level2">
+<h2>C - Regression (standard)</h2>
 <ol style="list-style-type: decimal">
 <li>Fit a (standard) regression model predicting <code>Salary</code> as a function of all features</li>
 </ol>
@@ -889,18 +948,18 @@ salary_glm &lt;- train(form = XX ~ .,
                     method = &quot;XX&quot;,
                     trControl = XX)</code></pre>
 <ol start="3" style="list-style-type: decimal">
-<li><p>Try plotting your <code>price_glm</code> object. What happens? What does this error mean?</p></li>
-<li><p>Print your final model object with <code>price_glm$finalModel</code></p></li>
+<li><p>Try plotting your <code>salary_glm</code> object. What happens? What does this error mean?</p></li>
+<li><p>Print your final model object with <code>salary_glm$finalModel</code></p></li>
 </ol>
 <pre class="r"><code># Print final regression model
-price_glm$finalModel</code></pre>
+salary_glm$finalModel</code></pre>
 <ol start="5" style="list-style-type: decimal">
 <li>Perint your final regression model coefficients with <code>coef()</code>.</li>
 </ol>
-<pre class="r"><code>coef(price_glm$finalModel)</code></pre>
+<pre class="r"><code>coef(salary_glm$finalModel)</code></pre>
 </div>
-<div id="c---ridge-regression" class="section level2">
-<h2>C - Ridge Regression</h2>
+<div id="d---ridge-regression" class="section level2">
+<h2>D - Ridge Regression</h2>
 <p>It’s time to fit an optimised regression model with a Ridge penalty!</p>
 <ol style="list-style-type: decimal">
 <li>Before we can fit a ridge regression model, we need to specify which values of the lambda penalty parameter we want to try. Using the code below, create a vector called <code>lambda_vec</code> which contains 100 values between 0 and 2</li>
@@ -946,8 +1005,8 @@ coef(price_ridge$finalModel,
 <li>How do these coefficients compare to what you found in regular regression? Are they similar? Different?</li>
 </ol>
 </div>
-<div id="c---lasso-regression" class="section level2">
-<h2>C - Lasso Regression</h2>
+<div id="e---lasso-regression" class="section level2">
+<h2>E - Lasso Regression</h2>
 <p>It’s time to fit an optimised regression model with a Lasso penalty!</p>
 <ol style="list-style-type: decimal">
 <li>Before we can fit a ridge regression model, we need to specify which values of the lambda penalty parameter we want to try. Using the code below, create a vector called <code>lambda_vec</code> which contains 100 values between 0 and .5</li>
@@ -993,8 +1052,8 @@ coef(price_lasso$finalModel,
 <li>How do these coefficients compare to what you found in regular regression? Are they similar? Different? Do you notice that any coefficients are now set to exactly 0?</li>
 </ol>
 </div>
-<div id="c---decision-tree" class="section level2">
-<h2>C - Decision Tree</h2>
+<div id="f---decision-tree" class="section level2">
+<h2>F - Decision Tree</h2>
 <p>It’s time to fit an optimised decision tree model!!</p>
 <ol style="list-style-type: decimal">
 <li>Before we can fit a decision treel, we need to specify which values of the complexity parameter <code>cp</code> we want to try. Using the code below, create a vector called <code>cp_vec</code> which contains 100 values between 0 and 1</li>
@@ -1038,8 +1097,8 @@ plot(as.party(price_dt$finalModel)) </code></pre>
 <li>How do the nodes in the tree compare to the coefficients you found in your regression analyses? Do you see similarities or differences?</li>
 </ol>
 </div>
-<div id="d---random-forests" class="section level2">
-<h2>D - Random Forests</h2>
+<div id="g---random-forests" class="section level2">
+<h2>G - Random Forests</h2>
 <p>It’s time to fit an optimised random forest model!</p>
 <ol style="list-style-type: decimal">
 <li>Before we can fit a random forest model, we need to specify which values of the diversity parameter <code>mtry</code> we want to try. Using the code below, create a vector called <code>mtry_vec</code> which is a sequence of numbers from 1 to 10</li>
@@ -1075,8 +1134,8 @@ plot(XX)</code></pre>
 <pre class="r"><code># Print best mtry parameter
 salary_rf$bestTune$mtry</code></pre>
 </div>
-<div id="estimate-prediction-accuracy-from-training-folds" class="section level2">
-<h2>Estimate prediction accuracy from training folds</h2>
+<div id="h-estimate-prediction-accuracy-from-training-folds" class="section level2">
+<h2>H Estimate prediction accuracy from training folds</h2>
 <ol style="list-style-type: decimal">
 <li>Using <code>resamples()</code>, calculate the estimated prediction accuracy for each of your models. To do this, put your model objects in the named list (e.g.; <code>glm = salary_glm</code>, …)</li>
 </ol>
@@ -1092,8 +1151,8 @@ salary_resamples &lt;- resamples(list(glm = XXX,
 <pre class="r"><code># Print summaries of cross-validation accuracy 
 summary(salary_resamples)</code></pre>
 </div>
-<div id="calculate-prediction-accuracy" class="section level2">
-<h2>Calculate prediction accuracy</h2>
+<div id="i-calculate-prediction-accuracy" class="section level2">
+<h2>I Calculate prediction accuracy</h2>
 <ol style="list-style-type: decimal">
 <li>Save the criterion value for the test data as a new vector called <code>criterion_test</code></li>
 </ol>
@@ -1130,8 +1189,8 @@ postResample(pred = XXX,
 <li><p>How close were your model’ true prediction values to the values you estimated in the previous section when you ran <code>resamples()</code>?</p></li>
 </ol>
 </div>
-<div id="challenges" class="section level2">
-<h2>Challenges</h2>
+<div id="j-challenges" class="section level2">
+<h2>J Challenges</h2>
 <ol style="list-style-type: decimal">
 <li>In addition to ‘regular’ 10 fold cross-validation, you can also do repeated 10-fold cross-validation, where the cross validation procedure is repeated many times. Do you think this will improve your models’ performance? To test this, create a new training control object called <code>ctrl_cv_rep</code> as below. Then, train your models again using <code>ctrl_cv_rep</code> (instead of <code>ctrl_cv</code>), and evaluate their prediction performance. Do they improve?</li>
 </ol>
