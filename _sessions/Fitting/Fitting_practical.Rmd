@@ -117,7 +117,7 @@ train_control <- trainControl(method = "none")
 
 # Regression
 
-hwy_glm <- train(form = hwy ~ year + cyl + displ + trans,
+hwy_glm <- train(form = hwy ~ year + cyl + displ,
                  data = data_train,
                  method = "glm",
                  trControl = train_control)

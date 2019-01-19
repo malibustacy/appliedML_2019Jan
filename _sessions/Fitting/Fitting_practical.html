@@ -1042,7 +1042,7 @@ train_control &lt;- trainControl(method = &quot;none&quot;)
 
 # Regression
 
-hwy_glm &lt;- train(form = hwy ~ year + cyl + displ + trans,
+hwy_glm &lt;- train(form = hwy ~ year + cyl + displ,
                  data = data_train,
                  method = &quot;glm&quot;,
                  trControl = train_control)
@@ -1173,13 +1173,13 @@ ctrl_none &lt;- trainControl(method = &quot;none&quot;) </code></pre>
 <div id="c---fit-a-regression-model" class="section level2">
 <h2>C - Fit a regression model</h2>
 <ol style="list-style-type: decimal">
-<li>Using the code below, fit a regression model predicting graduation rate (<code>Grad_Rate</code>) as a function of one feature <code>PhD</code>, the percent of faculty with PhDs). Save the result as an object <code>Grad_Rate_glm</code></li>
+<li>Using the code below, fit a regression model predicting graduation rate (<code>Grad.Rate</code>) as a function of one feature <code>PhD</code>, the percent of faculty with PhDs). Save the result as an object <code>Grad.Rate_glm</code></li>
 </ol>
-<pre class="r"><code># Grad_Rate_glm: Regression Model
-#   Criterion: Grad_Rate
+<pre class="r"><code># Grad.Rate_glm: Regression Model
+#   Criterion: Grad.Rate
 #   Features: PhD
 
-Grad_Rate_glm &lt;- train(form = Grad_Rate ~ PhD,
+Grad.Rate_glm &lt;- train(form = Grad.Rate ~ PhD,
                        data = college_train,
                        method = &quot;glm&quot;,
                        trControl = ctrl_none)</code></pre>
@@ -1188,14 +1188,14 @@ Grad_Rate_glm &lt;- train(form = Grad_Rate ~ PhD,
 </ol>
 <pre class="r"><code># Show summary information from the regression model
 
-summary(Grad_Rate_glm)</code></pre>
+summary(Grad.Rate_glm)</code></pre>
 <ol start="3" style="list-style-type: decimal">
 <li><p>Look at the results, how do you interpret the regression coefficients? What is the general relationship between PhD and graduation rates? Does this make sense?</p></li>
 <li><p>Now it’s time to save the model fits! Do this by running the following code to save the fitted values as <code>glm_fit</code></p></li>
 </ol>
 <pre class="r"><code># Get fitted values from the model and save as glm_fit
 
-glm_fit &lt;- predict(Grad_Rate_glm)</code></pre>
+glm_fit &lt;- predict(Grad.Rate_glm)</code></pre>
 <ol start="5" style="list-style-type: decimal">
 <li>Print your <code>glm_fit</code> object - what are these values? Do they look reasonable? That is, are they in the range of what you expect the criterion to be?</li>
 </ol>
@@ -1208,9 +1208,9 @@ glm_fit</code></pre>
 <ol style="list-style-type: decimal">
 <li>Now it’s time to compare your model fits to the true values, we’ll start by defining the vector <code>criterion</code> as the graduation rates.</li>
 </ol>
-<pre class="r"><code># Define criterion as Grad_Rate
+<pre class="r"><code># Define criterion as Grad.Rate
 
-criterion &lt;- college_train$Grad_Rate</code></pre>
+criterion &lt;- college_train$Grad.Rate</code></pre>
 <ol start="2" style="list-style-type: decimal">
 <li>Let’s quantify our model’s fitting results. To do this, we’ll use the <code>postResample()</code> function, with the fitted values as the prediction, and the criterion as the observed values:</li>
 </ol>
@@ -1279,7 +1279,7 @@ ggplot(data = accuracy,
 </div>
 <div id="f---add-more-features" class="section level2">
 <h2>F - Add more features</h2>
-<p>So far we have only used one feature (<code>PhD</code>), to predict <code>Grad_Rate</code>. Let’s try again, but now we’ll use a total of four features:</p>
+<p>So far we have only used one feature (<code>PhD</code>), to predict <code>Grad.Rate</code>. Let’s try again, but now we’ll use a total of four features:</p>
 <ul>
 <li><code>PhD</code>: The percent of faculty with a PhD</li>
 <li><code>Room_Board</code>: Room and board costs</li>
@@ -1287,7 +1287,7 @@ ggplot(data = accuracy,
 <li><code>S_F_Ratio</code>: Student to faculty ratio</li>
 </ul>
 <ol style="list-style-type: decimal">
-<li><p>Using the same steps as above, create a regression model <code>Grad_Rate_glm</code> which predicts <code>Grad_Rate</code> using all 4 features (you can also call it something else if you want to save your original model!).</p></li>
+<li><p>Using the same steps as above, create a regression model <code>Grad.Rate_glm</code> which predicts <code>Grad.Rate</code> using all 4 features (you can also call it something else if you want to save your original model!).</p></li>
 <li><p>Explore your model using <code>summary()</code>, which features seem to be important?</p></li>
 <li><p>What is the Mean Absolute Error (MAE) of your new model that uses 4 features? How does this compare to your previous model that only used 1 feature?</p></li>
 <li><p>(Optional). Create a scatter plot showing the relationship between your new model fits and the true values. How does this plot compare to your previous one?</p></li>
@@ -1299,9 +1299,9 @@ ggplot(data = accuracy,
 <p>Alright now it’s time to use all features available!</p>
 <ol style="list-style-type: decimal">
 <li><p>Before we run the model, we need to make sure there aren’t any features we <em>don’t</em> want to include. Look at the <code>college_train</code> dataframe again – do you see the one feature that we definitely don’t want to include in the model?</p></li>
-<li><p>Using the same steps as above, create a regression model <code>glm_fit</code> which predicts <code>Grad_Rate</code> using all features <em>except</em> for that one we don’t want (remember, use Y ~ . - XXX to remove a feature XXX)</p></li>
+<li><p>Using the same steps as above, create a regression model <code>glm_fit</code> which predicts <code>Grad.Rate</code> using all features <em>except</em> for that one we don’t want (remember, use Y ~ . - XXX to remove a feature XXX)</p></li>
 </ol>
-<pre class="r"><code>Grad_Rate_glm &lt;- train(form = Grad_Rate ~ . - XXX,   # Get rid of that one feature!
+<pre class="r"><code>Grad.Rate_glm &lt;- train(form = Grad.Rate ~ . - XXX,   # Get rid of that one feature!
                        data = college_train,
                        method = &quot;glm&quot;,
                        trControl = ctrl_none)</code></pre>
