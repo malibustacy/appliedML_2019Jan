@@ -34,9 +34,9 @@ layout: true
 
 
 
-## Prediction...
+# Prediction is...
 
-&lt;br&gt;
+&lt;br&gt;&lt;br&gt;
 &lt;i&gt;"Prediction is very difficult, especially if it's about the future."&lt;/i&gt;
 
 Nils Bohr, Nobel Laureate in Physics
@@ -64,13 +64,15 @@ Anonymous
 ---
 class: middle, center
 
-# What is model prediction / testing?
+# What is model prediction?
 
-&lt;font size = 5&gt;Model prediction (aka, testing) is the process of accessing a model's predictions on &lt;i&gt;new&lt;/i&gt; &lt;high&gt;testing data&lt;/high&gt;.&lt;/font&gt;
+&lt;font size = 5&gt;Model prediction (aka, testing) is the process of computing a model's predictions on &lt;i&gt;new&lt;/i&gt; &lt;high&gt;test data&lt;/high&gt;.&lt;/font&gt;
+
+&lt;br&gt;&lt;br&gt;
 
 # What is test data? 
 
-&lt;font size = 5&gt;Testing data is a separate, 'hold-out' data set that the model &lt;high&gt;never saw during training&lt;/high&gt;&lt;/font&gt;
+&lt;font size = 5&gt;Test data is a separate, &lt;high&gt;'hold-out' data&lt;/high&gt; set that the model &lt;high&gt;never saw during training&lt;/high&gt;&lt;/font&gt;
 
 ---
 
@@ -91,20 +93,21 @@ class: middle, center
 
 .pull-left35[
 &lt;br&gt;
+Just because a model can &lt;high&gt;fit past data well&lt;/high&gt; (high training accuracy), does &lt;i&gt;not&lt;/i&gt; necessarily mean that it will &lt;high&gt;predict new data well&lt;/high&gt; (high testing accuracy).
 
-&lt;font size = 5&gt;Just because a model can &lt;high&gt;fit past data well&lt;/high&gt; (high training accuracy), does &lt;i&gt;not&lt;/i&gt; necessarily mean that it will &lt;high&gt;predict new data well&lt;/high&gt; (high testing accuracy)&lt;/font&gt;
+&lt;br&gt;&lt;br&gt;
 
-&lt;i&gt;"An economist is an expert who will know tomorrow why the things he predicted yesterday didn't happen today."&lt;/i&gt;
-
+&lt;p align="center"&gt;&lt;i&gt;"An economist is an expert who will know tomorrow why the things he predicted yesterday didn't happen today."&lt;/i&gt;&lt;/p&gt;
+&lt;p align="right"&gt;
 Evan Esar
-
+&lt;/p&gt;
 
 ]
  
 .pull-right6[
 
 &lt;p align="center"&gt;
-  &lt;img src="https://raw.githubusercontent.com/therbootcamp/Erfurt_2018June/master/_sessions/_image/prediction_collage.png"&gt;
+  &lt;img src="https://raw.githubusercontent.com/therbootcamp/Erfurt_2018June/master/_sessions/_image/prediction_collage.png" height=400px&gt;
 &lt;/p&gt;
 
 
@@ -112,13 +115,13 @@ Evan Esar
 
 ---
 &lt;br&gt;&lt;br&gt;&lt;br&gt;
-&lt;font size = 6&gt;Can you come up with a model that will perfectly fit the training criterion but is worthless in predicting test data?&lt;/font&gt;&lt;br&gt;&lt;br&gt;
+&lt;p align = "center"&gt;&lt;font size = 6&gt;&lt;i&gt;"Can you come up with a model that will perfectly fit the training criterion but is worthless in predicting test data?"&lt;/i&gt;&lt;/font&gt;&lt;br&gt;&lt;br&gt;
 
 .pull-left45[
 
-&lt;br&gt;
-&lt;font size=5&gt;&lt;high&gt;Training&lt;/high&gt; Data&lt;/font&gt;
 
+&lt;high&gt;Training data&lt;/high&gt;
+&lt;br&gt;
 
 
 | id|sex | age|fam_history |smoking | criterion|
@@ -133,9 +136,9 @@ Evan Esar
 
 .pull-right45[
 
-&lt;br&gt;
-&lt;font size=5&gt;&lt;high&gt; Test&lt;/high&gt; Data&lt;/font&gt;
 
+&lt;high&gt; Test data&lt;/high&gt;
+&lt;br&gt;
 
 
 | id|sex | age|fam_history |smoking |criterion |
@@ -152,12 +155,11 @@ Evan Esar
 
 ---
 
-
-.pull-left4[
-&lt;br&gt;&lt;br&gt;
 # Overfitting
 
-When a model is consistently &lt;high&gt;less accurate in predicting future data&lt;/high&gt; than in &lt;high&gt;fitting training data&lt;high&gt;, this is called &lt;high&gt;overfitting&lt;/high&gt;
+.pull-left4[
+
+When a model is consistently &lt;high&gt;less accurate in predicting future data&lt;/high&gt; than in &lt;high&gt;fitting training data&lt;/high&gt;, this is called &lt;high&gt;overfitting&lt;/high&gt;
 
 Overfitting typically occurs when a model 'mistakes' random noise for a predictable signal
 
@@ -166,16 +168,15 @@ Overfitting typically occurs when a model 'mistakes' random noise for a predicta
 
 
 .pull-right55[
-&lt;br&gt;&lt;br&gt;
 
 &lt;div class="figure" style="text-align: center"&gt;
-&lt;img src="https://cdn-images-1.medium.com/max/1600/1*SBUK2QEfCP-zvJmKm14wGQ.png" alt="&amp;lt;font size = 4&amp;gt;hackernoon.com&amp;lt;/font&amp;gt;"  /&gt;
-&lt;p class="caption"&gt;&lt;font size = 4&gt;hackernoon.com&lt;/font&gt;&lt;/p&gt;
+&lt;img src="https://cdn-images-1.medium.com/max/1600/1*SBUK2QEfCP-zvJmKm14wGQ.png" alt="&amp;lt;font size = 3&amp;gt;hackernoon.com&amp;lt;/font&amp;gt;"  /&gt;
+&lt;p class="caption"&gt;&lt;font size = 3&gt;hackernoon.com&lt;/font&gt;&lt;/p&gt;
 &lt;/div&gt;
 
 &lt;div class="figure" style="text-align: center"&gt;
-&lt;img src="https://cdn-images-1.medium.com/max/1200/1*cdvfzvpkJkUudDEryFtCnA.png" alt="&amp;lt;font size = 4&amp;gt;Medium.com&amp;lt;/font&amp;gt;"  /&gt;
-&lt;p class="caption"&gt;&lt;font size = 4&gt;Medium.com&lt;/font&gt;&lt;/p&gt;
+&lt;img src="https://cdn-images-1.medium.com/max/1200/1*cdvfzvpkJkUudDEryFtCnA.png" alt="&amp;lt;font size = 3&amp;gt;Medium.com&amp;lt;/font&amp;gt;" width="90%" /&gt;
+&lt;p class="caption"&gt;&lt;font size = 3&gt;Medium.com&lt;/font&gt;&lt;/p&gt;
 &lt;/div&gt;
 
 
@@ -222,11 +223,15 @@ We will learn about these methods in a future session!
 
 ---
 
+# How do I get separate training and test data?
+
 .pull-left5[
 
-## How do I get separate training and test data?
+If you don't have two naturally occurring distinct training and test dataset, you can &lt;high&gt;randomly split&lt;/high&gt; a dataset into an &lt;high&gt;X% training&lt;/high&gt; set and &lt;high&gt;1-X% testing&lt;/high&gt; set.
 
-Ideally, you should have two distinct. naturally occurring training and test datasets.
+The `caret` function `createDataPartition()` helps you do this automatically.
+
+&lt;u&gt;Natural examples&lt;/u&gt;
 
 |Domain|Training|Test|
 |:-------|:------|:------|
@@ -234,19 +239,14 @@ Ideally, you should have two distinct. naturally occurring training and test dat
 |Medical diagnosis| Patients from Hospital A| Patients from Hospital B|
 |Crime rates|Statistics from City X|Statistics from City Y|
 
-If you don't have two naturally occurring distinct training and test dataset, you can &lt;high&gt;randomly split&lt;/high&gt; a dataset into an &lt;high&gt;X% training&lt;/high&gt; set and &lt;high&gt;1-X% testing&lt;/high&gt; set.
 
-The `caret` function `createDataPartition()` helps you do this automatically.
 
 ]
 
 .pull-right45[
 
 
-&lt;img src="image/train_test_split.png" width="100%" style="display: block; margin: auto;" /&gt;
-
-Randomly split a dataset into an X% training set and 1-X% testing set.
-
+&lt;img src="image/train_test_split.png" width="88%" style="display: block; margin: auto;" /&gt;
 
 
 ]
@@ -269,9 +269,9 @@ class: center, middle
 
 ---
 
-.pull-left4[
-
 # Decision Trees
+
+.pull-left4[
 
 In [decision trees](https://en.wikipedia.org/wiki/Decision_tree), the criterion is modeled as a &lt;high&gt;sequence of logical YES or NO questions&lt;/high&gt;.
 &lt;br&gt;&lt;br&gt;
@@ -284,20 +284,17 @@ In [decision trees](https://en.wikipedia.org/wiki/Decision_tree), the criterion 
 
 .pull-right55[
 
+&lt;high&gt;Grow Decisions Trees&lt;/high&gt; by splitting features that maximize *Node Purity*.
 &lt;br&gt;&lt;br&gt;
-### How Decision Trees are grown
-
-Find splits in data that maximize *Node Purity*
-
 &lt;img src="image/tree_purity_example.png" width="100%" style="display: block; margin: auto;" /&gt;
 
 ]
 
 ---
 
-.pull-left4[
-
 # Decision Trees
+
+.pull-left4[
 
 In [decision trees](https://en.wikipedia.org/wiki/Decision_tree), the criterion is modeled as a &lt;high&gt;sequence of logical YES or NO questions&lt;/high&gt;.
 &lt;br&gt;&lt;br&gt;
@@ -309,10 +306,8 @@ In [decision trees](https://en.wikipedia.org/wiki/Decision_tree), the criterion 
 ]
 
 .pull-right55[
-&lt;br&gt;&lt;br&gt;&lt;br&gt;
-## Decision Trees in Caret: rpart
 
-To fit a decision tree in caret, use `method = "rpart"`
+&lt;high&gt;Fit a Decision Tree&lt;/high&gt; in `caret` using `method = "rpart"`.
 
 
 ```r
@@ -331,26 +326,22 @@ train(form = income ~ .,
 
 ---
 
-.pull-left45[
-
 # Decision Trees
+
+.pull-left45[
 
 ### Complexity Parameter
 
-Decision trees have a &lt;high&gt;complexity parameter&lt;/high&gt; called &lt;high&gt;cp&lt;/high&gt;
+Decision trees have a &lt;high&gt;complexity parameter&lt;/high&gt; called `cp`.
 
 This controls how complex (large) trees are allowed to grow
 
-- Small cp (&lt; 0.01) = Complex Trees
-- Large cp (&gt; 0.10) = Simple Trees
-
-The best value of cp depends on your dataset!
+- &lt;high&gt;Small&lt;/high&gt; cp (&lt; 0.01) = &lt;high&gt;Complex&lt;/high&gt; Trees
+- &lt;high&gt;Large&lt;/high&gt; cp (&gt; 0.10) = &lt;high&gt;Simple&lt;/high&gt; Trees
 
 ]
 
 .pull-right5[
-
-&lt;br&gt;&lt;br&gt;
 
 &lt;img src="image/complexity_parameter.png" width="100%" style="display: block; margin: auto;" /&gt;
 
@@ -359,9 +350,9 @@ The best value of cp depends on your dataset!
 
 ---
 
-.pull-left45[
-
 # Decision Trees
+
+.pull-left45[
 
 ### Complexity Parameter
 
@@ -379,8 +370,7 @@ The best value of cp depends on your dataset!
 
 .pull-right5[
 
-&lt;br&gt;&lt;br&gt;&lt;br&gt;
-## Decision Trees in Caret: rpart
+### Decision Trees in Caret: rpart
 
 When fitting a decision tree, the `cp` parameter can be defined by the user in the `tuneGrid` argument:
 
@@ -411,9 +401,9 @@ class: center, middle
 
 ---
 
-.pull-left4[
-
 # Random Forest
+
+.pull-left4[
 
 In [Random Forest](https://en.wikipedia.org/wiki/Random_forest), the criterion is modeled as the &lt;high&gt;aggregate prediction of a large number of decision trees&lt;/high&gt; each based on different features.
 &lt;br&gt;
@@ -426,10 +416,8 @@ In [Random Forest](https://en.wikipedia.org/wiki/Random_forest), the criterion i
 ]
 
 .pull-right55[
-&lt;br&gt;
-### Wisdom of the Forest
 
-In Random Forests, we create a large set of &lt;high&gt;diverse trees&lt;/high&gt; that can be aggregated into one &lt;high&gt;Wisdom of Crowds&lt;/high&gt; judgment
+In Random Forests, we create a large set of &lt;high&gt;diverse trees&lt;/high&gt; that can be aggregated into one &lt;high&gt;Wisdom of Crowds&lt;/high&gt; judgment.
 
 &lt;img src="image/tree_crowd.png" width="80%" style="display: block; margin: auto;" /&gt;
 
@@ -438,9 +426,9 @@ In Random Forests, we create a large set of &lt;high&gt;diverse trees&lt;/high&g
 
 ---
 
-.pull-left4[
-
 # Random Forest
+
+.pull-left4[
 
 In [Random Forest](https://en.wikipedia.org/wiki/Random_forest), the criterion is modeled as the &lt;high&gt;aggregate prediction of a large number of decision trees&lt;/high&gt; each based on different features.
 &lt;br&gt;
@@ -453,10 +441,8 @@ In [Random Forest](https://en.wikipedia.org/wiki/Random_forest), the criterion i
 ]
 
 .pull-right55[
-&lt;br&gt;&lt;br&gt;&lt;br&gt;
-## Random Forests Caret: rf
 
-To fit a random forest in caret, use `method = "rf"`
+To &lt;high&gt;fit a random forest&lt;/high&gt; in caret, use `method = "rf"`.
 
 
 ```r
@@ -473,9 +459,9 @@ train(form = income ~ .,
 
 ---
 
-.pull-left4[
-
 # Random Forest
+
+.pull-left4[
 
 ### Diversity Parameter: mtry
 
@@ -491,17 +477,16 @@ The "best" value of mtry depends on your dataset!
 ]
 
 .pull-right55[
-&lt;br&gt;&lt;br&gt;
 
-&lt;img src="image/mtry_parameter.png" width="100%" style="display: block; margin: auto;" /&gt;
+&lt;img src="image/mtry_parameter.png" width="90%" style="display: block; margin: auto;" /&gt;
 
 ]
 
 ---
 
-.pull-left4[
-
 # Random Forest
+
+.pull-left4[
 
 ### Diversity Parameter: mtry
 
@@ -518,10 +503,7 @@ The "best" value of mtry depends on your dataset!
 
 .pull-right55[
 
-&lt;br&gt;&lt;br&gt;
-## Random Forests in Caret: rf
-
-When fitting a random forest, the `mtry` parameter can be defined by the user in the `tuneGrid` argument:
+When fitting a random forest, the `mtry` parameter can be defined by the user in the `tuneGrid` argument.
 
 
 ```r
@@ -558,9 +540,7 @@ class: center,  middle
 
 .pull-left45[
 
-Testing model predictions with `caret` is very easy.
-
-All you need to do is get a vector of predictions from a new dataframe `newdata` using the `predict()` function:
+To &lt;high&gt;test model predictions&lt;/high&gt; with `caret`, all you need to do is get a vector of predictions from a new dataframe `newdata` using the `predict()` function:
 
 
 ```r
@@ -568,18 +548,16 @@ All you need to do is get a vector of predictions from a new dataframe `newdata`
 predict(mod, newdata = data_test)
 ```
 
+&lt;br&gt;
+
 |argument|description|
 |:----|:-----|
 |object| A machine learning / statistical object created from `caret`, ...|
 |newdata|A dataframe of new data|
 
-This returns a vector of predicted values for your new data!
-
 ]
 
 .pull-right5[
-
-To get predictions, use `predict(mod, newdata = data_test)`
 
 
 ```r
@@ -804,12 +782,23 @@ if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
   d.head.appendChild(s);
 })();</script>
 
-<script type="text/x-mathjax-config">
-MathJax.Hub.Config({
-  tex2jax: {
-    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+<script>
+(function() {
+  var i, text, code, codes = document.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
   }
-});
+})();
 </script>
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>

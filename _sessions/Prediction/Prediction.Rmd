@@ -69,9 +69,9 @@ present <- tibble(id = 91:95,
 ```
 
 
-## Prediction...
+# Prediction is...
 
-<br>
+<br><br>
 <i>"Prediction is very difficult, especially if it's about the future."</i>
 
 Nils Bohr, Nobel Laureate in Physics
@@ -98,13 +98,15 @@ knitr::include_graphics("https://cdn-images-1.medium.com/max/1600/1*_QGyIwpgq831
 ---
 class: middle, center
 
-# What is model prediction / testing?
+# What is model prediction?
 
-<font size = 5>Model prediction (aka, testing) is the process of accessing a model's predictions on <i>new</i> <high>testing data</high>.</font>
+<font size = 5>Model prediction (aka, testing) is the process of computing a model's predictions on <i>new</i> <high>test data</high>.</font>
+
+<br><br>
 
 # What is test data? 
 
-<font size = 5>Testing data is a separate, 'hold-out' data set that the model <high>never saw during training</high></font>
+<font size = 5>Test data is a separate, <high>'hold-out' data</high> set that the model <high>never saw during training</high></font>
 
 ---
 
@@ -129,20 +131,21 @@ knitr::include_graphics("image/model_testing_flow.png")
 
 .pull-left35[
 <br>
+Just because a model can <high>fit past data well</high> (high training accuracy), does <i>not</i> necessarily mean that it will <high>predict new data well</high> (high testing accuracy).
 
-<font size = 5>Just because a model can <high>fit past data well</high> (high training accuracy), does <i>not</i> necessarily mean that it will <high>predict new data well</high> (high testing accuracy)</font>
+<br><br>
 
-<i>"An economist is an expert who will know tomorrow why the things he predicted yesterday didn't happen today."</i>
-
+<p align="center"><i>"An economist is an expert who will know tomorrow why the things he predicted yesterday didn't happen today."</i></p>
+<p align="right">
 Evan Esar
-
+</p>
 
 ]
  
 .pull-right6[
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/therbootcamp/Erfurt_2018June/master/_sessions/_image/prediction_collage.png">
+  <img src="https://raw.githubusercontent.com/therbootcamp/Erfurt_2018June/master/_sessions/_image/prediction_collage.png" height=400px>
 </p>
 
 
@@ -150,13 +153,13 @@ Evan Esar
 
 ---
 <br><br><br>
-<font size = 6>Can you come up with a model that will perfectly fit the training criterion but is worthless in predicting test data?</font><br><br>
+<p align = "center"><font size = 6><i>"Can you come up with a model that will perfectly fit the training criterion but is worthless in predicting test data?"</i></font><br><br>
 
 .pull-left45[
 
-<br>
-<font size=5><high>Training</high> Data</font>
 
+<high>Training data</high>
+<br>
 
 ```{r, results = 'asis', echo = FALSE}
 knitr::kable(past, format = "markdown")
@@ -166,9 +169,9 @@ knitr::kable(past, format = "markdown")
 
 .pull-right45[
 
-<br>
-<font size=5><high> Test</high> Data</font>
 
+<high> Test data</high>
+<br>
 
 ```{r, echo = FALSE}
 knitr::kable(present, format = "markdown")
@@ -180,12 +183,11 @@ knitr::kable(present, format = "markdown")
 
 ---
 
-
-.pull-left4[
-<br><br>
 # Overfitting
 
-When a model is consistently <high>less accurate in predicting future data</high> than in <high>fitting training data<high>, this is called <high>overfitting</high>
+.pull-left4[
+
+When a model is consistently <high>less accurate in predicting future data</high> than in <high>fitting training data</high>, this is called <high>overfitting</high>
 
 Overfitting typically occurs when a model 'mistakes' random noise for a predictable signal
 
@@ -194,13 +196,12 @@ Overfitting typically occurs when a model 'mistakes' random noise for a predicta
 
 
 .pull-right55[
-<br><br>
 
-```{r, echo = FALSE, fig.cap = "<font size = 4>hackernoon.com</font>"}
+```{r, echo = FALSE, fig.cap = "<font size = 3>hackernoon.com</font>"}
 knitr::include_graphics("https://cdn-images-1.medium.com/max/1600/1*SBUK2QEfCP-zvJmKm14wGQ.png")
 ```
 
-```{r, echo = FALSE,  fig.cap = "<font size = 4>Medium.com</font>"}
+```{r, echo = FALSE,  fig.cap = "<font size = 3>Medium.com</font>", out.width="90%"}
 knitr::include_graphics("https://cdn-images-1.medium.com/max/1200/1*cdvfzvpkJkUudDEryFtCnA.png")
 ```
 
@@ -325,11 +326,15 @@ fit_gg
 
 ---
 
+# How do I get separate training and test data?
+
 .pull-left5[
 
-## How do I get separate training and test data?
+If you don't have two naturally occurring distinct training and test dataset, you can <high>randomly split</high> a dataset into an <high>X% training</high> set and <high>1-X% testing</high> set.
 
-Ideally, you should have two distinct. naturally occurring training and test datasets.
+The `caret` function `createDataPartition()` helps you do this automatically.
+
+<u>Natural examples</u>
 
 |Domain|Training|Test|
 |:-------|:------|:------|
@@ -337,21 +342,16 @@ Ideally, you should have two distinct. naturally occurring training and test dat
 |Medical diagnosis| Patients from Hospital A| Patients from Hospital B|
 |Crime rates|Statistics from City X|Statistics from City Y|
 
-If you don't have two naturally occurring distinct training and test dataset, you can <high>randomly split</high> a dataset into an <high>X% training</high> set and <high>1-X% testing</high> set.
 
-The `caret` function `createDataPartition()` helps you do this automatically.
 
 ]
 
 .pull-right45[
 
 
-```{r, echo = FALSE, out.width = "100%"}
+```{r, echo = FALSE, out.width = "88%"}
 knitr::include_graphics("image/train_test_split.png")
 ```
-
-Randomly split a dataset into an X% training set and 1-X% testing set.
-
 
 
 ]
@@ -374,9 +374,9 @@ class: center, middle
 
 ---
 
-.pull-left4[
-
 # Decision Trees
+
+.pull-left4[
 
 In [decision trees](https://en.wikipedia.org/wiki/Decision_tree), the criterion is modeled as a <high>sequence of logical YES or NO questions</high>.
 <br><br>
@@ -389,11 +389,8 @@ In [decision trees](https://en.wikipedia.org/wiki/Decision_tree), the criterion 
 
 .pull-right55[
 
+<high>Grow Decisions Trees</high> by splitting features that maximize *Node Purity*.
 <br><br>
-### How Decision Trees are grown
-
-Find splits in data that maximize *Node Purity*
-
 ```{r, echo = FALSE, out.width = "100%"}
 knitr::include_graphics("image/tree_purity_example.png")
 ```
@@ -402,9 +399,9 @@ knitr::include_graphics("image/tree_purity_example.png")
 
 ---
 
-.pull-left4[
-
 # Decision Trees
+
+.pull-left4[
 
 In [decision trees](https://en.wikipedia.org/wiki/Decision_tree), the criterion is modeled as a <high>sequence of logical YES or NO questions</high>.
 <br><br>
@@ -416,10 +413,8 @@ In [decision trees](https://en.wikipedia.org/wiki/Decision_tree), the criterion 
 ]
 
 .pull-right55[
-<br><br><br>
-## Decision Trees in Caret: rpart
 
-To fit a decision tree in caret, use `method = "rpart"`
+<high>Fit a Decision Tree</high> in `caret` using `method = "rpart"`.
 
 ```{r, eval = FALSE}
 # Fit a decision tree with a defined cp = .10
@@ -437,26 +432,22 @@ train(form = income ~ .,
 
 ---
 
-.pull-left45[
-
 # Decision Trees
+
+.pull-left45[
 
 ### Complexity Parameter
 
-Decision trees have a <high>complexity parameter</high> called <high>cp</high>
+Decision trees have a <high>complexity parameter</high> called `cp`.
 
 This controls how complex (large) trees are allowed to grow
 
-- Small cp (< 0.01) = Complex Trees
-- Large cp (> 0.10) = Simple Trees
-
-The best value of cp depends on your dataset!
+- <high>Small</high> cp (< 0.01) = <high>Complex</high> Trees
+- <high>Large</high> cp (> 0.10) = <high>Simple</high> Trees
 
 ]
 
 .pull-right5[
-
-<br><br>
 
 ```{r, echo = FALSE, out.width = "100%"}
 knitr::include_graphics("image/complexity_parameter.png")
@@ -467,9 +458,9 @@ knitr::include_graphics("image/complexity_parameter.png")
 
 ---
 
-.pull-left45[
-
 # Decision Trees
+
+.pull-left45[
 
 ### Complexity Parameter
 
@@ -487,8 +478,7 @@ The best value of cp depends on your dataset!
 
 .pull-right5[
 
-<br><br><br>
-## Decision Trees in Caret: rpart
+### Decision Trees in Caret: rpart
 
 When fitting a decision tree, the `cp` parameter can be defined by the user in the `tuneGrid` argument:
 
@@ -518,9 +508,9 @@ class: center, middle
 
 ---
 
-.pull-left4[
-
 # Random Forest
+
+.pull-left4[
 
 In [Random Forest](https://en.wikipedia.org/wiki/Random_forest), the criterion is modeled as the <high>aggregate prediction of a large number of decision trees</high> each based on different features.
 <br>
@@ -533,10 +523,8 @@ In [Random Forest](https://en.wikipedia.org/wiki/Random_forest), the criterion i
 ]
 
 .pull-right55[
-<br>
-### Wisdom of the Forest
 
-In Random Forests, we create a large set of <high>diverse trees</high> that can be aggregated into one <high>Wisdom of Crowds</high> judgment
+In Random Forests, we create a large set of <high>diverse trees</high> that can be aggregated into one <high>Wisdom of Crowds</high> judgment.
 
 ```{r, echo = FALSE, out.width = "80%"}
 knitr::include_graphics("image/tree_crowd.png")
@@ -547,9 +535,9 @@ knitr::include_graphics("image/tree_crowd.png")
 
 ---
 
-.pull-left4[
-
 # Random Forest
+
+.pull-left4[
 
 In [Random Forest](https://en.wikipedia.org/wiki/Random_forest), the criterion is modeled as the <high>aggregate prediction of a large number of decision trees</high> each based on different features.
 <br>
@@ -562,10 +550,8 @@ In [Random Forest](https://en.wikipedia.org/wiki/Random_forest), the criterion i
 ]
 
 .pull-right55[
-<br><br><br>
-## Random Forests Caret: rf
 
-To fit a random forest in caret, use `method = "rf"`
+To <high>fit a random forest</high> in caret, use `method = "rf"`.
 
 ```{r, eval = FALSE}
 # Fit a random forest with a defined mtry = 3
@@ -581,9 +567,9 @@ train(form = income ~ .,
 
 ---
 
-.pull-left4[
-
 # Random Forest
+
+.pull-left4[
 
 ### Diversity Parameter: mtry
 
@@ -599,9 +585,8 @@ The "best" value of mtry depends on your dataset!
 ]
 
 .pull-right55[
-<br><br>
 
-```{r, echo = FALSE, out.width = "100%"}
+```{r, echo = FALSE, out.width = "90%"}
 knitr::include_graphics("image/mtry_parameter.png")
 ```
 
@@ -609,9 +594,9 @@ knitr::include_graphics("image/mtry_parameter.png")
 
 ---
 
-.pull-left4[
-
 # Random Forest
+
+.pull-left4[
 
 ### Diversity Parameter: mtry
 
@@ -628,10 +613,7 @@ The "best" value of mtry depends on your dataset!
 
 .pull-right55[
 
-<br><br>
-## Random Forests in Caret: rf
-
-When fitting a random forest, the `mtry` parameter can be defined by the user in the `tuneGrid` argument:
+When fitting a random forest, the `mtry` parameter can be defined by the user in the `tuneGrid` argument.
 
 ```{r, eval = FALSE}
 # Fit a random forest with a defined mtry = 2
@@ -672,27 +654,25 @@ data(cars)
 
 .pull-left45[
 
-Testing model predictions with `caret` is very easy.
-
-All you need to do is get a vector of predictions from a new dataframe `newdata` using the `predict()` function:
+To <high>test model predictions</high> with `caret`, all you need to do is get a vector of predictions from a new dataframe `newdata` using the `predict()` function:
 
 ```{r, eval = FALSE}
 # Get predictions for test data!
 predict(mod, newdata = data_test)
 ```
 
+<br>
+
 |argument|description|
 |:----|:-----|
 |object| A machine learning / statistical object created from `caret`, ...|
 |newdata|A dataframe of new data|
 
-This returns a vector of predicted values for your new data!
-
 ]
 
 .pull-right5[
 
-To get predictions, use `predict(mod, newdata = data_test)`
+<high>Get predictions</high>, use `predict(mod, newdata = data_test)`
 
 ```{r, eval = FALSE}
 # Load training and test data
