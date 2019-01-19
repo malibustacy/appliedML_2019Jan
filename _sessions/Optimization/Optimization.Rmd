@@ -42,6 +42,8 @@ options(htmltools.dir.version = FALSE)
 # https://github.com/gnab/remark/wiki/Markdown
 options(width=110)
 options(digits = 4)
+
+
 ```
 
 ```{r, echo = FALSE ,message = FALSE, warning = FALSE}
@@ -50,6 +52,9 @@ knitr::opts_chunk$set(comment=NA, fig.width=6, fig.height=6, echo = TRUE, eval =
 library(tidyverse)
 library(baselers)
 library(ggthemes)
+library(caret)
+
+baselers <- read_csv("../../1_Data/baselers.csv")
 
 
 set.seed(5)
@@ -220,11 +225,9 @@ Extremely flexible models that tend to overfit are like 'wolves in sheep's cloth
 knitr::include_graphics("image/wolf_complex.png")
 ```
 
-
 ]
 
 ---
-
 
 .pull-left4[
 <br><br><br>
@@ -538,6 +541,73 @@ knitr::include_graphics("image/training_final_optimisation.png")
 # Caret
 
 
+---
+
+# K-Fold Cross validation
+
+
+.pull-left3[
+
+Specify the use of k-fold cross-validation using the `trainControl()` function
+
+- `method`: The resampling method, use `"cv"` for cross validation
+- `number`: The number of folds
+
+When you pass this object to `train()` (for any model), caret will find best parameters using cross-validation.
+
+]
+
+.pull-right65[
+
+### Caret code
+
+```{r}
+# Specify 10 fold cross-validation
+ctrl_cv <- trainControl(method = "cv", 
+                        number = 10) 
+
+# Predict baselers income using lasso regression
+
+mod_lasso <- train(form = income ~ .,
+                   data = baselers,
+                   method = "glmnet",  # Penalised regression
+                   trControl = ctrl_cv,
+                   tuneGrid = expand.grid(alpha = 1, # Lasso
+                                          lambda = 1:100))
+```
+
+
+]
+
+
+---
+
+# K-Fold Cross validation
+
+
+.pull-left3[
+
+If you plot your model object with `plot(XX_mod)` you will see a plot showing the relationship between the tuning parameter and error.
+
+Print the best tuning parameter value with `XX_mod$bestTune$NAME`
+
+]
+
+.pull-right65[
+
+### Caret code
+
+```{r, out.width = "60%", fig.width = 6, fig.height = 4}
+# Visualise tuning parameter error curve
+plot(mod_lasso)
+
+# Print best tuning parameter values
+mod_lasso$bestTune$lambda
+```
+
+
+
+]
 
 
 

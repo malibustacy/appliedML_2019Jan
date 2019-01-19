@@ -123,11 +123,9 @@ Extremely flexible models that tend to overfit are like 'wolves in sheep's cloth
 &lt;p class="caption"&gt;&lt;font size = 4&gt;victoriarollison.com (adapted)&lt;/font&gt;&lt;/p&gt;
 &lt;/div&gt;
 
-
 ]
 
 ---
-
 
 .pull-left4[
 &lt;br&gt;&lt;br&gt;&lt;br&gt;
@@ -419,6 +417,83 @@ Once the optimal value of a tuning parameter is determined through cross-validat
 # Caret
 
 
+---
+
+# K-Fold Cross validation
+
+
+.pull-left3[
+
+Specify the use of k-fold cross-validation using the `trainControl()` function
+
+- `method`: The resampling method, use `"cv"` for cross validation
+- `number`: The number of folds
+
+When you pass this object to `train()` (for any model), caret will find best parameters using cross-validation.
+
+]
+
+.pull-right65[
+
+### Caret code
+
+
+```r
+# Specify 10 fold cross-validation
+ctrl_cv &lt;- trainControl(method = "cv", 
+                        number = 10) 
+
+# Predict baselers income using lasso regression
+
+mod_lasso &lt;- train(form = income ~ .,
+                   data = baselers,
+                   method = "glmnet",  # Penalised regression
+                   trControl = ctrl_cv,
+                   tuneGrid = expand.grid(alpha = 1, # Lasso
+                                          lambda = 1:100))
+```
+
+
+]
+
+
+---
+
+# K-Fold Cross validation
+
+
+.pull-left3[
+
+If you plot your model object with `plot(XX_mod)` you will see a plot showing the relationship between the tuning parameter and error.
+
+Print the best tuning parameter value with `XX_mod$bestTune$NAME`
+
+]
+
+.pull-right65[
+
+### Caret code
+
+
+```r
+# Visualise tuning parameter error curve
+plot(mod_lasso)
+```
+
+&lt;img src="Optimization_files/figure-html/unnamed-chunk-25-1.png" width="60%" style="display: block; margin: auto;" /&gt;
+
+```r
+# Print best tuning parameter values
+mod_lasso$bestTune$lambda
+```
+
+```
+[1] 28
+```
+
+
+
+]
 
 
 
