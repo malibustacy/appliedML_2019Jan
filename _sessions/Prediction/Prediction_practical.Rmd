@@ -231,7 +231,7 @@ accuracy_agg <- accuracy %>%
 
 ggplot(data = accuracy,
        aes(x = criterion_train, y = prediction, col = model)) +
-  geom_point(alpha = .2) +
+  geom_point(alpha = .5) +
   geom_abline(slope = 1, intercept = 0) +
   labs(title = "Predicting mpg$hwy",
        subtitle = "Black line indicates perfect performance")
@@ -289,7 +289,7 @@ accuracy_agg <- accuracy %>%
 
 ggplot(data = accuracy,
        aes(x = criterion_test, y = prediction, col = model)) +
-  geom_point(alpha = .2) +
+  geom_point(alpha = .5) +
   geom_abline(slope = 1, intercept = 0) +
   labs(title = "Predicting mpg$hwy",
        subtitle = "Black line indicates perfect performance")
