@@ -155,20 +155,21 @@ Evan Esar
 
 ---
 
-# Overfitting
 
 .pull-left4[
+&lt;br&gt;&lt;br&gt;&lt;br&gt;
+
+# Overfitting
 
 When a model is consistently &lt;high&gt;less accurate in predicting future data&lt;/high&gt; than in &lt;high&gt;fitting training data&lt;/high&gt;, this is called &lt;high&gt;overfitting&lt;/high&gt;
 
 Overfitting typically occurs when a model 'mistakes' random noise for a predictable signal
 
-
 ]
 
 
 .pull-right55[
-
+&lt;br&gt;&lt;br&gt;&lt;br&gt;
 &lt;div class="figure" style="text-align: center"&gt;
 &lt;img src="https://cdn-images-1.medium.com/max/1600/1*SBUK2QEfCP-zvJmKm14wGQ.png" alt="&amp;lt;font size = 3&amp;gt;hackernoon.com&amp;lt;/font&amp;gt;"  /&gt;
 &lt;p class="caption"&gt;&lt;font size = 3&gt;hackernoon.com&lt;/font&gt;&lt;/p&gt;
@@ -334,12 +335,15 @@ train(form = income ~ .,
 
 Decision trees have a &lt;high&gt;complexity parameter&lt;/high&gt; called `cp`.
 
-This controls how complex (large) trees are allowed to grow
+The `cp` parameter controls how complex (i.e.; large) trees are allowed to grow
 
 - &lt;high&gt;Small&lt;/high&gt; cp (&lt; 0.01) = &lt;high&gt;Complex&lt;/high&gt; Trees
 - &lt;high&gt;Large&lt;/high&gt; cp (&gt; 0.10) = &lt;high&gt;Simple&lt;/high&gt; Trees
 
+There is no "one" best value of `cp` -- the best value of cp depends on your needs and your dataset!
+
 ]
+
 
 .pull-right5[
 
@@ -353,17 +357,16 @@ This controls how complex (large) trees are allowed to grow
 # Decision Trees
 
 .pull-left45[
-
 ### Complexity Parameter
 
 Decision trees have a &lt;high&gt;complexity parameter&lt;/high&gt; called `cp`.
 
-This controls how complex (large) trees are allowed to grow
+The `cp` parameter controls how complex (i.e.; large) trees are allowed to grow
 
 - &lt;high&gt;Small&lt;/high&gt; cp (&lt; 0.01) = &lt;high&gt;Complex&lt;/high&gt; Trees
 - &lt;high&gt;Large&lt;/high&gt; cp (&gt; 0.10) = &lt;high&gt;Simple&lt;/high&gt; Trees
 
-The best value of cp depends on your dataset!
+There is no "one" best value of `cp` -- the best value of cp depends on your needs and your dataset!
 
 
 ]
@@ -385,7 +388,7 @@ train(form = income ~ .,
       tuneGrid = expand.grid(cp = .10)) # cp
 ```
 
-- `mtry` can also be optimally determined through methods such as &lt;high&gt;cross-validation&lt;/high&gt;, which we will learn later
+- `cp` can also be optimally determined through methods such as &lt;high&gt;cross-validation&lt;/high&gt;, which we will learn later
 
 ]
 
@@ -472,7 +475,7 @@ Technically, this controls how many features are randomly considered at each spl
 - Small mtry (~ 1) = Diverse Forest
 - Large mtry (&gt; 5) = Similar Forest
 
-The "best" value of mtry depends on your dataset!
+There is no "one" best value of `mtry` -- the best value of `mtry` depends on your needs and your dataset!
 
 ]
 
@@ -497,7 +500,7 @@ Technically, this controls how many features are randomly considered at each spl
 - Small mtry (~ 1) = Diverse Forest
 - Large mtry (&gt; 5) = Similar Forest
 
-The "best" value of mtry depends on your dataset!
+There is no "one" best value of `mtry` -- the best value of `mtry` depends on your needs and your dataset!
 
 ]
 
@@ -555,6 +558,9 @@ predict(mod, newdata = data_test)
 |object| A machine learning / statistical object created from `caret`, ...|
 |newdata|A dataframe of new data|
 
+This returns a vector of predicted values for your new data!
+
+
 ]
 
 .pull-right5[
@@ -589,9 +595,7 @@ mod_pred &lt;- predict(mod, newdata = data_test)
 
 .pull-left45[
 
-Testing model predictions with `caret` is very easy.
-
-All you need to do is get a vector of predictions from a new dataframe `newdata` using the `predict()` function:
+To &lt;high&gt;test model predictions&lt;/high&gt; with `caret`, all you need to do is get a vector of predictions from a new dataframe `newdata` using the `predict()` function:
 
 
 ```r
@@ -784,30 +788,19 @@ if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
   d.head.appendChild(s);
 })();</script>
 
-<script>
-(function() {
-  var i, text, code, codes = document.getElementsByTagName('code');
-  for (i = 0; i < codes.length;) {
-    code = codes[i];
-    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
-      text = code.textContent;
-      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
-          /^\$\$(.|\s)+\$\$$/.test(text) ||
-          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
-        code.outerHTML = code.innerHTML;  // remove <code></code>
-        continue;
-      }
-    }
-    i++;
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  tex2jax: {
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre']
   }
-})();
+});
 </script>
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>
 (function () {
   var script = document.createElement('script');
   script.type = 'text/javascript';
-  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  script.src  = 'https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML';
   if (location.protocol !== 'file:' && /^https?:/.test(script.src))
     script.src  = script.src.replace(/^https?:/, '');
   document.getElementsByTagName('head')[0].appendChild(script);

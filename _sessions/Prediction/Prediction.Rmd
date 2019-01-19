@@ -181,20 +181,21 @@ knitr::kable(present, format = "markdown")
 
 ---
 
-# Overfitting
 
 .pull-left4[
+<br><br><br>
+
+# Overfitting
 
 When a model is consistently <high>less accurate in predicting future data</high> than in <high>fitting training data</high>, this is called <high>overfitting</high>
 
 Overfitting typically occurs when a model 'mistakes' random noise for a predictable signal
 
-
 ]
 
 
 .pull-right55[
-
+<br><br><br>
 ```{r, echo = FALSE, fig.cap = "<font size = 3>hackernoon.com</font>"}
 knitr::include_graphics("https://cdn-images-1.medium.com/max/1600/1*SBUK2QEfCP-zvJmKm14wGQ.png")
 ```
@@ -438,12 +439,15 @@ train(form = income ~ .,
 
 Decision trees have a <high>complexity parameter</high> called `cp`.
 
-This controls how complex (large) trees are allowed to grow
+The `cp` parameter controls how complex (i.e.; large) trees are allowed to grow
 
 - <high>Small</high> cp (< 0.01) = <high>Complex</high> Trees
 - <high>Large</high> cp (> 0.10) = <high>Simple</high> Trees
 
+There is no "one" best value of `cp` -- the best value of cp depends on your needs and your dataset!
+
 ]
+
 
 .pull-right5[
 
@@ -459,17 +463,16 @@ knitr::include_graphics("image/complexity_parameter.png")
 # Decision Trees
 
 .pull-left45[
-
 ### Complexity Parameter
 
 Decision trees have a <high>complexity parameter</high> called `cp`.
 
-This controls how complex (large) trees are allowed to grow
+The `cp` parameter controls how complex (i.e.; large) trees are allowed to grow
 
 - <high>Small</high> cp (< 0.01) = <high>Complex</high> Trees
 - <high>Large</high> cp (> 0.10) = <high>Simple</high> Trees
 
-The best value of cp depends on your dataset!
+There is no "one" best value of `cp` -- the best value of cp depends on your needs and your dataset!
 
 
 ]
@@ -490,7 +493,7 @@ train(form = income ~ .,
       tuneGrid = expand.grid(cp = .10)) # cp
 ```
 
-- `mtry` can also be optimally determined through methods such as <high>cross-validation</high>, which we will learn later
+- `cp` can also be optimally determined through methods such as <high>cross-validation</high>, which we will learn later
 
 ]
 
@@ -578,7 +581,7 @@ Technically, this controls how many features are randomly considered at each spl
 - Small mtry (~ 1) = Diverse Forest
 - Large mtry (> 5) = Similar Forest
 
-The "best" value of mtry depends on your dataset!
+There is no "one" best value of `mtry` -- the best value of `mtry` depends on your needs and your dataset!
 
 ]
 
@@ -605,7 +608,7 @@ Technically, this controls how many features are randomly considered at each spl
 - Small mtry (~ 1) = Diverse Forest
 - Large mtry (> 5) = Similar Forest
 
-The "best" value of mtry depends on your dataset!
+There is no "one" best value of `mtry` -- the best value of `mtry` depends on your needs and your dataset!
 
 ]
 
@@ -666,6 +669,9 @@ predict(mod, newdata = data_test)
 |object| A machine learning / statistical object created from `caret`, ...|
 |newdata|A dataframe of new data|
 
+This returns a vector of predicted values for your new data!
+
+
 ]
 
 .pull-right5[
@@ -699,9 +705,7 @@ mod_pred <- predict(mod, newdata = data_test)
 
 .pull-left45[
 
-Testing model predictions with `caret` is very easy.
-
-All you need to do is get a vector of predictions from a new dataframe `newdata` using the `predict()` function:
+To <high>test model predictions</high> with `caret`, all you need to do is get a vector of predictions from a new dataframe `newdata` using the `predict()` function:
 
 ```{r, eval = FALSE}
 # Get predictions for test data!
