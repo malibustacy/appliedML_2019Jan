@@ -24,7 +24,7 @@ layout: true
 </span></div> 
 
 ---
-class: middle, center, question
+class: middle, center
 
 ```{r, eval = FALSE, echo = FALSE}
 # Code to knit slides
@@ -563,7 +563,7 @@ What is the <high>relationship</high> between features and the criterion?
 
 Make <high>predictions</high> for new data.
 
-- Is this patient having a is having a heart attack?
+- Is this patient having a heart attack?
 - How much will this new site sell?
 
 Improve predictions over time with new data.
@@ -620,8 +620,6 @@ knitr::include_graphics("https://github.com/therbootcamp/appliedML_2019Jan/blob/
 
 ---
 class: middle, center
-
-<h1> Questions?</h1>
 
 <h1><a href=https://therbootcamp.github.io/appliedML_2019Jan/index.html>Schedule</a></h1>
 

@@ -152,7 +152,7 @@ We have an <high>ambitious schedule</high>!
 
 .pull-right4[
 
-<img src="https://github.com/therbootcamp/appliedML_2019Jan/blob/master/schedule_appliedML_2019Jan.png?raw=true" height="525" align="center">
+<img src="https://raw.githubusercontent.com/therbootcamp/therbootcamp.github.io/master/_sessions/_image/schedule_2019Jan_ML.png" height="525" align="center">
 
 ]
 
@@ -174,7 +174,7 @@ We have an <high>ambitious schedule</high>!
 <high>All available online</high>. Follow along, and don't worry about memorizing
 
 <br><br>
-<a href="https://therbootcamp.github.io/Intro2DataScience_2018Oct/">This is a Link to our materials</a>.
+<a href="https://therbootcamp.github.io/appliedML_2019Jan/">This is a Link to our materials</a>.
 <br><br>
 
 Be interactive! Ask questions!
@@ -338,9 +338,9 @@ knitr::include_graphics("https://raw.githubusercontent.com/therbootcamp/therboot
 
 4. What is your programming experience with R and in general?
 
-5. What is your experience with applied machine learning?
+5. What is your experience with ML?
 
-6. What would you most like to do with machine learning?
+6. What would you most like to do with ML?
 
 7. Coffee or tea?
 
