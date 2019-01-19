@@ -650,7 +650,7 @@ plot(varimp_glm_pca)
 17. Can you select a set of features based on feature performance that reliably beats predictions based on the pca-compressed training set?
 
 
-## X - Violent & Non-violent Crime Data
+## Z - Violent & Non-violent Crime Data
 
 1. Run similar analyses for the Violent and non-violent crime data sets predicting either the number of violent crimes per 100k inhabitants (`ViolentCrimesPerPop`) or the number of non-violent crimes per 100k inhabitants (`nonViolPerPop`). This time the criterion is numeric, implying regression rather than classification. The features are identical to the murders analysis of the previous section. 
 
