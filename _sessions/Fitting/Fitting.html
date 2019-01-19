@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Model Fitting (Training)</title>
+    <title>Model Fitting</title>
     <meta charset="utf-8">
     <meta name="author" content="Applied Machine Learning with R www.therbootcamp.com @therbootcamp" />
     <link href="libs/remark-css/default.css" rel="stylesheet" />
@@ -11,7 +11,7 @@
     <textarea id="source">
 class: center, middle, inverse, title-slide
 
-# Model Fitting (Training)
+# Model Fitting
 ## With Regression
 ### Applied Machine Learning with R<br/><a href='https://therbootcamp.github.io'>www.therbootcamp.com</a><br/><a href='https://twitter.com/therbootcamp'><span class="citation">@therbootcamp</span></a>
 ### January 2019
@@ -34,28 +34,25 @@ layout: true
 
 
 
+# Where we are at
 
 .pull-left4[
 
-# Where we are at
+- Have a business &lt;high&gt;question&lt;/high&gt;:  How can I predict loan default?
 
-- Have a business question
-    - How can I predict loan default?
+- Have &lt;high&gt;data&lt;/high&gt; relevant to that question: Records from 300 historical customers.
 
-- Have data relevant to that question
-    - Records from 300 historical customers
+- Data is cleaned and in a &lt;high&gt;tidy&lt;/high&gt;, rectangular format: Database, .csv.
 
-- Data is cleaned and in a tidy, rectangular format
-    - Database, .csv,
-
-## What's next?
+&lt;br&gt;
+### What's next?
 
 &lt;high&gt;Select&lt;/high&gt; and &lt;high&gt;train&lt;/high&gt; model(s) depending on the &lt;high&gt;type of task&lt;/high&gt;
 
 ]
 
-.pull-right6[
-&lt;br&gt;&lt;br&gt;&lt;br&gt;
+.pull-right55[
+&lt;br2&gt;
 &lt;div class="figure" style="text-align: center"&gt;
 &lt;img src="https://cdn-images-1.medium.com/max/1600/1*_QGyIwpgq831xI54cIe_GQ.jpeg" alt="Source: Medium.com" width="100%" /&gt;
 &lt;p class="caption"&gt;Source: Medium.com&lt;/p&gt;
@@ -66,13 +63,15 @@ layout: true
 
 ---
 
-.pull-left45[
-
 # What type of task do you have?
 
-There are many types of of ML tasks.
+.pull-left45[
+
+There are &lt;high&gt;many types of of ML tasks&lt;/high&gt;.
 
 In this course, we will focus on 2 of the most popular
+
+&lt;br&gt;
 
 |Type|Description | Example |
 |:----|:---- |:----|
@@ -82,7 +81,6 @@ In this course, we will focus on 2 of the most popular
 ]
 
 .pull-right5[
-&lt;br&gt;&lt;br&gt;&lt;br&gt;
 
 &lt;img src="https://github.com/therbootcamp/appliedML_2019Jan/blob/master/_sessions/Fitting/image/class_v_regression.jpg?raw=true" width="100%" style="display: block; margin: auto;" /&gt;
 
@@ -94,61 +92,61 @@ In this course, we will focus on 2 of the most popular
 
 # What ML models are there?
 
+&lt;br&gt;
 There are *thousands* of machine learning models
 
 In this course, you will learn 3 of the most popular:
 
 |Model|Description|
 |:----|:---- |
-|Regression|A weighted linear combination of features and weights|
-|Decision Tree|A series of hierarchical 'yes/no' decisions|
-|Random Forests|Combination of many decision trees|
+|&lt;high&gt;Regression&lt;/high&gt;|A weighted linear combination of features and weights|
+|&lt;high&gt;Decision Tree&lt;/high&gt;|A series of hierarchical 'yes/no' decisions|
+|&lt;high&gt;Random Forests&lt;/high&gt;|Combination of many decision trees|
 
-*In the Models session, you'll learn about many more!*
 
 ]
 
 .pull-right5[
-
-&lt;img src="https://github.com/therbootcamp/appliedML_2019Jan/blob/master/_sessions/Fitting/image/three_models_vert.jpg?raw=true" width="100%" style="display: block; margin: auto;" /&gt;
+&lt;br&gt;&lt;br2&gt;
+&lt;img src="https://github.com/therbootcamp/appliedML_2019Jan/blob/master/_sessions/Fitting/image/three_models_vert.jpg?raw=true" width="90%" style="display: block; margin: auto;" /&gt;
 
 ]
 
 ---
 class: center, middle
 
-## Once you have a model you need to "Fit" (aka, "Train") it to data
+## Once you have a model you need to "Fit" (aka, "Train") it to data.
+
+&lt;font size=5&gt;&lt;high&gt;What does that mean?&lt;/high&gt;&lt;/font&gt;
+
+&lt;br&gt;
 
 &lt;div class="figure" style="text-align: center"&gt;
-&lt;img src="image/regression_ISLR.jpg" alt="&amp;lt;font size = 4&amp;gt;James et al., Introduction to SL&amp;lt;/font&amp;gt;" width="50%" /&gt;
-&lt;p class="caption"&gt;&lt;font size = 4&gt;James et al., Introduction to SL&lt;/font&gt;&lt;/p&gt;
+&lt;img src="https://afit-r.github.io/public/images/analytics/regression/sq.errors-1.png" alt="&amp;lt;font size = 3&amp;gt;James et al., Introduction to SL&amp;lt;/font&amp;gt;" width="50%" /&gt;
+&lt;p class="caption"&gt;&lt;font size = 3&gt;James et al., Introduction to SL&lt;/font&gt;&lt;/p&gt;
 &lt;/div&gt;
 
-## What does that mean?
+
 
 
 ---
 
+# What does "Fitting" mean?
 
 .pull-left5[
-
-# What does "Fitting" mean?
 
 For any model class, there is no "One" single model.
 
 &gt; How many possible Regression models are there?
 
-
-Any machine learning model can be 'fit' (aka 'trained') on a specific dataset of interest.
-
-
-Fitting means finding the "best" version of a model for a specific dataset.
+&lt;br2&gt;
+Any machine learning model can be 'fit' (aka 'trained') on a specific dataset of interest. This means &lt;high&gt;finding the "best" version of a model&lt;/high&gt; for a specific dataset.
 
 &gt; "Let me represent the data in the best way I can given how I work"&lt;br&gt;
 &gt;~ Model during fitting
 
+&lt;br2&gt;
 The "best" model is usually defined as a combination of &lt;high&gt;accuracy&lt;/high&gt; (higher better!) and &lt;high&gt;complexity&lt;/high&gt; (simpler is better!)
-
 
 ]
 
@@ -156,9 +154,7 @@ The "best" model is usually defined as a combination of &lt;high&gt;accuracy&lt;
 
 
 
-
-&lt;br&gt;&lt;br&gt;
-### How do I fit a model to these data??
+&lt;p align="center"&gt;&lt;font size=5&gt;&lt;high&gt;How do I fit a model to these data?&lt;/font&gt;&lt;/high&gt;&lt;/p&gt;
 
 &lt;img src="Fitting_files/figure-html/unnamed-chunk-7-1.png" width="80%" style="display: block; margin: auto;" /&gt;
 
@@ -174,9 +170,10 @@ The "best" model is usually defined as a combination of &lt;high&gt;accuracy&lt;
 
 ---
 
-.pull-left45[
-&lt;br&gt;&lt;br&gt;&lt;br&gt;
 # Defining Accuracy (or Error)
+
+
+.pull-left45[
 
 To train (fit) a model to a dataset, we need to &lt;high&gt;mathematically define Accuracy&lt;/high&gt;
 
@@ -192,8 +189,7 @@ The model that minimizes error (or maximizes accuracy) is the final &lt;high&gt;
 
 .pull-right45[
 
-&lt;br&gt;&lt;br&gt;
-### How do I fit a model to these data??
+&lt;p align="center"&gt;&lt;font size=5&gt;&lt;high&gt;How do I fit a model to these data?&lt;/font&gt;&lt;/high&gt;&lt;/p&gt;
 
 &lt;img src="Fitting_files/figure-html/unnamed-chunk-9-1.png" width="80%" style="display: block; margin: auto;" /&gt;
 ]
@@ -214,17 +210,18 @@ The model that minimizes error (or maximizes accuracy) is the final &lt;high&gt;
 
 ---
 
-.pull-left45[
-
 # Regression Error
 
-### MAE: Mean Absolute Error
+.pull-left45[
+
+#### MAE: Mean Absolute Error
 
 `$$\large MSE = \frac{1}{n}\sum_{i=1}^{n} \lvert Prediction_{i} - Truth_{i} \rvert$$`
 
 &gt; On average, how far are predictions away from true values?
 
-### MSE: Mean Squared Error
+
+#### MSE: Mean Squared Error
 
 `$$\large MSE = \frac{1}{n}\sum_{i=1}^{n}(Prediction_{i} - Truth_{i})^{2}$$`
 &gt; On average, how far are predictions away from true values (squared!)?
@@ -256,35 +253,37 @@ The confusion matrix is a cross tabulation table showing predictions versus true
 ### Confusion Matrix
 
 |    |      Y is Positive      | Y is Negative |
-|----------|:-------------:|:------:|
-| Predict &lt;br&gt;"Positive"| &lt;font color = "green"&gt;TP&lt;br&gt; True Positive&lt;/font&gt;| &lt;font color = "red"&gt;FP &lt;br&gt; False Positive&lt;/font&gt; |
-| Predict &lt;br&gt;"Negative"|    &lt;font color = "red"&gt;FN&lt;br&gt; False Negative&lt;/font&gt;   |  &lt;font color = "green"&gt;TN &lt;br&gt; True Negative&lt;/font&gt;|
+|--------------|:-------------:|:------:|
+| Predict &lt;br&gt;"Positive"| &lt;font color = "#6ABA9A"&gt;TP&lt;br&gt; True Positive&lt;/font&gt;| &lt;font color = "#EA4B68"&gt;FP &lt;br&gt; False Positive&lt;/font&gt; |
+| Predict &lt;br&gt;"Negative"|    &lt;font color = "#EA4B68"&gt;FN&lt;br&gt; False Negative&lt;/font&gt;   |  &lt;font color = "#6ABA9A"&gt;TN &lt;br&gt; True Negative&lt;/font&gt;|
 
-Green cells are &lt;font color = "green"&gt;correct decisions&lt;/font&gt; while Red cells are &lt;font color = "red"&gt;incorrect decisions&lt;/font&gt;
+&lt;i&gt;Note: Green cells are &lt;font color = "#6ABA9A"&gt;correct decisions&lt;/font&gt; while Red cells are &lt;font color = "#EA4B68"&gt;incorrect decisions&lt;/font&gt;&lt;/i&gt;
 
 
 ]
 
 .pull-right5[
 
-### Data
+&lt;br&gt;
+
+#### Data
 
 ||X1|X2|X3|Prediction|Truth|Outcome|
 |:---|:----|:----|:----|:----|:----|:----|
-|1|.|.|.|"Default"|Default|&lt;font color = "green"&gt;TP&lt;/font&gt;|
-|2|.|.|.|"Default"|Default|&lt;font color = "green"&gt;TP&lt;/font&gt;|
-|3|.|.|.|"Repay"|Repay|&lt;font color = "green"&gt;TN&lt;/font&gt;|
-|4|.|.|.|"Default"|Repay|&lt;font color = "red"&gt;FP&lt;/font&gt;|
-|5|.|.|.|"Repay"|Default|&lt;font color = "red"&gt;FN&lt;/font&gt;|
-|6|.|.|.|"Default"|Default|&lt;font color = "green"&gt;TP&lt;/font&gt;|
-|7|.|.|.|"Repay"|Repay|&lt;font color = "green"&gt;TN&lt;/font&gt;|
+|1|.|.|.|"Default"|Default|&lt;font color = "#6ABA9A"&gt;TP&lt;/font&gt;|
+|2|.|.|.|"Default"|Default|&lt;font color = "#6ABA9A"&gt;TP&lt;/font&gt;|
+|3|.|.|.|"Repay"|Repay|&lt;font color = "#6ABA9A"&gt;TN&lt;/font&gt;|
+|4|.|.|.|"Default"|Repay|&lt;font color = "#EA4B68"&gt;FP&lt;/font&gt;|
+|5|.|.|.|"Repay"|Default|&lt;font color = "#EA4B68"&gt;FN&lt;/font&gt;|
+|6|.|.|.|"Default"|Default|&lt;font color = "#6ABA9A"&gt;TP&lt;/font&gt;|
+|7|.|.|.|"Repay"|Repay|&lt;font color = "#6ABA9A"&gt;TN&lt;/font&gt;|
 
-### Confusion Matrix
+#### Confusion Matrix
 
-|    |      True Default      | True Repay  |
-|----------|:-------------:|:------:|
-| Predict &lt;br&gt;"Default"| &lt;font color = "green"&gt;3&lt;/font&gt;| &lt;font color = "red"&gt;1 &lt;/font&gt; |
-| Predict &lt;br&gt;"Repay"|    &lt;font color = "red"&gt;1&lt;/font&gt;   |  &lt;font color = "green"&gt; 2&lt;/font&gt;|
+|                  |      True Default      | True Repay  |
+|------------------|:-------------:|:------:|
+| "Default"| &lt;font color = "#6ABA9A"&gt;3&lt;/font&gt;| &lt;font color = "#EA4B68"&gt;1 &lt;/font&gt; |
+| "Repay"|    &lt;font color = "#EA4B68"&gt;1&lt;/font&gt;   |  &lt;font color = "#6ABA9A"&gt; 2&lt;/font&gt;|
 
 ]
 
@@ -298,37 +297,36 @@ Classification accuracy measures all come from the &lt;high&gt; "confusion matri
 
 The confusion matrix is a cross tabulation table showing predictions versus true classes.
 
-### Confusion Matrix
+#### Confusion Matrix
 
-|    |      Y is Positive      | Y is Negative |
-|----------|:-------------:|:------:|
-| Predict &lt;br&gt;"Positive"| &lt;font color = "green"&gt;TP&lt;br&gt; True Positive&lt;/font&gt;| &lt;font color = "red"&gt;FP &lt;br&gt; False Positive&lt;/font&gt; |
-| Predict &lt;br&gt;"Negative"|    &lt;font color = "red"&gt;FN&lt;br&gt; False Negative&lt;/font&gt;   |  &lt;font color = "green"&gt;TN &lt;br&gt; True Negative&lt;/font&gt;|
+|                       |      Y is Positive      | Y is Negative |
+|-----------------------|:-------------:|:------:|
+| Predict &lt;br&gt;"Positive"| &lt;font color = "#6ABA9A"&gt;TP&lt;br&gt; True Positive&lt;/font&gt;| &lt;font color = "#EA4B68"&gt;FP &lt;br&gt; False Positive&lt;/font&gt; |
+| Predict &lt;br&gt;"Negative"|    &lt;font color = "#EA4B68"&gt;FN&lt;br&gt; False Negative&lt;/font&gt;   |  &lt;font color = "#6ABA9A"&gt;TN &lt;br&gt; True Negative&lt;/font&gt;|
 
-Green cells are &lt;font color = "green"&gt;correct decisions&lt;/font&gt; while Red cells are &lt;font color = "red"&gt;incorrect decisions&lt;/font&gt;
+&lt;i&gt;Note: Green cells are &lt;font color = "#6ABA9A"&gt;correct decisions&lt;/font&gt; while Red cells are &lt;font color = "#EA4B68"&gt;incorrect decisions&lt;/font&gt;&lt;/i&gt;
 
 
 ]
 
 .pull-right5[
 
-
-### Overall Accuracy
+&lt;br&gt;
+#### Overall Accuracy
 
 &gt; What percent of my predictions are correct?
 
 `$$\large Overall \; Accuracy = \frac{TP + TN}{ TP + TN + FN + FP}$$`
 
-### Sensitivity
+#### Sensitivity
 
 &gt; &lt;i&gt;Of the truly Positive cases&lt;/i&gt;, what percent of predictions are correct?
 
 
 `$$\large Sensitivity = \frac{TP}{ TP +FN }$$`
-### Specificity
+#### Specificity
 
 &gt; &lt;i&gt;Of the truly Negative cases&lt;/i&gt;, what percent of predictions are correct?
-
 
 `$$\large Specificity = \frac{TN}{ TN + FP }$$`
 
@@ -351,28 +349,29 @@ After the loan period is over, we obtain the final confusion matrix comparing ou
 
 ### Confusion Matrix
 
-|    |      True Default      | True Repay  |
-|----------|:-------------:|:------:|
-| Predict &lt;br&gt;"Default"| &lt;font color = "green"&gt;TP &lt;br&gt;3&lt;/font&gt;| &lt;font color = "red"&gt;FP &lt;br&gt;1 &lt;/font&gt; |
-| Predict &lt;br&gt;"Repay"|    &lt;font color = "red"&gt;FN&lt;br&gt;1&lt;/font&gt;   |  &lt;font color = "green"&gt;TN &lt;br&gt; 2&lt;/font&gt;|
+|                     |      True Default      | True Repay  |
+|---------------------|:-------------:|:------:|
+| Predict &lt;br&gt;"Default"| &lt;font color = "#6ABA9A"&gt;TP &lt;br&gt;3&lt;/font&gt;| &lt;font color = "#EA4B68"&gt;FP &lt;br&gt;1 &lt;/font&gt; |
+| Predict &lt;br&gt;"Repay"|    &lt;font color = "#EA4B68"&gt;FN&lt;br&gt;1&lt;/font&gt;   |  &lt;font color = "#6ABA9A"&gt;TN &lt;br&gt; 2&lt;/font&gt;|
 
 ]
 
 .pull-right5[
 
+&lt;br&gt;
 
-### Overall Accuracy
+#### Overall Accuracy
 
 Across all customers, our model has an accuracy of 71%
 
 `$$\large Overall \; Accuracy = \frac{3 + 2}{3 + 2 + 1 + 1} = 0.71$$`
 
-### Sensitivity
+#### Sensitivity
 
 Our model is 75% accurate in catching true defaults
 
 `$$\large Sensitivity = \frac{3}{3 + 4} = .75$$`
-### Specificity
+#### Specificity
 
 Our model is 67% accurate in catching true repayments
 
@@ -438,8 +437,8 @@ In [regression](https://en.wikipedia.org/wiki/Regression_analysis), the criterio
 
 `$$\hat{Y} =  \beta_{0} + X1 \times \beta_{X1} + X2 \times \beta_{X2} + ...$$`
 &lt;div class="figure" style="text-align: center"&gt;
-&lt;img src="image/regression_ISLR.jpg" alt="&amp;lt;font size = 4&amp;gt;James et al., Introduction to SL&amp;lt;/font&amp;gt;" width="100%" /&gt;
-&lt;p class="caption"&gt;&lt;font size = 4&gt;James et al., Introduction to SL&lt;/font&gt;&lt;/p&gt;
+&lt;img src="https://afit-r.github.io/public/images/analytics/regression/sq.errors-1.png" alt="&amp;lt;font size = 3&amp;gt;James et al., Introduction to SL&amp;lt;/font&amp;gt;" width="100%" /&gt;
+&lt;p class="caption"&gt;&lt;font size = 3&gt;James et al., Introduction to SL&lt;/font&gt;&lt;/p&gt;
 &lt;/div&gt;
 
 ]
@@ -477,8 +476,8 @@ In [regression](https://en.wikipedia.org/wiki/Regression_analysis), the criterio
 
 `$$\hat{Y} =  \beta_{0} + X1 \times \beta_{X1} + X2 \times \beta_{X2} + ...$$`
 &lt;div class="figure" style="text-align: center"&gt;
-&lt;img src="image/regression_ISLR.jpg" alt="&amp;lt;font size = 4&amp;gt;James et al., Introduction to SL&amp;lt;/font&amp;gt;" width="100%" /&gt;
-&lt;p class="caption"&gt;&lt;font size = 4&gt;James et al., Introduction to SL&lt;/font&gt;&lt;/p&gt;
+&lt;img src="https://afit-r.github.io/public/images/analytics/regression/sq.errors-1.png" alt="&amp;lt;font size = 3&amp;gt;James et al., Introduction to SL&amp;lt;/font&amp;gt;" width="100%" /&gt;
+&lt;p class="caption"&gt;&lt;font size = 3&gt;James et al., Introduction to SL&lt;/font&gt;&lt;/p&gt;
 &lt;/div&gt;
 
 ]

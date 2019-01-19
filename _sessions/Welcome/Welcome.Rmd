@@ -135,8 +135,9 @@ knitr::include_graphics("https://www.rivs.com/wp-content/uploads/sites/8/2013/05
 
 
 ---
-<br><br>
+
 .pull-left6[
+
 # Schedule 
 
 We have an <high>ambitious schedule</high>!
@@ -151,7 +152,7 @@ We have an <high>ambitious schedule</high>!
 ]
 
 .pull-right4[
-
+<br><br>
 <img src="https://raw.githubusercontent.com/therbootcamp/therbootcamp.github.io/master/_sessions/_image/schedule_2019Jan_ML.png" height="525" align="center">
 
 ]
@@ -222,7 +223,7 @@ knitr::include_graphics("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR
 
   <iframe src="https://therbootcamp.github.io/appliedML_2019Jan/_sessions/Fitting/Fitting_practical.html" height="480px" width = "500px"></iframe>
 
-  Example:<a href="https://therbootcamp.github.io/appliedML_2019Jan/_sessions/Fitting/Fitting_practical.html">Fitting Practical </a>
+  Example: <a href="https://therbootcamp.github.io/appliedML_2019Jan/_sessions/Fitting/Fitting_practical.html">Fitting Practical </a>
 
 ]
 

@@ -1,11 +1,6 @@
 ---
-<<<<<<< HEAD
 title: "Model Fitting"
-subtitle: ""
-=======
-title: "Model Fitting (Training)"
 subtitle: "With Regression"
->>>>>>> 27cd919559fd68a532814567568b62f3c3feae63
 author: "Applied Machine Learning with R<br/><a href='https://therbootcamp.github.io'>www.therbootcamp.com</a><br/><a href='https://twitter.com/therbootcamp'>@therbootcamp</a>"
 date: "January 2019"
 output:
@@ -59,28 +54,25 @@ baselers <- read_csv("https://raw.githubusercontent.com/therbootcamp/appliedML_2
 
 ```
 
+# Where we are at
 
 .pull-left4[
 
-# Where we are at
+- Have a business <high>question</high>:  How can I predict loan default?
 
-- Have a business question
-    - How can I predict loan default?
+- Have <high>data</high> relevant to that question: Records from 300 historical customers.
 
-- Have data relevant to that question
-    - Records from 300 historical customers
+- Data is cleaned and in a <high>tidy</high>, rectangular format: Database, .csv.
 
-- Data is cleaned and in a tidy, rectangular format
-    - Database, .csv,
-
-## What's next?
+<br>
+### What's next?
 
 <high>Select</high> and <high>train</high> model(s) depending on the <high>type of task</high>
 
 ]
 
-.pull-right6[
-<br><br><br>
+.pull-right55[
+<br2>
 ```{r, echo = FALSE, fig.align = 'center', out.width = "100%", fig.cap = "Source: Medium.com"}
 knitr::include_graphics("https://cdn-images-1.medium.com/max/1600/1*_QGyIwpgq831xI54cIe_GQ.jpeg")
 ```
@@ -90,13 +82,15 @@ knitr::include_graphics("https://cdn-images-1.medium.com/max/1600/1*_QGyIwpgq831
 
 ---
 
-.pull-left45[
-
 # What type of task do you have?
 
-There are many types of of ML tasks.
+.pull-left45[
+
+There are <high>many types of of ML tasks</high>.
 
 In this course, we will focus on 2 of the most popular
+
+<br>
 
 |Type|Description | Example |
 |:----|:---- |:----|
@@ -106,7 +100,6 @@ In this course, we will focus on 2 of the most popular
 ]
 
 .pull-right5[
-<br><br><br>
 
 ```{r, echo = FALSE, fig.align = 'center', out.width = "100%"}
 knitr::include_graphics("https://github.com/therbootcamp/appliedML_2019Jan/blob/master/_sessions/Fitting/image/class_v_regression.jpg?raw=true")
@@ -120,23 +113,23 @@ knitr::include_graphics("https://github.com/therbootcamp/appliedML_2019Jan/blob/
 
 # What ML models are there?
 
+<br>
 There are *thousands* of machine learning models
 
 In this course, you will learn 3 of the most popular:
 
 |Model|Description|
 |:----|:---- |
-|Regression|A weighted linear combination of features and weights|
-|Decision Tree|A series of hierarchical 'yes/no' decisions|
-|Random Forests|Combination of many decision trees|
+|<high>Regression</high>|A weighted linear combination of features and weights|
+|<high>Decision Tree</high>|A series of hierarchical 'yes/no' decisions|
+|<high>Random Forests</high>|Combination of many decision trees|
 
-*In the Models session, you'll learn about many more!*
 
 ]
 
 .pull-right5[
-
-```{r, echo = FALSE, fig.align = 'center', out.width = "100%"}
+<br><br2>
+```{r, echo = FALSE, fig.align = 'center', out.width = "90%"}
 knitr::include_graphics("https://github.com/therbootcamp/appliedML_2019Jan/blob/master/_sessions/Fitting/image/three_models_vert.jpg?raw=true")
 ```
 
@@ -145,37 +138,37 @@ knitr::include_graphics("https://github.com/therbootcamp/appliedML_2019Jan/blob/
 ---
 class: center, middle
 
-## Once you have a model you need to "Fit" (aka, "Train") it to data
+## Once you have a model you need to "Fit" (aka, "Train") it to data.
 
-```{r, echo = FALSE, out.width = "50%", fig.cap = "<font size = 4>James et al., Introduction to SL</font>"}
-knitr::include_graphics("image/regression_ISLR.jpg")
+<font size=5><high>What does that mean?</high></font>
+
+<br>
+
+```{r, echo = FALSE, out.width = "50%", fig.cap = "<font size = 3>James et al., Introduction to SL</font>"}
+knitr::include_graphics("https://afit-r.github.io/public/images/analytics/regression/sq.errors-1.png")
 ```
 
-## What does that mean?
+
 
 
 ---
 
+# What does "Fitting" mean?
 
 .pull-left5[
-
-# What does "Fitting" mean?
 
 For any model class, there is no "One" single model.
 
 > How many possible Regression models are there?
 
-
-Any machine learning model can be 'fit' (aka 'trained') on a specific dataset of interest.
-
-
-Fitting means finding the "best" version of a model for a specific dataset.
+<br2>
+Any machine learning model can be 'fit' (aka 'trained') on a specific dataset of interest. This means <high>finding the "best" version of a model</high> for a specific dataset.
 
 > "Let me represent the data in the best way I can given how I work"<br>
 >~ Model during fitting
 
+<br2>
 The "best" model is usually defined as a combination of <high>accuracy</high> (higher better!) and <high>complexity</high> (simpler is better!)
-
 
 ]
 
@@ -202,9 +195,7 @@ three_mod <- ggplot(data, aes(x = x, y = y)) + geom_point() +
 
 ```
 
-
-<br><br>
-### How do I fit a model to these data??
+<p align="center"><font size=5><high>How do I fit a model to these data?</font></high></p>
 
 ```{r, echo = FALSE, fig.width = 3, fig.height = 3, dpi = 200, out.width = "80%"}
 three_mod
@@ -294,9 +285,10 @@ bad_err <- bad_raw +
 
 ---
 
-.pull-left45[
-<br><br><br>
 # Defining Accuracy (or Error)
+
+
+.pull-left45[
 
 To train (fit) a model to a dataset, we need to <high>mathematically define Accuracy</high>
 
@@ -312,8 +304,7 @@ The model that minimizes error (or maximizes accuracy) is the final <high>Traini
 
 .pull-right45[
 
-<br><br>
-### How do I fit a model to these data??
+<p align="center"><font size=5><high>How do I fit a model to these data?</font></high></p>
 
 ```{r, echo = FALSE, fig.width = 3, fig.height = 3, dpi = 200, out.width = "80%"}
 three_mod
@@ -340,17 +331,18 @@ ggarrange(bad_err, great_err, ncol = 2, nrow = 1)
 
 ---
 
-.pull-left45[
-
 # Regression Error
 
-### MAE: Mean Absolute Error
+.pull-left45[
+
+#### MAE: Mean Absolute Error
 
 $$\large MSE = \frac{1}{n}\sum_{i=1}^{n} \lvert Prediction_{i} - Truth_{i} \rvert$$
 
 > On average, how far are predictions away from true values?
 
-### MSE: Mean Squared Error
+
+#### MSE: Mean Squared Error
 
 $$\large MSE = \frac{1}{n}\sum_{i=1}^{n}(Prediction_{i} - Truth_{i})^{2}$$
 > On average, how far are predictions away from true values (squared!)?
@@ -360,9 +352,9 @@ $$\large MSE = \frac{1}{n}\sum_{i=1}^{n}(Prediction_{i} - Truth_{i})^{2}$$
 
 .pull-right5[
 
-```{r, fig.width = 3, fig.height = 3, echo = FALSE}
+```{r, fig.width = 3, fig.height = 2.5, echo = FALSE}
 bad_err +
-  labs(subtitle = "Red lines are (absolute) errors", title = "")
+  labs(subtitle = "Red lines are (absolute) errors", title = NULL)
 ```
 
 ]
@@ -385,35 +377,37 @@ The confusion matrix is a cross tabulation table showing predictions versus true
 ### Confusion Matrix
 
 |    |      Y is Positive      | Y is Negative |
-|----------|:-------------:|:------:|
-| Predict <br>"Positive"| <font color = "green">TP<br> True Positive</font>| <font color = "red">FP <br> False Positive</font> |
-| Predict <br>"Negative"|    <font color = "red">FN<br> False Negative</font>   |  <font color = "green">TN <br> True Negative</font>|
+|--------------|:-------------:|:------:|
+| Predict <br>"Positive"| <font color = "#6ABA9A">TP<br> True Positive</font>| <font color = "#EA4B68">FP <br> False Positive</font> |
+| Predict <br>"Negative"|    <font color = "#EA4B68">FN<br> False Negative</font>   |  <font color = "#6ABA9A">TN <br> True Negative</font>|
 
-Green cells are <font color = "green">correct decisions</font> while Red cells are <font color = "red">incorrect decisions</font>
+<i>Note: Green cells are <font color = "#6ABA9A">correct decisions</font> while Red cells are <font color = "#EA4B68">incorrect decisions</font></i>
 
 
 ]
 
 .pull-right5[
 
-### Data
+<br>
+
+#### Data
 
 ||X1|X2|X3|Prediction|Truth|Outcome|
 |:---|:----|:----|:----|:----|:----|:----|
-|1|.|.|.|"Default"|Default|<font color = "green">TP</font>|
-|2|.|.|.|"Default"|Default|<font color = "green">TP</font>|
-|3|.|.|.|"Repay"|Repay|<font color = "green">TN</font>|
-|4|.|.|.|"Default"|Repay|<font color = "red">FP</font>|
-|5|.|.|.|"Repay"|Default|<font color = "red">FN</font>|
-|6|.|.|.|"Default"|Default|<font color = "green">TP</font>|
-|7|.|.|.|"Repay"|Repay|<font color = "green">TN</font>|
+|1|.|.|.|"Default"|Default|<font color = "#6ABA9A">TP</font>|
+|2|.|.|.|"Default"|Default|<font color = "#6ABA9A">TP</font>|
+|3|.|.|.|"Repay"|Repay|<font color = "#6ABA9A">TN</font>|
+|4|.|.|.|"Default"|Repay|<font color = "#EA4B68">FP</font>|
+|5|.|.|.|"Repay"|Default|<font color = "#EA4B68">FN</font>|
+|6|.|.|.|"Default"|Default|<font color = "#6ABA9A">TP</font>|
+|7|.|.|.|"Repay"|Repay|<font color = "#6ABA9A">TN</font>|
 
-### Confusion Matrix
+#### Confusion Matrix
 
-|    |      True Default      | True Repay  |
-|----------|:-------------:|:------:|
-| Predict <br>"Default"| <font color = "green">3</font>| <font color = "red">1 </font> |
-| Predict <br>"Repay"|    <font color = "red">1</font>   |  <font color = "green"> 2</font>|
+|                  |      True Default      | True Repay  |
+|------------------|:-------------:|:------:|
+| "Default"| <font color = "#6ABA9A">3</font>| <font color = "#EA4B68">1 </font> |
+| "Repay"|    <font color = "#EA4B68">1</font>   |  <font color = "#6ABA9A"> 2</font>|
 
 ]
 
@@ -427,37 +421,36 @@ Classification accuracy measures all come from the <high> "confusion matrix"</hi
 
 The confusion matrix is a cross tabulation table showing predictions versus true classes.
 
-### Confusion Matrix
+#### Confusion Matrix
 
-|    |      Y is Positive      | Y is Negative |
-|----------|:-------------:|:------:|
-| Predict <br>"Positive"| <font color = "green">TP<br> True Positive</font>| <font color = "red">FP <br> False Positive</font> |
-| Predict <br>"Negative"|    <font color = "red">FN<br> False Negative</font>   |  <font color = "green">TN <br> True Negative</font>|
+|                       |      Y is Positive      | Y is Negative |
+|-----------------------|:-------------:|:------:|
+| Predict <br>"Positive"| <font color = "#6ABA9A">TP<br> True Positive</font>| <font color = "#EA4B68">FP <br> False Positive</font> |
+| Predict <br>"Negative"|    <font color = "#EA4B68">FN<br> False Negative</font>   |  <font color = "#6ABA9A">TN <br> True Negative</font>|
 
-Green cells are <font color = "green">correct decisions</font> while Red cells are <font color = "red">incorrect decisions</font>
+<i>Note: Green cells are <font color = "#6ABA9A">correct decisions</font> while Red cells are <font color = "#EA4B68">incorrect decisions</font></i>
 
 
 ]
 
 .pull-right5[
 
-
-### Overall Accuracy
+<br>
+#### Overall Accuracy
 
 > What percent of my predictions are correct?
 
 $$\large Overall \; Accuracy = \frac{TP + TN}{ TP + TN + FN + FP}$$
 
-### Sensitivity
+#### Sensitivity
 
 > <i>Of the truly Positive cases</i>, what percent of predictions are correct?
 
 
 $$\large Sensitivity = \frac{TP}{ TP +FN }$$
-### Specificity
+#### Specificity
 
 > <i>Of the truly Negative cases</i>, what percent of predictions are correct?
-
 
 $$\large Specificity = \frac{TN}{ TN + FP }$$
 
@@ -480,28 +473,29 @@ After the loan period is over, we obtain the final confusion matrix comparing ou
 
 ### Confusion Matrix
 
-|    |      True Default      | True Repay  |
-|----------|:-------------:|:------:|
-| Predict <br>"Default"| <font color = "green">TP <br>3</font>| <font color = "red">FP <br>1 </font> |
-| Predict <br>"Repay"|    <font color = "red">FN<br>1</font>   |  <font color = "green">TN <br> 2</font>|
+|                     |      True Default      | True Repay  |
+|---------------------|:-------------:|:------:|
+| Predict <br>"Default"| <font color = "#6ABA9A">TP <br>3</font>| <font color = "#EA4B68">FP <br>1 </font> |
+| Predict <br>"Repay"|    <font color = "#EA4B68">FN<br>1</font>   |  <font color = "#6ABA9A">TN <br> 2</font>|
 
 ]
 
 .pull-right5[
 
+<br>
 
-### Overall Accuracy
+#### Overall Accuracy
 
 Across all customers, our model has an accuracy of 71%
 
 $$\large Overall \; Accuracy = \frac{3 + 2}{3 + 2 + 1 + 1} = 0.71$$
 
-### Sensitivity
+#### Sensitivity
 
 Our model is 75% accurate in catching true defaults
 
 $$\large Sensitivity = \frac{3}{3 + 4} = .75$$
-### Specificity
+#### Specificity
 
 Our model is 67% accurate in catching true repayments
 
@@ -570,8 +564,8 @@ class: center, middle
 In [regression](https://en.wikipedia.org/wiki/Regression_analysis), the criterion Y is modeled as the <high>sum</high> of <high>predictors times weights</high> $\beta_{1}$, $\beta_{2}$</high>.
 
 $$\hat{Y} =  \beta_{0} + X1 \times \beta_{X1} + X2 \times \beta_{X2} + ...$$
-```{r, echo = FALSE, out.width = "100%", fig.cap = "<font size = 4>James et al., Introduction to SL</font>"}
-knitr::include_graphics("image/regression_ISLR.jpg")
+```{r, echo = FALSE, out.width = "100%", fig.cap = "<font size = 3>James et al., Introduction to SL</font>"}
+knitr::include_graphics("https://afit-r.github.io/public/images/analytics/regression/sq.errors-1.png")
 ```
 
 ]
@@ -608,8 +602,8 @@ If a value of $\beta_{i}$ is exactly 0, that means $X_{i}$ does not help us pred
 In [regression](https://en.wikipedia.org/wiki/Regression_analysis), the criterion Y is modeled as the <high>sum</high> of <high>predictors times weights</high> $\beta_{1}$, $\beta_{2}$</high>.
 
 $$\hat{Y} =  \beta_{0} + X1 \times \beta_{X1} + X2 \times \beta_{X2} + ...$$
-```{r, echo = FALSE, out.width = "100%", fig.cap = "<font size = 4>James et al., Introduction to SL</font>"}
-knitr::include_graphics("image/regression_ISLR.jpg")
+```{r, echo = FALSE, out.width = "100%", fig.cap = "<font size = 3>James et al., Introduction to SL</font>"}
+knitr::include_graphics("https://afit-r.github.io/public/images/analytics/regression/sq.errors-1.png")
 ```
 
 ]
