@@ -138,7 +138,7 @@ postResample(pred = glm_fit,
              obs = criterion)
 
 #     RMSE Rsquared      MAE 
-# 3.825010 0.622349 2.767995 
+# 3.246182 0.678465 2.501346 
 
 # On average, the model fits are 2.8 away from the true
 #  criterion values
@@ -245,7 +245,7 @@ View(college_train)
 9. We need to do a little bit of data cleaning before starting. Specifically, we need to convert all character columns to factors: Do this by running the following code:
 
 ```{r}
-# Convert character to factor and remove college_name
+# Convert character to factor
 
 college_train <- college_train %>%
           mutate_if(is.character, factor)

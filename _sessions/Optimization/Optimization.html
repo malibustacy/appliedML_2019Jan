@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Optimization</title>
+    <meta charset="utf-8">
+    <meta name="author" content="Applied Machine Learning with R www.therbootcamp.com @therbootcamp" />
+    <link href="libs/remark-css/default.css" rel="stylesheet" />
+    <link rel="stylesheet" href="baselrbootcamp.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Optimization
+## Regularization and Cross-Validation
+### Applied Machine Learning with R<br/><a href='https://therbootcamp.github.io'>www.therbootcamp.com</a><br/><a href='https://twitter.com/therbootcamp'><span class="citation">@therbootcamp</span></a>
+### January 2019
+
+---
+
+
+layout: true
+
+&lt;div class="my-footer"&gt;&lt;span&gt;
+&lt;a href="https://therbootcamp.github.io/"&gt;&lt;font color="#7E7E7E"&gt;Applied Machine Learning with R, January 2019&lt;/font&gt;&lt;/a&gt;
+&amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp;
+&lt;a href="https://therbootcamp.github.io/"&gt;&lt;font color="#7E7E7E"&gt;www.therbootcamp.com&lt;/font&gt;&lt;/a&gt;
+&lt;/span&gt;&lt;/div&gt; 
+
+---
+
+
+
+
+
+
+
+
+
+
+.pull-left4[
+&lt;br&gt;&lt;br&gt;
+# Where we are
+
+- &lt;high&gt;Train&lt;/high&gt; one of several models (&lt;high&gt;regression&lt;/high&gt;, &lt;high&gt;decision trees&lt;/high&gt;, and &lt;high&gt;random forests&lt;/high&gt;) on training data.
+
+- Explore models - show regression coefficients, plot decision trees (etc)
+
+- Assess model &lt;high&gt;prediction&lt;/high&gt; performance on &lt;high&gt;test&lt;/high&gt; data
+    - Mean Absolute Error (MAE)
+
+]
+
+.pull-right55[
+
+### Model Training
+
+&lt;img src="image/model_training_flow.png" width="1442" style="display: block; margin: auto;" /&gt;
+
+### Model Testing
+
+&lt;img src="image/model_testing_flow.png" width="1439" style="display: block; margin: auto;" /&gt;
+
+
+]
+
+
+---
+
+.pull-left4[
+&lt;br&gt;&lt;br&gt;
+# But...
+
+- How can I estimate prediction performance during model training?
+
+- How can I &lt;high&gt;optimise&lt;/high&gt; model training to &lt;high&gt;maximize prediction&lt;/high&gt; (not fitting!) performance?
+
+- How do I &lt;high&gt;avoid overfitting&lt;/high&gt;?
+
+
+## Answers
+
+- &lt;high&gt;Cross-Validation&lt;/high&gt;
+
+- Model parameter &lt;high&gt;regularization&lt;/high&gt;
+
+]
+
+.pull-right55[
+
+### Model Training
+
+&lt;img src="image/model_training_flow.png" width="1442" style="display: block; margin: auto;" /&gt;
+
+### Model Testing
+
+&lt;img src="image/model_testing_flow.png" width="1439" style="display: block; margin: auto;" /&gt;
+
+
+]
+
+
+---
+
+
+.pull-left4[
+&lt;br&gt;&lt;br&gt;
+# Overfitting (Recap)
+
+When a model is consistently &lt;high&gt;less accurate in predicting future data&lt;/high&gt; than in &lt;high&gt;fitting training data&lt;high&gt;, this is called &lt;high&gt;overfitting&lt;/high&gt;
+
+Overfitting typically occurs when a model 'mistakes' random noise for a predictable signal
+
+
+]
+
+
+.pull-right55[
+&lt;br&gt;&lt;br&gt;
+
+&lt;div class="figure" style="text-align: center"&gt;
+&lt;img src="https://cdn-images-1.medium.com/max/1600/1*SBUK2QEfCP-zvJmKm14wGQ.png" alt="&amp;lt;font size = 4&amp;gt;hackernoon.com&amp;lt;/font&amp;gt;"  /&gt;
+&lt;p class="caption"&gt;&lt;font size = 4&gt;hackernoon.com&lt;/font&gt;&lt;/p&gt;
+&lt;/div&gt;
+
+&lt;div class="figure" style="text-align: center"&gt;
+&lt;img src="https://cdn-images-1.medium.com/max/1200/1*cdvfzvpkJkUudDEryFtCnA.png" alt="&amp;lt;font size = 4&amp;gt;Medium.com&amp;lt;/font&amp;gt;"  /&gt;
+&lt;p class="caption"&gt;&lt;font size = 4&gt;Medium.com&lt;/font&gt;&lt;/p&gt;
+&lt;/div&gt;
+
+
+]
+
+
+---
+
+# Overfitting (Recap)
+
+&lt;img src="Optimization_files/figure-html/unnamed-chunk-9-1.png" style="display: block; margin: auto;" /&gt;
+
+
+
+---
+
+# Overfitting (Recap)
+
+.pull-left45[
+
+### How do we account for overfitting?
+
+Always evaluate models based on their performance on new, unseen test data
+
+*Never evaluate models based only on training accuracy!*
+
+Use models with &lt;high&gt;regularization&lt;/high&gt; terms, which explicitly punish models for being too complex.
+
+Use fitting methods such as &lt;high&gt;cross-validation&lt;/high&gt; to find optimal regularization values.
+
+We will learn about these methods in a future session!
+
+]
+
+.pull-right5[
+
+&lt;img src="Optimization_files/figure-html/unnamed-chunk-10-1.png" style="display: block; margin: auto;" /&gt;
+
+
+]
+
+
+---
+
+.pull-left55[
+
+# Tuning parameters
+
+### What are tuning parameters?
+
+- Most ML models have &lt;high&gt;tuning parameters&lt;/high&gt; which &lt;high&gt;guide&lt;/high&gt; (aka. 'tune') a model during fitting.
+    - Decision trees: complexity tuning parameter &lt;high&gt;cp&lt;/high&gt;
+    - Random forests diversity tuning parameter &lt;high&gt;mtry&lt;/high&gt;
+    
+- Tuning parameters never show up in the final model! They are only used to guide fitting.
+
+
+&lt;div class="figure" style="text-align: center"&gt;
+&lt;img src="https://www.okw.com/en/Tuning-Knobs-classic-/tuning-knobs-with-aluminium-cap_TitleImageSwap500x408.jpg" alt="&amp;lt;font size = 4&amp;gt;okw.com&amp;lt;/font&amp;gt;" width="40%" /&gt;
+&lt;p class="caption"&gt;&lt;font size = 4&gt;okw.com&lt;/font&gt;&lt;/p&gt;
+&lt;/div&gt;
+
+
+]
+
+
+.pull-right45[
+
+
+&lt;img src="image/complexity_parameter.png" width="80%" style="display: block; margin: auto;" /&gt;
+
+&lt;img src="image/mtry_parameter.png" width="80%" style="display: block; margin: auto;" /&gt;
+
+
+]
+
+
+
+
+
+
+---
+
+.pull-left55[
+
+### Problem
+
+How do I know the best tuning parameters?
+
+- Decision Trees: Should I use a low complexity parameter or a high one?
+- Random Forests: Should I use a low mtry value or a high one?
+
+### Answer
+
+Find optimal values using &lt;high&gt;cross-validation&lt;/high&gt;
+
+
+]
+
+
+.pull-right45[
+
+
+&lt;img src="image/complexity_parameter.png" width="80%" style="display: block; margin: auto;" /&gt;
+
+&lt;img src="image/mtry_parameter.png" width="80%" style="display: block; margin: auto;" /&gt;
+
+
+]
+
+
+
+
+
+
+---
+
+.pull-left4[
+
+# Why do we have tuning parameters
+
+- Regularisation
+- Complexity
+
+]
+
+.pull-right6[
+
+]
+
+
+---
+
+.pull-left4[
+
+# Bias-Variance Trade-off
+
+- A short introduction
+
+]
+
+.pull-right6[
+
+]
+
+
+---
+
+.pull-left4[
+
+# Regularisation / complexity controlling methods
+
+- Regression
+  - Ridge (L1 penalty), Lasso (L2 penalty)
+  
+- Trees
+  - Max depth, minimum elements per node
+  
+- KNN
+   - Just try different values of K
+
+]
+
+.pull-right6[
+
+]
+
+
+---
+
+.pull-left4[
+
+# How do you select best tuning parameters?
+
+- Crossvalidation
+
+]
+
+.pull-right6[
+
+]
+
+
+---
+
+.pull-left4[
+
+# Cross-Validation
+
+]
+
+.pull-right6[
+
+]
+
+---
+
+.pull-left4[
+
+# Estimating prediction accuracy with cross-validation
+
+]
+
+.pull-right6[
+
+]
+
+---
+
+.pull-left4[
+
+# Estimating True prediction accuracy
+
+
+- Hold out set
+- Why do we always use a holdout set?
+
+]
+
+.pull-right6[
+
+]
+
+
+---
+
+# Caret
+
+
+
+
+
+---
+
+
+# Practical
+
+&lt;font size=6&gt;&lt;b&gt;&lt;a href="https://therbootcamp.github.io/Intro2DataScience_2018Oct/_sessions/Plotting/Plotting_practical.html"&gt;Link to practical&lt;/a&gt;
+    </textarea>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false,
+"ratio": "16:9"
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function() {
+  var d = document, s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})();</script>
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  tex2jax: {
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+  }
+});
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

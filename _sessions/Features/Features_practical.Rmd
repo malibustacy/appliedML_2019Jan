@@ -101,8 +101,6 @@ library(mlbench)       # Load ISLR package
 
 ```{r, eval = FALSE, echo = TRUE}
 
-# Fitting and evaluating a regression model ------------------------------------
-
 # Step 0: Load packages-----------
 
 library(tidyverse)    # Load tidyverse for dplyr and tidyr

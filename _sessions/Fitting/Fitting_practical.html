@@ -1042,7 +1042,7 @@ train_control &lt;- trainControl(method = &quot;none&quot;)
 
 # Regression
 
-hwy_glm &lt;- train(form = hwy ~ year + cyl + displ,
+hwy_glm &lt;- train(form = hwy ~ year + cyl + displ + trans,
                  data = data_train,
                  method = &quot;glm&quot;,
                  trControl = train_control)
@@ -1063,7 +1063,7 @@ postResample(pred = glm_fit,
              obs = criterion)
 
 #     RMSE Rsquared      MAE 
-# 3.825010 0.622349 2.767995 
+# 3.246182 0.678465 2.501346 
 
 # On average, the model fits are 2.8 away from the true
 #  criterion values
@@ -1154,7 +1154,7 @@ dim(college_train)</code></pre>
 <ol start="9" style="list-style-type: decimal">
 <li>We need to do a little bit of data cleaning before starting. Specifically, we need to convert all character columns to factors: Do this by running the following code:</li>
 </ol>
-<pre class="r"><code># Convert character to factor and remove college_name
+<pre class="r"><code># Convert character to factor
 
 college_train &lt;- college_train %&gt;%
           mutate_if(is.character, factor)</code></pre>
