@@ -631,9 +631,11 @@ salary_lasso <- train(form = Salary ~ .,
                                           lambda = lambda_vec))
 ```
 
-
+<<<<<<< HEAD
 3. Plot your `salary_lasso` object. What do you see? Which value of the regularisation parameter seems to be the best?
-
+=======
+3. Plot your `price_lasso` object. What do you see? Which value of the regularization parameter seems to be the best?
+>>>>>>> 88b1ef1638184409f607dbda179420283a11e09a
 
 ```{r, echo = TRUE, eval = FALSE}
 # Plot price_lasso object
@@ -697,9 +699,11 @@ salary_dt <- train(form = Salary ~ .,
                   tuneGrid = expand.grid(cp = cp_vec))
 ```
 
-
+<<<<<<< HEAD
 3. Plot your `salary_dt` object. What do you see? Which value of the regularisation parameter seems to be the best?
-
+=======
+3. Plot your `price_dt` object. What do you see? Which value of the regularization parameter seems to be the best?
+>>>>>>> 88b1ef1638184409f607dbda179420283a11e09a
 
 ```{r, echo = TRUE, eval = FALSE}
 # Plot price_dt object
