@@ -511,7 +511,7 @@ salary_glm <- train(form = Salary ~ .,
 salary_glm$finalModel
 ```
 
-5. Perint your final regression model coefficients with `coef()`.
+5. Print your final regression model coefficients with `coef()`.
 
 ```{r}
 coef(salary_glm$finalModel)
@@ -560,7 +560,7 @@ salary_ridge <- train(form = Salary ~ .,
                                           lambda = lambda_vec))
 ```
 
-3. Plot your `price_ridge` object. What do you see? Which value of the regularisation parameter seems to be the best?
+3. Plot your `salary_ridge` object. What do you see? Which value of the regularisation parameter seems to be the best?
 
 ```{r, echo = TRUE, eval = FALSE}
 # Plot price_ridge object
@@ -571,15 +571,15 @@ plot(XX)
 
 ```{r, echo = TRUE, eval = FALSE}
 # Print best regularisation parameter
-price_ridge$bestTune$lambda
+salary_ridge$bestTune$lambda
 ```
 
 5. What were your final regression model coefficients for the best lambda value? Find them by running the following code:
 
 ```{r, echo = TRUE, eval = FALSE}
 # Get coefficients from best lambda value
-coef(price_ridge$finalModel, 
-     price_ridge$bestTune$lambda)
+coef(salary_ridge$finalModel, 
+     salary_ridge$bestTune$lambda)
 ```
 
 6. How do these coefficients compare to what you found in regular regression? Are they similar? Different?

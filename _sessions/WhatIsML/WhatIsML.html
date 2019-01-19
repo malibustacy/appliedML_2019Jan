@@ -303,7 +303,7 @@ Based on &lt;high&gt;historical data&lt;/high&gt; from past patients &lt;high&gt
 |Term| Definition| Example|
 |:------|:-----|:------|
 |Data (Tidy)|Data represented in a rectangular format with rows and columns|Excel spreadsheet, .`csv`|
-|Case|A specific case of data|A patient, a site|
+|Case|A specific observation of data|A patient, a site|
 |Feature|An individual, measurable property of cases|Age, temperature, country|
 |Criterion|Something you want to predict|Total sales, success (yes or no)|
 
@@ -631,12 +631,23 @@ if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
   d.head.appendChild(s);
 })();</script>
 
-<script type="text/x-mathjax-config">
-MathJax.Hub.Config({
-  tex2jax: {
-    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+<script>
+(function() {
+  var i, text, code, codes = document.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
   }
-});
+})();
 </script>
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>

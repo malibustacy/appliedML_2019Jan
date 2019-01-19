@@ -306,7 +306,7 @@ knitr::include_graphics("image/trump_gut_edited.jpg")
 |Term| Definition| Example|
 |:------|:-----|:------|
 |Data (Tidy)|Data represented in a rectangular format with rows and columns|Excel spreadsheet, .`csv`|
-|Case|A specific case of data|A patient, a site|
+|Case|A specific observation of data|A patient, a site|
 |Feature|An individual, measurable property of cases|Age, temperature, country|
 |Criterion|Something you want to predict|Total sales, success (yes or no)|
 
