@@ -28,7 +28,7 @@ knitr::include_graphics("image/prediction.jpg")
 
 ### Overview
 
-In this practical, you will enter two model competitions that will allow you to demonstrate your knwoledge of:
+In this practical, you will enter two model competitions that will allow you to demonstrate your knowledge of:
 
 1. Machine learning models
 2. Fitting and prediction
