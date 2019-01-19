@@ -829,7 +829,7 @@ criterion_train <- XXX$XXX
 
 ```{r, echo = FALSE, eval = FALSE}
 # Calculate fitting accuracies of each model
-# pred = XX_pred
+# pred = XX_fit
 # obs = criterion_train
 
 # Regression
@@ -859,6 +859,7 @@ criterion_test <- XXX$XXX
 
 ```{r, echo = FALSE, eval = FALSE}
 # Save model predictions for test data
+# XX_mod
 # newdata = college_test
 
 # Regression
@@ -896,7 +897,7 @@ postResample(pred = XXX, obs = XXX)
 
 7. If someone came to you and asked "If I use your model in the future to predict the graduation rate of a new college, how accurate do you think it would be?", what would you say?
 
-# D Exploring model tuning parameters
+# D - Exploring model tuning parameters
 
 1. In all of your decision tree models so far, you have been setting the complexity parameter to 0.01. Try setting it to a larger value of 0.2 and see how your decision trees change (by plotting them). Do they get more or less complicated? How does increasing this value affect fitting and prediction performance? If you are interested in learning more about this parameter, look at the help menu with `?rpart.control`.
 
