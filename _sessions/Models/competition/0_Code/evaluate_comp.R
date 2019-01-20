@@ -14,17 +14,19 @@ library(caret)
 files = drive_find(n_max = 200)
 
 # select relevant files
-regr_files = unlist(str_extract_all(files$name, '[:print:]*_regr[^ - ]*.RDS'))
-clas_files = unlist(str_extract_all(files$name, '[:print:]*_clas[^ - ]*.RDS'))
-
+regr_files = str_detect(files$name, '[:print:]*_regr[:print:]*.RDS')
+clas_files = str_detect(files$name, '[:print:]*_clas[:print:]*.RDS')
+regr_id = files$id[regr_files]
+clas_id = files$id[clas_files]
+                        
 # download files
 for(i in 1:length(regr_files)){
-googledrive::drive_download(regr_files[i],
+googledrive::drive_download(regr_id[i],
                             path = paste0('_sessions/Models/competition/3_Competitors/',regr_files[i]),
                             overwrite = TRUE)
   }
 for(i in 1:length(clas_files)){
-  googledrive::drive_download(clas_files[i],
+  googledrive::drive_download(clas_id[i],
                               path = paste0('_sessions/Models/competition/3_Competitors/',clas_files[i]),
                               overwrite = TRUE)
   }
