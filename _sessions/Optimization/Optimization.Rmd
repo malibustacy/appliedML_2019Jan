@@ -263,7 +263,7 @@ There are two common methods to fit penalized (aka regularized) regression model
 
 ### Ridge
 
-The Lasso penalty is known as the $\ell2$ norm, where Beta weights are selected by <high>minimizing</high> the following equation:
+The Ridge penalty is known as the $\ell2$ norm, where Beta weights are selected by <high>minimizing</high> the following equation:
 
 ```{r, echo = FALSE, out.width = "100%"}
 knitr::include_graphics("image/ridge_penalty_eq.jpg")
