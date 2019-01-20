@@ -160,16 +160,17 @@ There are two common methods to fit penalized (aka regularized) regression model
 
 ### Ridge
 
-The Lasso penalty is known as the `\(\ell2\)` norm, where Beta weights are selected by &lt;high&gt;minimizing&lt;/high&gt; the following equation:
+The Ridge penalty is known as the `\(\ell2\)` norm, where Beta weights are selected by &lt;high&gt;minimizing&lt;/high&gt; the following equation:
 
 &lt;img src="image/ridge_penalty_eq.jpg" width="100%" style="display: block; margin: auto;" /&gt;
 
 As `\(\lambda\)` "Lambda" increases, coefficients are pushed towards (but not necessarily exactly to) 0.
 
+See [Wikipedia's Ridge article](https://en.wikipedia.org/wiki/Tikhonov_regularization) to learn more.
+
 ]
 
 .pull-right45[
-
 
 &lt;div class="figure" style="text-align: center"&gt;
 &lt;img src="image/ridge_penalty_plot.png" alt="&amp;lt;font size = 4&amp;gt;James et al., ISLR&amp;lt;/font&amp;gt;" width="80%" /&gt;
@@ -177,9 +178,6 @@ As `\(\lambda\)` "Lambda" increases, coefficients are pushed towards (but not ne
 &lt;/div&gt;
 
 ]
-
-
-
 
 ---
 
@@ -232,6 +230,8 @@ The Lasso penalty is known as the `\(\ell1\)` norm, where Beta weights are selec
 &lt;img src="image/lasso_penalty_eq.jpg" width="100%" style="display: block; margin: auto;" /&gt;
 
 As `\(\lambda\)` increases, coefficients are pushed towards 0, with some being forced to &lt;high&gt;exactly 0&lt;/high&gt;.
+
+See [Wikipedia's Lasso article](https://en.wikipedia.org/wiki/Lasso_(statistics&amp;#x29;) to learn more.
 
 ]
 
@@ -440,6 +440,8 @@ lasso_mod &lt;- train(form = income ~ .,
 .pull-left45[
 
 If you plot your model object with `plot(XX_mod)` you will see a plot showing the relationship between the tuning parameter and error.
+
+The bottom of the curve shows the best tuning parameter (minimises error)
 
 Print the best tuning parameter value with `XX_mod$bestTune$NAME`
 

@@ -56,7 +56,6 @@ library(caret)
 
 baselers <- read_csv("../../1_Data/baselers.csv")
 
-
 set.seed(5)
 
 N <- 40
@@ -264,7 +263,7 @@ There are two common methods to fit penalized (aka regularized) regression model
 
 ### Ridge
 
-The Lasso penalty is known as the $\ell2$ norm, where Beta weights are selected by <high>minimizing</high> the following equation:
+The Ridge penalty is known as the $\ell2$ norm, where Beta weights are selected by <high>minimizing</high> the following equation:
 
 ```{r, echo = FALSE, out.width = "100%"}
 knitr::include_graphics("image/ridge_penalty_eq.jpg")
@@ -272,19 +271,17 @@ knitr::include_graphics("image/ridge_penalty_eq.jpg")
 
 As $\lambda$ "Lambda" increases, coefficients are pushed towards (but not necessarily exactly to) 0.
 
+See [Wikipedia's Ridge article](https://en.wikipedia.org/wiki/Tikhonov_regularization) to learn more.
+
 ]
 
 .pull-right45[
-
 
 ```{r, echo = FALSE, out.width = "80%", fig.cap = "<font size = 4>James et al., ISLR</font>"}
 knitr::include_graphics("image/ridge_penalty_plot.png")
 ```
 
 ]
-
-
-
 
 ---
 
@@ -338,6 +335,8 @@ knitr::include_graphics("image/lasso_penalty_eq.jpg")
 ```
 
 As $\lambda$ increases, coefficients are pushed towards 0, with some being forced to <high>exactly 0</high>.
+
+See [Wikipedia's Lasso article](https://en.wikipedia.org/wiki/Lasso_(statistics&#x29;) to learn more.
 
 ]
 
@@ -563,13 +562,15 @@ lasso_mod <- train(form = income ~ .,
 
 If you plot your model object with `plot(XX_mod)` you will see a plot showing the relationship between the tuning parameter and error.
 
+The bottom of the curve shows the best tuning parameter (minimises error)
+
 Print the best tuning parameter value with `XX_mod$bestTune$NAME`
 
 ]
 
 .pull-right5[
 
-```{r, out.width = "60%", fig.width = 6, fig.height = 3}
+```{r, out.width = "60%", fig.width = 5, fig.height = 4}
 # Visualise tuning parameter error curve
 plot(lasso_mod)
 

@@ -19,7 +19,7 @@ knitr::opts_chunk$set(comment = NA,
 options(digits = 3)
 ```
 
-```{r, echo = FALSE, fig.align = 'center', eval = TRUE, out.width = "70%"}
+```{r, echo = FALSE, fig.align = 'center', eval = TRUE, out.width = "100%"}
 knitr::include_graphics("image/crossvalidation_4fold.png")
 ```
 
@@ -48,7 +48,6 @@ library(ggthemes)
 |[college_test.csv](https://raw.githubusercontent.com/therbootcamp/appliedML_2019Jan/master/1_Data/college_est.csv)| 277 | 18|
 |[house_train.csv](https://raw.githubusercontent.com/therbootcamp/appliedML_2019Jan/master/1_Data/house_train.csv)| 5000 | 21|
 |[house_test.csv](https://raw.githubusercontent.com/therbootcamp/appliedML_2019Jan/master/1_Data/_data/house_test.csv)| 1000 | 21|
-
 
 ```{r, message = FALSE, eval = TRUE, echo = FALSE}
 # Load datasets locally
@@ -532,7 +531,7 @@ It's time to fit an optimized regression model with a Ridge penalty!
 ```{r, echo = TRUE, eval = FALSE}
 # Determine possible values of lambda
 
-lambda_vec <- seq(from = 0, to = 1000, length = 100)
+lambda_vec <- seq(from = 0, to = 2, length = 100)
 ```
 
 2. Fit a ridge regression model predicting `Salary` as a function of all features
@@ -570,7 +569,7 @@ salary_ridge <- train(form = Salary ~ .,
 3. Plot your `salary_ridge` object. What do you see? Which value of the regularization parameter seems to be the best?
 
 ```{r, echo = TRUE, eval = FALSE}
-# Plot price_ridge object
+# Plot salary_ridge object
 plot(XX)
 ```
 
