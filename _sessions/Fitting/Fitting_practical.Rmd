@@ -12,8 +12,8 @@ knitr::opts_chunk$set(comment = NA,
                       fig.width = 6, 
                       fig.height = 6,
                       fig.align = 'center',
-                      echo = TRUE, 
-                      eval = TRUE, 
+                      echo = FALSE, 
+                      eval = FALSE, 
                       warning = FALSE,
                       message = FALSE)
 
@@ -265,7 +265,7 @@ names(college_train)
 View(XXX)
 ```
 
-```{r, echo = TRUE, eval = FALSE}
+```{r}
 View(college_train)
 ```
 
@@ -295,7 +295,24 @@ ctrl_none <- trainControl(method = "none")
 
 1. Using the code below, fit a regression model predicting graduation rate (`Grad.Rate`) as a function of one feature `PhD`, the percent of faculty with PhDs). Save the result as an object `Grad.Rate_glm`
 
-```{r, echo = TRUE}
+- Set the `form` argument to `Grad.Rate ~ PhD`
+- Set the `data` argument to your training data `college_train`
+- Set the `method` argument to `"glm"` for regression
+- Set the `trControl` argument to `ctrl_none`, the object you created previously
+
+```{r, echo = TRUE, eval = FALSE}
+# Grad.Rate_glm: Regression Model
+#   Criterion: Grad.Rate
+#   Features: PhD
+
+Grad.Rate_glm <- train(form = XX ~ XX,
+                       data = XX,
+                       method = "XX",
+                       trControl = XX)
+```
+
+
+```{r}
 # Grad.Rate_glm: Regression Model
 #   Criterion: Grad.Rate
 #   Features: PhD
@@ -306,8 +323,15 @@ Grad.Rate_glm <- train(form = Grad.Rate ~ PhD,
                        trControl = ctrl_none)
 ```
 
-
 2. Explore the model using the `summary()` function.
+- Set the main argument to `Grad.Rate_glm`
+
+```{r, echo = TRUE, eval = FALSE}
+# Show summary information from the regression model
+
+summary(XXX)
+```
+
 
 ```{r, echo = TRUE}
 # Show summary information from the regression model
@@ -322,8 +346,15 @@ summary(Grad.Rate_glm)
 ```
 
 4. Now it's time to save the model fits! Do this by running the following code to save the fitted values as `glm_fit`
+- Set the main argument to `Grad.Rate_glm`
 
-```{r, echo = TRUE}
+```{r, echo = TRUE, eval = FALSE}
+# Get fitted values from the Grad.Rate_glm model and save as glm_fit
+
+glm_fit <- predict(XXX)
+```
+
+```{r}
 # Get fitted values from the model and save as glm_fit
 
 glm_fit <- predict(Grad.Rate_glm)
@@ -345,7 +376,7 @@ glm_fit
 
 1. Now it's time to compare your model fits to the true values, we'll start by defining the vector `criterion` as the graduation rates.
 
-```{r, echo = TRUE}
+```{r, echo = TRUE, eval = TRUE}
 # Define criterion as Grad.Rate
 
 criterion <- college_train$Grad.Rate
@@ -353,7 +384,17 @@ criterion <- college_train$Grad.Rate
 
 2. Let's quantify our model's fitting results. To do this, we'll use the `postResample()` function, with the fitted values as the prediction, and the criterion as the observed values:
 
-```{r, echo = TRUE}
+- Set the `pred` argument to `glm_fit` (your fitted values)
+- Set the `obs` argument to `criterion` (a vector of the criterion values)
+
+```{r, echo = TRUE, eval = FALSE}
+# Regression Fitting Accuracy
+
+postResample(pred = XXX,   # Fitted values 
+             obs = XXX)  # criterion values
+```
+
+```{r}
 # Regression Fitting Accuracy
 
 postResample(pred = glm_fit,   # Fitted values 
@@ -388,6 +429,12 @@ accuracy_agg <- accuracy %>%
 
 5. Print the `accuracy` and `accuracy_agg` objects to see how they look.
 
+```{r, echo = TRUE, eval = FALSE}
+accuracy
+accuracy_agg
+```
+
+
 ```{r}
 accuracy %>% head() # Just printing the first few rows
 
@@ -396,7 +443,7 @@ accuracy_agg
 
 6. Using the code below, create a scatterplot showing the relationship between the true criterion values and the model fits
 
-```{r, out.width = "60%", echo = TRUE}
+```{r, out.width = "60%", echo = TRUE, eval = FALSE}
 # Plot A) Scatterplot of criterion versus predictions
 
 ggplot(data = accuracy,
@@ -419,7 +466,7 @@ ggplot(data = accuracy,
 
 8. Let's create a new violin plot showing the distribution of absolute errors of the model:
 
-```{r, echo = TRUE}
+```{r, echo = TRUE, eval = FALSE}
 # Plot B) Violin plot of absolute errors
 
 ggplot(data = accuracy, 
@@ -456,15 +503,20 @@ So far we have only used one feature (`PhD`), to predict `Grad.Rate`. Let's try 
 
 1. Using the same steps as above, create a regression model `Grad.Rate_glm` which predicts `Grad.Rate` using all 4 features (you can also call it something else if you want to save your original model!).
 
+- Set the `form` argument to `Grad.Rate ~ PhD + Room.Board + Terminal + S.F.Ratio`
+- Set the `data` argument to your training data `college_train`
+- Set the `method` argument to `"glm"` for regression
+- Set the `trControl` argument to `ctrl_none`
+
 ```{r, echo = TRUE, eval = FALSE}
 # Grad.Rate_glm: Regression Model
 #   Criterion: Grad.Rate
 #   Features: PhD, Room.Board, Terminal, S.F.Ratio
 
 Grad.Rate_glm <- train(form = XXX ~ XXX + XXX + XXX + XXX,
-                       data = college_train,
-                       method = "glm",
-                       trControl = ctrl_none)
+                       data = XXX,
+                       method = "XXX",
+                       trControl = XXX)
 ```
 
 ```{r}
@@ -479,6 +531,7 @@ Grad.Rate_glm <- train(form = Grad.Rate ~ PhD + Room.Board + Terminal + S.F.Rati
 ```
 
 2. Explore your model using `summary()`, which features seem to be important?
+- Set the main argument to `Grad.Rate_glm`
 
 ```{r, echo = TRUE, eval = FALSE}
 summary(XXX)
@@ -488,18 +541,33 @@ summary(XXX)
 summary(Grad.Rate_glm)
 ```
 
-3. By comparing the model fits to the true criterion values using a combination of `predict()` and `postResample()` calculate the Mean Absolute Error (MAE) of your new model that uses 4 features. How does this compare to your previous model that only used 1 feature?
+
+3. Save the model fits as a new object `glm_fit`
+- Set the main argument of `predict()` to your `Grad.Rate_glm` model
+
 
 ```{r, echo = TRUE, eval = FALSE}
 # Save new model fits
 glm_fit <- predict(XXX)
+```
 
+```{r}
+# Save new model fits
+glm_fit <- predict(Grad.Rate_glm)
+```
+
+
+
+3. By comparing the model fits to the true criterion values using `postResample()` calculate the Mean Absolute Error (MAE) of your new model that uses 4 features. How does this compare to your previous model that only used 1 feature?
+- Set the `pred` argument to `glm_fit`, your model fits
+- Set the `obs` argument to `criterion`, a vector of the true criterion values
+
+```{r, echo = TRUE, eval = FALSE}
 # New model fitting accuracy
 
 postResample(pred = XXX,   # Fitted values 
              obs = XXX)  # criterion values
 ```
-
 
 ```{r}
 # Save new model fits
@@ -571,11 +639,16 @@ Alright now it's time to use all features available!
 
 1. Using the same steps as above, create a regression model `glm_fit` which predicts `Grad.Rate` using *all* features in the dataset.
 
+- Set the `form` argument to `Grad.Rate ~ .`
+- Set the `data` argument to the training data `college_train`
+- Set the `method` argument to `"glm"` for regression
+- Set the `trControl` argument to `ctrl_none`
+
 ```{r, echo = TRUE, eval = FALSE}
 Grad.Rate_glm <- train(form = XXX ~ .,
                        data = XXX,
                        method = "glm",
-                       trControl = ctrl_none)
+                       trControl = XXX)
 ```
 
 ```{r}
@@ -595,6 +668,19 @@ summary(XXX)
 summary(Grad.Rate_glm)
 ```
 
+3. Save the model fits as a new object `glm_fit`
+- Set the main argument of `predict()` to your `Grad.Rate_glm` model
+
+```{r, echo = TRUE, eval = FALSE}
+# Save new model fits
+glm_fit <- predict(XXX)
+```
+
+```{r}
+# Save new model fits
+glm_fit <- predict(Grad.Rate_glm)
+```
+
 3. What is the Mean Absolute Error (MAE) of your new model that uses 17 features? How does this compare to your previous model that only used 1 feature?
 
 4. (Optional). Create a scatter plot showing the relationship between your new model fits and the true values. How does this plot compare to your previous one?
@@ -609,7 +695,7 @@ Now it's time to do a classification task! Recall that in a classification task,
 
 1. In order to do classification training with `caret`, all you need to do is make sure that the criterion is coded as a factor. To test whether is coded as a factor, you can look at its class as follows:
 
-```{r}
+```{r, echo = TRUE}
 # Look at the class of the variable Private, should be a factor!
 
 class(college_train$Private)
@@ -617,7 +703,7 @@ class(college_train$Private)
 
 2. Now, we'll save the Private column as a new object called `criterion`
 
-```{r}
+```{r, echo = TRUE}
 # Define criterion as college_train$Private
 
 criterion <- college_train$Private
@@ -626,8 +712,22 @@ criterion <- college_train$Private
 ## H - Fit a classification model
 
 1. Using `train()`, create `Private_glm`, a regression model predicting the variable `Private`
+- Set the `form` argument to `Private ~ .`
+- Set the `data` argument to the training data `college_train`
+- Set the `method` argument to `"glm"`
+- Set the `trControl` argument to `ctrl_none`
 
-```{r, echo = FALSE}
+```{r, echo = TRUE, eval = FALSE}
+# Fit regression model predicting Private
+
+Private_glm <- train(form = XXX ~ .,
+                     data = XXX,
+                     method = "XXX",
+                     trControl = XXX)
+```
+
+
+```{r}
 # Fit regression model predicting private
 Private_glm <- train(form = Private ~ .,
                      data = college_train,
@@ -635,7 +735,14 @@ Private_glm <- train(form = Private ~ .,
                      trControl = ctrl_none)
 ```
 
-2. Explore the model using the `summary()` function.
+2. Explore the `Private_glm` object using the `summary()` function.
+- Set the main argument to `Private_glm`
+
+
+```{r, echo = TRUE, eval = FALSE}
+# Explore the Private_glm object
+summary(XXX)
+```
 
 ```{r}
 # Show summary information from the regression model
@@ -652,11 +759,12 @@ summary(Private_glm)
 ## I - Access classification model accuracy
 
 1. Now it's time to save the model fits! Do this by running the following code to save the fitted values as `glm_fit`
+- Set the `object` argument to your `Private_glm` object
 
-```{r}
-# Get fitted values
+```{r, echo = TRUE, eval = FALSE}
+# Get fitted values from the Private_glm object
 
-glm_fit <- predict(Private_glm)
+glm_fit <- predict(XXX)
 ```
 
 2. Print your `glm_fit` object - what are these values? Do they look reasonable?
@@ -668,6 +776,16 @@ glm_fit
 ```
 
 3. Now it's time to calculate model accuracy, to do this, we will use a new function called `confusionMatrix()`. This function compares model predictions to a 'reference' (in our case, the criterion, and returns several summary statistics). In the code below, we'll use `glm_fit` as the model predictions, and our already defined `criterion` vector as the reference (aka, truth)
+- Set the `data` argument to your `glm_fit` values
+- Set the `reference` argument to the `criterion` values
+
+```{r, eval = FALSE, echo = TRUE}
+# Show accuracy of glm_fit versus the true criterion values
+
+confusionMatrix(data = XXX,      # This is the prediction!
+                reference = XXX) # This is the truth!
+```
+
 
 ```{r}
 # Show accuracy of glm_fit versus the true values
