@@ -114,7 +114,7 @@ murders_crime <- read_csv(file = "1_Data/murders_crime.csv")
 
 1. You may enter either one or both of two competitions, one on regression (`nonviolent_crime`) and on classification (`murders_crime`), for the price of &#127851;&#127851;&#127851;.
 
-2. To enter the competitions, you must submit for each competition no more, no less than one caret `train`-object containing your candidate model. To submit the model, first save your model as an `.RDS`-file named `your_name_train.RDS` with `your_name` replaced by your name or pseudonym using the code below.
+2. To enter the competitions, you must submit for each competition no more, no less than one caret `train`-object containing your candidate model. To submit the model, first save your model as an `.RDS`-file named `yourname_regression.RDS` and `your_name_classification.RDS`, respectively, with `yourname` replaced by your name or pseudonym using the code below.
 
 ```{r}
 # save trian obect as .RDS
