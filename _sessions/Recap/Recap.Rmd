@@ -200,7 +200,7 @@ $$\large MSE = \frac{1}{n}\sum_{i=1}^{n}(Prediction_{i} - Truth_{i})^{2}$$
 
 .pull-right5[
 
-```{r, fig.width = 4, fig.height = 3.2, out.width="100%", echo = FALSE}
+```{r, fig.width = 6, fig.height = 4.8, out.width="100%", echo = FALSE}
 bad_err +
   labs(subtitle = "Red lines are (absolute) errors", title = NULL)
 ```
