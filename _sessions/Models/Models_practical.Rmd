@@ -12,7 +12,7 @@ knitr::opts_chunk$set(comment = NA,
                       fig.width = 6, 
                       fig.height = 6,
                       fig.align = 'center',
-                      echo = FALSE, 
+                      echo = TRUE, 
                       eval = FALSE, 
                       warning = FALSE,
                       message = FALSE)
@@ -47,16 +47,13 @@ library(ggthemes)
 
 |File  |Rows | Columns |
 |:----|:-----|:------|
-|[murders_crime](https://raw.githubusercontent.com/therbootcamp/appliedML_2019Jan/master/_sessions/Models/competition/competition_murder_train.csv)| 1000 | 102|
-|[nonviolent_crime](https://raw.githubusercontent.com/therbootcamp/appliedML_2019Jan/master/_sessions/Models/competition/competition_nonvio_train.csv)| 1000 | 102|
+|[murders_crime](https://raw.githubusercontent.com/therbootcamp/appliedML_2019Jan/master/_sessions/Models/competition/1_Data/competition_murder_train.csv)| 1000 | 102|
+|[nonviolent_crime](https://raw.githubusercontent.com/therbootcamp/appliedML_2019Jan/master/_sessions/Models/competition/1_Data/competition_nonvio_train.csv)| 1000 | 102|
 
 
 ```{r, message = FALSE, eval = TRUE, echo = FALSE}
 # Load datasets locally
 library(tidyverse)
-pima_diabetes <- read_csv("https://raw.githubusercontent.com/therbootcamp/appliedML_2019Jan/master/1_Data/pima_diabetes.csv")
-violent_crime <- read_csv("https://raw.githubusercontent.com/therbootcamp/appliedML_2019Jan/master/1_Data/violent_crime.csv")
-nonviolent_crime <- read_csv("https://raw.githubusercontent.com/therbootcamp/appliedML_2019Jan/master/1_Data/nonviolent_crime.csv")
 ```
 
 - The `murders_crime` and `violent_crime` data are subsets of the Communities and Crime Unnormalized Data Set data set from the UCI Machine Learning Repository. To see column descriptions, visit this site: [Communities and Crime Unnormalized Data Set](https://archive.ics.uci.edu/ml/datasets/Communities+and+Crime+Unnormalized)
@@ -127,12 +124,12 @@ murders_crime <- murders_crime %>% mutate_if(is.character, as.factor)
 
 1. You may enter either one or both of two competitions, one on regression (`nonviolent_crime`) and on classification (`murders_crime`), for the price of &#127851;&#127851;&#127851;.
 
-2. To enter the competitions, you must submit for each competition no more, no less than one caret `train`-object containing your candidate model. To submit the model, first save your model as an `.RDS`-file named `yourname_regression.RDS` and `your_name_classification.RDS`, respectively, with `yourname` replaced by your real name or pseudonym using the code below. Do not use any `-` or `_` in the file names.
+2. To enter the competitions, you must submit for each competition no more, no less than one caret `train`-object containing your candidate model. To submit the model, first save your model as an `.RDS`-file named `yourname_regression.RDS` and `yourname_classification.RDS`, respectively, with `yourname` replaced by your real name or pseudonym using the code below. Do not use any `-` or `_` in the file names.
 
 ```{r}
-# save trian obect as .RDS
-saveRDS('1_Data/your_name_train.RDS')
-
+# save train obect as .RDS
+saveRDS(training_model_regression,'1_Data/yourname_regression.RDS')
+saveRDS(training_model_classification,'1_Data/yourname_classification.RDS')
 ```
 
 3. Submit your `.RDS` file (containing your training object) via these following Links sheets:

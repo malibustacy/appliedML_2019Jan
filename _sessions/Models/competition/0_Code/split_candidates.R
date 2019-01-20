@@ -1,32 +1,32 @@
-# 
-# # Load full datasets
-# murder_full = read_csv(file = "_sessions/Models/competition/1_Data/murders_crime_full.csv")
-# nonvio_full = read_csv(file = "_sessions/Models/competition/1_Data/nonviolent_crime_full.csv")
-# 
-# # permute data
-# murder_full = murder_full[sample(1:nrow(murder_full)),]
-# nonvio_full = nonvio_full[sample(1:nrow(nonvio_full)),]
-# 
-# # split index
-# sel = (1:nrow(murder_full))
-# sel_train = sel[sample(1:length(sel),1000,replace = F)]
-# sel_test = (sel[!sel %in% sel_train])[sample(1:(length(sel)-1000),800,replace = F)]
-# 
-# # split data
-# murder_train = murder_full[sel_train,]
-# murder_test = murder_full[sel_train,]
-# nonvio_train = nonvio_full[sel_test,]
-# nonvio_test = nonvio_full[sel_test,]
-# 
-# # add a little bit of noise
-# sel = sample(1:nrow(murder_test),50)
-# murder_test$murders[sel] = ifelse(murder_test$murders[sel] == 'yes', 'no', 'yes')
-# 
-# # write train & test data
-# write_csv(murder_train, '_sessions/Models/competition/1_Data/competition_murder_train.csv')
-# write_csv(murder_test, '_sessions/Models/competition/1_Data/competition_murder_test.csv')
-# write_csv(nonvio_train, '_sessions/Models/competition/1_Data/competition_nonvio_train.csv')
-# write_csv(nonvio_test, '_sessions/Models/competition/1_Data/competition_nonvio_test.csv')
+
+# Load full datasets
+murder_full = read_csv(file = "_sessions/Models/competition/1_Data/murders_crime_full.csv")
+nonvio_full = read_csv(file = "_sessions/Models/competition/1_Data/nonviolent_crime_full.csv")
+
+# permute data
+murder_full = murder_full[sample(1:nrow(murder_full)),]
+nonvio_full = nonvio_full[sample(1:nrow(nonvio_full)),]
+
+# split index
+sel = (1:nrow(murder_full))
+sel_train = sel[sample(1:length(sel),1000,replace = F)]
+sel_test = (sel[!sel %in% sel_train])[sample(1:(length(sel)-1000),800,replace = F)]
+
+# split data
+murder_train = murder_full[sel_train,]
+murder_test = murder_full[sel_test,]
+nonvio_train = nonvio_full[sel_train,]
+nonvio_test = nonvio_full[sel_test,]
+
+# add a little bit of noise
+sel = sample(1:nrow(murder_test),50)
+murder_test$murders[sel] = ifelse(murder_test$murders[sel] == 'yes', 'no', 'yes')
+
+# write train & test data
+write_csv(murder_train, '_sessions/Models/competition/1_Data/competition_murder_train.csv')
+write_csv(murder_test, '_sessions/Models/competition/1_Data/competition_murder_test.csv')
+write_csv(nonvio_train, '_sessions/Models/competition/1_Data/competition_nonvio_train.csv')
+write_csv(nonvio_test, '_sessions/Models/competition/1_Data/competition_nonvio_test.csv')
 
 
 # FIT CANDIDTAES ------------
