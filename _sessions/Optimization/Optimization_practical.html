@@ -1073,7 +1073,7 @@ cp_vec &lt;- seq(from = 0, to = 1, length = 100)</code></pre>
 <li>Set the data to <code>hitters_train</code></li>
 <li>Set the method to <code>&quot;rpart&quot;</code> for decision trees</li>
 <li>Set the train control argument to <code>ctrl_cv</code></li>
-<li>Set the tuneGrid argument such that alpha is 1 (for lasso regression), and with all lambda values you specified in <code>cp_vec</code> (we’ve done this for you below)</li>
+<li>Set the tuneGrid argument with all <code>cp</code> values you specified in <code>cp_vec</code></li>
 </ul>
 <pre class="r"><code># Decision Tree --------------------------
 
