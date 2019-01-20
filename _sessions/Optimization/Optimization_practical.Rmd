@@ -556,12 +556,12 @@ coef(salary_glm$finalModel)
 
 It's time to fit an optimized regression model with a Ridge penalty!
 
-1. Before we can fit a ridge regression model, we need to specify which values of the lambda penalty parameter we want to try. Using the code below, create a vector called `lambda_vec` which contains 100 values between 0 and 2
+1. Before we can fit a ridge regression model, we need to specify which values of the lambda penalty parameter we want to try. Using the code below, create a vector called `lambda_vec` which contains 100 values between 0 and 100
 
 ```{r, echo = TRUE, eval = FALSE}
 # Determine possible values of lambda
 
-lambda_vec <- seq(from = 0, to = 2, length = 100)
+lambda_vec <- seq(from = 0, to = 100, length = 100)
 ```
 
 2. Fit a ridge regression model predicting `Salary` as a function of all features
@@ -626,12 +626,12 @@ coef(salary_ridge$finalModel,
 
 It's time to fit an optimized regression model with a Lasso penalty!
 
-1. Before we can fit a lasso regression model, we need to specify which values of the lambda penalty parameter we want to try. Using the code below, create a vector called `lambda_vec` which contains 100 values between 0 and .5
+1. Before we can fit a lasso regression model, we need to specify which values of the lambda penalty parameter we want to try. Using the code below, create a vector called `lambda_vec` which contains 100 values between 0 and 100
 
 ```{r, echo = TRUE, eval = FALSE}
 # Determine possible values of lambda
 
-lambda_vec <- seq(from = 0, to = .5, length = 100)
+lambda_vec <- seq(from = 0, to = 100, length = 100)
 ```
 
 2. Fit a lasso regression model predicting `Salary` as a function of all features
