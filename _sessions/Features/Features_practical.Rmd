@@ -384,7 +384,7 @@ nearZeroVar(pima_train_pred)
 
 #### Feature importance
 
-After having retained all features in the previous section section, this section explores feature selection on grounds of feature importance. To do this, we first need to fit our model. How about a simple logistic regression aka `method = 'glm'`? 
+After having retained all features in the previous section, this section explores feature selection on grounds of feature importance. To do this, we first need to fit our model. How about a simple logistic regression aka `method = 'glm'`? 
 
 9. Fit the `glm` to the training data.
 
