@@ -1163,7 +1163,7 @@ summary(salary_resamples)</code></pre>
 </ol>
 <pre class="r"><code># Save salaries of players in test dataset as criterion_test
 criterion_test &lt;- XXX$XXX</code></pre>
-<ol style="list-style-type: decimal">
+<ol start="2" style="list-style-type: decimal">
 <li>Using <code>predict()</code>, save the prediction of your regular regression model <code>salary_glm</code> for the <code>hitters_test</code> data as a new object called <code>glm_pred</code>:</li>
 </ol>
 <ul>
@@ -1172,14 +1172,14 @@ criterion_test &lt;- XXX$XXX</code></pre>
 </ul>
 <pre class="r"><code># Save the glm predicted salaries of hitters_test
 glm_pred &lt;- predict(XXX, newdata = XXX)</code></pre>
-<ol start="2" style="list-style-type: decimal">
+<ol start="3" style="list-style-type: decimal">
 <li>Now do the same with your ridge, lasso, decision tree, and random forest models to get the objects <code>ridge_pred</code>, <code>lasso_pred</code>, <code>dt_pred</code> and <code>rf_pred</code></li>
 </ol>
 <pre class="r"><code>ridge_pred &lt;- predict(XXX, newdata = XXX)
 lasso_pred &lt;- predict(XXX, newdata = XXX)
 dt_pred &lt;- predict(XXX, newdata = XXX)
 rf_pred &lt;- predict(XXX, newdata = XXX)</code></pre>
-<ol start="3" style="list-style-type: decimal">
+<ol start="4" style="list-style-type: decimal">
 <li>Using <code>postResample()</code>, calculate the aggregate prediction accuracy for each model using the template below</li>
 </ol>
 <ul>
@@ -1189,9 +1189,9 @@ rf_pred &lt;- predict(XXX, newdata = XXX)</code></pre>
 <pre class="r"><code># Calculate aggregate accuracy for a model
 postResample(pred = XXX, 
              obs = XXX)</code></pre>
-<ol start="4" style="list-style-type: decimal">
+<ol start="5" style="list-style-type: decimal">
 <li><p>Which of your four models had the best performance in the true training data?</p></li>
-<li><p>How close were your model’ true prediction values to the values you estimated in the previous section when you ran <code>resamples()</code>?</p></li>
+<li><p>How close were your models’ true prediction values to the values you estimated in the previous section when you ran <code>resamples()</code>?</p></li>
 </ol>
 </div>
 <div id="z---challenges" class="section level2">

@@ -753,7 +753,7 @@ salary_rf <- train(form = XX ~ .,
 ```
 
 ```{r, eval = FALSE, echo = FALSE}
-# Fit a random forest
+# Random Forest --------------------------
 
 salary_rf <- train(form = Salary ~ .,
                    data = hitters_train,
@@ -806,7 +806,7 @@ summary(salary_resamples)
 criterion_test <- XXX$XXX
 ```
 
-1. Using `predict()`, save the prediction of your regular regression model `salary_glm` for the `hitters_test` data as a new object called `glm_pred`:
+2. Using `predict()`, save the prediction of your regular regression model `salary_glm` for the `hitters_test` data as a new object called `glm_pred`:
 
 - Set the first argument to `salary_glm`
 - Set the newdata argument to `hitters_test`
@@ -816,7 +816,7 @@ criterion_test <- XXX$XXX
 glm_pred <- predict(XXX, newdata = XXX)
 ```
 
-2. Now do the same with your ridge, lasso, decision tree, and random forest models to get the objects `ridge_pred`, `lasso_pred`, `dt_pred` and `rf_pred`
+3. Now do the same with your ridge, lasso, decision tree, and random forest models to get the objects `ridge_pred`, `lasso_pred`, `dt_pred` and `rf_pred`
 
 ```{r}
 ridge_pred <- predict(XXX, newdata = XXX)
@@ -825,7 +825,7 @@ dt_pred <- predict(XXX, newdata = XXX)
 rf_pred <- predict(XXX, newdata = XXX)
 ```
 
-3. Using `postResample()`, calculate the aggregate prediction accuracy for each model using the template below
+4. Using `postResample()`, calculate the aggregate prediction accuracy for each model using the template below
 
 - Set the pred argument to your model predictions (e.g.; `ridge_pred`)
 - Set the `obs` argument to the true criterion values `criterion_test`)
@@ -836,9 +836,9 @@ postResample(pred = XXX,
              obs = XXX)
 ```
 
-4. Which of your four models had the best performance in the true training data?
+5. Which of your four models had the best performance in the true training data?
 
-5. How close were your model' true prediction values to the values you estimated in the previous section when you ran `resamples()`?
+6. How close were your models' true prediction values to the values you estimated in the previous section when you ran `resamples()`?
 
 ## Z - Challenges
 
