@@ -29,9 +29,9 @@ knitr::include_graphics("image/crossvalidation_4fold.png")
 
 By the end of this practical you will know how to:
 
-1. Use cross-validation to select optimal model tuning parameters
-2. Compare 'standard' regression with lasso and ridge regression
-3. Use cross-validation to predict test accuracy
+1. Use cross-validation to select optimal model tuning parameters for decision trees and random forests
+2. Compare 'standard' regression with lasso and ridge penalised regression
+3. Use cross-validation to estimate future test accuracy
 
 ### Datasets
 
@@ -175,7 +175,6 @@ price_glm <- train(form = price ~ carat + depth + table + x + y,
                    method = "glm",
                    trControl = ctrl_cv)
 
-
 # Coefficients
 coef(price_glm$finalModel)
 
@@ -192,6 +191,7 @@ price_lasso <- train(form = price ~ carat + depth + table + x + y,
                    data = data_train,
                    method = "glmnet",
                    trControl = ctrl_cv,
+                   preProcess = c("center", "scale"),  # Standardise
                    tuneGrid = expand.grid(alpha = 1,  # Lasso
                                           lambda = lambda_vec))
 
@@ -225,6 +225,7 @@ price_ridge <- train(form = price ~ carat + depth + table + x + y,
                      data = data_train,
                      method = "glmnet",
                      trControl = ctrl_cv,
+                     preProcess = c("center", "scale"),  # Standardise
                      tuneGrid = expand.grid(alpha = 0,  # Ridge penalty
                                             lambda = lambda_vec))
 
@@ -526,7 +527,6 @@ coef(salary_glm$finalModel)
 
 It's time to fit an optimized regression model with a Ridge penalty!
 
-
 1. Before we can fit a ridge regression model, we need to specify which values of the lambda penalty parameter we want to try. Using the code below, create a vector called `lambda_vec` which contains 100 values between 0 and 2
 
 ```{r, echo = TRUE, eval = FALSE}
@@ -541,6 +541,7 @@ lambda_vec <- seq(from = 0, to = 1000, length = 100)
 - Set the data to `hitters_train`
 - Set the method to `"glmnet"` for regularized regression
 - Set the train control argument to `ctrl_cv`
+- Set the `preProcess` argument to `c("center", "scale")` to make sure the variables are standarised when estimating the beta weights (this is good practice for ridge regression)
 - Set the tuneGrid argument such that alpha is 0 (for ridge regression), and with all lambda values you specified in `lambda_vec` (we've done this for you below)
 
 ```{r, echo = TRUE, eval = FALSE}
@@ -550,6 +551,7 @@ salary_ridge <- train(form = XX ~ .,
                       data = XX,
                       method = "XX",
                       trControl = XX,
+                      preProcess = c("XX", "XX"),  # Standardise
                       tuneGrid = expand.grid(alpha = 0,  # Ridge penalty
                                              lambda = lambda_vec))
 ```
@@ -607,6 +609,7 @@ lambda_vec <- seq(from = 0, to = .5, length = 100)
 - Set the data to `hitters_train`
 - Set the method to `"glmnet"` for regularized regression
 - Set the train control argument to `ctrl_cv`
+- Set the `preProcess` argument to `c("center", "scale")` to make sure the variables are standarised when estimating the beta weights (this is good practice for lasso regression)
 - Set the tuneGrid argument such that alpha is 1 (for lasso regression), and with all lambda values you specified in `lambda_vec` (we've done this for you below)
 
 ```{r, echo = TRUE, eval = FALSE}
@@ -616,6 +619,7 @@ salary_lasso <- train(form = XX ~ .,
                       data = XX,
                       method = "XX",
                       trControl = XX,
+                      preProcess = c("XX", "XX"),  # Standardise
                       tuneGrid = expand.grid(alpha = 1,  # Lasso penalty
                                             lambda = lambda_vec))
 ```
@@ -627,6 +631,7 @@ salary_lasso <- train(form = Salary ~ .,
                    data = hitters_train,
                    method = "glmnet",
                    trControl = ctrl_cv,
+                   preProcess = c("center", "scale"),
                    tuneGrid = expand.grid(alpha = 1,  # Lasso penalty
                                           lambda = lambda_vec))
 ```
@@ -838,7 +843,7 @@ postResample(pred = XXX,
 
 ## Z - Challenges
 
-1. In addition to 'regular' 10 fold cross-validation, you can also do repeated 10-fold cross-validation, where the cross validation procedure is repeated many times. Do you think this will improve your models' performance? To test this, create a new training control object called `ctrl_cv_rep` as below. Then, train your models again using `ctrl_cv_rep` (instead of `ctrl_cv`), and evaluate their prediction performance. Do they improve?
+1. In addition to 'regular' 10 fold cross-validation, you can also do repeated 10-fold cross-validation, where the cross validation procedure is repeated many times. Do you think this will improve your models' performance? To test this, create a new training control object called `ctrl_cv_rep` as below. Then, train your models again using `ctrl_cv_rep` (instead of `ctrl_cv`), and evaluate their prediction performance. Do they improve? Do you get different optimal tuning values compared to your previous models?
 
 ```{r}
 # Repeated cross validation.
@@ -850,7 +855,15 @@ ctrl_cv_rep <- trainControl(method = "repeatedcv",
                             repeats = 5)
 ```
 
-2. Using the same procedure as above, compare models predicting the prices of houses in King County Washington using the `house_train` and `house_test` datasets. Which model does the best and how accurate was it? Was it the same model that performed the best predicting baseball player salaries?
+2. Using the same procedure as above, compare models predicting the prices of houses in King County Washington using the `house_train` and `house_test` datasets. 
 
-3. Using the same procedure as above, compare models predicting the graduate rate of students from different colleges using the `college_train` and `college_test` datasets. Which model does the best and how accurate was it? Was it the same model that performed the best predicting baseball player salaries?
+3. When using lasso regression, do you find that the lasso sets any beta weights to exactly 0? If so, which ones?
+
+4. Which model does the best and how accurate was it? Was it the same model that performed the best predicting baseball player salaries?
+
+5. Using the same procedure as above, compare models predicting the graduate rate of students from different colleges using the `college_train` and `college_test` datasets. 
+
+6. When using lasso regression, do you find that the lasso sets any beta weights to exactly 0? If so, which ones?
+
+7. Which model does the best and how accurate was it? Was it the same model that performed the best predicting baseball player salaries?
 
