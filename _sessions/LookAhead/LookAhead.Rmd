@@ -478,6 +478,25 @@ The web is a great place to learn about R.
 
 ---
 
+.pull-left45[
+# Please give us feedback
+<br><br>
+<p>
+<img src="https://cdn-images-1.medium.com/max/1600/1*5OZNYAfzDZfM1lwJBZEuHQ.png" height=350px>
+</img>
+</p>
+
+]
+
+.pull-right45[
+
+<p align="center"><br><br><iframe src="https://docs.google.com/forms/d/e/1FAIpQLSeh7f2zk2S7F9fo6Ne-YLH4wlSe8Hltgmp6SSJ_Ii1Uug8IjA/viewform?embedded=true" width="430" height="550">Wird geladen...</iframe></p>
+
+]
+
+
+---
+
 
 # Thank you
 
