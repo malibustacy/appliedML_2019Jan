@@ -1,4 +1,4 @@
-1---
+---
 title: "Optimization"
 subtitle: "Regularization and Cross-Validation"
 author: "Applied Machine Learning with R<br/><a href='https://therbootcamp.github.io'>www.therbootcamp.com</a><br/><a href='https://twitter.com/therbootcamp'>@therbootcamp</a>"
@@ -42,6 +42,8 @@ options(htmltools.dir.version = FALSE)
 # https://github.com/gnab/remark/wiki/Markdown
 options(width=110)
 options(digits = 4)
+
+
 ```
 
 ```{r, echo = FALSE ,message = FALSE, warning = FALSE}
@@ -50,6 +52,9 @@ knitr::opts_chunk$set(comment=NA, fig.width=6, fig.height=6, echo = TRUE, eval =
 library(tidyverse)
 library(baselers)
 library(ggthemes)
+library(caret)
+
+baselers <- read_csv("../../1_Data/baselers.csv")
 
 
 set.seed(5)
@@ -156,45 +161,7 @@ knitr::include_graphics("image/model_training_flow.png")
 knitr::include_graphics("image/model_testing_flow.png")
 ```
 
-
 ]
-
-
----
-
-.pull-left4[
-<br><br>
-# But...
-
-How can I <high>estimate prediction error</high> during model training?
-
-How can I <high>optimise</high> model training to <high>maximize prediction</high> (not fitting!) performance?
-
-How do I <high>avoid overfitting</high> during training?
-
-```{r, echo = FALSE, fig.cap = "<font size = 4>hackernoon.com</font>", out.width = "100%"}
-knitr::include_graphics("https://cdn-images-1.medium.com/max/1600/1*SBUK2QEfCP-zvJmKm14wGQ.png")
-```
-
-]
-
-.pull-right55[
-
-### Model Training
-
-```{r, echo = FALSE}
-knitr::include_graphics("image/model_training_flow.png")
-```
-
-### Model Testing
-
-```{r, echo = FALSE}
-knitr::include_graphics("image/model_testing_flow.png")
-```
-
-
-]
-
 
 ---
 
@@ -220,11 +187,9 @@ Extremely flexible models that tend to overfit are like 'wolves in sheep's cloth
 knitr::include_graphics("image/wolf_complex.png")
 ```
 
-
 ]
 
 ---
-
 
 .pull-left4[
 <br><br><br>
@@ -241,7 +206,7 @@ Use <high>cross-validation</high> to find <high>optimal tuning parameters</high>
 
 .pull-right55[
 
-### Regularised Regression
+### Regularized Regression
 
 ```{r, echo = FALSE, eval = TRUE, out.width = "100%", fig.cap = "L1 Lasso Penalty"}
 knitr::include_graphics("image/lasso_penalty_eq.jpg")
@@ -289,15 +254,15 @@ knitr::include_graphics("image/mtry_parameter.png")
 
 ---
 
-# Regularised Regression
+# Regularized Regression
 
-There are two common methods to fit penalised (aka regularised) regression models: Ridge and Lasso. Each penalises regression models for having large $\beta$ values using the <high>Lambda tuning parameter</high>
+There are two common methods to fit penalized (aka regularized) regression models: Ridge and Lasso. Each penalizes regression models for having large $\beta$ values using the <high>Lambda tuning parameter</high>
 
 .pull-left5[
 
 ### Ridge
 
-The Lasso penalty is known as the $\ell2$ norm, where Beta weights are selected by minimising the following equation:
+The Lasso penalty is known as the $\ell2$ norm, where Beta weights are selected by minimizing the following equation:
 
 ```{r, echo = FALSE, out.width = "100%"}
 knitr::include_graphics("image/ridge_penalty_eq.jpg")
@@ -321,15 +286,15 @@ knitr::include_graphics("image/ridge_penalty_plot.png")
 
 ---
 
-# Regularised Regression
+# Regularized Regression
 
-There are two common methods to fit penalised (aka regularised) regression models: Ridge and Lasso. Each penalises regression models for having large $\beta$ values using the <high>Lambda tuning parameter</high>
+There are two common methods to fit penalized (aka regularized) regression models: Ridge and Lasso. Each penalizes regression models for having large $\beta$ values using the <high>Lambda tuning parameter</high>
 
 .pull-left3[
 
 ### Ridge
 
-To fit Ridge penalised regression in R, use `method = "glmnet`.
+To fit Ridge penalized regression in R, use `method = "glmnet`.
 
 In the `tuneGrid` argument: 
 
@@ -355,15 +320,15 @@ train(form = criterion ~ .,
 
 ---
 
-# Regularised Regression
+# Regularized Regression
 
-There are two common methods to fit penalised (aka regularised) regression models: Ridge and Lasso. Each penalises regression models for having large $\beta$ values using the <high>Lambda tuning parameter</high>
+There are two common methods to fit penalized (aka regularized) regression models: Ridge and Lasso. Each penalizes regression models for having large $\beta$ values using the <high>Lambda tuning parameter</high>
 
 .pull-left5[
 
 ### Lasso
 
-The Lasso penalty is known as the $\ell1$ norm, where Beta weights are selected by minimising the following equation:
+The Lasso penalty is known as the $\ell1$ norm, where Beta weights are selected by minimizing the following equation:
 
 ```{r, echo = FALSE, out.width = "100%"}
 knitr::include_graphics("image/lasso_penalty_eq.jpg")
@@ -383,15 +348,15 @@ knitr::include_graphics("image/lasso_penalty_plot.png")
 
 ---
 
-# Regularised Regression
+# Regularized Regression
 
-There are two common methods to fit penalised (aka regularised) regression models: Ridge and Lasso. Each penalises regression models for having large $\beta$ values using the <high>Lambda tuning parameter</high>
+There are two common methods to fit penalized (aka regularized) regression models: Ridge and Lasso. Each penalizes regression models for having large $\beta$ values using the <high>Lambda tuning parameter</high>
 
 .pull-left3[
 
 ### Lasso
 
-To fit Lasso penalised regression in R, use `method = "glmnet`.
+To fit Lasso penalized regression in R, use `method = "glmnet`.
 
 In the `tuneGrid` argument: 
 
@@ -482,7 +447,7 @@ knitr::include_graphics("image/crossvalidation_4fold.png")
 
 ### Determining optimal Tuning parameters
 
-By trying different tuning parameters in each iteration, you can determine which value minimises prediction error
+By trying different tuning parameters in each iteration, you can determine which value minimizes prediction error
 
 Ex) Testing MAE values for values of `cp`
 
@@ -533,20 +498,150 @@ knitr::include_graphics("image/training_final_optimisation.png")
 ```
 
 
----
-
-# Caret
-
-
-
-
 
 ---
+class: center,  middle
+
+<br><br>
+
+# caret
+
+## Cross-validation, and tuning parameter optimization
+
+```{r, echo = FALSE, out.width = "60%"}
+knitr::include_graphics("https://3qeqpr26caki16dnhd19sv6by6v-wpengine.netdna-ssl.com/wp-content/uploads/2014/09/Caret-package-in-R.png")
+```
 
 
-# Practical
 
-<font size=6><b><a href="https://therbootcamp.github.io/Intro2DataScience_2018Oct/_sessions/Plotting/Plotting_practical.html">Link to practical</a>
+---
+
+# K-Fold Cross validation
+
+
+.pull-left3[
+
+Specify the use of k-fold cross-validation using the `trainControl()` function
+
+- `method`: The resampling method, use `"cv"` for cross validation
+- `number`: The number of folds
+
+When you pass this object to `train()` (for any model), caret will find best parameters using cross-validation.
+
+]
+
+.pull-right65[
+
+```{r}
+# Specify 10 fold cross-validation
+ctrl_cv <- trainControl(method = "cv", 
+                        number = 10) 
+
+# Predict baselers income using lasso regression
+
+lasso_mod <- train(form = income ~ .,
+                   data = baselers,
+                   method = "glmnet",  # Penalised regression
+                   trControl = ctrl_cv,
+                   tuneGrid = expand.grid(alpha = 1, # Lasso
+                                          lambda = 1:100))
+```
+
+]
+
+---
+
+# K-Fold Cross validation
+
+
+.pull-left45[
+
+If you plot your model object with `plot(XX_mod)` you will see a plot showing the relationship between the tuning parameter and error.
+
+Print the best tuning parameter value with `XX_mod$bestTune$NAME`
+
+]
+
+.pull-right5[
+
+```{r, out.width = "60%", fig.width = 6, fig.height = 3}
+# Visualise tuning parameter error curve
+plot(lasso_mod)
+
+# Print best tuning parameter values
+lasso_mod$bestTune$lambda
+```
+
+]
+
+---
+
+# Regularized Regression
+
+.pull-left35[
+
+Your <high>final model</high> is (as always) stored in `XX_mod$finalModel`. This is the model fit to the entire data using the <high>optimal tuning parameter(s)</high>.
+
+To get the coefficients from a Ridge or Lasso regression model, use the `coef()` function, with `XX_mod$finalModel` as the first argument, and the best tuning value as the second argument
+
+In the output, values with . are coefficients that have been <high>removed with the lasso</high>!
+
+]
+
+.pull-right6[
+
+```{r, out.width = "60%", fig.width = 6, fig.height = 3}
+# Print final model coefficients using best lambda
+coef(lasso_mod$finalModel,      # Final Lasso model
+     lasso_mod$bestTune$lambda) # Bets lambda value
+```
+
+]
+
+
+---
+
+# Estimating prediction accuracy
+
+.pull-left35[
+
+If you have fit many models with cross-validation, you can compare their estimated prediction performance with `resamples()`
+
+The main argument to `resamples()` should be a list of all of your models created with `train()`
+
+If you print the `summary()` of this object, it will print 'prediction' error statistics from cross-validation during training. This is your estimate of future prediction performance!
+
+]
+
+.pull-right6[
+
+```{r, out.width = "60%", fig.width = 6, eval = FALSE}
+# Get accuracy statistics across folds for three
+#  models that I have fit with cross validation
+
+resamples_mod <- resamples(list(ridge = ridge_mod, 
+                                lasso = lasso_mod, 
+                                glm = glm_mod))
+
+# Print summary of accuracies
+summary(resamples_mod)
+
+# MAE 
+#         Min. 1st Qu. Median   Mean 3rd Qu.   Max. NA's
+# ridge 1057.9  1078.9 1083.2 1090.1  1112.0 1118.5    0
+# lasso  865.7   892.7  897.2  902.9   914.2  944.8    0
+# glm    839.7   910.0  920.5  905.9   922.7  936.7    0
+```
+
+]
+
+---
+class: middle, center
+
+<h1> Questions?</h1>
+
+
+<h1><a href=https://therbootcamp.github.io/appliedML_2019Jan/_sessions/Optimization/Optimization_practical.html>Practical</a></h1>
 
 
 
