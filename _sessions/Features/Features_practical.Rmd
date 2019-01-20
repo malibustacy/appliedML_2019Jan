@@ -265,7 +265,7 @@ plot(profile, type = c("g", "o"))
 ```{r, eval = FALSE, echo = TRUE}
 ## NAME
 ## DATE
-## Prediction Practical
+## Feature Practical
 
 library(tidyverse)
 library(caret)
