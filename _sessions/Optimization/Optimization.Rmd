@@ -562,7 +562,6 @@ lasso_mod <- train(form = income ~ .,
 
 If you print model object `XX_mod` you will see summary statistics showing how the model performed on averge in test folds for different values of the tuning parameters
 
-
 At the bottom of the output, you'll see a summary message telling you how the best tuning parameter was found.
 
 `Tuning parameter 'alpha' was held constant at a value of 1.`
@@ -634,10 +633,9 @@ coef(lasso_mod$finalModel,      # Final Lasso model
 
 ]
 
-
 ---
 
-# Estimating prediction accuracy
+# Comparing models after cross-validation
 
 .pull-left35[
 
