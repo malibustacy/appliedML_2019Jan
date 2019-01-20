@@ -68,7 +68,7 @@ layout: true
 
 .pull-left4[
 &lt;br&gt;&lt;br&gt;&lt;br&gt;
-# Overfitting (Recap)
+# Overfitting
 
 When a model is consistently &lt;high&gt;less accurate in predicting future data&lt;/high&gt; than in &lt;high&gt;fitting training data&lt;high&gt;, this is called &lt;high&gt;overfitting&lt;/high&gt;
 
@@ -95,7 +95,7 @@ Extremely flexible models that tend to overfit are like 'wolves in sheep's cloth
 .pull-left4[
 &lt;br&gt;&lt;br&gt;&lt;br&gt;
 
-# Overfitting (Recap)
+# Overfitting
 
 ### How will we try to avoid overfitting?
 
@@ -133,7 +133,7 @@ Use &lt;high&gt;cross-validation&lt;/high&gt; to find &lt;high&gt;optimal tuning
 - Decision trees: complexity tuning parameter &lt;high&gt;cp&lt;/high&gt;
 - Random forests diversity tuning parameter &lt;high&gt;mtry&lt;/high&gt;
     
-Tuning parameters never show up in the final model! They are only used to guide fitting.
+Tuning parameters do not show up in the final model (you never see a complexity parameter in a final decision tree)! They are only used to guide fitting.
 
 There is not one 'best' tuning parameter, it always depends on your specific dataset.
 
@@ -158,11 +158,11 @@ There are two common methods to fit penalized (aka regularized) regression model
 
 ### Ridge
 
-The Lasso penalty is known as the `\(\ell2\)` norm, where Beta weights are selected by minimizing the following equation:
+The Lasso penalty is known as the `\(\ell2\)` norm, where Beta weights are selected by &lt;high&gt;minimizing&lt;/high&gt; the following equation:
 
 &lt;img src="image/ridge_penalty_eq.jpg" width="100%" style="display: block; margin: auto;" /&gt;
 
-As `\(\lambda\)` increases, coefficients are pushed towards (but not necessarily exactly to) 0.
+As `\(\lambda\)` "Lambda" increases, coefficients are pushed towards (but not necessarily exactly to) 0.
 
 ]
 
@@ -208,6 +208,7 @@ train(form = criterion ~ .,
       data = data_train,
       method = "glmnet",
       trControl = ctrl,
+      preProcess = c("center", "scale"),  # Standardise
       tuneGrid = expand.grid(alpha = 0, # Ridge penalty
                               lambda = 1:100)) # Lambda
 ```
@@ -270,6 +271,7 @@ train(form = criterion ~ .,
       data = data_train,
       method = "glmnet",
       trControl = ctrl,
+      preProcess = c("center", "scale"),  # Standardise
       tuneGrid = expand.grid(alpha = 1, # Lasso penalty
                               lambda = 1:100)) # Lambda
 ```
@@ -421,6 +423,7 @@ lasso_mod &lt;- train(form = income ~ .,
                    data = baselers,
                    method = "glmnet",  # Penalised regression
                    trControl = ctrl_cv,
+                   preProcess = c("center", "scale"),  # Standardise
                    tuneGrid = expand.grid(alpha = 1, # Lasso
                                           lambda = 1:100))
 ```
@@ -486,32 +489,32 @@ coef(lasso_mod$finalModel,      # Final Lasso model
 
 ```
 25 x 1 sparse Matrix of class "dgCMatrix"
-                                        1
-(Intercept)                     498.79998
-id                                .      
-sexmale                           .      
-age                             116.28163
-height                            1.64721
-weight                            .      
-educationobligatory_school        .      
-educationSEK_II                   .      
-educationSEK_III                  .      
-confessionconfessionless          0.52709
-confessionevangelical-reformed    .      
-confessionmuslim                  .      
-confessionother                   .      
-children                        -17.61816
-happiness                      -125.28635
-fitness                           .      
-food                              2.29687
-alcohol                          21.81538
-tattoos                         -23.69171
-rhine                             .      
-datause                           .      
-consultations                     7.87664
-hiking                           -0.05348
-fasnachtyes                     -21.07582
-eyecoryes                         .      
+                                       1
+(Intercept)                    7569.6832
+id                                .     
+sexmale                           .     
+age                            1925.9098
+height                           21.6221
+weight                            .     
+educationobligatory_school        .     
+educationSEK_II                   .     
+educationSEK_III                  .     
+confessionconfessionless          0.2419
+confessionevangelical-reformed    .     
+confessionmuslim                  .     
+confessionother                   .     
+children                        -18.0667
+happiness                      -132.5714
+fitness                           .     
+food                            893.9188
+alcohol                         388.3610
+tattoos                         -61.3159
+rhine                             .     
+datause                           .     
+consultations                    14.7233
+hiking                           -1.1943
+fasnachtyes                      -3.9282
+eyecoryes                         .     
 ```
 
 ]

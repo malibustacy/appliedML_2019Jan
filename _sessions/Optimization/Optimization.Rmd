@@ -168,7 +168,7 @@ knitr::include_graphics("image/model_testing_flow.png")
 
 .pull-left4[
 <br><br><br>
-# Overfitting (Recap)
+# Overfitting
 
 When a model is consistently <high>less accurate in predicting future data</high> than in <high>fitting training data<high>, this is called <high>overfitting</high>
 
@@ -194,7 +194,7 @@ knitr::include_graphics("image/wolf_complex.png")
 .pull-left4[
 <br><br><br>
 
-# Overfitting (Recap)
+# Overfitting
 
 ### How will we try to avoid overfitting?
 
@@ -233,7 +233,7 @@ knitr::include_graphics("image/crossvalidation_4fold.png")
 - Decision trees: complexity tuning parameter <high>cp</high>
 - Random forests diversity tuning parameter <high>mtry</high>
     
-Tuning parameters never show up in the final model! They are only used to guide fitting.
+Tuning parameters do not show up in the final model (you never see a complexity parameter in a final decision tree)! They are only used to guide fitting.
 
 There is not one 'best' tuning parameter, it always depends on your specific dataset.
 
@@ -262,13 +262,13 @@ There are two common methods to fit penalized (aka regularized) regression model
 
 ### Ridge
 
-The Lasso penalty is known as the $\ell2$ norm, where Beta weights are selected by minimizing the following equation:
+The Lasso penalty is known as the $\ell2$ norm, where Beta weights are selected by <high>minimizing</high> the following equation:
 
 ```{r, echo = FALSE, out.width = "100%"}
 knitr::include_graphics("image/ridge_penalty_eq.jpg")
 ```
 
-As $\lambda$ increases, coefficients are pushed towards (but not necessarily exactly to) 0.
+As $\lambda$ "Lambda" increases, coefficients are pushed towards (but not necessarily exactly to) 0.
 
 ]
 
@@ -312,6 +312,7 @@ train(form = criterion ~ .,
       data = data_train,
       method = "glmnet",
       trControl = ctrl,
+      preProcess = c("center", "scale"),  # Standardise
       tuneGrid = expand.grid(alpha = 0, # Ridge penalty
                               lambda = 1:100)) # Lambda
 ```
@@ -374,6 +375,7 @@ train(form = criterion ~ .,
       data = data_train,
       method = "glmnet",
       trControl = ctrl,
+      preProcess = c("center", "scale"),  # Standardise
       tuneGrid = expand.grid(alpha = 1, # Lasso penalty
                               lambda = 1:100)) # Lambda
 ```
@@ -543,6 +545,7 @@ lasso_mod <- train(form = income ~ .,
                    data = baselers,
                    method = "glmnet",  # Penalised regression
                    trControl = ctrl_cv,
+                   preProcess = c("center", "scale"),  # Standardise
                    tuneGrid = expand.grid(alpha = 1, # Lasso
                                           lambda = 1:100))
 ```
