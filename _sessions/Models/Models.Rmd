@@ -367,7 +367,7 @@ Random forest adds sampling of features to reduce dependencies across trees.
 
 <br>
 <u>Algorithm</u>
-1. <high>Resample</high> data (without replacement)
+1. <high>Resample</high> data (with replacement)
 2. <high>Fit</high> model to resampled data
 3. <high>Average</high> predictions
 

@@ -176,18 +176,18 @@ postResample(pred = glm_fit,
 
 # Decision Trees ----------------
 
-hwy_dt <- train(form = hwy ~ year + cyl + displ,
+hwy_rpart <- train(form = hwy ~ year + cyl + displ,
                 data = data_train,
                 method = "rpart",
                 trControl = ctrl_none,
                 tuneGrid = expand.grid(cp = .01))   # Set complexity parameter
 
 # Look at summary information
-hwy_dt$finalModel
-plot(as.party(hwy_dt$finalModel))   # Visualise your trees
+hwy_rpart$finalModel
+plot(as.party(hwy_rpart$finalModel))   # Visualise your trees
 
 # Save fitted values
-dt_fit <- predict(hwy_dt)
+dt_fit <- predict(hwy_rpart)
 
 # Calculate fitting accuracies
 postResample(pred = dt_fit, obs = criterion_train)
@@ -259,7 +259,7 @@ criterion_test <- data_test$hwy
 
 # Save predicted values
 glm_pred <- predict(hwy_glm, newdata = data_test)
-dt_pred <- predict(hwy_dt, newdata = data_test)
+dt_pred <- predict(hwy_rpart, newdata = data_test)
 rf_pred <- predict(hwy_rf, newdata = data_test)
 
 #  Calculate fitting accuracies
@@ -474,6 +474,11 @@ summary(grad_glm)
 glm_fit <- predict(XXX)
 ```
 
+```{r}
+glm_fit <- predict(grad_glm)
+```
+
+
 5. Print your `glm_fit` object, look at summary statistics with `summary(glm_fit)`, and create a histogram with `hist()` do they make sense?
 
 ```{r, echo = TRUE, eval = FALSE}
@@ -492,7 +497,7 @@ hist(glm_fit)
 
 ### Decision Trees
 
-4. Using `train()`, fit a decision tree model called `grad_dt`
+4. Using `train()`, fit a decision tree model called `grad_rpart`
 
 - For the `form` argument, use `Grad.Rate ~ .`
 - For the `data` argument, use  `college_train` in the data argument
@@ -501,30 +506,30 @@ hist(glm_fit)
 - For the `tuneGrid` argument, use `cp = 0.01` to specify the value of the complexity parameter. This is a pretty low value which means your trees will be, relatively, complex.
 
 ```{r, echo = TRUE, eval = FALSE}
-grad_dt <- train(form = XX ~ .,
+grad_rpart <- train(form = XX ~ .,
                   data = XXX,
                   method = "XX",
                   trControl = XX,
                   tuneGrid = expand.grid(cp = XX))   # Set complexity parameter
 ```
 
-```{r, echo = TRUE, eval = FALSE}
-grad_dt <- train(form = Grad.Rate ~ .,
+```{r}
+grad_rpart <- train(form = Grad.Rate ~ .,
                   data = college_train,
                   method = "rpart",
                   trControl = ctrl_none,
                   tuneGrid = expand.grid(cp = .01))   # Set complexity parameter
 ```
 
-5. Explore your `grad_dt` object by looking at `grad_dt$finalModel` and plotting it with `plot(as.party(grad_dt$finalModel))`, what do you find?
+5. Explore your `grad_rpart` object by looking at `grad_rpart$finalModel` and plotting it with `plot(as.party(grad_rpart$finalModel))`, what do you find?
 
 ```{r}
-grad_dt$finalModel
-plot(as.party(grad_dt$finalModel))
+grad_rpart$finalModel
+plot(as.party(grad_rpart$finalModel))
 ```
 
 
-6. Using `predict()` save the fitted values of `grad_dt` object as `dt_fit`:
+6. Using `predict()` save the fitted values of `grad_rpart` object as `dt_fit`:
 
 ```{r, echo = TRUE, eval = FALSE}
 # Save fitted values of decision tree model
@@ -532,7 +537,7 @@ dt_fit <- predict(XXX)
 ```
 
 ```{r}
-dt_fit <- predict(grad_dt)
+dt_fit <- predict(grad_rpart)
 ```
 
 7. Print your `dt_fit` object, look at summary statistics with `summary(dt_fit)`, and create a histogram with `hist()` do they make sense?
@@ -613,6 +618,10 @@ hist(rf_fit)
 criterion_train <- XXX$XXX
 ```
 
+```{r}
+criterion_train <- college_train$Grad.Rate
+```
+
 12. Using `postResample()`, determine the fitting performance of each of your models separately. Make sure to set your `criterion_train` values to the `obs` argument, and your true model fits `XX_fit` to the `pred` argument:
 
 ```{r, echo = TRUE, eval = FALSE}
@@ -628,6 +637,17 @@ postResample(pred = XXX, obs = XXX)
 
 # Random Forests
 postResample(pred = XXX, obs = XXX)
+```
+
+```{r}
+# Regression
+postResample(pred = glm_fit, obs = criterion_train)
+
+# Decision Trees
+postResample(pred = dt_fit, obs = criterion_train)
+
+# Random Forests
+postResample(pred = dt_fit, obs = criterion_train)
 ```
 
 13. Which one had the best fits? What was the fitting MAE of each model?
@@ -850,14 +870,14 @@ hist(XXX)
 ```
 
 ```{r}
-glm_fit
+glm_fit[1:10]  # Only first 10
 summary(glm_fit)
 hist(glm_fit)
 ```
 
 ### Decision Trees
 
-4. Using `train()`, fit a decision tree model called `price_dt` predicting `price` (using the same features as above).
+4. Using `train()`, fit a decision tree model called `price_rpart` predicting `price` (using the same features as above).
 
 - For the `form` argument, use `price ~ . -id - date`
 - For the `data` argument, use  `house_train` in the data argument
@@ -866,7 +886,7 @@ hist(glm_fit)
 - For the `tuneGrid` argument, use `cp = 0.01` to specify the value of the complexity parameter. This is a pretty low value which means your trees will be, relatively, complex.
 
 ```{r, echo = TRUE, eval = FALSE}
-price_dt <- train(form = XX ~ . - XX - XX,
+price_rpart <- train(form = XX ~ . - XX - XX,
                   data = XXX,
                   method = "XX",
                   trControl = XX,
@@ -874,21 +894,21 @@ price_dt <- train(form = XX ~ . - XX - XX,
 ```
 
 ```{r}
-price_dt <- train(form = price ~ . - id - date,
+price_rpart <- train(form = price ~ . - id - date,
                   data = house_train,
                   method = "rpart",
                   trControl = ctrl_none,
                   tuneGrid = expand.grid(cp = .01))   # Set complexity parameter
 ```
 
-5. Explore your `price_dt` object by looking at `price_dt$finalModel` and plotting it with `plot(as.party(price_dt$finalModel))`, what do you find?
+5. Explore your `price_rpart` object by looking at `price_rpart$finalModel` and plotting it with `plot(as.party(price_rpart$finalModel))`, what do you find?
 
 ```{r}
-price_dt
-plot(as.party(price_dt$finalModel))
+price_rpart
+plot(as.party(price_rpart$finalModel))
 ```
 
-6. Using `predict()` save the fitted values of `price_dt` object as `dt_fit`:
+6. Using `predict()` save the fitted values of `price_rpart` object as `dt_fit`:
 
 ```{r, echo = TRUE, eval = FALSE}
 # Save fitted values of decision tree model
@@ -896,7 +916,7 @@ dt_fit <- predict(XXX)
 ```
 
 ```{r}
-dt_fit <- predict(price_dt)
+dt_fit <- predict(price_rpart)
 ```
 
 7. Print your `dt_fit` object, look at summary statistics with `summary(dt_fit)`, and create a histogram with `hist()` do they make sense?
@@ -911,7 +931,7 @@ hist(XXX)
 
 
 ```{r}
-dt_fit
+dt_fit[1:10]   # Only first 10 values
 summary(dt_fit)
 hist(dt_fit)
 ```
@@ -967,7 +987,7 @@ hist(XXX)
 ```
 
 ```{r}
-rf_fit
+rf_fit[1:10]   # Only first 10 cases
 summary(rf_fit)
 hist(rf_fit)
 ```
@@ -1021,6 +1041,50 @@ postResample(pred = rf_fit, obs = criterion_train)
 
 (Optional). If you'd like to, try visualizing the fitting results using the plotting code shown in the Examples tab above. Ask for help if you need it!
 
+
+```{r}
+# Tidy competition results
+accuracy <- tibble(criterion_train = criterion_train,
+                   Regression = glm_fit,
+                   DecisionTrees = dt_fit,
+                   RandomForest = rf_fit) %>%
+               gather(model, prediction, -criterion_train) %>%
+  
+  # Add error measures
+  mutate(se = prediction - criterion_train,
+         ae = abs(prediction - criterion_train))
+
+# Calculate summaries
+accuracy_agg <- accuracy %>%
+                  group_by(model) %>%
+                  summarise(mae = mean(ae))   # Calculate MAE (mean absolute error)
+
+# Plot A) Scatterplot of truth versus predictions
+
+ggplot(data = accuracy,
+       aes(x = criterion_train, y = prediction, col = model)) +
+  geom_point(alpha = .5) +
+  geom_abline(slope = 1, intercept = 0) +
+  labs(title = "Predicting Housing Prices",
+       subtitle = "Black line indicates perfect performance")
+
+# Plot B) Violin plot of absolute errors
+
+ggplot(data = accuracy, 
+       aes(x = model, y = ae, fill = model)) + 
+  geom_violin() + 
+  geom_jitter(width = .05, alpha = .2) +
+  labs(title = "Prediction Absolute Errors",
+       subtitle = "Numbers indicate means",
+       x = "Model",
+       y = "Absolute Error") +
+  guides(fill = FALSE) +
+  annotate(geom = "label", 
+           x = accuracy_agg$model, 
+           y = accuracy_agg$mae, 
+           label = round(accuracy_agg$mae, 2))
+```
+
 ## C - Prediction
 
 1. Save the criterion values from the test data set `house_test$price` as a new vector called `criterion_test`:
@@ -1030,12 +1094,16 @@ postResample(pred = rf_fit, obs = criterion_train)
 criterion_test <- XXX$XXX
 ```
 
+```{r}
+criterion_test <- house_test$price
+```
+
 2. Using `predict()`, save the predicted values of each model for the test data `house_test` as `glm_pred`, `dt_pred` and `rf_pred`. 
 
 ```{r, echo = TRUE, eval = FALSE}
 # Save model predictions for test data
-# XX_mod
-# newdata = college_test
+# object: price_XXX
+# newdata: college_test
 
 # Regression
 glm_pred <- predict(XXX, newdata = XXX)
@@ -1045,6 +1113,21 @@ dt_pred <- predict(XXX, newdata = XXX)
 
 # Random Forests
 rf_pred <- predict(XXX, newdata = XXX)
+```
+
+
+```{r}
+# Regression
+glm_pred <- predict(price_glm, 
+                    newdata = house_test)
+
+# Decision Trees
+dt_pred <- predict(price_rpart, 
+                   newdata = house_test)
+
+# Random Forests
+rf_pred <- predict(price_rf, 
+                   newdata = house_test)
 ```
 
 3. Using `postResample()`, determine the *prediction* performance of each of your models against the test criterion `criterion_test`. 
@@ -1062,6 +1145,18 @@ postResample(pred = XXX, obs = XXX)
 
 # Random Forests
 postResample(pred = XXX, obs = XXX)
+```
+
+
+```{r}
+# Regression
+postResample(pred = glm_pred, obs = criterion_test)
+
+# Decision Trees
+postResample(pred = rpart_pred, obs = criterion_test)
+
+# Random Forests
+postResample(pred = rf_pred, obs = criterion_test)
 ```
 
 4. How does each model's *prediction / test* performance (on the `XXX_test` data) compare to its *fitting / training* performance (on the `XXX_train` data)? Is it worse? Better? The same? What does the change tell you about the models?
