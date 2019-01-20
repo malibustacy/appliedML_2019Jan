@@ -47,8 +47,8 @@ library(ggthemes)
 
 |File  |Rows | Columns |
 |:----|:-----|:------|
-|[murders_crime](https://raw.githubusercontent.com/therbootcamp/appliedML_2019Jan/master/_sessions/Models/competition/competition_murder_train.csv)| 1000 | 102|
-|[nonviolent_crime](https://raw.githubusercontent.com/therbootcamp/appliedML_2019Jan/master/_sessions/Models/competition/competition_nonvio_train.csv)| 1000 | 102|
+|[murders_crime](https://raw.githubusercontent.com/therbootcamp/appliedML_2019Jan/master/_sessions/Models/competition/1_Data/competition_murder_train.csv)| 1000 | 102|
+|[nonviolent_crime](https://raw.githubusercontent.com/therbootcamp/appliedML_2019Jan/master/_sessions/Models/competition/1_Data/competition_nonvio_train.csv)| 1000 | 102|
 
 
 ```{r, message = FALSE, eval = TRUE, echo = FALSE}
