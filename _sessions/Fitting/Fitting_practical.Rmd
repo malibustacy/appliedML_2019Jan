@@ -227,7 +227,6 @@ college_train <- read_csv(file = "1_Data/college_train.csv")
 college_train <- read_csv(file = "../../1_Data/college_train.csv")
 ```
 
-
 5. Take a look at the first few rows of the dataset by printing it to the console.
 
 ```{r}
@@ -235,6 +234,14 @@ college_train
 ```
 
 6. Print the numbers of rows and columns using the `dim()` function
+
+
+```{r, echo = TRUE, eval = FALSE}
+# Print number of rows and columns of college_train
+
+dim(XXX)
+```
+
 
 ```{r}
 # Print number of rows and columns of college_train
@@ -244,19 +251,27 @@ dim(college_train)
 
 7. Look at the names of the dataframe with the `names()` function
 
+```{r, echo = TRUE, eval = FALSE}
+names(XXX)
+```
+
 ```{r}
 names(college_train)
 ```
 
 8. Open the dataset in a new window using `View()`. How does it look?
 
-```{r, eval = FALSE}
+```{r, echo = TRUE, eval = FALSE}
+View(XXX)
+```
+
+```{r, echo = TRUE, eval = FALSE}
 View(college_train)
 ```
 
 9. We need to do a little bit of data cleaning before starting. Specifically, we need to convert all character columns to factors: Do this by running the following code:
 
-```{r}
+```{r, echo = TRUE}
 # Convert character to factor
 
 college_train <- college_train %>%
@@ -280,7 +295,7 @@ ctrl_none <- trainControl(method = "none")
 
 1. Using the code below, fit a regression model predicting graduation rate (`Grad.Rate`) as a function of one feature `PhD`, the percent of faculty with PhDs). Save the result as an object `Grad.Rate_glm`
 
-```{r}
+```{r, echo = TRUE}
 # Grad.Rate_glm: Regression Model
 #   Criterion: Grad.Rate
 #   Features: PhD
@@ -294,7 +309,7 @@ Grad.Rate_glm <- train(form = Grad.Rate ~ PhD,
 
 2. Explore the model using the `summary()` function.
 
-```{r}
+```{r, echo = TRUE}
 # Show summary information from the regression model
 
 summary(Grad.Rate_glm)
@@ -308,7 +323,7 @@ summary(Grad.Rate_glm)
 
 4. Now it's time to save the model fits! Do this by running the following code to save the fitted values as `glm_fit`
 
-```{r}
+```{r, echo = TRUE}
 # Get fitted values from the model and save as glm_fit
 
 glm_fit <- predict(Grad.Rate_glm)
@@ -316,7 +331,7 @@ glm_fit <- predict(Grad.Rate_glm)
 
 5. Print your `glm_fit` object - what are these values? Do they look reasonable? That is, are they in the range of what you expect the criterion to be?
 
-```{r}
+```{r, echo = TRUE}
 # Print glm_fit
 
 glm_fit
@@ -330,7 +345,7 @@ glm_fit
 
 1. Now it's time to compare your model fits to the true values, we'll start by defining the vector `criterion` as the graduation rates.
 
-```{r}
+```{r, echo = TRUE}
 # Define criterion as Grad.Rate
 
 criterion <- college_train$Grad.Rate
@@ -338,7 +353,7 @@ criterion <- college_train$Grad.Rate
 
 2. Let's quantify our model's fitting results. To do this, we'll use the `postResample()` function, with the fitted values as the prediction, and the criterion as the observed values:
 
-```{r}
+```{r, echo = TRUE}
 # Regression Fitting Accuracy
 
 postResample(pred = glm_fit,   # Fitted values 
@@ -356,7 +371,7 @@ postResample(pred = glm_fit,   # Fitted values
   - `accuracy`: Raw absolute errors
   - `accuracy_agg` Aggregate (i.e.; mean) absolute errors
 
-```{r}
+```{r, echo = TRUE}
 # accuracy: a dataframe of raw absolute errors
 accuracy <- tibble(criterion = criterion,
                    Regression = glm_fit) %>%
@@ -373,7 +388,6 @@ accuracy_agg <- accuracy %>%
 
 5. Print the `accuracy` and `accuracy_agg` objects to see how they look.
 
-
 ```{r}
 accuracy %>% head() # Just printing the first few rows
 
@@ -382,7 +396,7 @@ accuracy_agg
 
 6. Using the code below, create a scatterplot showing the relationship between the true criterion values and the model fits
 
-```{r, out.width = "60%"}
+```{r, out.width = "60%", echo = TRUE}
 # Plot A) Scatterplot of criterion versus predictions
 
 ggplot(data = accuracy,
@@ -405,7 +419,7 @@ ggplot(data = accuracy,
 
 8. Let's create a new violin plot showing the distribution of absolute errors of the model:
 
-```{r}
+```{r, echo = TRUE}
 # Plot B) Violin plot of absolute errors
 
 ggplot(data = accuracy, 
@@ -442,6 +456,16 @@ So far we have only used one feature (`PhD`), to predict `Grad.Rate`. Let's try 
 
 1. Using the same steps as above, create a regression model `Grad.Rate_glm` which predicts `Grad.Rate` using all 4 features (you can also call it something else if you want to save your original model!).
 
+```{r, echo = TRUE, eval = FALSE}
+# Grad.Rate_glm: Regression Model
+#   Criterion: Grad.Rate
+#   Features: PhD, Room.Board, Terminal, S.F.Ratio
+
+Grad.Rate_glm <- train(form = XXX ~ XXX + XXX + XXX + XXX,
+                       data = college_train,
+                       method = "glm",
+                       trControl = ctrl_none)
+```
 
 ```{r}
 # Grad.Rate_glm: Regression Model
@@ -456,11 +480,26 @@ Grad.Rate_glm <- train(form = Grad.Rate ~ PhD + Room.Board + Terminal + S.F.Rati
 
 2. Explore your model using `summary()`, which features seem to be important?
 
+```{r, echo = TRUE, eval = FALSE}
+summary(XXX)
+```
+
 ```{r}
 summary(Grad.Rate_glm)
 ```
 
 3. By comparing the model fits to the true criterion values using a combination of `predict()` and `postResample()` calculate the Mean Absolute Error (MAE) of your new model that uses 4 features. How does this compare to your previous model that only used 1 feature?
+
+```{r, echo = TRUE, eval = FALSE}
+# Save new model fits
+glm_fit <- predict(XXX)
+
+# New model fitting accuracy
+
+postResample(pred = XXX,   # Fitted values 
+             obs = XXX)  # criterion values
+```
+
 
 ```{r}
 # Save new model fits
@@ -526,13 +565,20 @@ ggplot(data = accuracy,
            label = round(accuracy_agg$mae, 2))
 ```
 
-## F - Use (almost) all features
+## F - Use all features
 
 Alright now it's time to use all features available!
 
 1. Using the same steps as above, create a regression model `glm_fit` which predicts `Grad.Rate` using *all* features in the dataset.
 
-```{r, echo = TRUE}
+```{r, echo = TRUE, eval = FALSE}
+Grad.Rate_glm <- train(form = XXX ~ .,
+                       data = XXX,
+                       method = "glm",
+                       trControl = ctrl_none)
+```
+
+```{r}
 Grad.Rate_glm <- train(form = Grad.Rate ~ .,
                        data = college_train,
                        method = "glm",
@@ -541,10 +587,12 @@ Grad.Rate_glm <- train(form = Grad.Rate ~ .,
 
 2. Explore your model using `summary()`, which features seem to be important?
 
+```{r, echo = TRUE, eval = FALSE}
+summary(XXX)
+```
+
 ```{r}
 summary(Grad.Rate_glm)
-
-
 ```
 
 3. What is the Mean Absolute Error (MAE) of your new model that uses 17 features? How does this compare to your previous model that only used 1 feature?
@@ -596,6 +644,10 @@ summary(Private_glm)
 ```
 
 3. Look at the results, how do you interpret the regression coefficients? Which features seem important in predicting whether a school is private or not?
+
+```{r}
+# Looking at the Z statistics, Outstate, Enroll and S.F.Ratio (...) have quite large z-statistics
+```
 
 ## I - Access classification model accuracy
 
