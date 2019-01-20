@@ -25,7 +25,7 @@ layout: true
 &lt;a href="https://therbootcamp.github.io/"&gt;&lt;font color="#7E7E7E"&gt;Applied Machine Learning with R, January 2019&lt;/font&gt;&lt;/a&gt;
 &amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp;
 &lt;a href="https://therbootcamp.github.io/"&gt;&lt;font color="#7E7E7E"&gt;www.therbootcamp.com&lt;/font&gt;&lt;/a&gt;
-&lt;/span&gt;&lt;/div&gt; 
+&lt;/span&gt;&lt;/div&gt;
 
 ---
 
@@ -130,9 +130,11 @@ Use &lt;high&gt;cross-validation&lt;/high&gt; to find &lt;high&gt;optimal tuning
 
 &lt;high&gt;Tuning parameters&lt;/high&gt; are parameters that &lt;high&gt;guide&lt;/high&gt; (aka. 'tune') a model during fitting.
 
+
 - Decision trees: complexity tuning parameter &lt;high&gt;cp&lt;/high&gt;
+
 - Random forests diversity tuning parameter &lt;high&gt;mtry&lt;/high&gt;
-    
+
 Tuning parameters do not show up in the final model (you never see a complexity parameter in a final decision tree)! They are only used to guide fitting.
 
 There is not one 'best' tuning parameter, it always depends on your specific dataset.
@@ -158,16 +160,17 @@ There are two common methods to fit penalized (aka regularized) regression model
 
 ### Ridge
 
-The Lasso penalty is known as the `\(\ell2\)` norm, where Beta weights are selected by &lt;high&gt;minimizing&lt;/high&gt; the following equation:
+The Ridge penalty is known as the `\(\ell2\)` norm, where Beta weights are selected by &lt;high&gt;minimizing&lt;/high&gt; the following equation:
 
 &lt;img src="image/ridge_penalty_eq.jpg" width="100%" style="display: block; margin: auto;" /&gt;
 
 As `\(\lambda\)` "Lambda" increases, coefficients are pushed towards (but not necessarily exactly to) 0.
 
+See [Wikipedia's Ridge article](https://en.wikipedia.org/wiki/Tikhonov_regularization) to learn more.
+
 ]
 
 .pull-right45[
-
 
 &lt;div class="figure" style="text-align: center"&gt;
 &lt;img src="image/ridge_penalty_plot.png" alt="&amp;lt;font size = 4&amp;gt;James et al., ISLR&amp;lt;/font&amp;gt;" width="80%" /&gt;
@@ -175,9 +178,6 @@ As `\(\lambda\)` "Lambda" increases, coefficients are pushed towards (but not ne
 &lt;/div&gt;
 
 ]
-
-
-
 
 ---
 
@@ -189,9 +189,9 @@ There are two common methods to fit penalized (aka regularized) regression model
 
 ### Ridge
 
-To fit Ridge penalized regression in R, use `method = "glmnet`.
+To fit Ridge penalized regression in R, use `method = "glmnet"`.
 
-In the `tuneGrid` argument: 
+In the `tuneGrid` argument:
 
 - `alpha = 0` indicates the `\(\ell2\)` Ridge penalty.
 - `lambda` = Vector of lambda tuning parameters values to try.
@@ -231,6 +231,8 @@ The Lasso penalty is known as the `\(\ell1\)` norm, where Beta weights are selec
 
 As `\(\lambda\)` increases, coefficients are pushed towards 0, with some being forced to &lt;high&gt;exactly 0&lt;/high&gt;.
 
+See [Wikipedia's Lasso article](https://en.wikipedia.org/wiki/Lasso_(statistics&amp;#x29;) to learn more.
+
 ]
 
 .pull-right45[
@@ -252,9 +254,9 @@ There are two common methods to fit penalized (aka regularized) regression model
 
 ### Lasso
 
-To fit Lasso penalized regression in R, use `method = "glmnet`.
+To fit Lasso penalized regression in R, use `method = "glmnet"`.
 
-In the `tuneGrid` argument: 
+In the `tuneGrid` argument:
 
 - `alpha = 1` indicates the `\(\ell1\)` Lasso penalty
 - `lambda` = Vector of lambda tuning parameters values to try.
@@ -289,7 +291,7 @@ train(form = criterion ~ .,
 
 Cross-validation is a sampling procedure performed on training data used to &lt;high&gt;estimate a model's prediction performance&lt;/high&gt; in future test data, and to determine &lt;high&gt;optimal tuning parameters&lt;/high&gt; selected to minimize prediction error.
 
-Cross-validation is not "cheating: because it is only performed on the training data (never on the true test dataset)
+Cross-validation is not "cheating": because it is only performed on the training data (never on the true test dataset)
 
 After cross-validation is complete, the model is trained on the entire dataset, using optimal tuning parameters, resulting in a &lt;high&gt;final model&lt;/high&gt; which can be used for future model testing.
 
@@ -414,8 +416,8 @@ When you pass this object to `train()` (for any model), caret will find best par
 
 ```r
 # Specify 10 fold cross-validation
-ctrl_cv &lt;- trainControl(method = "cv", 
-                        number = 10) 
+ctrl_cv &lt;- trainControl(method = "cv",
+                        number = 10)
 
 # Predict baselers income using lasso regression
 
@@ -438,6 +440,8 @@ lasso_mod &lt;- train(form = income ~ .,
 .pull-left45[
 
 If you plot your model object with `plot(XX_mod)` you will see a plot showing the relationship between the tuning parameter and error.
+
+The bottom of the curve shows the best tuning parameter (minimises error)
 
 Print the best tuning parameter value with `XX_mod$bestTune$NAME`
 
@@ -541,14 +545,14 @@ If you print the `summary()` of this object, it will print 'prediction' error st
 # Get accuracy statistics across folds for three
 #  models that I have fit with cross validation
 
-resamples_mod &lt;- resamples(list(ridge = ridge_mod, 
-                                lasso = lasso_mod, 
+resamples_mod &lt;- resamples(list(ridge = ridge_mod,
+                                lasso = lasso_mod,
                                 glm = glm_mod))
 
 # Print summary of accuracies
 summary(resamples_mod)
 
-# MAE 
+# MAE
 #         Min. 1st Qu. Median   Mean 3rd Qu.   Max. NA's
 # ridge 1057.9  1078.9 1083.2 1090.1  1112.0 1118.5    0
 # lasso  865.7   892.7  897.2  902.9   914.2  944.8    0
