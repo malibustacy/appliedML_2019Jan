@@ -13,7 +13,7 @@ knitr::opts_chunk$set(comment = NA,
                       fig.height = 6,
                       fig.align = 'center',
                       echo = TRUE, 
-                      eval = FALSE, 
+                      eval = TRUE, 
                       warning = FALSE,
                       message = FALSE)
 
@@ -202,7 +202,7 @@ ggplot(data = accuracy,
 2. Open a new R script. At the top of the script, using comments, write your name and the date. Save it as a new file called `Fitting_practical.R` in the `2_Code` folder.  
 3. Using `library()` load the set of packages for this practical listed in the packages section above.
 
-```{r, eval = FALSE, echo = TRUE}
+```{r, echo = TRUE, message = FALSE}
 ## NAME
 ## DATE
 ## Fitting Practical
@@ -222,6 +222,11 @@ library(tidyverse)
 
 college_train <- read_csv(file = "1_Data/college_train.csv")
 ```
+
+```{r, eval = TRUE, echo = FALSE}
+college_train <- read_csv(file = "../../1_Data/college_train.csv")
+```
+
 
 5. Take a look at the first few rows of the dataset by printing it to the console.
 
@@ -297,6 +302,10 @@ summary(Grad.Rate_glm)
 
 3. Look at the results, how do you interpret the regression coefficients? What is the general relationship between PhD and graduation rates? Does this make sense?
 
+```{r}
+# For every increase of one in PhD (the percent of faculty with a PhD), the expected graduation rate increases by 0.33
+```
+
 4. Now it's time to save the model fits! Do this by running the following code to save the fitted values as `glm_fit`
 
 ```{r}
@@ -311,6 +320,10 @@ glm_fit <- predict(Grad.Rate_glm)
 # Print glm_fit
 
 glm_fit
+```
+
+```{r}
+# Yes, values appear to be within 40 and 80, which is what we expect from the truth population.
 ```
 
 ## D - Evaluate accuracy
@@ -334,6 +347,11 @@ postResample(pred = glm_fit,   # Fitted values
 
 3. You'll see three values here, the easiest to understand is MAE which stands for "Mean Absolute Error" -- in other words, "on average how far are the predictions from the true values?" A value of 0 means perfect prediction, so small values are good! How do you interpret these results?
 
+```{r}
+# On average, the model fits are 12.8633 away from the true values.
+#  Whether this is 'good' or not depends on you :)
+```
+
 4. Now we're ready to do some plotting. But first, we need to re-organise the data a bit. We'll create two dataframes
   - `accuracy`: Raw absolute errors
   - `accuracy_agg` Aggregate (i.e.; mean) absolute errors
@@ -355,9 +373,16 @@ accuracy_agg <- accuracy %>%
 
 5. Print the `accuracy` and `accuracy_agg` objects to see how they look.
 
-6. Using the code below, create a scatter plot showing the relationship between the true criterion values and the model fits
 
 ```{r}
+accuracy %>% head() # Just printing the first few rows
+
+accuracy_agg
+```
+
+6. Using the code below, create a scatterplot showing the relationship between the true criterion values and the model fits
+
+```{r, out.width = "60%"}
 # Plot A) Scatterplot of criterion versus predictions
 
 ggplot(data = accuracy,
@@ -373,6 +398,10 @@ ggplot(data = accuracy,
 ```
 
 7. Look at the plot, how do you interpret this? Do you think the model did well or not in fitting graduation rates?
+
+```{r}
+# No the model is not great, values do not fall very closely to the black diagonal line.
+```
 
 8. Let's create a new violin plot showing the distribution of absolute errors of the model:
 
@@ -396,6 +425,11 @@ ggplot(data = accuracy,
 
 9. What does the plot show you about the model fits? On average, how far away were the model fits from the true values?
 
+```{r}
+# On average, the model fits are 12.86 away from the true criterion values.
+#  However, there is also quite a bit of variability
+```
+
 
 ## F - Add more features
 
@@ -408,19 +442,95 @@ So far we have only used one feature (`PhD`), to predict `Grad.Rate`. Let's try 
 
 1. Using the same steps as above, create a regression model `Grad.Rate_glm` which predicts `Grad.Rate` using all 4 features (you can also call it something else if you want to save your original model!).
 
+
+```{r}
+# Grad.Rate_glm: Regression Model
+#   Criterion: Grad.Rate
+#   Features: PhD, Room.Board, Terminal, S.F.Ratio
+
+Grad.Rate_glm <- train(form = Grad.Rate ~ PhD + Room.Board + Terminal + S.F.Ratio,
+                       data = college_train,
+                       method = "glm",
+                       trControl = ctrl_none)
+```
+
 2. Explore your model using `summary()`, which features seem to be important?
 
-3. What is the Mean Absolute Error (MAE) of your new model that uses 4 features? How does this compare to your previous model that only used 1 feature?
+```{r}
+summary(Grad.Rate_glm)
+```
+
+3. By comparing the model fits to the true criterion values using a combination of `predict()` and `postResample()` calculate the Mean Absolute Error (MAE) of your new model that uses 4 features. How does this compare to your previous model that only used 1 feature?
+
+```{r}
+# Save new model fits
+glm_fit <- predict(Grad.Rate_glm)
+
+# New model fitting accuracy
+
+postResample(pred = glm_fit,   # Fitted values 
+             obs = criterion)  # criterion values
+```
+
+```{r}
+# The new MAE value is 11.779, it's better (smaller) than the previous model, but still not great (in my opinion)
+```
 
 4. (Optional). Create a scatter plot showing the relationship between your new model fits and the true values. How does this plot compare to your previous one?
 
+```{r, out.width = "60%"}
+# accuracy: a dataframe of raw absolute errors
+accuracy <- tibble(criterion = criterion,
+                   Regression = glm_fit) %>%
+                gather(model, prediction, -criterion) %>%
+  
+  # Add error measures
+  mutate(ae = abs(prediction - criterion))
+
+# accuracy_agg: Dataframe of aggregate errors
+accuracy_agg <- accuracy %>%
+                  group_by(model) %>%
+                  summarise(mae = mean(ae))   # Calculate MAE (mean absolute error)
+
+# Plot A) Scatterplot of criterion versus predictions
+
+ggplot(data = accuracy,
+       aes(x = criterion, y = prediction)) +
+  geom_point(alpha = .2) +
+  geom_abline(slope = 1, intercept = 0) +
+  labs(title = "Regression: Four Features",
+       subtitle = "Line indicates perfect performance",
+       x = "True Graduation Rates",
+       y = "Fitted Graduation Rates") +
+  xlim(0, 120) + 
+  ylim(0, 120)
+```
+
 5. (Optional). Create a violin plot showing the distribution of absolute errors. How does this compare to your previous one?
+
+```{r}
+# Plot B) Violin plot of absolute errors
+
+ggplot(data = accuracy, 
+       aes(x = model, y = ae, fill = model)) + 
+  geom_violin() + 
+  geom_jitter(width = .05, alpha = .2) +
+  labs(title = "Distributions of Fitting Absolute Errors",
+       subtitle = "Numbers indicate means",
+       x = "Model",
+       y = "Absolute Error") +
+  guides(fill = FALSE) +
+  annotate(geom = "label", 
+           x = accuracy_agg$model, 
+           y = accuracy_agg$mae, 
+           label = round(accuracy_agg$mae, 2))
+```
 
 ## F - Use (almost) all features
 
 Alright now it's time to use all features available!
 
-1. Using the same steps as above, create a regression model `glm_fit` which predicts `Grad.Rate` using all features
+1. Using the same steps as above, create a regression model `glm_fit` which predicts `Grad.Rate` using *all* features in the dataset.
 
 ```{r, echo = TRUE}
 Grad.Rate_glm <- train(form = Grad.Rate ~ .,
@@ -430,6 +540,12 @@ Grad.Rate_glm <- train(form = Grad.Rate ~ .,
 ```
 
 2. Explore your model using `summary()`, which features seem to be important?
+
+```{r}
+summary(Grad.Rate_glm)
+
+
+```
 
 3. What is the Mean Absolute Error (MAE) of your new model that uses 17 features? How does this compare to your previous model that only used 1 feature?
 
