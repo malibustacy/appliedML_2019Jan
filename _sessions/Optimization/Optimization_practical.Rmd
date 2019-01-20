@@ -174,12 +174,18 @@ price_glm <- train(form = price ~ carat + depth + table + x + y,
                    method = "glm",
                    trControl = ctrl_cv)
 
+
+# Print key results
+price_glm
+
+# RMSE  Rsquared  MAE
+# 1506  0.86      921
+
 # Coefficients
 coef(price_glm$finalModel)
 
 # (Intercept)       carat       depth       table           x           y 
-#    16571.06    10229.91     -165.30      -82.52    -3958.62     2937.76 
-
+#     21464.9     11040.4      -215.6       -94.2     -3681.6      2358.9 
 
 # Lasso --------------------------
 
@@ -194,6 +200,15 @@ price_lasso <- train(form = price ~ carat + depth + table + x + y,
                    tuneGrid = expand.grid(alpha = 1,  # Lasso
                                           lambda = lambda_vec))
 
+
+# Print key results
+price_lasso
+
+  # lambda  RMSE  Rsquared  MAE 
+  #   0.00  1508  0.859      917
+  #   1.01  1509  0.859      916
+  #   2.02  1511  0.858      916
+
 # Plot regularisation parameter versus error
 plot(price_lasso)
 
@@ -206,13 +221,13 @@ coef(price_lasso$finalModel,
      price_lasso$bestTune$lambda)
 
 # 6 x 1 sparse Matrix of class "dgCMatrix"
-#                    1
-# (Intercept) 16722.33
-# carat       10168.30
-# depth        -166.64
-# table         -84.88
-# x           -3152.51
-# y            2152.05
+#                 1
+# (Intercept)  4001
+# carat        5179
+# depth        -300
+# table        -213
+# x           -3222
+# y            1755
 
 
 # Ridge --------------------------
@@ -228,6 +243,14 @@ price_ridge <- train(form = price ~ carat + depth + table + x + y,
                      tuneGrid = expand.grid(alpha = 0,  # Ridge penalty
                                             lambda = lambda_vec))
 
+# Print key results
+price_ridge
+
+# lambda  RMSE  Rsquared  MAE 
+#    0.0  1639  0.835     1137
+#   10.1  1639  0.835     1137
+#   20.2  1639  0.835     1137
+
 # Plot regularisation parameter versus error
 plot(price_ridge)
 
@@ -239,13 +262,13 @@ coef(price_ridge$finalModel,
      price_ridge$bestTune$lambda)
 
 # 6 x 1 sparse Matrix of class "dgCMatrix"
-#                   1
-# (Intercept) 1667.87
-# carat       4707.33
-# depth        -68.92
-# table        -66.79
-# x            537.01
-# y            615.86
+#                1
+# (Intercept) 4001
+# carat       2059
+# depth       -131
+# table       -168
+# x            716
+# y            797
 
 # Decision Trees --------------------------
 
@@ -258,11 +281,16 @@ price_dt <- train(form = price ~ carat + depth + table + x + y,
                   trControl = ctrl_cv,
                   tuneGrid = expand.grid(cp = cp_vec))
 
+# Print key results
+price_dt
+
 # Plot complexity parameter vs. error
 plot(price_dt)
 
 # Print best complexity parameter
 price_dt$bestTune$cp
+
+# [1] 0.00404
 
 # Step 3: Estimate prediction accuracy from folds ----
 
@@ -275,10 +303,10 @@ resamples_price <- resamples(list(ridge = price_ridge,
 summary(resamples_price)
 
 # MAE 
-#         Min. 1st Qu. Median   Mean 3rd Qu.   Max. NA's
-# ridge 1057.9  1078.9 1083.2 1090.1  1112.0 1118.5    0
-# lasso  865.7   892.7  897.2  902.9   914.2  944.8    0
-# glm    839.7   910.0  920.5  905.9   922.7  936.7    0
+#       Min. 1st Qu. Median Mean 3rd Qu. Max. NA's
+# ridge 1084    1098   1123 1137    1173 1214    0
+# lasso  872     878    916  917     938  990    0
+# glm    833     881    924  921     955 1030    0
 
 # Step 4: Measure prediction Accuracy -------------------
 
@@ -292,8 +320,8 @@ glm_pred <- predict(price_glm,
 postResample(pred = glm_pred, 
              obs = criterion_test)
 
-#      RMSE  Rsquared       MAE 
-# 1542.4046    0.8467  969.5960 
+#     RMSE Rsquared      MAE 
+# 1654.017    0.832  944.854 
 
 # Ridge ================================
 
@@ -305,8 +333,8 @@ ridge_pred <- predict(price_ridge,
 postResample(pred = ridge_pred, 
              obs = criterion_test)
 
-#      RMSE  Rsquared       MAE 
-# 1652.5079    0.8256 1129.1944 
+#     RMSE Rsquared      MAE 
+# 1650.541    0.832 1133.063 
 
 
 # Lasso ================================
@@ -319,8 +347,8 @@ lasso_pred <- predict(price_lasso,
 postResample(pred = lasso_pred, 
              obs = criterion_test)
 
-#      RMSE  Rsquared       MAE 
-# 1543.6057    0.8464  966.8914 
+#     RMSE Rsquared      MAE 
+# 1653.675    0.832  942.870 
 
 
 # Visualise Accuracy -------------------------
@@ -506,16 +534,18 @@ salary_glm <- train(form = Salary ~ .,
                    trControl = ctrl_cv)
 ```
 
-3. Try plotting your `salary_glm` object. What happens? What does this error mean?
+3. Print your `salary_glm` what do you see?
 
-4. Print your final model object with `salary_glm$finalModel`
+4. Try plotting your `salary_glm` object. What happens? What does this error mean?
+
+5. Print your final model object with `salary_glm$finalModel`
 
 ```{r, echo = TRUE, eval = FALSE}
 # Print final regression model
 salary_glm$finalModel
 ```
 
-5. Print your final regression model coefficients with `coef()`.
+6. Print your final regression model coefficients with `coef()`.
 
 ```{r}
 # Print glm coefficients
@@ -526,12 +556,12 @@ coef(salary_glm$finalModel)
 
 It's time to fit an optimized regression model with a Ridge penalty!
 
-1. Before we can fit a ridge regression model, we need to specify which values of the lambda penalty parameter we want to try. Using the code below, create a vector called `lambda_vec` which contains 100 values between 0 and 2
+1. Before we can fit a ridge regression model, we need to specify which values of the lambda penalty parameter we want to try. Using the code below, create a vector called `lambda_vec` which contains 100 values between 0 and 100
 
 ```{r, echo = TRUE, eval = FALSE}
 # Determine possible values of lambda
 
-lambda_vec <- seq(from = 0, to = 2, length = 100)
+lambda_vec <- seq(from = 0, to = 100, length = 100)
 ```
 
 2. Fit a ridge regression model predicting `Salary` as a function of all features
@@ -566,21 +596,23 @@ salary_ridge <- train(form = Salary ~ .,
                                           lambda = lambda_vec))
 ```
 
-3. Plot your `salary_ridge` object. What do you see? Which value of the regularization parameter seems to be the best?
+3. Print your `salary_ridge` object what do you see?
+
+4. Plot your `salary_ridge` object. What do you see? Which value of the regularization parameter seems to be the best?
 
 ```{r, echo = TRUE, eval = FALSE}
 # Plot salary_ridge object
 plot(XX)
 ```
 
-4. Print the best value of lambda by running the following code. Does this match what you saw in the plot above?
+5. Print the best value of lambda by running the following code. Does this match what you saw in the plot above?
 
 ```{r, echo = TRUE, eval = FALSE}
 # Print best regularisation parameter
 salary_ridge$bestTune$lambda
 ```
 
-5. What were your final regression model coefficients for the best lambda value? Find them by running the following code:
+6. What were your final regression model coefficients for the best lambda value? Find them by running the following code:
 
 ```{r, echo = TRUE, eval = FALSE}
 # Get coefficients from best lambda value
@@ -588,18 +620,18 @@ coef(salary_ridge$finalModel,
      salary_ridge$bestTune$lambda)
 ```
 
-6. How do these coefficients compare to what you found in regular regression? Are they similar? Different?
+7. How do these coefficients compare to what you found in regular regression? Are they similar? Different?
 
 ## E - Lasso Regression
 
 It's time to fit an optimized regression model with a Lasso penalty!
 
-1. Before we can fit a lasso regression model, we need to specify which values of the lambda penalty parameter we want to try. Using the code below, create a vector called `lambda_vec` which contains 100 values between 0 and .5
+1. Before we can fit a lasso regression model, we need to specify which values of the lambda penalty parameter we want to try. Using the code below, create a vector called `lambda_vec` which contains 100 values between 0 and 100
 
 ```{r, echo = TRUE, eval = FALSE}
 # Determine possible values of lambda
 
-lambda_vec <- seq(from = 0, to = .5, length = 100)
+lambda_vec <- seq(from = 0, to = 100, length = 100)
 ```
 
 2. Fit a lasso regression model predicting `Salary` as a function of all features
@@ -635,21 +667,23 @@ salary_lasso <- train(form = Salary ~ .,
                                           lambda = lambda_vec))
 ```
 
-3. Plot your `salary_lasso` object. What do you see? Which value of the regularization parameter seems to be the best?
+3. Print your `salary_lasso` object what do you see?
+
+4. Plot your `salary_lasso` object. What do you see? Which value of the regularization parameter seems to be the best?
 
 ```{r, echo = TRUE, eval = FALSE}
 # Plot salary_lasso object
 plot(XX)
 ```
 
-4. Print the best value of lambda by running the following code. Does this match what you saw in the plot above?
+5. Print the best value of lambda by running the following code. Does this match what you saw in the plot above?
 
 ```{r, echo = TRUE, eval = FALSE}
 # Print best regularisation parameter
 salary_lasso$bestTune$lambda
 ```
 
-5. What were your final regression model coefficients for the best lambda value? Find them by running the following code:
+6. What were your final regression model coefficients for the best lambda value? Find them by running the following code:
 
 ```{r, echo = TRUE, eval = FALSE}
 # Get coefficients from best lambda value
@@ -657,7 +691,7 @@ coef(salary_lasso$finalModel,
      salary_lasso$bestTune$lambda)
 ```
 
-6. How do these coefficients compare to what you found in regular regression? Are they similar? Different? Do you notice that any coefficients are now set to exactly 0?
+7. How do these coefficients compare to what you found in regular regression? Are they similar? Different? Do you notice that any coefficients are now set to exactly 0?
 
 ## F - Decision Tree
 
@@ -699,28 +733,30 @@ salary_dt <- train(form = Salary ~ .,
                   tuneGrid = expand.grid(cp = cp_vec))
 ```
 
-3. Plot your `salary_dt` object. What do you see? Which value of the regularization parameter seems to be the best?
+3. Print your `salary_dt` object what do you see?
+
+4. Plot your `salary_dt` object. What do you see? Which value of the regularization parameter seems to be the best?
 
 ```{r, echo = TRUE, eval = FALSE}
 # Plot salary_dt object
 plot(XX)
 ```
 
-4. Print the best value of lambda by running the following code. Does this match what you saw in the plot above?
+5. Print the best value of lambda by running the following code. Does this match what you saw in the plot above?
 
 ```{r, echo = TRUE, eval = FALSE}
 # Print best regularisation parameter
 salary_dt$bestTune$cp
 ```
 
-5. Plot your final decision tree using the following code
+6. Plot your final decision tree using the following code
 
 ```{r, echo = TRUE, eval = FALSE}
 # Visualise your trees
 plot(as.party(salary_dt$finalModel)) 
 ```
 
-6. How do the nodes in the tree compare to the coefficients you found in your regression analyses? Do you see similarities or differences?
+7. How do the nodes in the tree compare to the coefficients you found in your regression analyses? Do you see similarities or differences?
 
 ## G - Random Forests
 
@@ -762,14 +798,16 @@ salary_rf <- train(form = Salary ~ .,
                    tuneGrid = expand.grid(mtry = mtry_vec))
 ```
 
-3. Plot your `salary_rf` object. What do you see? Which value of the regularization parameter seems to be the best?
+3. Print your `salary_rf` object what do you see?
+
+4. Plot your `salary_rf` object. What do you see? Which value of the regularization parameter seems to be the best?
 
 ```{r, echo = TRUE, eval = FALSE}
 # Plot salary_rf object
 plot(XX)
 ```
 
-4. Print the best value of mtry by running the following code. Does this match what you saw in the plot above?
+5. Print the best value of mtry by running the following code. Does this match what you saw in the plot above?
 
 ```{r, echo = TRUE, eval = FALSE}
 # Print best mtry parameter

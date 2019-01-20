@@ -553,6 +553,36 @@ lasso_mod <- train(form = income ~ .,
 
 ]
 
+
+---
+
+# K-Fold Cross validation
+
+.pull-left45[
+
+If you print model object `XX_mod` you will see summary statistics showing how the model performed on averge in test folds for different values of the tuning parameters
+
+At the bottom of the output, you'll see a summary message telling you how the best tuning parameter was found.
+
+`Tuning parameter 'alpha' was held constant at a value of 1.`
+
+`RMSE was used to select the optimal model using the`
+` smallest value.`
+
+`The final values used for the model were alpha = 1 and`
+` lambda = 28.`
+
+]
+
+.pull-right5[
+
+```{r, out.width = "60%", fig.width = 5, fig.height = 4}
+# Print summary information
+lasso_mod
+```
+
+]
+
 ---
 
 # K-Fold Cross validation
@@ -603,10 +633,9 @@ coef(lasso_mod$finalModel,      # Final Lasso model
 
 ]
 
-
 ---
 
-# Estimating prediction accuracy
+# Comparing models after cross-validation
 
 .pull-left35[
 

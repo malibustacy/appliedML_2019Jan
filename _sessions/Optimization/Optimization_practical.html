@@ -408,12 +408,18 @@ price_glm &lt;- train(form = price ~ carat + depth + table + x + y,
                    method = &quot;glm&quot;,
                    trControl = ctrl_cv)
 
+
+# Print key results
+price_glm
+
+# RMSE  Rsquared  MAE
+# 1506  0.86      921
+
 # Coefficients
 coef(price_glm$finalModel)
 
 # (Intercept)       carat       depth       table           x           y 
-#    16571.06    10229.91     -165.30      -82.52    -3958.62     2937.76 
-
+#     21464.9     11040.4      -215.6       -94.2     -3681.6      2358.9 
 
 # Lasso --------------------------
 
@@ -428,6 +434,15 @@ price_lasso &lt;- train(form = price ~ carat + depth + table + x + y,
                    tuneGrid = expand.grid(alpha = 1,  # Lasso
                                           lambda = lambda_vec))
 
+
+# Print key results
+price_lasso
+
+  # lambda  RMSE  Rsquared  MAE 
+  #   0.00  1508  0.859      917
+  #   1.01  1509  0.859      916
+  #   2.02  1511  0.858      916
+
 # Plot regularisation parameter versus error
 plot(price_lasso)
 
@@ -440,13 +455,13 @@ coef(price_lasso$finalModel,
      price_lasso$bestTune$lambda)
 
 # 6 x 1 sparse Matrix of class &quot;dgCMatrix&quot;
-#                    1
-# (Intercept) 16722.33
-# carat       10168.30
-# depth        -166.64
-# table         -84.88
-# x           -3152.51
-# y            2152.05
+#                 1
+# (Intercept)  4001
+# carat        5179
+# depth        -300
+# table        -213
+# x           -3222
+# y            1755
 
 
 # Ridge --------------------------
@@ -462,6 +477,14 @@ price_ridge &lt;- train(form = price ~ carat + depth + table + x + y,
                      tuneGrid = expand.grid(alpha = 0,  # Ridge penalty
                                             lambda = lambda_vec))
 
+# Print key results
+price_ridge
+
+# lambda  RMSE  Rsquared  MAE 
+#    0.0  1639  0.835     1137
+#   10.1  1639  0.835     1137
+#   20.2  1639  0.835     1137
+
 # Plot regularisation parameter versus error
 plot(price_ridge)
 
@@ -473,13 +496,13 @@ coef(price_ridge$finalModel,
      price_ridge$bestTune$lambda)
 
 # 6 x 1 sparse Matrix of class &quot;dgCMatrix&quot;
-#                   1
-# (Intercept) 1667.87
-# carat       4707.33
-# depth        -68.92
-# table        -66.79
-# x            537.01
-# y            615.86
+#                1
+# (Intercept) 4001
+# carat       2059
+# depth       -131
+# table       -168
+# x            716
+# y            797
 
 # Decision Trees --------------------------
 
@@ -492,11 +515,16 @@ price_dt &lt;- train(form = price ~ carat + depth + table + x + y,
                   trControl = ctrl_cv,
                   tuneGrid = expand.grid(cp = cp_vec))
 
+# Print key results
+price_dt
+
 # Plot complexity parameter vs. error
 plot(price_dt)
 
 # Print best complexity parameter
 price_dt$bestTune$cp
+
+# [1] 0.00404
 
 # Step 3: Estimate prediction accuracy from folds ----
 
@@ -509,10 +537,10 @@ resamples_price &lt;- resamples(list(ridge = price_ridge,
 summary(resamples_price)
 
 # MAE 
-#         Min. 1st Qu. Median   Mean 3rd Qu.   Max. NA's
-# ridge 1057.9  1078.9 1083.2 1090.1  1112.0 1118.5    0
-# lasso  865.7   892.7  897.2  902.9   914.2  944.8    0
-# glm    839.7   910.0  920.5  905.9   922.7  936.7    0
+#       Min. 1st Qu. Median Mean 3rd Qu. Max. NA's
+# ridge 1084    1098   1123 1137    1173 1214    0
+# lasso  872     878    916  917     938  990    0
+# glm    833     881    924  921     955 1030    0
 
 # Step 4: Measure prediction Accuracy -------------------
 
@@ -526,8 +554,8 @@ glm_pred &lt;- predict(price_glm,
 postResample(pred = glm_pred, 
              obs = criterion_test)
 
-#      RMSE  Rsquared       MAE 
-# 1542.4046    0.8467  969.5960 
+#     RMSE Rsquared      MAE 
+# 1654.017    0.832  944.854 
 
 # Ridge ================================
 
@@ -539,8 +567,8 @@ ridge_pred &lt;- predict(price_ridge,
 postResample(pred = ridge_pred, 
              obs = criterion_test)
 
-#      RMSE  Rsquared       MAE 
-# 1652.5079    0.8256 1129.1944 
+#     RMSE Rsquared      MAE 
+# 1650.541    0.832 1133.063 
 
 
 # Lasso ================================
@@ -553,8 +581,8 @@ lasso_pred &lt;- predict(price_lasso,
 postResample(pred = lasso_pred, 
              obs = criterion_test)
 
-#      RMSE  Rsquared       MAE 
-# 1543.6057    0.8464  966.8914 
+#     RMSE Rsquared      MAE 
+# 1653.675    0.832  942.870 
 
 
 # Visualise Accuracy -------------------------
@@ -947,12 +975,13 @@ salary_glm &lt;- train(form = XX ~ .,
                     method = &quot;XX&quot;,
                     trControl = XX)</code></pre>
 <ol start="3" style="list-style-type: decimal">
+<li><p>Print your <code>salary_glm</code> what do you see?</p></li>
 <li><p>Try plotting your <code>salary_glm</code> object. What happens? What does this error mean?</p></li>
 <li><p>Print your final model object with <code>salary_glm$finalModel</code></p></li>
 </ol>
 <pre class="r"><code># Print final regression model
 salary_glm$finalModel</code></pre>
-<ol start="5" style="list-style-type: decimal">
+<ol start="6" style="list-style-type: decimal">
 <li>Print your final regression model coefficients with <code>coef()</code>.</li>
 </ol>
 <pre class="r"><code># Print glm coefficients
@@ -962,11 +991,11 @@ coef(salary_glm$finalModel)</code></pre>
 <h2>D - Ridge Regression</h2>
 <p>It’s time to fit an optimized regression model with a Ridge penalty!</p>
 <ol style="list-style-type: decimal">
-<li>Before we can fit a ridge regression model, we need to specify which values of the lambda penalty parameter we want to try. Using the code below, create a vector called <code>lambda_vec</code> which contains 100 values between 0 and 2</li>
+<li>Before we can fit a ridge regression model, we need to specify which values of the lambda penalty parameter we want to try. Using the code below, create a vector called <code>lambda_vec</code> which contains 100 values between 0 and 100</li>
 </ol>
 <pre class="r"><code># Determine possible values of lambda
 
-lambda_vec &lt;- seq(from = 0, to = 2, length = 100)</code></pre>
+lambda_vec &lt;- seq(from = 0, to = 100, length = 100)</code></pre>
 <ol start="2" style="list-style-type: decimal">
 <li>Fit a ridge regression model predicting <code>Salary</code> as a function of all features</li>
 </ol>
@@ -988,22 +1017,23 @@ salary_ridge &lt;- train(form = XX ~ .,
                       tuneGrid = expand.grid(alpha = 0,  # Ridge penalty
                                              lambda = lambda_vec))</code></pre>
 <ol start="3" style="list-style-type: decimal">
-<li>Plot your <code>salary_ridge</code> object. What do you see? Which value of the regularization parameter seems to be the best?</li>
+<li><p>Print your <code>salary_ridge</code> object what do you see?</p></li>
+<li><p>Plot your <code>salary_ridge</code> object. What do you see? Which value of the regularization parameter seems to be the best?</p></li>
 </ol>
 <pre class="r"><code># Plot salary_ridge object
 plot(XX)</code></pre>
-<ol start="4" style="list-style-type: decimal">
+<ol start="5" style="list-style-type: decimal">
 <li>Print the best value of lambda by running the following code. Does this match what you saw in the plot above?</li>
 </ol>
 <pre class="r"><code># Print best regularisation parameter
 salary_ridge$bestTune$lambda</code></pre>
-<ol start="5" style="list-style-type: decimal">
+<ol start="6" style="list-style-type: decimal">
 <li>What were your final regression model coefficients for the best lambda value? Find them by running the following code:</li>
 </ol>
 <pre class="r"><code># Get coefficients from best lambda value
 coef(salary_ridge$finalModel, 
      salary_ridge$bestTune$lambda)</code></pre>
-<ol start="6" style="list-style-type: decimal">
+<ol start="7" style="list-style-type: decimal">
 <li>How do these coefficients compare to what you found in regular regression? Are they similar? Different?</li>
 </ol>
 </div>
@@ -1011,11 +1041,11 @@ coef(salary_ridge$finalModel,
 <h2>E - Lasso Regression</h2>
 <p>It’s time to fit an optimized regression model with a Lasso penalty!</p>
 <ol style="list-style-type: decimal">
-<li>Before we can fit a lasso regression model, we need to specify which values of the lambda penalty parameter we want to try. Using the code below, create a vector called <code>lambda_vec</code> which contains 100 values between 0 and .5</li>
+<li>Before we can fit a lasso regression model, we need to specify which values of the lambda penalty parameter we want to try. Using the code below, create a vector called <code>lambda_vec</code> which contains 100 values between 0 and 100</li>
 </ol>
 <pre class="r"><code># Determine possible values of lambda
 
-lambda_vec &lt;- seq(from = 0, to = .5, length = 100)</code></pre>
+lambda_vec &lt;- seq(from = 0, to = 100, length = 100)</code></pre>
 <ol start="2" style="list-style-type: decimal">
 <li>Fit a lasso regression model predicting <code>Salary</code> as a function of all features</li>
 </ol>
@@ -1037,22 +1067,23 @@ salary_lasso &lt;- train(form = XX ~ .,
                       tuneGrid = expand.grid(alpha = 1,  # Lasso penalty
                                             lambda = lambda_vec))</code></pre>
 <ol start="3" style="list-style-type: decimal">
-<li>Plot your <code>salary_lasso</code> object. What do you see? Which value of the regularization parameter seems to be the best?</li>
+<li><p>Print your <code>salary_lasso</code> object what do you see?</p></li>
+<li><p>Plot your <code>salary_lasso</code> object. What do you see? Which value of the regularization parameter seems to be the best?</p></li>
 </ol>
 <pre class="r"><code># Plot salary_lasso object
 plot(XX)</code></pre>
-<ol start="4" style="list-style-type: decimal">
+<ol start="5" style="list-style-type: decimal">
 <li>Print the best value of lambda by running the following code. Does this match what you saw in the plot above?</li>
 </ol>
 <pre class="r"><code># Print best regularisation parameter
 salary_lasso$bestTune$lambda</code></pre>
-<ol start="5" style="list-style-type: decimal">
+<ol start="6" style="list-style-type: decimal">
 <li>What were your final regression model coefficients for the best lambda value? Find them by running the following code:</li>
 </ol>
 <pre class="r"><code># Get coefficients from best lambda value
 coef(salary_lasso$finalModel, 
      salary_lasso$bestTune$lambda)</code></pre>
-<ol start="6" style="list-style-type: decimal">
+<ol start="7" style="list-style-type: decimal">
 <li>How do these coefficients compare to what you found in regular regression? Are they similar? Different? Do you notice that any coefficients are now set to exactly 0?</li>
 </ol>
 </div>
@@ -1083,21 +1114,22 @@ salary_dt &lt;- train(form = XX ~ .,
                   trControl = XX,
                   tuneGrid = expand.grid(cp = cp_vec))</code></pre>
 <ol start="3" style="list-style-type: decimal">
-<li>Plot your <code>salary_dt</code> object. What do you see? Which value of the regularization parameter seems to be the best?</li>
+<li><p>Print your <code>salary_dt</code> object what do you see?</p></li>
+<li><p>Plot your <code>salary_dt</code> object. What do you see? Which value of the regularization parameter seems to be the best?</p></li>
 </ol>
 <pre class="r"><code># Plot salary_dt object
 plot(XX)</code></pre>
-<ol start="4" style="list-style-type: decimal">
+<ol start="5" style="list-style-type: decimal">
 <li>Print the best value of lambda by running the following code. Does this match what you saw in the plot above?</li>
 </ol>
 <pre class="r"><code># Print best regularisation parameter
 salary_dt$bestTune$cp</code></pre>
-<ol start="5" style="list-style-type: decimal">
+<ol start="6" style="list-style-type: decimal">
 <li>Plot your final decision tree using the following code</li>
 </ol>
 <pre class="r"><code># Visualise your trees
 plot(as.party(salary_dt$finalModel)) </code></pre>
-<ol start="6" style="list-style-type: decimal">
+<ol start="7" style="list-style-type: decimal">
 <li>How do the nodes in the tree compare to the coefficients you found in your regression analyses? Do you see similarities or differences?</li>
 </ol>
 </div>
@@ -1128,11 +1160,12 @@ salary_rf &lt;- train(form = XX ~ .,
                    trControl = XX,
                    tuneGrid = expand.grid(mtry = mtry_vec))</code></pre>
 <ol start="3" style="list-style-type: decimal">
-<li>Plot your <code>salary_rf</code> object. What do you see? Which value of the regularization parameter seems to be the best?</li>
+<li><p>Print your <code>salary_rf</code> object what do you see?</p></li>
+<li><p>Plot your <code>salary_rf</code> object. What do you see? Which value of the regularization parameter seems to be the best?</p></li>
 </ol>
 <pre class="r"><code># Plot salary_rf object
 plot(XX)</code></pre>
-<ol start="4" style="list-style-type: decimal">
+<ol start="5" style="list-style-type: decimal">
 <li>Print the best value of mtry by running the following code. Does this match what you saw in the plot above?</li>
 </ol>
 <pre class="r"><code># Print best mtry parameter
