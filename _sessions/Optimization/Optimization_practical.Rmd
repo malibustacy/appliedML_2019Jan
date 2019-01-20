@@ -11,7 +11,7 @@ knitr::opts_chunk$set(comment = NA,
                       fig.width = 6, 
                       fig.height = 6,
                       fig.align = 'center',
-                      echo = TRUE, 
+                      echo = FALSE, 
                       eval = FALSE, 
                       warning = FALSE,
                       message = FALSE)
@@ -64,21 +64,21 @@ hitters_test <- read_csv("https://raw.githubusercontent.com/therbootcamp/applied
 
 - The `hitters_train` and `hitters_test` data are taken from the `Hitters` dataset in the `ISLR` package. To see column descriptions, run the following:
 
-```{r, eval = FALSE}
+```{r, eval = FALSE, echo = TRUE}
 library(ISLR)   # Load ISLR package
 ?Hitters        # Look at help menu for Hitters
 ```
 
 - The `college_train` and `college_test` data are taken from the `College` dataset in the `ISLR` package. To see column descriptions, run the following:
 
-```{r, eval = FALSE}
+```{r, eval = FALSE, echo = TRUE}
 library(ISLR)   # Load ISLR package
 ?College        # Look at help menu for College
 ```
 
 - The `hitters_train` and `hitters_test` data are taken from the `hitters` dataset in the `ISLR` package. To see column descriptions, run the following:
 
-```{r, eval = FALSE}
+```{r, eval = FALSE, echo = TRUE}
 library(ISLR)   # Load ISLR package
 ?hitters        # Look at help menu for hitters
 ```
@@ -190,7 +190,7 @@ coef(price_glm$finalModel)
 # Lasso --------------------------
 
 # Vector of lambda values to try
-lambda_vec <- seq(0, 100, length = 100)
+lambda_vec <- 10 ^ seq(-3, 3, length = 100)
 
 price_lasso <- train(form = price ~ carat + depth + table + x + y,
                    data = data_train,
@@ -204,10 +204,21 @@ price_lasso <- train(form = price ~ carat + depth + table + x + y,
 # Print key results
 price_lasso
 
-  # lambda  RMSE  Rsquared  MAE 
-  #   0.00  1508  0.859      917
-  #   1.01  1509  0.859      916
-  #   2.02  1511  0.858      916
+# glmnet 
+# 
+# 5000 samples
+#    5 predictor
+# 
+# Pre-processing: centered (5), scaled (5) 
+# Resampling: Cross-Validated (10 fold) 
+# Summary of sample sizes: 4500, 4500, 4500, 4500, 4500, 4500, ... 
+# Resampling results across tuning parameters:
+# 
+#   lambda    RMSE  Rsquared  MAE 
+#   1.00e-03  1509  0.858      918
+#   1.15e-03  1509  0.858      918
+#   1.32e-03  1509  0.858      918
+#   1.52e-03  1509  0.858      918
 
 # Plot regularisation parameter versus error
 plot(price_lasso)
@@ -233,7 +244,7 @@ coef(price_lasso$finalModel,
 # Ridge --------------------------
 
 # Vector of lambda values to try
-lambda_vec <- seq(0, 1000, length = 100)
+lambda_vec <- 10 ^ seq(-3, 3, length = 100)
 
 price_ridge <- train(form = price ~ carat + depth + table + x + y,
                      data = data_train,
@@ -246,10 +257,22 @@ price_ridge <- train(form = price ~ carat + depth + table + x + y,
 # Print key results
 price_ridge
 
-# lambda  RMSE  Rsquared  MAE 
-#    0.0  1639  0.835     1137
-#   10.1  1639  0.835     1137
-#   20.2  1639  0.835     1137
+# glmnet 
+# 
+# 5000 samples
+#    5 predictor
+# 
+# Pre-processing: centered (5), scaled (5) 
+# Resampling: Cross-Validated (10 fold) 
+# Summary of sample sizes: 4500, 4500, 4500, 4500, 4500, 4500, ... 
+# Resampling results across tuning parameters:
+# 
+#   lambda    RMSE  Rsquared  MAE 
+#   1.00e-03  1638  0.835     1137
+#   1.15e-03  1638  0.835     1137
+#   1.32e-03  1638  0.835     1137
+#   1.52e-03  1638  0.835     1137
+#   1.75e-03  1638  0.835     1137
 
 # Plot regularisation parameter versus error
 plot(price_ridge)
@@ -273,7 +296,7 @@ coef(price_ridge$finalModel,
 # Decision Trees --------------------------
 
 # Vector of cp values to try
-cp_vec <- seq(0, .4, length = 100)
+cp_vec <- seq(0, .1, length = 100)
 
 price_dt <- train(form = price ~ carat + depth + table + x + y,
                   data = data_train,
@@ -290,7 +313,7 @@ plot(price_dt)
 # Print best complexity parameter
 price_dt$bestTune$cp
 
-# [1] 0.00404
+# [1] 0.00202
 
 # Step 3: Estimate prediction accuracy from folds ----
 
@@ -304,9 +327,21 @@ summary(resamples_price)
 
 # MAE 
 #       Min. 1st Qu. Median Mean 3rd Qu. Max. NA's
-# ridge 1084    1098   1123 1137    1173 1214    0
-# lasso  872     878    916  917     938  990    0
-# glm    833     881    924  921     955 1030    0
+# ridge 1094    1100   1117 1137    1170 1217    0
+# lasso  869     887    929  918     944  960    0
+# glm    856     882    921  920     949  986    0
+# 
+# RMSE 
+#       Min. 1st Qu. Median Mean 3rd Qu. Max. NA's
+# ridge 1545    1580   1609 1638    1703 1772    0
+# lasso 1323    1479   1518 1509    1583 1593    0
+# glm   1350    1429   1526 1509    1582 1702    0
+# 
+# Rsquared 
+#        Min. 1st Qu. Median  Mean 3rd Qu.  Max. NA's
+# ridge 0.798   0.828  0.836 0.835   0.848 0.854    0
+# lasso 0.827   0.846  0.858 0.858   0.868 0.902    0
+# glm   0.819   0.849  0.863 0.860   0.870 0.888    0
 
 # Step 4: Measure prediction Accuracy -------------------
 
@@ -389,12 +424,13 @@ ggplot(data = accuracy,
   labs(title = "Fitting Absolute Errors",
        subtitle = "Numbers indicate means",
        x = "Model",
-       y = "Absolute Error") +
+       y = "Absolute Error (Log Transformed)") +
   guides(fill = FALSE) +
   annotate(geom = "label", 
            x = accuracy_agg$model, 
            y = accuracy_agg$mae, 
-           label = round(accuracy_agg$mae, 2))
+           label = round(accuracy_agg$mae, 2)) +
+  scale_y_continuous(trans='log')
 ```
 
 # Baseball player salaries
@@ -414,7 +450,7 @@ Our goal will be to predict `Salary`.
 2. Open a new R script. At the top of the script, using comments, write your name and the date. Save it as a new file called `Optimization_practical.R` in the `2_Code` folder.  
 3. Using `library()` load the set of packages for this practical listed in the packages section above.
 
-```{r, eval = FALSE, echo = TRUE}
+```{r, echo = TRUE, eval = TRUE, message = FALSE}
 ## NAME
 ## DATE
 ## Optimization Practical - With regression, decision trees, and random forests
@@ -455,6 +491,11 @@ dim(XXX)
 dim(XXX)
 ```
 
+```{r}
+dim(hitters_train)
+dim(hitters_test)
+```
+
 7. Look at the names of the dataframes with the `names()` function.
 
 ```{r, echo = TRUE, eval = FALSE}
@@ -464,9 +505,14 @@ names(XXX)
 names(XXX)
 ```
 
+```{r}
+names(hitters_train)
+names(hitters_test)
+```
+
 8. Open each dataset in a new window using `View()`. Do they look ok?
 
-```{r}
+```{r, eval = FALSE, echo = TRUE}
 # Open each dataset in a window.
 
 View(XXX)
@@ -485,15 +531,6 @@ hitters_test <- hitters_test %>%
           mutate_if(is.character, factor)
 ```
 
-
-```{r, echo = FALSE}
-data_train <- read_csv(file = "1_Data/hitters_train.csv") %>%
-  slice(1:15)
-
-data_test <- read_csv(file = "1_Data/hitters_test.csv")
-```
-
-
 ## B - Setup `trainControl`
 
 1. Set up your training by specifying `ctrl_cv` as 10-fold cross-validation
@@ -501,10 +538,16 @@ data_test <- read_csv(file = "1_Data/hitters_test.csv")
 - Set method = "cv" to specify cross validation
 - Set number = 10 to specify 10 folds
 
-```{r}
+```{r, eval = FALSE, echo = TRUE}
 # Use 10-fold cross validation
 ctrl_cv <- trainControl(method = "XX", 
                         number = XX) 
+```
+
+```{r}
+# Use 10-fold cross validation
+ctrl_cv <- trainControl(method = "cv", 
+                        number = 10) 
 ```
 
 ## C - Regression (standard)
@@ -525,8 +568,8 @@ salary_glm <- train(form = XX ~ .,
                     trControl = XX)
 ```
 
-
-```{r, eval = FALSE, echo = FALSE}
+```{r}
+# Normal Regression --------------------------
 
 salary_glm <- train(form = Salary ~ .,
                    data = hitters_train,
@@ -536,11 +579,25 @@ salary_glm <- train(form = Salary ~ .,
 
 3. Print your `salary_glm` what do you see?
 
+```{r}
+salary_glm
+```
+
 4. Try plotting your `salary_glm` object. What happens? What does this error mean?
+
+```{r}
+# I get the following error:
+
+# Error in plot.train(salary_glm) : 
+#   There are no tuning parameters for this model.
+
+
+# The problem is that method = "glm" has no tuning parameters so there is nothing to plot!
+```
 
 5. Print your final model object with `salary_glm$finalModel`
 
-```{r, echo = TRUE, eval = FALSE}
+```{r, echo = TRUE}
 # Print final regression model
 salary_glm$finalModel
 ```
@@ -556,12 +613,11 @@ coef(salary_glm$finalModel)
 
 It's time to fit an optimized regression model with a Ridge penalty!
 
-1. Before we can fit a ridge regression model, we need to specify which values of the lambda penalty parameter we want to try. Using the code below, create a vector called `lambda_vec` which contains 100 values between 0 and 2
+1. Before we can fit a ridge regression model, we need to specify which values of the lambda penalty parameter we want to try. Using the code below, create a vector called `lambda_vec` which contains 100 values spanning a wide range.
 
-```{r, echo = TRUE, eval = FALSE}
-# Determine possible values of lambda
-
-lambda_vec <- seq(from = 0, to = 2, length = 100)
+```{r, echo = TRUE}
+# Vector of lambda values to try
+lambda_vec <- 10 ^ -(seq(-3, 3, length = 100))
 ```
 
 2. Fit a ridge regression model predicting `Salary` as a function of all features
@@ -585,18 +641,23 @@ salary_ridge <- train(form = XX ~ .,
                                              lambda = lambda_vec))
 ```
 
-```{r, eval = FALSE, echo = FALSE}
-# Fit a ridge regression
+```{r}
+# Ridge Regression --------------------------
 
 salary_ridge <- train(form = Salary ~ .,
-                   data = hitters_train,
-                   method = "glmnet",
-                   trControl = ctrl_cv,
-                   tuneGrid = expand.grid(alpha = 0,  # Ridge penalty
-                                          lambda = lambda_vec))
+                      data = hitters_train,
+                      method = "glmnet",
+                      trControl = ctrl_cv,
+                      preProcess = c("center", "scale"),  # Standardise
+                      tuneGrid = expand.grid(alpha = 0,  # Ridge penalty
+                                            lambda = lambda_vec))
 ```
 
 3. Print your `salary_ridge` object what do you see?
+
+```{r}
+salary_ridge
+```
 
 4. Plot your `salary_ridge` object. What do you see? Which value of the regularization parameter seems to be the best?
 
@@ -605,16 +666,20 @@ salary_ridge <- train(form = Salary ~ .,
 plot(XX)
 ```
 
+```{r}
+plot(salary_ridge)
+```
+
 5. Print the best value of lambda by running the following code. Does this match what you saw in the plot above?
 
-```{r, echo = TRUE, eval = FALSE}
+```{r, echo = TRUE}
 # Print best regularisation parameter
 salary_ridge$bestTune$lambda
 ```
 
 6. What were your final regression model coefficients for the best lambda value? Find them by running the following code:
 
-```{r, echo = TRUE, eval = FALSE}
+```{r, echo = TRUE}
 # Get coefficients from best lambda value
 coef(salary_ridge$finalModel, 
      salary_ridge$bestTune$lambda)
@@ -622,16 +687,22 @@ coef(salary_ridge$finalModel,
 
 7. How do these coefficients compare to what you found in regular regression? Are they similar? Different?
 
+```{r}
+# Actually the look quite different! The reason why is that we have changed the scale using preProcess
+
+# If you want the coefficients on the original scale, you'd need to convert them, or run your training again without any processing. However, this can lead to problems finding the optimal Lambda value...
+```
+
 ## E - Lasso Regression
 
 It's time to fit an optimized regression model with a Lasso penalty!
 
 1. Before we can fit a lasso regression model, we need to specify which values of the lambda penalty parameter we want to try. Using the code below, create a vector called `lambda_vec` which contains 100 values between 0 and .5
 
-```{r, echo = TRUE, eval = FALSE}
+```{r, echo = TRUE}
 # Determine possible values of lambda
 
-lambda_vec <- seq(from = 0, to = .5, length = 100)
+lambda_vec <- 10 ^ seq(from = -3, to = 3, length = 100)
 ```
 
 2. Fit a lasso regression model predicting `Salary` as a function of all features
@@ -655,7 +726,7 @@ salary_lasso <- train(form = XX ~ .,
                                             lambda = lambda_vec))
 ```
 
-```{r, eval = FALSE, echo = FALSE}
+```{r}
 # Fit a lasso regression
 
 salary_lasso <- train(form = Salary ~ .,
@@ -669,6 +740,11 @@ salary_lasso <- train(form = Salary ~ .,
 
 3. Print your `salary_lasso` object what do you see?
 
+```{r}
+salary_lasso
+```
+
+
 4. Plot your `salary_lasso` object. What do you see? Which value of the regularization parameter seems to be the best?
 
 ```{r, echo = TRUE, eval = FALSE}
@@ -676,16 +752,21 @@ salary_lasso <- train(form = Salary ~ .,
 plot(XX)
 ```
 
+```{r}
+plot(salary_lasso)
+```
+
+
 5. Print the best value of lambda by running the following code. Does this match what you saw in the plot above?
 
-```{r, echo = TRUE, eval = FALSE}
+```{r, echo = TRUE}
 # Print best regularisation parameter
 salary_lasso$bestTune$lambda
 ```
 
 6. What were your final regression model coefficients for the best lambda value? Find them by running the following code:
 
-```{r, echo = TRUE, eval = FALSE}
+```{r, echo = TRUE}
 # Get coefficients from best lambda value
 coef(salary_lasso$finalModel, 
      salary_lasso$bestTune$lambda)
@@ -693,13 +774,19 @@ coef(salary_lasso$finalModel,
 
 7. How do these coefficients compare to what you found in regular regression? Are they similar? Different? Do you notice that any coefficients are now set to exactly 0?
 
+```{r}
+# Yep!
+
+# I see that RBI, CAtBat, CHits and Errors are all removed!
+```
+
 ## F - Decision Tree
 
 It's time to fit an optimized decision tree model!!
 
 1. Before we can fit a decision tree, we need to specify which values of the complexity parameter `cp` we want to try. Using the code below, create a vector called `cp_vec` which contains 100 values between 0 and 1
 
-```{r, echo = TRUE, eval = FALSE}
+```{r}
 # Determine possible values of the complexity parameter cp
 
 cp_vec <- seq(from = 0, to = 1, length = 100)
@@ -723,7 +810,7 @@ salary_dt <- train(form = XX ~ .,
                   tuneGrid = expand.grid(cp = cp_vec))
 ```
 
-```{r, eval = FALSE, echo = FALSE}
+```{r}
 # Decision Tree --------------------------
 
 salary_dt <- train(form = Salary ~ .,
@@ -735,6 +822,10 @@ salary_dt <- train(form = Salary ~ .,
 
 3. Print your `salary_dt` object what do you see?
 
+```{r}
+salary_dt
+```
+
 4. Plot your `salary_dt` object. What do you see? Which value of the regularization parameter seems to be the best?
 
 ```{r, echo = TRUE, eval = FALSE}
@@ -742,9 +833,13 @@ salary_dt <- train(form = Salary ~ .,
 plot(XX)
 ```
 
+```{r}
+plot(salary_dt)
+```
+
 5. Print the best value of lambda by running the following code. Does this match what you saw in the plot above?
 
-```{r, echo = TRUE, eval = FALSE}
+```{r, echo = TRUE}
 # Print best regularisation parameter
 salary_dt$bestTune$cp
 ```
@@ -756,6 +851,12 @@ salary_dt$bestTune$cp
 plot(as.party(salary_dt$finalModel)) 
 ```
 
+```{r}
+# Visualise your trees
+plot(as.party(salary_dt$finalModel)) 
+```
+
+
 7. How do the nodes in the tree compare to the coefficients you found in your regression analyses? Do you see similarities or differences?
 
 ## G - Random Forests
@@ -764,7 +865,7 @@ It's time to fit an optimized random forest model!
 
 1. Before we can fit a random forest model, we need to specify which values of the diversity parameter `mtry` we want to try. Using the code below, create a vector called `mtry_vec` which is a sequence of numbers from 1 to 10
 
-```{r, echo = TRUE, eval = FALSE}
+```{r}
 # Determine possible values of the random forest diversity parameter mtry
 
 mtry_vec <- 1:10
@@ -788,7 +889,7 @@ salary_rf <- train(form = XX ~ .,
                    tuneGrid = expand.grid(mtry = mtry_vec))
 ```
 
-```{r, eval = FALSE, echo = FALSE}
+```{r}
 # Random Forest --------------------------
 
 salary_rf <- train(form = Salary ~ .,
@@ -807,9 +908,14 @@ salary_rf <- train(form = Salary ~ .,
 plot(XX)
 ```
 
+```{r}
+plot(salary_rf)
+```
+
+
 5. Print the best value of mtry by running the following code. Does this match what you saw in the plot above?
 
-```{r, echo = TRUE, eval = FALSE}
+```{r, echo = TRUE}
 # Print best mtry parameter
 salary_rf$bestTune$mtry
 ```
@@ -818,7 +924,7 @@ salary_rf$bestTune$mtry
 
 1. Using `resamples()`, calculate the estimated prediction accuracy for each of your models. To do this, put your model objects in the named list (e.g.; `glm = salary_glm`, ...)
 
-```{r}
+```{r, eval = FALSE, echo = TRUE}
 # Summarise accuracy statistics across folds
 
 salary_resamples <- resamples(list(glm = XXX,
@@ -826,6 +932,16 @@ salary_resamples <- resamples(list(glm = XXX,
                                    lasso = XXX, 
                                    dt = XXX, 
                                    rf = XXX))
+```
+
+```{r}
+# Summarise accuracy statistics across folds
+
+salary_resamples <- resamples(list(glm = salary_glm,
+                                   ridge = salary_ridge, 
+                                   lasso = salary_lasso, 
+                                   dt = salary_dt, 
+                                   rf = salary_rf))
 ```
 
 2. Look at the summary of your `salary_resamples` object with `summary(salary_resamples)`. What does this tell you? Which model do you expect to have the best prediction accuracy for the test data?
@@ -839,9 +955,13 @@ summary(salary_resamples)
 
 1. Save the criterion value for the test data as a new vector called `criterion_test`
 
-```{r}
+```{r, eval = FALSE, echo = TRUE}
 # Save salaries of players in test dataset as criterion_test
 criterion_test <- XXX$XXX
+```
+
+```{r}
+criterion_test <- hitters_test$Salary
 ```
 
 2. Using `predict()`, save the prediction of your regular regression model `salary_glm` for the `hitters_test` data as a new object called `glm_pred`:
@@ -849,18 +969,34 @@ criterion_test <- XXX$XXX
 - Set the first argument to `salary_glm`
 - Set the newdata argument to `hitters_test`
 
-```{r}
+```{r, eval = FALSE, echo = TRUE}
 # Save the glm predicted salaries of hitters_test
 glm_pred <- predict(XXX, newdata = XXX)
 ```
 
-3. Now do the same with your ridge, lasso, decision tree, and random forest models to get the objects `ridge_pred`, `lasso_pred`, `dt_pred` and `rf_pred`
 
 ```{r}
+# Save predictions for glm
+glm_pred <- predict(salary_glm, newdata = hitters_test)
+```
+
+3. Now do the same with your ridge, lasso, decision tree, and random forest models to get the objects `ridge_pred`, `lasso_pred`, `dt_pred` and `rf_pred`
+
+```{r, eval = FALSE, echo = TRUE}
 ridge_pred <- predict(XXX, newdata = XXX)
 lasso_pred <- predict(XXX, newdata = XXX)
 dt_pred <- predict(XXX, newdata = XXX)
 rf_pred <- predict(XXX, newdata = XXX)
+```
+
+
+```{r}
+# Save predictions from other models
+
+ridge_pred <- predict(salary_ridge, newdata = hitters_test)
+lasso_pred <- predict(salary_lasso, newdata = hitters_test)
+dt_pred <- predict(salary_dt, newdata = hitters_test)
+rf_pred <- predict(salary_rf, newdata = hitters_test)
 ```
 
 4. Using `postResample()`, calculate the aggregate prediction accuracy for each model using the template below
@@ -868,15 +1004,50 @@ rf_pred <- predict(XXX, newdata = XXX)
 - Set the pred argument to your model predictions (e.g.; `ridge_pred`)
 - Set the `obs` argument to the true criterion values `criterion_test`)
 
-```{r}
+```{r, eval = FALSE, echo = TRUE}
 # Calculate aggregate accuracy for a model
 postResample(pred = XXX, 
              obs = XXX)
 ```
 
-5. Which of your four models had the best performance in the true training data?
+```{r}
+# Prediction error for normal regression
+postResample(pred = glm_pred, 
+             obs = hitters_test$Salary)
 
-6. How close were your models' true prediction values to the values you estimated in the previous section when you ran `resamples()`?
+# Prediction error for ridge regression
+postResample(pred = ridge_pred, 
+             obs = hitters_test$Salary)
+
+# Prediction error for lasso regression
+postResample(pred = lasso_pred, 
+             obs = hitters_test$Salary)
+
+# Prediction error for decision trees
+postResample(pred = dt_pred, 
+             obs = hitters_test$Salary)
+
+# Prediction error for random forests
+postResample(pred = rf_pred, 
+             obs = hitters_test$Salary)
+
+```
+
+5. Which of your models had the best performance in the true training data?
+
+```{r}
+# Random forests had the lowest MAE!
+
+ #   RMSE Rsquared      MAE 
+ # 237.934    0.633  153.482 
+```
+
+6. How close were your models' true prediction error to the values you estimated in the previous section when you ran `resamples()`?
+
+```{r}
+# Depends on what you mean by 'close', but they are definitely higher (worse) in the training data
+```
+
 
 ## Z - Challenges
 

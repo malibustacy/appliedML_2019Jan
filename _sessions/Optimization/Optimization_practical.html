@@ -1118,7 +1118,7 @@ coef(price_glm$finalModel)
 # Lasso --------------------------
 
 # Vector of lambda values to try
-lambda_vec &lt;- seq(0, 100, length = 100)
+lambda_vec &lt;- 10 ^ seq(-3, 3, length = 100)
 
 price_lasso &lt;- train(form = price ~ carat + depth + table + x + y,
                    data = data_train,
@@ -1132,10 +1132,21 @@ price_lasso &lt;- train(form = price ~ carat + depth + table + x + y,
 # Print key results
 price_lasso
 
-  # lambda  RMSE  Rsquared  MAE 
-  #   0.00  1508  0.859      917
-  #   1.01  1509  0.859      916
-  #   2.02  1511  0.858      916
+# glmnet 
+# 
+# 5000 samples
+#    5 predictor
+# 
+# Pre-processing: centered (5), scaled (5) 
+# Resampling: Cross-Validated (10 fold) 
+# Summary of sample sizes: 4500, 4500, 4500, 4500, 4500, 4500, ... 
+# Resampling results across tuning parameters:
+# 
+#   lambda    RMSE  Rsquared  MAE 
+#   1.00e-03  1509  0.858      918
+#   1.15e-03  1509  0.858      918
+#   1.32e-03  1509  0.858      918
+#   1.52e-03  1509  0.858      918
 
 # Plot regularisation parameter versus error
 plot(price_lasso)
@@ -1161,7 +1172,7 @@ coef(price_lasso$finalModel,
 # Ridge --------------------------
 
 # Vector of lambda values to try
-lambda_vec &lt;- seq(0, 1000, length = 100)
+lambda_vec &lt;- 10 ^ seq(-3, 3, length = 100)
 
 price_ridge &lt;- train(form = price ~ carat + depth + table + x + y,
                      data = data_train,
@@ -1174,10 +1185,22 @@ price_ridge &lt;- train(form = price ~ carat + depth + table + x + y,
 # Print key results
 price_ridge
 
-# lambda  RMSE  Rsquared  MAE 
-#    0.0  1639  0.835     1137
-#   10.1  1639  0.835     1137
-#   20.2  1639  0.835     1137
+# glmnet 
+# 
+# 5000 samples
+#    5 predictor
+# 
+# Pre-processing: centered (5), scaled (5) 
+# Resampling: Cross-Validated (10 fold) 
+# Summary of sample sizes: 4500, 4500, 4500, 4500, 4500, 4500, ... 
+# Resampling results across tuning parameters:
+# 
+#   lambda    RMSE  Rsquared  MAE 
+#   1.00e-03  1638  0.835     1137
+#   1.15e-03  1638  0.835     1137
+#   1.32e-03  1638  0.835     1137
+#   1.52e-03  1638  0.835     1137
+#   1.75e-03  1638  0.835     1137
 
 # Plot regularisation parameter versus error
 plot(price_ridge)
@@ -1201,7 +1224,7 @@ coef(price_ridge$finalModel,
 # Decision Trees --------------------------
 
 # Vector of cp values to try
-cp_vec &lt;- seq(0, .4, length = 100)
+cp_vec &lt;- seq(0, .1, length = 100)
 
 price_dt &lt;- train(form = price ~ carat + depth + table + x + y,
                   data = data_train,
@@ -1218,7 +1241,7 @@ plot(price_dt)
 # Print best complexity parameter
 price_dt$bestTune$cp
 
-# [1] 0.00404
+# [1] 0.00202
 
 # Step 3: Estimate prediction accuracy from folds ----
 
@@ -1232,9 +1255,21 @@ summary(resamples_price)
 
 # MAE 
 #       Min. 1st Qu. Median Mean 3rd Qu. Max. NA's
-# ridge 1084    1098   1123 1137    1173 1214    0
-# lasso  872     878    916  917     938  990    0
-# glm    833     881    924  921     955 1030    0
+# ridge 1094    1100   1117 1137    1170 1217    0
+# lasso  869     887    929  918     944  960    0
+# glm    856     882    921  920     949  986    0
+# 
+# RMSE 
+#       Min. 1st Qu. Median Mean 3rd Qu. Max. NA's
+# ridge 1545    1580   1609 1638    1703 1772    0
+# lasso 1323    1479   1518 1509    1583 1593    0
+# glm   1350    1429   1526 1509    1582 1702    0
+# 
+# Rsquared 
+#        Min. 1st Qu. Median  Mean 3rd Qu.  Max. NA's
+# ridge 0.798   0.828  0.836 0.835   0.848 0.854    0
+# lasso 0.827   0.846  0.858 0.858   0.868 0.902    0
+# glm   0.819   0.849  0.863 0.860   0.870 0.888    0
 
 # Step 4: Measure prediction Accuracy -------------------
 
@@ -1317,12 +1352,13 @@ ggplot(data = accuracy,
   labs(title = &quot;Fitting Absolute Errors&quot;,
        subtitle = &quot;Numbers indicate means&quot;,
        x = &quot;Model&quot;,
-       y = &quot;Absolute Error&quot;) +
+       y = &quot;Absolute Error (Log Transformed)&quot;) +
   guides(fill = FALSE) +
   annotate(geom = &quot;label&quot;, 
            x = accuracy_agg$model, 
            y = accuracy_agg$mae, 
-           label = round(accuracy_agg$mae, 2))</code></pre>
+           label = round(accuracy_agg$mae, 2)) +
+  scale_y_continuous(trans='log')</code></pre>
 </div>
 </div>
 <div id="baseball-player-salaries" class="section level1">
@@ -1630,13 +1666,6 @@ View(XXX)</code></pre>
 <ol start="9" style="list-style-type: decimal">
 <li>We need to do a little bit of data cleaning before starting. Specifically, we need to convert all character columns to factors: Do this by running the following code:</li>
 </ol>
-<pre class="r"><code># Convert all character columns to factor
-
-hitters_train &lt;- hitters_train %&gt;%
-          mutate_if(is.character, factor)
-
-hitters_test &lt;- hitters_test %&gt;%
-          mutate_if(is.character, factor)</code></pre>
 </div>
 <div id="b---setup-traincontrol" class="section level2">
 <h2>B - Setup <code>trainControl</code></h2>
@@ -1678,18 +1707,15 @@ salary_glm$finalModel</code></pre>
 <ol start="6" style="list-style-type: decimal">
 <li>Print your final regression model coefficients with <code>coef()</code>.</li>
 </ol>
-<pre class="r"><code># Print glm coefficients
-coef(salary_glm$finalModel)</code></pre>
 </div>
 <div id="d---ridge-regression" class="section level2">
 <h2>D - Ridge Regression</h2>
 <p>It’s time to fit an optimized regression model with a Ridge penalty!</p>
 <ol style="list-style-type: decimal">
-<li>Before we can fit a ridge regression model, we need to specify which values of the lambda penalty parameter we want to try. Using the code below, create a vector called <code>lambda_vec</code> which contains 100 values between 0 and 2</li>
+<li>Before we can fit a ridge regression model, we need to specify which values of the lambda penalty parameter we want to try. Using the code below, create a vector called <code>lambda_vec</code> which contains 100 values spanning a wide range.</li>
 </ol>
-<pre class="r"><code># Determine possible values of lambda
-
-lambda_vec &lt;- seq(from = 0, to = 2, length = 100)</code></pre>
+<pre class="r"><code># Vector of lambda values to try
+lambda_vec &lt;- 10 ^ -(seq(-3, 3, length = 100))</code></pre>
 <ol start="2" style="list-style-type: decimal">
 <li>Fit a ridge regression model predicting <code>Salary</code> as a function of all features</li>
 </ol>
@@ -1739,7 +1765,7 @@ coef(salary_ridge$finalModel,
 </ol>
 <pre class="r"><code># Determine possible values of lambda
 
-lambda_vec &lt;- seq(from = 0, to = .5, length = 100)</code></pre>
+lambda_vec &lt;- 10 ^ seq(from = -3, to = 3, length = 100)</code></pre>
 <ol start="2" style="list-style-type: decimal">
 <li>Fit a lasso regression model predicting <code>Salary</code> as a function of all features</li>
 </ol>
@@ -1785,13 +1811,8 @@ coef(salary_lasso$finalModel,
 <h2>F - Decision Tree</h2>
 <p>It’s time to fit an optimized decision tree model!!</p>
 <ol style="list-style-type: decimal">
-<li>Before we can fit a decision tree, we need to specify which values of the complexity parameter <code>cp</code> we want to try. Using the code below, create a vector called <code>cp_vec</code> which contains 100 values between 0 and 1</li>
-</ol>
-<pre class="r"><code># Determine possible values of the complexity parameter cp
-
-cp_vec &lt;- seq(from = 0, to = 1, length = 100)</code></pre>
-<ol start="2" style="list-style-type: decimal">
-<li>Fit a decision tree model predicting <code>Salary</code> as a function of all features</li>
+<li><p>Before we can fit a decision tree, we need to specify which values of the complexity parameter <code>cp</code> we want to try. Using the code below, create a vector called <code>cp_vec</code> which contains 100 values between 0 and 1</p></li>
+<li><p>Fit a decision tree model predicting <code>Salary</code> as a function of all features</p></li>
 </ol>
 <ul>
 <li>Set the formula to <code>Salary ~ .</code></li>
@@ -1831,13 +1852,8 @@ plot(as.party(salary_dt$finalModel)) </code></pre>
 <h2>G - Random Forests</h2>
 <p>It’s time to fit an optimized random forest model!</p>
 <ol style="list-style-type: decimal">
-<li>Before we can fit a random forest model, we need to specify which values of the diversity parameter <code>mtry</code> we want to try. Using the code below, create a vector called <code>mtry_vec</code> which is a sequence of numbers from 1 to 10</li>
-</ol>
-<pre class="r"><code># Determine possible values of the random forest diversity parameter mtry
-
-mtry_vec &lt;- 1:10</code></pre>
-<ol start="2" style="list-style-type: decimal">
-<li>Fit a random forest model predicting <code>Salary</code> as a function of all features</li>
+<li><p>Before we can fit a random forest model, we need to specify which values of the diversity parameter <code>mtry</code> we want to try. Using the code below, create a vector called <code>mtry_vec</code> which is a sequence of numbers from 1 to 10</p></li>
+<li><p>Fit a random forest model predicting <code>Salary</code> as a function of all features</p></li>
 </ol>
 <ul>
 <li>Set the formula to <code>Salary ~ .</code></li>
@@ -1880,8 +1896,6 @@ salary_resamples &lt;- resamples(list(glm = XXX,
 <ol start="2" style="list-style-type: decimal">
 <li>Look at the summary of your <code>salary_resamples</code> object with <code>summary(salary_resamples)</code>. What does this tell you? Which model do you expect to have the best prediction accuracy for the test data?</li>
 </ol>
-<pre class="r"><code># Print summaries of cross-validation accuracy 
-summary(salary_resamples)</code></pre>
 </div>
 <div id="i---calculate-prediction-accuracy" class="section level2">
 <h2>I - Calculate prediction accuracy</h2>
@@ -1917,23 +1931,14 @@ rf_pred &lt;- predict(XXX, newdata = XXX)</code></pre>
 postResample(pred = XXX, 
              obs = XXX)</code></pre>
 <ol start="5" style="list-style-type: decimal">
-<li><p>Which of your four models had the best performance in the true training data?</p></li>
-<li><p>How close were your models’ true prediction values to the values you estimated in the previous section when you ran <code>resamples()</code>?</p></li>
+<li><p>Which of your models had the best performance in the true training data?</p></li>
+<li><p>How close were your models’ true prediction error to the values you estimated in the previous section when you ran <code>resamples()</code>?</p></li>
 </ol>
 </div>
 <div id="z---challenges" class="section level2">
 <h2>Z - Challenges</h2>
 <ol style="list-style-type: decimal">
-<li>In addition to ‘regular’ 10 fold cross-validation, you can also do repeated 10-fold cross-validation, where the cross validation procedure is repeated many times. Do you think this will improve your models’ performance? To test this, create a new training control object called <code>ctrl_cv_rep</code> as below. Then, train your models again using <code>ctrl_cv_rep</code> (instead of <code>ctrl_cv</code>), and evaluate their prediction performance. Do they improve? Do you get different optimal tuning values compared to your previous models?</li>
-</ol>
-<pre class="r"><code># Repeated cross validation.
-#  Folds = 10
-#  Repeats = 5
-
-ctrl_cv_rep &lt;- trainControl(method = &quot;repeatedcv&quot;,
-                            number = 10,
-                            repeats = 5)</code></pre>
-<ol start="2" style="list-style-type: decimal">
+<li><p>In addition to ‘regular’ 10 fold cross-validation, you can also do repeated 10-fold cross-validation, where the cross validation procedure is repeated many times. Do you think this will improve your models’ performance? To test this, create a new training control object called <code>ctrl_cv_rep</code> as below. Then, train your models again using <code>ctrl_cv_rep</code> (instead of <code>ctrl_cv</code>), and evaluate their prediction performance. Do they improve? Do you get different optimal tuning values compared to your previous models?</p></li>
 <li><p>Using the same procedure as above, compare models predicting the prices of houses in King County Washington using the <code>house_train</code> and <code>house_test</code> datasets.</p></li>
 <li><p>When using lasso regression, do you find that the lasso sets any beta weights to exactly 0? If so, which ones?</p></li>
 <li><p>Which model does the best and how accurate was it? Was it the same model that performed the best predicting baseball player salaries?</p></li>
