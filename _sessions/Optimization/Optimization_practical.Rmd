@@ -11,8 +11,8 @@ knitr::opts_chunk$set(comment = NA,
                       fig.width = 6, 
                       fig.height = 6,
                       fig.align = 'center',
-                      echo = FALSE, 
-                      eval = FALSE, 
+                      echo = TRUE, 
+                      eval = TRUE, 
                       warning = FALSE,
                       message = FALSE)
 
@@ -298,20 +298,20 @@ coef(price_ridge$finalModel,
 # Vector of cp values to try
 cp_vec <- seq(0, .1, length = 100)
 
-price_dt <- train(form = price ~ carat + depth + table + x + y,
+price_rpart <- train(form = price ~ carat + depth + table + x + y,
                   data = data_train,
                   method = "rpart",
                   trControl = ctrl_cv,
                   tuneGrid = expand.grid(cp = cp_vec))
 
 # Print key results
-price_dt
+price_rpart
 
 # Plot complexity parameter vs. error
-plot(price_dt)
+plot(price_rpart)
 
 # Print best complexity parameter
-price_dt$bestTune$cp
+price_rpart$bestTune$cp
 
 # [1] 0.00202
 
@@ -803,7 +803,7 @@ cp_vec <- seq(from = 0, to = 1, length = 100)
 ```{r, echo = TRUE, eval = FALSE}
 # Decision Tree --------------------------
 
-salary_dt <- train(form = XX ~ .,
+salary_rpart <- train(form = XX ~ .,
                   data = XX,
                   method = "XX",
                   trControl = XX,
@@ -813,47 +813,47 @@ salary_dt <- train(form = XX ~ .,
 ```{r}
 # Decision Tree --------------------------
 
-salary_dt <- train(form = Salary ~ .,
+salary_rpart <- train(form = Salary ~ .,
                   data = hitters_train,
                   method = "rpart",
                   trControl = ctrl_cv,
                   tuneGrid = expand.grid(cp = cp_vec))
 ```
 
-3. Print your `salary_dt` object what do you see?
+3. Print your `salary_rpart` object what do you see?
 
 ```{r}
-salary_dt
+salary_rpart
 ```
 
-4. Plot your `salary_dt` object. What do you see? Which value of the regularization parameter seems to be the best?
+4. Plot your `salary_rpart` object. What do you see? Which value of the regularization parameter seems to be the best?
 
 ```{r, echo = TRUE, eval = FALSE}
-# Plot salary_dt object
+# Plot salary_rpart object
 plot(XX)
 ```
 
 ```{r}
-plot(salary_dt)
+plot(salary_rpart)
 ```
 
 5. Print the best value of lambda by running the following code. Does this match what you saw in the plot above?
 
 ```{r, echo = TRUE}
 # Print best regularisation parameter
-salary_dt$bestTune$cp
+salary_rpart$bestTune$cp
 ```
 
 6. Plot your final decision tree using the following code
 
 ```{r, echo = TRUE, eval = FALSE}
 # Visualise your trees
-plot(as.party(salary_dt$finalModel)) 
+plot(as.party(salary_rpart$finalModel)) 
 ```
 
 ```{r}
 # Visualise your trees
-plot(as.party(salary_dt$finalModel)) 
+plot(as.party(salary_rpart$finalModel)) 
 ```
 
 
@@ -940,7 +940,7 @@ salary_resamples <- resamples(list(glm = XXX,
 salary_resamples <- resamples(list(glm = salary_glm,
                                    ridge = salary_ridge, 
                                    lasso = salary_lasso, 
-                                   dt = salary_dt, 
+                                   dt = salary_rpart, 
                                    rf = salary_rf))
 ```
 
@@ -995,7 +995,7 @@ rf_pred <- predict(XXX, newdata = XXX)
 
 ridge_pred <- predict(salary_ridge, newdata = hitters_test)
 lasso_pred <- predict(salary_lasso, newdata = hitters_test)
-dt_pred <- predict(salary_dt, newdata = hitters_test)
+dt_pred <- predict(salary_rpart, newdata = hitters_test)
 rf_pred <- predict(salary_rf, newdata = hitters_test)
 ```
 

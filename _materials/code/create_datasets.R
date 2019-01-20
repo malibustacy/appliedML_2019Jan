@@ -79,10 +79,14 @@ write_csv(mpg_test, path = "1_Data/mpg_test.csv")
 
 ###  house  - Housing data from king county US, https://www.kaggle.com/northon/king-county-house-data
 
+set.seed(100)
+
+
 house <- read_csv("https://raw.githubusercontent.com/therbootcamp/BaselRBootcamp_2018July/master/_sessions/_data//baselrbootcamp_data/kc_house.csv")
 
 house <- house %>%
-  sample_n(nrow(.))
+  sample_n(nrow(.)) %>%
+  select(-id, -date)
 
 house_train <- house[1:5000,]
 house_test <- house[5001:6000,]
@@ -93,6 +97,9 @@ write_csv(house_test, path = "1_Data/house_test.csv")
 
 
 ###  diamonds  - From dplyr dataset
+
+set.seed(100)
+
 
 diamonds <- diamonds %>%
   sample_n(nrow(.))
