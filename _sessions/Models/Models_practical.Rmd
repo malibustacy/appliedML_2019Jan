@@ -47,8 +47,8 @@ library(ggthemes)
 
 |File  |Rows | Columns |
 |:----|:-----|:------|
-|[murders_crime](https://raw.githubusercontent.com/therbootcamp/appliedML_2019Jan/master/1_Data/violent_crime.csv)| 1000 | 102|
-|[nonviolent_crime](https://raw.githubusercontent.com/therbootcamp/appliedML_2019Jan/master/1_Data/nonviolent_crime.csv)| 1000 | 102|
+|[murders_crime](https://raw.githubusercontent.com/therbootcamp/appliedML_2019Jan/master/_sessions/Models/competition/competition_murder_train.csv)| 1000 | 102|
+|[nonviolent_crime](https://raw.githubusercontent.com/therbootcamp/appliedML_2019Jan/master/_sessions/Models/competition/competition_nonvio_train.csv)| 1000 | 102|
 
 
 ```{r, message = FALSE, eval = TRUE, echo = FALSE}
@@ -99,7 +99,9 @@ library(caret)
 library(tidyverse)
 ```
 
-4. With the code below load each of the data sets listed in the `Datasets` as new objects.
+4. IMPORTANT! Download the data sets listed under the *Dataset* tab and save them in your `1_Data` folder.
+
+5. With the code below load each of the data sets listed in the `Datasets` as new objects.
 
 ```{r, echo = TRUE, eval = FALSE, message = FALSE, warning = FALSE}
 
@@ -114,7 +116,7 @@ murders_crime <- read_csv(file = "1_Data/murders_crime.csv")
 
 1. You may enter either one or both of two competitions, one on regression (`nonviolent_crime`) and on classification (`murders_crime`), for the price of &#127851;&#127851;&#127851;.
 
-2. To enter the competitions, you must submit for each competition no more, no less than one caret `train`-object containing your candidate model. To submit the model, first save your model as an `.RDS`-file named `your_name_train.RDS` with `your_name` replaced by your name or pseudonym using the code below.
+2. To enter the competitions, you must submit for each competition no more, no less than one caret `train`-object containing your candidate model. To submit the model, first save your model as an `.RDS`-file named `yourname_regression.RDS` and `your_name_classification.RDS`, respectively, with `yourname` replaced by your real name or pseudonym using the code below. Do not use any `-` or `_` in the file names.
 
 ```{r}
 # save trian obect as .RDS
@@ -147,27 +149,8 @@ saveRDS('1_Data/your_name_train.RDS')
 </table>
 </div>
 
-4. You may work alone or team up with fellow participants. We recommend the latter, but working alone may, of course, mean more &#127851;&#127851;&#127851;.  
+4. You may work alone or team up with fellow participants. We recommend the latter, despite the fact that working alone may, of course, mean more &#127851;&#127851;&#127851;.  
 
 5. Use any trick in your bag (or `caret`'s bag). Feel free to try different models, use different tuning parameter settings, select any variables or variable selection methods that you deem useful.
 
-6. You may even consider creating new variables. The code below shows you how to create new variables for either data set. Note, the created variables are not created based on any knowledge of the data - pure random selection. So if you want to come up with new variables, create your own. 
-
-```{r eval = F, echo = T}
-# (Non-) violent crime statistics
-nonviolent_crime <- nonviolent_crime %>% 
-  mutate(
-    pctUrbanXindianPerCap2 = pctUrban * indianPerCap ** 2,
-    FemalePctDiv^PctFam2Par = FemalePctDiv ** PctFam2Par)
-
-# Murders crime statistics
-murders_crime <- murders_crime %>% 
-  mutate(
-    AsianPerCapXHousVacant2 = AsianPerCap * HousVacant ** 2,
-    population%blackPerCap = population / blackPerCap)
-```
-
-
-
-
-
+6. In order to be able to fit the models refrain from any feature manipulation other than those accessible via the `preProcess` argument in the `train()` function.

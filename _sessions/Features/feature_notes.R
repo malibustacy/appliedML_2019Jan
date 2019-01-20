@@ -78,6 +78,13 @@ murders_crime = murders_crime[,murders_sel]
 murders_crime = as.tibble(murders_crime)
 murders_crime = readr::type_convert(murders_crime)
 
+murders_crime = murders_crime %>% mutate_if(is.character, as.factor)
+violent_crime = violent_crime %>% mutate_if(is.character, as.factor)
+nonviolent_crime = nonviolent_crime %>% mutate_if(is.character, as.factor)
+
+write_csv(murders_crime, '_sessions/Models/competition/1_Data/murders_crime_full.csv')
+write_csv(nonviolent_crime, '_sessions/Models/competition/1_Data/nonviolent_crime_full.csv')
+
 
 set.seed(100)
 

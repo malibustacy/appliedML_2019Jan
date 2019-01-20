@@ -1712,7 +1712,7 @@ salary_glm$finalModel</code></pre>
 <h2>D - Ridge Regression</h2>
 <p>It’s time to fit an optimized regression model with a Ridge penalty!</p>
 <ol style="list-style-type: decimal">
-<li>Before we can fit a ridge regression model, we need to specify which values of the lambda penalty parameter we want to try. Using the code below, create a vector called <code>lambda_vec</code> which contains 100 values spanning a wide range.</li>
+<li>Before we can fit a ridge regression model, we need to specify which values of the lambda penalty parameter we want to try. Using the code below, create a vector called <code>lambda_vec</code> which contains 100 values spanning a wide range, from very close to 0 to 1,000</li>
 </ol>
 <pre class="r"><code># Vector of lambda values to try
 lambda_vec &lt;- 10 ^ -(seq(-3, 3, length = 100))</code></pre>
@@ -1761,7 +1761,7 @@ coef(salary_ridge$finalModel,
 <h2>E - Lasso Regression</h2>
 <p>It’s time to fit an optimized regression model with a Lasso penalty!</p>
 <ol style="list-style-type: decimal">
-<li>Before we can fit a lasso regression model, we need to specify which values of the lambda penalty parameter we want to try. Using the code below, create a vector called <code>lambda_vec</code> which contains 100 values between 0 and .5</li>
+<li>Before we can fit a lasso regression model, we need to specify which values of the lambda penalty parameter we want to try. Using the code below, create a vector called <code>lambda_vec</code> which contains 100 values between 0 and 100</li>
 </ol>
 <pre class="r"><code># Determine possible values of lambda
 
