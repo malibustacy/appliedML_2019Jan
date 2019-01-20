@@ -19,7 +19,7 @@ knitr::opts_chunk$set(comment = NA,
 options(digits = 3)
 ```
 
-```{r, echo = FALSE, fig.align = 'center', eval = TRUE, out.width = "70%"}
+```{r, echo = FALSE, fig.align = 'center', eval = TRUE, out.width = "100%"}
 knitr::include_graphics("image/crossvalidation_4fold.png")
 ```
 
@@ -48,7 +48,6 @@ library(ggthemes)
 |[college_test.csv](https://raw.githubusercontent.com/therbootcamp/appliedML_2019Jan/master/1_Data/college_est.csv)| 277 | 18|
 |[house_train.csv](https://raw.githubusercontent.com/therbootcamp/appliedML_2019Jan/master/1_Data/house_train.csv)| 5000 | 21|
 |[house_test.csv](https://raw.githubusercontent.com/therbootcamp/appliedML_2019Jan/master/1_Data/_data/house_test.csv)| 1000 | 21|
-
 
 ```{r, message = FALSE, eval = TRUE, echo = FALSE}
 # Load datasets locally

@@ -56,7 +56,6 @@ library(caret)
 
 baselers <- read_csv("../../1_Data/baselers.csv")
 
-
 set.seed(5)
 
 N <- 40
@@ -274,15 +273,11 @@ As $\lambda$ "Lambda" increases, coefficients are pushed towards (but not necess
 
 .pull-right45[
 
-
 ```{r, echo = FALSE, out.width = "80%", fig.cap = "<font size = 4>James et al., ISLR</font>"}
 knitr::include_graphics("image/ridge_penalty_plot.png")
 ```
 
 ]
-
-
-
 
 ---
 
