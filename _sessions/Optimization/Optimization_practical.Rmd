@@ -570,7 +570,7 @@ salary_ridge <- train(form = Salary ~ .,
 3. Plot your `salary_ridge` object. What do you see? Which value of the regularization parameter seems to be the best?
 
 ```{r, echo = TRUE, eval = FALSE}
-# Plot price_ridge object
+# Plot salary_ridge object
 plot(XX)
 ```
 
