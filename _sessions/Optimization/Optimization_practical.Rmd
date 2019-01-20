@@ -638,7 +638,7 @@ salary_lasso <- train(form = Salary ~ .,
 3. Plot your `salary_lasso` object. What do you see? Which value of the regularization parameter seems to be the best?
 
 ```{r, echo = TRUE, eval = FALSE}
-# Plot price_lasso object
+# Plot salary_lasso object
 plot(XX)
 ```
 
