@@ -1764,7 +1764,7 @@ salary_lasso &lt;- train(form = XX ~ .,
 <li><p>Print your <code>salary_lasso</code> object what do you see?</p></li>
 <li><p>Plot your <code>salary_lasso</code> object. What do you see? Which value of the regularization parameter seems to be the best?</p></li>
 </ol>
-<pre class="r"><code># Plot price_lasso object
+<pre class="r"><code># Plot salary_lasso object
 plot(XX)</code></pre>
 <ol start="5" style="list-style-type: decimal">
 <li>Print the best value of lambda by running the following code. Does this match what you saw in the plot above?</li>
@@ -1798,7 +1798,7 @@ cp_vec &lt;- seq(from = 0, to = 1, length = 100)</code></pre>
 <li>Set the data to <code>hitters_train</code></li>
 <li>Set the method to <code>&quot;rpart&quot;</code> for decision trees</li>
 <li>Set the train control argument to <code>ctrl_cv</code></li>
-<li>Set the tuneGrid argument such that alpha is 1 (for lasso regression), and with all lambda values you specified in <code>cp_vec</code> (we’ve done this for you below)</li>
+<li>Set the tuneGrid argument with all <code>cp</code> values you specified in <code>cp_vec</code></li>
 </ul>
 <pre class="r"><code># Decision Tree --------------------------
 
@@ -1809,9 +1809,9 @@ salary_dt &lt;- train(form = XX ~ .,
                   tuneGrid = expand.grid(cp = cp_vec))</code></pre>
 <ol start="3" style="list-style-type: decimal">
 <li><p>Print your <code>salary_dt</code> object what do you see?</p></li>
-<li><p>Plot your <code>price_dt</code> object. What do you see? Which value of the regularization parameter seems to be the best?</p></li>
+<li><p>Plot your <code>salary_dt</code> object. What do you see? Which value of the regularization parameter seems to be the best?</p></li>
 </ol>
-<pre class="r"><code># Plot price_dt object
+<pre class="r"><code># Plot salary_dt object
 plot(XX)</code></pre>
 <ol start="5" style="list-style-type: decimal">
 <li>Print the best value of lambda by running the following code. Does this match what you saw in the plot above?</li>
@@ -1890,7 +1890,7 @@ summary(salary_resamples)</code></pre>
 </ol>
 <pre class="r"><code># Save salaries of players in test dataset as criterion_test
 criterion_test &lt;- XXX$XXX</code></pre>
-<ol style="list-style-type: decimal">
+<ol start="2" style="list-style-type: decimal">
 <li>Using <code>predict()</code>, save the prediction of your regular regression model <code>salary_glm</code> for the <code>hitters_test</code> data as a new object called <code>glm_pred</code>:</li>
 </ol>
 <ul>
@@ -1899,14 +1899,14 @@ criterion_test &lt;- XXX$XXX</code></pre>
 </ul>
 <pre class="r"><code># Save the glm predicted salaries of hitters_test
 glm_pred &lt;- predict(XXX, newdata = XXX)</code></pre>
-<ol start="2" style="list-style-type: decimal">
+<ol start="3" style="list-style-type: decimal">
 <li>Now do the same with your ridge, lasso, decision tree, and random forest models to get the objects <code>ridge_pred</code>, <code>lasso_pred</code>, <code>dt_pred</code> and <code>rf_pred</code></li>
 </ol>
 <pre class="r"><code>ridge_pred &lt;- predict(XXX, newdata = XXX)
 lasso_pred &lt;- predict(XXX, newdata = XXX)
 dt_pred &lt;- predict(XXX, newdata = XXX)
 rf_pred &lt;- predict(XXX, newdata = XXX)</code></pre>
-<ol start="3" style="list-style-type: decimal">
+<ol start="4" style="list-style-type: decimal">
 <li>Using <code>postResample()</code>, calculate the aggregate prediction accuracy for each model using the template below</li>
 </ol>
 <ul>
@@ -1916,9 +1916,9 @@ rf_pred &lt;- predict(XXX, newdata = XXX)</code></pre>
 <pre class="r"><code># Calculate aggregate accuracy for a model
 postResample(pred = XXX, 
              obs = XXX)</code></pre>
-<ol start="4" style="list-style-type: decimal">
+<ol start="5" style="list-style-type: decimal">
 <li><p>Which of your four models had the best performance in the true training data?</p></li>
-<li><p>How close were your model’ true prediction values to the values you estimated in the previous section when you ran <code>resamples()</code>?</p></li>
+<li><p>How close were your models’ true prediction values to the values you estimated in the previous section when you ran <code>resamples()</code>?</p></li>
 </ol>
 </div>
 <div id="z---challenges" class="section level2">

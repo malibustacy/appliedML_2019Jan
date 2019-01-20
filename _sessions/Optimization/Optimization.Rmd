@@ -598,7 +598,7 @@ In the output, values with . are coefficients that have been <high>removed with 
 ```{r, out.width = "60%", fig.width = 6, fig.height = 3}
 # Print final model coefficients using best lambda
 coef(lasso_mod$finalModel,      # Final Lasso model
-     lasso_mod$bestTune$lambda) # Bets lambda value
+     lasso_mod$bestTune$lambda) # Best lambda value
 ```
 
 ]
