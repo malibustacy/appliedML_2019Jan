@@ -101,15 +101,26 @@ library(tidyverse)
 
 4. IMPORTANT! Download the data sets listed under the *Dataset* tab and save them in your `1_Data` folder.
 
-5. With the code below load each of the data sets listed in the `Datasets` as new objects.
+5. With the code below load each of the data sets listed in the `Datasets` as new objects and change any character to favtors.
 
 ```{r, echo = TRUE, eval = FALSE, message = FALSE, warning = FALSE}
 
-# REGRESSION: (Non-) violent crime statistics
-nonviolent_crime <- read_csv(file = "1_Data/nonviolent_crime.csv")
+# REGRESSION -----
 
-# CLASSIFICATION: Murders crime statistics
-murders_crime <- read_csv(file = "1_Data/murders_crime.csv")
+# Load non-violent crime statistics training data
+nonviolent_crime <- read_csv(file = "1_Data/competition_nonvio_train.csv")
+
+# change character to factor
+nonviolent_crime <- nonviolent_crime %>% mutate_if(is.character, as.factor)
+
+
+# CLASSIFICATION -----
+
+# Load murders crime statistics training data
+murders_crime <- read_csv(file = "1_Data/competition_murder_train.csv")
+
+# change character to factor
+murders_crime <- murders_crime %>% mutate_if(is.character, as.factor)
 ```
 
 ## B Competition rules
@@ -137,13 +148,13 @@ saveRDS('1_Data/your_name_train.RDS')
 <tr>
   <td>Regression</td> 
   <td>non-violent crimes (`nonViolPerPop`)</td>
-  <td>Accuracy</td>
+  <td>MAE</td>
   <td>[**Submit candidate**](https://docs.google.com/forms/d/e/1FAIpQLSevxp_hxSUrAYgiSU-Xv3hRw_get43qk15blw7QEeLHlbrNbA/viewform?usp=sf_link)</td>
 </tr>
 <tr>
   <td>Classification</td> 
   <td>murders (`muders`)</td>
-  <td>MAE</td>
+  <td>Accuracy</td>
   <td>[**Submit candidate**](https://docs.google.com/forms/d/e/1FAIpQLSciw9WyTttmG9Oq93xjGKw_kxNJY9YmtLQvf_p35BcFNm1G-A/viewform?usp=sf_link)</td>
 </tr>
 </table>

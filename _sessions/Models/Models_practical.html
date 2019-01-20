@@ -200,13 +200,24 @@ library(tidyverse)
 library(caret)</code></pre>
 <ol start="4" style="list-style-type: decimal">
 <li><p>IMPORTANT! Download the data sets listed under the <em>Dataset</em> tab and save them in your <code>1_Data</code> folder.</p></li>
-<li><p>With the code below load each of the data sets listed in the <code>Datasets</code> as new objects.</p></li>
+<li><p>With the code below load each of the data sets listed in the <code>Datasets</code> as new objects and change any character to favtors.</p></li>
 </ol>
-<pre class="r"><code># REGRESSION: (Non-) violent crime statistics
-nonviolent_crime &lt;- read_csv(file = &quot;1_Data/nonviolent_crime.csv&quot;)
+<pre class="r"><code># REGRESSION -----
 
-# CLASSIFICATION: Murders crime statistics
-murders_crime &lt;- read_csv(file = &quot;1_Data/murders_crime.csv&quot;)</code></pre>
+# Load non-violent crime statistics training data
+nonviolent_crime &lt;- read_csv(file = &quot;1_Data/competition_nonvio_train.csv&quot;)
+
+# change character to factor
+nonviolent_crime &lt;- nonviolent_crime %&gt;% mutate_if(is.character, as.factor)
+
+
+# CLASSIFICATION -----
+
+# Load murders crime statistics training data
+murders_crime &lt;- read_csv(file = &quot;1_Data/competition_murder_train.csv&quot;)
+
+# change character to factor
+murders_crime &lt;- murders_crime %&gt;% mutate_if(is.character, as.factor)</code></pre>
 </div>
 <div id="b-competition-rules" class="section level2">
 <h2>B Competition rules</h2>
@@ -239,7 +250,7 @@ Regression
 non-violent crimes (<code>nonViolPerPop</code>)
 </td>
 <td>
-Accuracy
+MAE
 </td>
 <td>
 <a href="https://docs.google.com/forms/d/e/1FAIpQLSevxp_hxSUrAYgiSU-Xv3hRw_get43qk15blw7QEeLHlbrNbA/viewform?usp=sf_link"><strong>Submit candidate</strong></a>
@@ -253,7 +264,7 @@ Classification
 murders (<code>muders</code>)
 </td>
 <td>
-MAE
+Accuracy
 </td>
 <td>
 <a href="https://docs.google.com/forms/d/e/1FAIpQLSciw9WyTttmG9Oq93xjGKw_kxNJY9YmtLQvf_p35BcFNm1G-A/viewform?usp=sf_link"><strong>Submit candidate</strong></a>
