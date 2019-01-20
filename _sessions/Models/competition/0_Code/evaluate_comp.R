@@ -1,5 +1,5 @@
 # load install google drive package
-install.packages("googledrive")
+#install.packages("googledrive")
 library(googledrive)
 library(tidyverse)
 library(caret)
@@ -20,20 +20,26 @@ clas_files = unlist(str_extract_all(files$name, '[:print:]*_clas[^ - ]*.RDS'))
 # download files
 for(i in 1:length(regr_files)){
 googledrive::drive_download(regr_files[i],
-                            path = paste0('_sessions/Models/competition/3_Competitors/',regr_files[i]))
+                            path = paste0('_sessions/Models/competition/3_Competitors/',regr_files[i]),
+                            overwrite = TRUE)
   }
 for(i in 1:length(clas_files)){
   googledrive::drive_download(clas_files[i],
-                              path = paste0('_sessions/Models/competition/3_Competitors/',clas_files[i]))
+                              path = paste0('_sessions/Models/competition/3_Competitors/',clas_files[i]),
+                              overwrite = TRUE)
   }
 
 # LOAD TEST DATA -----------------------
 
 # regression data
-regr_data = read_csv('_sessions/Models/competition/1_Data/nonviolent_crime_test.csv')
+regr_data = read_csv('_sessions/Models/competition/1_Data/competition_nonvio_test.csv')
 
 # classification data
-clas_data = read_csv('_sessions/Models/competition/1_Data/murders_crime_test.csv')
+clas_data = read_csv('_sessions/Models/competition/1_Data/competition_murder_test.csv')
+
+# transform to factor
+regr_data = regr_data %>% mutate_if(is.character, as.factor)
+clas_data = clas_data %>% mutate_if(is.character, as.factor)
 
 
 # EVALUATE REGRESSION MODELS -----------------------
