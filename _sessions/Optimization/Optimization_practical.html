@@ -1011,7 +1011,7 @@ coef(salary_ridge$finalModel,
 <h2>E - Lasso Regression</h2>
 <p>It’s time to fit an optimized regression model with a Lasso penalty!</p>
 <ol style="list-style-type: decimal">
-<li>Before we can fit a ridge regression model, we need to specify which values of the lambda penalty parameter we want to try. Using the code below, create a vector called <code>lambda_vec</code> which contains 100 values between 0 and .5</li>
+<li>Before we can fit a lasso regression model, we need to specify which values of the lambda penalty parameter we want to try. Using the code below, create a vector called <code>lambda_vec</code> which contains 100 values between 0 and .5</li>
 </ol>
 <pre class="r"><code># Determine possible values of lambda
 
@@ -1039,7 +1039,7 @@ salary_lasso &lt;- train(form = XX ~ .,
 <ol start="3" style="list-style-type: decimal">
 <li>Plot your <code>salary_lasso</code> object. What do you see? Which value of the regularization parameter seems to be the best?</li>
 </ol>
-<pre class="r"><code># Plot price_lasso object
+<pre class="r"><code># Plot salary_lasso object
 plot(XX)</code></pre>
 <ol start="4" style="list-style-type: decimal">
 <li>Print the best value of lambda by running the following code. Does this match what you saw in the plot above?</li>
