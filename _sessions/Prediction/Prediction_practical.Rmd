@@ -12,8 +12,8 @@ knitr::opts_chunk$set(comment = NA,
                       fig.width = 6, 
                       fig.height = 6,
                       fig.align = 'center',
-                      echo = TRUE, 
-                      eval = TRUE, 
+                      echo = FALSE, 
+                      eval = FALSE, 
                       warning = FALSE,
                       message = FALSE)
 
@@ -84,7 +84,6 @@ library(ISLR)   # Load ISLR package
 | `predict(object, newdata)`|`stats`|    Predict the criterion values of `newdata` based on `object`|
 | `postResample()`|`caret`|   Calculate aggregate model performance in regression tasks|
 | `confusionMatrix()`|`caret`|   Calculate aggregate model performance in classification tasks| 
-
 
 ### Packages
 
@@ -187,10 +186,10 @@ hwy_rpart$finalModel
 plot(as.party(hwy_rpart$finalModel))   # Visualise your trees
 
 # Save fitted values
-dt_fit <- predict(hwy_rpart)
+rpart_predfit <- predict(hwy_rpart)
 
 # Calculate fitting accuracies
-postResample(pred = dt_fit, obs = criterion_train)
+postResample(pred = rpart_predfit, obs = criterion_train)
 
 # Random Forests -------------------------
 
@@ -214,7 +213,7 @@ postResample(pred = rf_fit, obs = criterion_train)
 # Tidy competition results
 accuracy <- tibble(criterion_train = criterion_train,
                    Regression = glm_fit,
-                   DecisionTrees = dt_fit,
+                   DecisionTrees = rpart_predfit,
                    RandomForest = rf_fit) %>%
                gather(model, prediction, -criterion_train) %>%
   
@@ -259,12 +258,12 @@ criterion_test <- data_test$hwy
 
 # Save predicted values
 glm_pred <- predict(hwy_glm, newdata = data_test)
-dt_pred <- predict(hwy_rpart, newdata = data_test)
+rpart_pred <- predict(hwy_rpart, newdata = data_test)
 rf_pred <- predict(hwy_rf, newdata = data_test)
 
 #  Calculate fitting accuracies
 postResample(pred = glm_pred, obs = criterion_test)
-postResample(pred = dt_pred, obs = criterion_test)
+postResample(pred = rpart_pred, obs = criterion_test)
 postResample(pred = rf_pred, obs = criterion_test)
 
 # Visualise Accuracy -------------------------
@@ -272,7 +271,7 @@ postResample(pred = rf_pred, obs = criterion_test)
 # Tidy competition results
 accuracy <- tibble(criterion_test = criterion_test,
                    Regression = glm_pred,
-                   DecisionTrees = dt_pred,
+                   DecisionTrees = rpart_pred,
                    RandomForest = rf_pred) %>%
                gather(model, prediction, -criterion_test) %>%
   
@@ -529,18 +528,18 @@ plot(as.party(grad_rpart$finalModel))
 ```
 
 
-6. Using `predict()` save the fitted values of `grad_rpart` object as `dt_fit`:
+6. Using `predict()` save the fitted values of `grad_rpart` object as `rpart_predfit`:
 
 ```{r, echo = TRUE, eval = FALSE}
 # Save fitted values of decision tree model
-dt_fit <- predict(XXX)
+rpart_predfit <- predict(XXX)
 ```
 
 ```{r}
-dt_fit <- predict(grad_rpart)
+rpart_predfit <- predict(grad_rpart)
 ```
 
-7. Print your `dt_fit` object, look at summary statistics with `summary(dt_fit)`, and create a histogram with `hist()` do they make sense?
+7. Print your `rpart_predfit` object, look at summary statistics with `summary(rpart_predfit)`, and create a histogram with `hist()` do they make sense?
 
 ```{r, echo = TRUE, eval = FALSE}
 # Explore decision tree fits
@@ -551,9 +550,9 @@ hist(XXX)
 ```
 
 ```{r}
-dt_fit[1:10] # Only first 10
-summary(dt_fit)
-hist(dt_fit)
+rpart_predfit[1:10] # Only first 10
+summary(rpart_predfit)
+hist(rpart_predfit)
 ```
 
 ### Random Forests
@@ -644,10 +643,10 @@ postResample(pred = XXX, obs = XXX)
 postResample(pred = glm_fit, obs = criterion_train)
 
 # Decision Trees
-postResample(pred = dt_fit, obs = criterion_train)
+postResample(pred = rpart_predfit, obs = criterion_train)
 
 # Random Forests
-postResample(pred = dt_fit, obs = criterion_train)
+postResample(pred = rpart_predfit, obs = criterion_train)
 ```
 
 13. Which one had the best fits? What was the fitting MAE of each model?
@@ -663,7 +662,7 @@ postResample(pred = dt_fit, obs = criterion_train)
 criterion_test <- XXX$XXX
 ```
 
-2. Using `predict()`, save the predicted values of each model for the test data `college_test` as `glm_pred`, `dt_pred` and `rf_pred`. 
+2. Using `predict()`, save the predicted values of each model for the test data `college_test` as `glm_pred`, `rpart_pred` and `rf_pred`. 
 
 ```{r, echo = TRUE, eval = FALSE}
 # Save model predictions for test data
@@ -673,7 +672,7 @@ criterion_test <- XXX$XXX
 glm_pred <- predict(XXX, newdata = XXX)
 
 # Decision Trees
-dt_pred <- predict(XXX, newdata = XXX)
+rpart_pred <- predict(XXX, newdata = XXX)
 
 # Random Forests
 rf_pred <- predict(XXX, newdata = XXX)
@@ -908,18 +907,18 @@ price_rpart
 plot(as.party(price_rpart$finalModel))
 ```
 
-6. Using `predict()` save the fitted values of `price_rpart` object as `dt_fit`:
+6. Using `predict()` save the fitted values of `price_rpart` object as `rpart_predfit`:
 
 ```{r, echo = TRUE, eval = FALSE}
 # Save fitted values of decision tree model
-dt_fit <- predict(XXX)
+rpart_predfit <- predict(XXX)
 ```
 
 ```{r}
-dt_fit <- predict(price_rpart)
+rpart_predfit <- predict(price_rpart)
 ```
 
-7. Print your `dt_fit` object, look at summary statistics with `summary(dt_fit)`, and create a histogram with `hist()` do they make sense?
+7. Print your `rpart_predfit` object, look at summary statistics with `summary(rpart_predfit)`, and create a histogram with `hist()` do they make sense?
 
 ```{r, echo = TRUE, eval = FALSE}
 # Explore decision tree fits
@@ -931,9 +930,9 @@ hist(XXX)
 
 
 ```{r}
-dt_fit[1:10]   # Only first 10 values
-summary(dt_fit)
-hist(dt_fit)
+rpart_predfit[1:10]   # Only first 10 values
+summary(rpart_predfit)
+hist(rpart_predfit)
 ```
 
 
@@ -957,7 +956,7 @@ price_rf <- train(form = XX ~ . - XX - XX,   # Predict price and exclude id and 
 
 
 ```{r}
-price_rf <- train(form = price ~ . - id - date,   # Predict price and exclude id and date
+price_rf <- train(form = price ~ .,   # Predict price and exclude id and date
                  data = house_train,
                  method = "rf",
                  trControl = ctrl_none,
@@ -1031,7 +1030,7 @@ postResample(pred = XXX, obs = XXX)
 postResample(pred = glm_fit, obs = criterion_train)
 
 # Decision Trees
-postResample(pred = dt_fit, obs = criterion_train)
+postResample(pred = rpart_predfit, obs = criterion_train)
 
 # Random Forests
 postResample(pred = rf_fit, obs = criterion_train)
@@ -1046,7 +1045,7 @@ postResample(pred = rf_fit, obs = criterion_train)
 # Tidy competition results
 accuracy <- tibble(criterion_train = criterion_train,
                    Regression = glm_fit,
-                   DecisionTrees = dt_fit,
+                   DecisionTrees = rpart_predfit,
                    RandomForest = rf_fit) %>%
                gather(model, prediction, -criterion_train) %>%
   
@@ -1098,7 +1097,7 @@ criterion_test <- XXX$XXX
 criterion_test <- house_test$price
 ```
 
-2. Using `predict()`, save the predicted values of each model for the test data `house_test` as `glm_pred`, `dt_pred` and `rf_pred`. 
+2. Using `predict()`, save the predicted values of each model for the test data `house_test` as `glm_pred`, `rpart_pred` and `rf_pred`. 
 
 ```{r, echo = TRUE, eval = FALSE}
 # Save model predictions for test data
@@ -1109,7 +1108,7 @@ criterion_test <- house_test$price
 glm_pred <- predict(XXX, newdata = XXX)
 
 # Decision Trees
-dt_pred <- predict(XXX, newdata = XXX)
+rpart_pred <- predict(XXX, newdata = XXX)
 
 # Random Forests
 rf_pred <- predict(XXX, newdata = XXX)
@@ -1122,7 +1121,7 @@ glm_pred <- predict(price_glm,
                     newdata = house_test)
 
 # Decision Trees
-dt_pred <- predict(price_rpart, 
+rpart_pred <- predict(price_rpart, 
                    newdata = house_test)
 
 # Random Forests

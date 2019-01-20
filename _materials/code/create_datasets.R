@@ -95,7 +95,6 @@ write_csv(house_train, path = "1_Data/house_train.csv")
 write_csv(house_test, path = "1_Data/house_test.csv")
 
 
-
 ###  diamonds  - From dplyr dataset
 
 set.seed(100)
