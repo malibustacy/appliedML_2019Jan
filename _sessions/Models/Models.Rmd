@@ -87,7 +87,7 @@ Simply put...
 
 <high>Bias</high> arises from strong <high>model assumptions</high> not being met by the environment.
 
-<high>Bias</high> arises from high <high>model flexibility</high> fitting the noise in the data (i.e., overfitting).
+<high>Variance</high> arises from high <high>model flexibility</high> fitting the noise in the data (i.e., overfitting).
 
 <br><br>
 &#8594; <high>Make strong assumptions</high> (use simple models), if possible.

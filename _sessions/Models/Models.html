@@ -72,7 +72,7 @@ Simply put...
 
 &lt;high&gt;Bias&lt;/high&gt; arises from strong &lt;high&gt;model assumptions&lt;/high&gt; not being met by the environment.
 
-&lt;high&gt;Bias&lt;/high&gt; arises from high &lt;high&gt;model flexibility&lt;/high&gt; fitting the noise in the data (i.e., overfitting).
+&lt;high&gt;Variance&lt;/high&gt; arises from high &lt;high&gt;model flexibility&lt;/high&gt; fitting the noise in the data (i.e., overfitting).
 
 &lt;br&gt;&lt;br&gt;
 &amp;#8594; &lt;high&gt;Make strong assumptions&lt;/high&gt; (use simple models), if possible.
@@ -524,23 +524,12 @@ if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
   d.head.appendChild(s);
 })();</script>
 
-<script>
-(function() {
-  var i, text, code, codes = document.getElementsByTagName('code');
-  for (i = 0; i < codes.length;) {
-    code = codes[i];
-    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
-      text = code.textContent;
-      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
-          /^\$\$(.|\s)+\$\$$/.test(text) ||
-          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
-        code.outerHTML = code.innerHTML;  // remove <code></code>
-        continue;
-      }
-    }
-    i++;
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  tex2jax: {
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre']
   }
-})();
+});
 </script>
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>

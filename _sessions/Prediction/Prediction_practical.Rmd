@@ -13,7 +13,7 @@ knitr::opts_chunk$set(comment = NA,
                       fig.height = 6,
                       fig.align = 'center',
                       echo = TRUE, 
-                      eval = FALSE, 
+                      eval = TRUE, 
                       warning = FALSE,
                       message = FALSE)
 
@@ -326,7 +326,7 @@ knitr::kable(college_train[1:10,])
 2. Open a new R script. At the top of the script, using comments, write your name and the date. Save it as a new file called `Prediction_College_practical.R` in the `2_Code` folder.  
 3. Using `library()` load the set of packages for this practical listed in the packages section above.
 
-```{r, eval = FALSE, echo = TRUE}
+```{r, echo = TRUE, message = FALSE}
 ## NAME
 ## DATE
 ## Prediction Practical - With regression, decision trees, and random forests
@@ -337,10 +337,6 @@ library(party)
 library(partykit)
 ```
 
-```{r, message = FALSE, warning = FALSE, echo = FALSE, eval = TRUE}
-library(tidyverse)
-```
-
 4. Run the code below to load each of the datasets listed in the `Datasets` as new objects
 
 ```{r, echo = TRUE, eval = FALSE, message = FALSE, warning = FALSE}
@@ -349,9 +345,16 @@ college_train <- read_csv(file = "1_Data/college_train.csv")
 college_test <- read_csv(file = "1_Data/college_test.csv")
 ```
 
+
+```{r, echo = FALSE, eval = TRUE}
+# College data
+college_train <- read_csv(file = "../../1_Data/college_train.csv")
+college_test <- read_csv(file = "../../1_Data/college_test.csv")
+```
+
 5. Take a look at the first few rows of each dataframe by printing them to the console.
 
-```{r, echo = TRUE, eval = FALSE}
+```{r, echo = TRUE}
 # Print dataframes to the console
 
 college_train
@@ -367,6 +370,13 @@ dim(XXX)
 dim(XXX)
 ```
 
+
+```{r}
+dim(college_train)
+dim(college_test)
+```
+
+
 7. Look at the names of the dataframes with the `names()` function.
 
 ```{r, echo = TRUE, eval = FALSE}
@@ -376,9 +386,14 @@ names(XXX)
 names(XXX)
 ```
 
+```{r}
+names(college_train)
+names(college_test)
+```
+
 8. Open each dataset in a new window using `View()`. Do they look ok?
 
-```{r}
+```{r, echo = TRUE, eval = FALSE}
 # Open each dataset in a window.
 
 View(XXX)
@@ -387,7 +402,7 @@ View(XXX)
 
 9. We need to do a little bit of data cleaning before starting. Specifically, we need to convert all character columns to factors: Do this by running the following code:
 
-```{r}
+```{r, eval = TRUE, echo = TRUE}
 # Convert all character columns to factor
 
 college_train <- college_train %>%
@@ -411,6 +426,10 @@ Your goal in this task is to fit models predicting `Grad.Rate`, the percentage o
 ctrl_none <- trainControl(method = "XXX")
 ```
 
+```{r}
+ctrl_none <- trainControl(method = "none")
+```
+
 
 ### Regression
 
@@ -428,11 +447,24 @@ grad_glm <- train(form = XX ~ .,
                   trControl = ctrl_none)
 ```
 
+
+```{r}
+grad_glm <- train(form = Grad.Rate ~ .,
+                  data = college_train,
+                  method = "glm",
+                  trControl = ctrl_none)
+```
+
 3. Explore your `grad_glm` object by looking at `grad_glm$finalModel` and using `summary()`, what do you find?
 
 ```{r, eval = FALSE, echo = TRUE}
 grad_glm$XXX
 summary(XXX)
+```
+
+```{r}
+grad_glm$finalModel
+summary(grad_glm)
 ```
 
 4. Using `predict()` save the fitted values of `grad_glm` object as `glm_fit`:
@@ -444,12 +476,18 @@ glm_fit <- predict(XXX)
 
 5. Print your `glm_fit` object, look at summary statistics with `summary(glm_fit)`, and create a histogram with `hist()` do they make sense?
 
-```{r}
+```{r, echo = TRUE, eval = FALSE}
 # Explore regression model fits
 
 XXX
 summary(XXX)
 hist(XXX)
+```
+
+```{r}
+glm_fit[1:10]   # Only printing first 5
+summary(glm_fit)
+hist(glm_fit)
 ```
 
 ### Decision Trees
@@ -462,7 +500,7 @@ hist(XXX)
 - For the `trControl` argument, use your `ctrl_none` object you created before
 - For the `tuneGrid` argument, use `cp = 0.01` to specify the value of the complexity parameter. This is a pretty low value which means your trees will be, relatively, complex.
 
-```{r}
+```{r, echo = TRUE, eval = FALSE}
 grad_dt <- train(form = XX ~ .,
                   data = XXX,
                   method = "XX",
@@ -470,7 +508,21 @@ grad_dt <- train(form = XX ~ .,
                   tuneGrid = expand.grid(cp = XX))   # Set complexity parameter
 ```
 
+```{r, echo = TRUE, eval = FALSE}
+grad_dt <- train(form = Grad.Rate ~ .,
+                  data = college_train,
+                  method = "rpart",
+                  trControl = ctrl_none,
+                  tuneGrid = expand.grid(cp = .01))   # Set complexity parameter
+```
+
 5. Explore your `grad_dt` object by looking at `grad_dt$finalModel` and plotting it with `plot(as.party(grad_dt$finalModel))`, what do you find?
+
+```{r}
+grad_dt$finalModel
+plot(as.party(grad_dt$finalModel))
+```
+
 
 6. Using `predict()` save the fitted values of `grad_dt` object as `dt_fit`:
 
@@ -479,14 +531,24 @@ grad_dt <- train(form = XX ~ .,
 dt_fit <- predict(XXX)
 ```
 
+```{r}
+dt_fit <- predict(grad_dt)
+```
+
 7. Print your `dt_fit` object, look at summary statistics with `summary(dt_fit)`, and create a histogram with `hist()` do they make sense?
 
-```{r}
+```{r, echo = TRUE, eval = FALSE}
 # Explore decision tree fits
 
 XXX
 summary(XXX)
 hist(XXX)
+```
+
+```{r}
+dt_fit[1:10] # Only first 10
+summary(dt_fit)
+hist(dt_fit)
 ```
 
 ### Random Forests
@@ -499,12 +561,20 @@ hist(XXX)
 - For the `trControl` argument, use your `ctrl_none` object you created before
 - For the `mtry` parameter, use `mtry` = 2. This is a relatively low value, so the forest will not be very diverse
 
-```{r, eval = FALSE, echo = TRUE}
+```{r, echo = TRUE, eval = FALSE}
 grad_rf <- train(form = XX ~ .,   # Predict grad and exclude college_name
                  data = XX,
                  method = "XX",
                  trControl = XX,
                  tuneGrid = expand.grid(mtry = XX))  # Set number of features randomly selected
+```
+
+```{r}
+grad_rf <- train(form = Grad.Rate ~ .,   # Predict grad and exclude college_name
+                 data = college_train,
+                 method = "rf",
+                 trControl = ctrl_none,
+                 tuneGrid = expand.grid(mtry = 2))  # Set number of features randomly selected
 ```
 
 9. Using `predict()` save the fitted values of `grad_rf` object as `rf_fit`:
@@ -514,14 +584,24 @@ grad_rf <- train(form = XX ~ .,   # Predict grad and exclude college_name
 rf_fit <- predict(XXX)
 ```
 
+```{r}
+rf_fit <- predict(grad_rf)
+```
+
 10. Print your `rf_fit` object, look at summary statistics with `summary(rf_fit)`, and create a histogram with `hist()` do they make sense?
 
-```{r}
+```{r, echo = TRUE, eval = FALSE}
 # Explore random forest fits
 
 XXX
 summary(XXX)
 hist(XXX)
+```
+
+```{r}
+rf_fit[1:10]    # Only first 10
+summary(rf_fit)
+hist(rf_fit)
 ```
 
 ### Assess accuracy
@@ -558,7 +638,7 @@ postResample(pred = XXX, obs = XXX)
 
 1. Save the criterion values from the test data set `college_test$Grad.Rate` as a new vector called `criterion_test`:
 
-```{r}
+```{r, echo = TRUE, eval = FALSE}
 # Save criterion values
 criterion_test <- XXX$XXX
 ```
@@ -653,7 +733,7 @@ house_test
 
 6. Print the numbers of rows and columns of each dataset using the `dim()` function
 
-```{r, echo = FALSE, eval = FALSE}
+```{r, echo = TRUE, eval = FALSE}
 # Print numbers of rows and columns
 
 dim(XXX)
@@ -662,7 +742,7 @@ dim(XXX)
 
 7. Look at the names of the dataframes with the `names()` function.
 
-```{r, echo = FALSE, eval = FALSE}
+```{r, echo = TRUE, eval = FALSE}
 # Print the names of each dataframe
 
 names(XXX)
@@ -671,7 +751,7 @@ names(XXX)
 
 8. Open each dataset in a new window using `View()`. Do they look ok?
 
-```{r, echo = FALSE, eval = FALSE}
+```{r, echo = TRUE, eval = FALSE}
 # Open each dataset in a window.
 
 View(XXX)
@@ -696,13 +776,19 @@ Your goal in the following models is to predict `price`, the selling price of ho
 
 1. Using `trainControl()`, set your training control method to `"none"`. Save your object as `ctrl_none`.
 
-```{r, echo = FALSE, eval = FALSE}
+```{r, echo = TRUE, eval = FALSE}
 # Set training method to "none" for simple fitting
 #  Note: This is for demonstration purposes, you would almost
 #   never do this for a 'real' prediction task!
 
 ctrl_none <- trainControl(method = "XXX")
 ```
+
+
+```{r}
+ctrl_none <- trainControl(method = "none")
+```
+
 
 ### Regression
 
@@ -720,28 +806,53 @@ price_glm <- train(form = XX ~ . - XX - XX,
                   trControl = ctrl_none)
 ```
 
+
+```{r}
+price_glm <- train(form = price ~ . - id - date,
+                  data = house_train,
+                  method = "glm",
+                  trControl = ctrl_none)
+```
+
+
 3. Explore your `price_glm` object by looking at `price_glm$finalModel` and using `summary()`, what do you find?
 
-```{r, eval = FALSE, echo = TRUE}
+```{r, echo = TRUE, eval = FALSE}
 price_glm$XXX
 summary(XXX)
 ```
 
+```{r}
+price_glm$finalModel
+summary(price_glm)
+```
+
 4. Using `predict()` save the fitted values of `price_glm` object as `glm_fit`:
 
-```{r, echo = FALSE, eval = FALSE}
+```{r, echo = TRUE, eval = FALSE}
 # Save fitted values of regression model
 glm_fit <- predict(XXX)
 ```
 
+```{r}
+# Save fitted values of regression model
+glm_fit <- predict(price_glm)
+```
+
 5. Print your `glm_fit` object, look at summary statistics with `summary(glm_fit)`, and create a histogram with `hist()` do they make sense?
 
-```{r, echo = FALSE, eval = FALSE}
+```{r, echo = TRUE, eval = FALSE}
 # Explore regression model fits
 
 XXX
 summary(XXX)
 hist(XXX)
+```
+
+```{r}
+glm_fit
+summary(glm_fit)
+hist(glm_fit)
 ```
 
 ### Decision Trees
@@ -754,7 +865,7 @@ hist(XXX)
 - For the `trControl` argument, use your `ctrl_none` object you created before
 - For the `tuneGrid` argument, use `cp = 0.01` to specify the value of the complexity parameter. This is a pretty low value which means your trees will be, relatively, complex.
 
-```{r, echo = FALSE, eval = FALSE}
+```{r, echo = TRUE, eval = FALSE}
 price_dt <- train(form = XX ~ . - XX - XX,
                   data = XXX,
                   method = "XX",
@@ -762,24 +873,49 @@ price_dt <- train(form = XX ~ . - XX - XX,
                   tuneGrid = expand.grid(cp = XX))   # Set complexity parameter
 ```
 
+```{r}
+price_dt <- train(form = price ~ . - id - date,
+                  data = house_train,
+                  method = "rpart",
+                  trControl = ctrl_none,
+                  tuneGrid = expand.grid(cp = .01))   # Set complexity parameter
+```
+
 5. Explore your `price_dt` object by looking at `price_dt$finalModel` and plotting it with `plot(as.party(price_dt$finalModel))`, what do you find?
+
+```{r}
+price_dt
+plot(as.party(price_dt$finalModel))
+```
 
 6. Using `predict()` save the fitted values of `price_dt` object as `dt_fit`:
 
-```{r, echo = FALSE, eval = FALSE}
+```{r, echo = TRUE, eval = FALSE}
 # Save fitted values of decision tree model
 dt_fit <- predict(XXX)
 ```
 
+```{r}
+dt_fit <- predict(price_dt)
+```
+
 7. Print your `dt_fit` object, look at summary statistics with `summary(dt_fit)`, and create a histogram with `hist()` do they make sense?
 
-```{r, echo = FALSE, eval = FALSE}
+```{r, echo = TRUE, eval = FALSE}
 # Explore decision tree fits
 
 XXX
 summary(XXX)
 hist(XXX)
 ```
+
+
+```{r}
+dt_fit
+summary(dt_fit)
+hist(dt_fit)
+```
+
 
 ### Random Forests
 
@@ -791,7 +927,7 @@ hist(XXX)
 - For the `trControl` argument, use your `ctrl_none` object you created before
 - For the `mtry` parameter, use `mtry` = 2. This is a relatively low value, so the forest will not be very diverse
 
-```{r, echo = FALSE, eval = FALSE}
+```{r, echo = TRUE, eval = FALSE}
 price_rf <- train(form = XX ~ . - XX - XX,   # Predict price and exclude id and date
                  data = XX,
                  method = "XX",
@@ -799,16 +935,30 @@ price_rf <- train(form = XX ~ . - XX - XX,   # Predict price and exclude id and 
                  tuneGrid = expand.grid(mtry = XX))  # Set number of features randomly selected
 ```
 
+
+```{r}
+price_rf <- train(form = price ~ . - id - date,   # Predict price and exclude id and date
+                 data = house_train,
+                 method = "rf",
+                 trControl = ctrl_none,
+                 tuneGrid = expand.grid(mtry = 2))  # Set number of features randomly selected
+```
+
+
 9. Using `predict()` save the fitted values of `price_rf` object as `rf_fit`:
 
-```{r, echo = FALSE, eval = FALSE}
+```{r, echo = TRUE, eval = FALSE}
 # Save fitted values of random forest model
 rf_fit <- predict(XXX)
 ```
 
+```{r}
+rf_fit <- predict(price_rf)
+```
+
 10. Print your `rf_fit` object, look at summary statistics with `summary(rf_fit)`, and create a histogram with `hist()` do they make sense?
 
-```{r, echo = FALSE, eval = FALSE}
+```{r, echo = TRUE, eval = FALSE}
 # Explore random forest fits
 
 XXX
@@ -816,18 +966,28 @@ summary(XXX)
 hist(XXX)
 ```
 
+```{r}
+rf_fit
+summary(rf_fit)
+hist(rf_fit)
+```
+
 ### Assess accuracy
 
 11. Save the true training criterion values (`house_train$price`) as a vector called `criterion_train`
 
-```{r, echo = FALSE, eval = FALSE}
+```{r, echo = TRUE, eval = FALSE}
 # Save training criterion values
 criterion_train <- XXX$XXX
 ```
 
+```{r}
+criterion_train <- house_train$price
+```
+
 12. Using `postResample()`, determine the fitting performance of each of your models separately. Make sure to set your `criterion_train` values to the `obs` argument, and your true model fits `XX_fit` to the `pred` argument:
 
-```{r, echo = FALSE, eval = FALSE}
+```{r, echo = TRUE, eval = FALSE}
 # Calculate fitting accuracies of each model
 # pred = XX_fit
 # obs = criterion_train
@@ -842,6 +1002,21 @@ postResample(pred = XXX, obs = XXX)
 postResample(pred = XXX, obs = XXX)
 ```
 
+```{r}
+# Calculate fitting accuracies of each model
+# pred = XX_fit
+# obs = criterion_train
+
+# Regression
+postResample(pred = glm_fit, obs = criterion_train)
+
+# Decision Trees
+postResample(pred = dt_fit, obs = criterion_train)
+
+# Random Forests
+postResample(pred = rf_fit, obs = criterion_train)
+```
+
 13. Which one had the best fits? What was the fitting MAE of each model?
 
 (Optional). If you'd like to, try visualizing the fitting results using the plotting code shown in the Examples tab above. Ask for help if you need it!
@@ -850,14 +1025,14 @@ postResample(pred = XXX, obs = XXX)
 
 1. Save the criterion values from the test data set `house_test$price` as a new vector called `criterion_test`:
 
-```{r, echo = FALSE, eval = FALSE}
+```{r, echo = TRUE, eval = FALSE}
 # Save criterion values
 criterion_test <- XXX$XXX
 ```
 
 2. Using `predict()`, save the predicted values of each model for the test data `house_test` as `glm_pred`, `dt_pred` and `rf_pred`. 
 
-```{r, echo = FALSE, eval = FALSE}
+```{r, echo = TRUE, eval = FALSE}
 # Save model predictions for test data
 # XX_mod
 # newdata = college_test
@@ -874,7 +1049,7 @@ rf_pred <- predict(XXX, newdata = XXX)
 
 3. Using `postResample()`, determine the *prediction* performance of each of your models against the test criterion `criterion_test`. 
 
-```{r, echo = FALSE, eval = FALSE}
+```{r, echo = TRUE, eval = FALSE}
 # Calculate prediction accuracies of each model
 # obs = criterion_test
 # pred = XX_pred
