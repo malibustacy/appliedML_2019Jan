@@ -812,15 +812,15 @@ ctrl_none <- trainControl(method = "none")
 
 ### Regression
 
-2. Using `train()` fit a regression model called `price_glm` predicting `price` as a function of all features *except* for id and date (Ask yourself, why do you think we are excluding this?).
+2. Using `train()` fit a regression model called `price_glm`  predicting `price` using all features in `house_train`.
 
-- For the `form` argument, use `price ~ . - id - date`
+- For the `form` argument, use `price ~ .`
 - For the `data` argument, use  `house_train` in the data argument
 - For the `method` argument, use `method = "glm"` for regression
 - For the `trControl` argument, use your `ctrl_none` object you created before
 
 ```{r, echo = TRUE, eval = FALSE}
-price_glm <- train(form = XX ~ . - XX - XX,
+price_glm <- train(form = XX ~ .,
                   data = XX,
                   method = "XXX",
                   trControl = ctrl_none)
@@ -828,7 +828,7 @@ price_glm <- train(form = XX ~ . - XX - XX,
 
 
 ```{r}
-price_glm <- train(form = price ~ . - id - date,
+price_glm <- train(form = price ~ .,
                   data = house_train,
                   method = "glm",
                   trControl = ctrl_none)
@@ -877,16 +877,16 @@ hist(glm_fit)
 
 ### Decision Trees
 
-4. Using `train()`, fit a decision tree model called `price_rpart` predicting `price` (using the same features as above).
+4. Using `train()`, fit a decision tree model called `price_rpart` predicting `price` using all features in `house_train`.
 
-- For the `form` argument, use `price ~ . -id - date`
+- For the `form` argument, use `price ~ .`
 - For the `data` argument, use  `house_train` in the data argument
 - For the `method` argument, use `method = "rpart"` to create decision trees
 - For the `trControl` argument, use your `ctrl_none` object you created before
 - For the `tuneGrid` argument, use `cp = 0.01` to specify the value of the complexity parameter. This is a pretty low value which means your trees will be, relatively, complex.
 
 ```{r, echo = TRUE, eval = FALSE}
-price_rpart <- train(form = XX ~ . - XX - XX,
+price_rpart <- train(form = XX ~ .,
                   data = XXX,
                   method = "XX",
                   trControl = XX,
@@ -894,7 +894,7 @@ price_rpart <- train(form = XX ~ . - XX - XX,
 ```
 
 ```{r}
-price_rpart <- train(form = price ~ . - id - date,
+price_rpart <- train(form = price ~ .,
                   data = house_train,
                   method = "rpart",
                   trControl = ctrl_none,
@@ -939,9 +939,9 @@ hist(dt_fit)
 
 ### Random Forests
 
-8. Using `train()`, fit a random forest model called `price_rf` predicting `price` (using the same features as above).
+8. Using `train()`, fit a random forest model called `price_rf` predicting `price` using all features in `house_train`.
 
-- For the `form` argument, use `price ~ . - id - date`
+- For the `form` argument, use `price ~ .`
 - For the `data` argument, use  `house_train` in the data argument
 - For the `method` argument, use `method = "rf"` to fit random forests
 - For the `trControl` argument, use your `ctrl_none` object you created before
