@@ -26,10 +26,9 @@ output: html_document
 
 |  | Day 1<br>Basics| Day 2<br>Advanced| 
 |:--|:-------------|:-------------|
-|0| Welcome!<br>[slides](_sessions/Welcome/Welcome.html) | Recap|
-<<<<<<< HEAD
+|0| Welcome!<br>[slides](_sessions/Welcome/Welcome.html) | Recap [slides](_sessions/Recap/Recap.html)|
 |1| What is ML?<br>[slides](_sessions/WhatIsML/WhatIsML.html)| Optimization <br>|
-|2| R for ML <br>[slides](_sessions/RforML/RforML.html), [interactive](_sessions/RforML/RforML_interactive.R) | Features [slides](_sessions/Features/Features.html), [practical](_sessions/Features/Features_practical.html)|
+|2| R for ML <br>[slides](_sessions/RforML/RforML.html), [interactive](_sessions/RforML/RforML_interactive.R) | Features<br>[slides](_sessions/Features/Features.html), [practical](_sessions/Features/Features_practical.html)|
 |3| Fitting<br>[slides](_sessions/Fitting/Fitting.html), [practical](_sessions/Fitting/Fitting_practical.html) | Models<br>[slides](_sessions/Models/Models.html), [practical](_sessions/Models/Models_practical.html)|
 |4|Prediction <br>[slides](_sessions/Prediction/Prediction.html), [practical](_sessions/Prediction/Prediction_practical.html) | Look Ahead [slides](_sessions/LookAhead/LookAhead.html)|
 
