@@ -487,7 +487,7 @@ In the output, values with . are coefficients that have been &lt;high&gt;removed
 ```r
 # Print final model coefficients using best lambda
 coef(lasso_mod$finalModel,      # Final Lasso model
-     lasso_mod$bestTune$lambda) # Bets lambda value
+     lasso_mod$bestTune$lambda) # Best lambda value
 ```
 
 ```
@@ -608,7 +608,7 @@ if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
 (function () {
   var script = document.createElement('script');
   script.type = 'text/javascript';
-  script.src  = 'https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
   if (location.protocol !== 'file:' && /^https?:/.test(script.src))
     script.src  = script.src.replace(/^https?:/, '');
   document.getElementsByTagName('head')[0].appendChild(script);
