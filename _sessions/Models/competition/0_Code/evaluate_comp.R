@@ -32,10 +32,14 @@ for(i in 1:length(clas_files)){
 # LOAD TEST DATA -----------------------
 
 # regression data
-regr_data = read_csv('_sessions/Models/competition/1_Data/nonviolent_crime_test.csv')
+regr_data = read_csv('_sessions/Models/competition/1_Data/competition_nonvio_test.csv')
 
 # classification data
-clas_data = read_csv('_sessions/Models/competition/1_Data/murders_crime_test.csv')
+clas_data = read_csv('_sessions/Models/competition/1_Data/competition_murder_test.csv')
+
+# transform to factor
+regr_data = regr_data %>% mutate_if(is.character, as.factor)
+clas_data = clas_data %>% mutate_if(is.character, as.factor)
 
 
 # EVALUATE REGRESSION MODELS -----------------------
