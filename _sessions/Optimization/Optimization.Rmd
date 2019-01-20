@@ -20,7 +20,7 @@ layout: true
 <a href="https://therbootcamp.github.io/"><font color="#7E7E7E">Applied Machine Learning with R, January 2019</font></a>
 &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
 <a href="https://therbootcamp.github.io/"><font color="#7E7E7E">www.therbootcamp.com</font></a>
-</span></div> 
+</span></div>
 
 ---
 
@@ -37,7 +37,7 @@ source("https://raw.githubusercontent.com/therbootcamp/therbootcamp.github.io/ma
 options(htmltools.dir.version = FALSE)
 # see: https://github.com/yihui/xaringan
 # install.packages("xaringan")
-# see: 
+# see:
 # https://github.com/yihui/xaringan/wiki
 # https://github.com/gnab/remark/wiki/Markdown
 options(width=110)
@@ -47,7 +47,7 @@ options(digits = 4)
 ```
 
 ```{r, echo = FALSE ,message = FALSE, warning = FALSE}
-knitr::opts_chunk$set(comment=NA, fig.width=6, fig.height=6, echo = TRUE, eval = TRUE, 
+knitr::opts_chunk$set(comment=NA, fig.width=6, fig.height=6, echo = TRUE, eval = TRUE,
                       message = FALSE, warning = FALSE, fig.align = 'center', dpi = 200)
 library(tidyverse)
 library(baselers)
@@ -62,7 +62,7 @@ set.seed(5)
 N <- 40
 
 iv <- rnorm(N, mean = 10, sd = 2)
-truth <- iv 
+truth <- iv
 noise <- rnorm(N, mean = 0, sd = 2)
 obs <- truth + noise
 
@@ -70,11 +70,11 @@ data <- data.frame(iv, obs)
 
 
 poly_pred <- map_dfc(.x = c(1, 19), .f = function(degree) {
-  
+
   output <- data.frame(lm(obs ~ poly(iv, degree), data = data)$fitted.values)
-  
+
   names(output) <- paste0("d", degree)
-  
+
   return(output)
 
 }) %>% mutate(id = 1:N,
@@ -90,7 +90,7 @@ poly_pred <- poly_pred %>%
 
 
 
-overfit_gg <- ggplot(poly_pred, aes(x = x, y = pred, col = Degree)) + 
+overfit_gg <- ggplot(poly_pred, aes(x = x, y = pred, col = Degree)) +
   geom_line(size = 1.5) +
   geom_point(aes(x = x, y = obs), col = "black", pch = 21) +
   annotate("segment", x = 5, y = 5, xend = 15, yend = 15, col = "black", linetype = 4, size = 1) +
@@ -101,12 +101,12 @@ overfit_gg <- ggplot(poly_pred, aes(x = x, y = pred, col = Degree)) +
   theme_bw() +
     theme(legend.position="bottom") +
   scale_color_baselrbootcamp()
-  
+
 poly_pred <- poly_pred %>% mutate(
 
   obs_new = x + rnorm(1, mean = 0, sd = 2),
   `Testing` = abs(obs_new - pred)
-  
+
 )
 
 
@@ -119,7 +119,7 @@ agg <- poly_pred %>%
   summarise(Error = mean(Error)) %>%
   ungroup() %>%
   mutate(phase = factor(phase, levels = c("Training", "Testing"), ordered = TRUE))
- 
+
 fit_gg <- ggplot(agg, aes(x = phase, y = Error, fill = Degree)) +
   geom_bar(position = "dodge", stat = "identity") +
   labs(title = "Fitting versus Prediction Error",
@@ -168,7 +168,7 @@ knitr::include_graphics("image/model_testing_flow.png")
 
 .pull-left4[
 <br><br><br>
-# Overfitting (Recap)
+# Overfitting
 
 When a model is consistently <high>less accurate in predicting future data</high> than in <high>fitting training data<high>, this is called <high>overfitting</high>
 
@@ -194,7 +194,7 @@ knitr::include_graphics("image/wolf_complex.png")
 .pull-left4[
 <br><br><br>
 
-# Overfitting (Recap)
+# Overfitting
 
 ### How will we try to avoid overfitting?
 
@@ -235,7 +235,7 @@ knitr::include_graphics("image/crossvalidation_4fold.png")
 
 - Random forests diversity tuning parameter <high>mtry</high>
 
-Tuning parameters never show up in the final model! They are only used to guide fitting.
+Tuning parameters do not show up in the final model (you never see a complexity parameter in a final decision tree)! They are only used to guide fitting.
 
 There is not one 'best' tuning parameter, it always depends on your specific dataset.
 
@@ -264,13 +264,13 @@ There are two common methods to fit penalized (aka regularized) regression model
 
 ### Ridge
 
-The Lasso penalty is known as the $\ell2$ norm, where Beta weights are selected by minimizing the following equation:
+The Lasso penalty is known as the $\ell2$ norm, where Beta weights are selected by <high>minimizing</high> the following equation:
 
 ```{r, echo = FALSE, out.width = "100%"}
 knitr::include_graphics("image/ridge_penalty_eq.jpg")
 ```
 
-As $\lambda$ increases, coefficients are pushed towards (but not necessarily exactly to) 0.
+As $\lambda$ "Lambda" increases, coefficients are pushed towards (but not necessarily exactly to) 0.
 
 ]
 
@@ -298,7 +298,7 @@ There are two common methods to fit penalized (aka regularized) regression model
 
 To fit Ridge penalized regression in R, use `method = "glmnet"`.
 
-In the `tuneGrid` argument: 
+In the `tuneGrid` argument:
 
 - `alpha = 0` indicates the $\ell2$ Ridge penalty.
 - `lambda` = Vector of lambda tuning parameters values to try.
@@ -314,6 +314,7 @@ train(form = criterion ~ .,
       data = data_train,
       method = "glmnet",
       trControl = ctrl,
+      preProcess = c("center", "scale"),  # Standardise
       tuneGrid = expand.grid(alpha = 0, # Ridge penalty
                               lambda = 1:100)) # Lambda
 ```
@@ -360,7 +361,7 @@ There are two common methods to fit penalized (aka regularized) regression model
 
 To fit Lasso penalized regression in R, use `method = "glmnet"`.
 
-In the `tuneGrid` argument: 
+In the `tuneGrid` argument:
 
 - `alpha = 1` indicates the $\ell1$ Lasso penalty
 - `lambda` = Vector of lambda tuning parameters values to try.
@@ -376,6 +377,7 @@ train(form = criterion ~ .,
       data = data_train,
       method = "glmnet",
       trControl = ctrl,
+      preProcess = c("center", "scale"),  # Standardise
       tuneGrid = expand.grid(alpha = 1, # Lasso penalty
                               lambda = 1:100)) # Lambda
 ```
@@ -536,8 +538,8 @@ When you pass this object to `train()` (for any model), caret will find best par
 
 ```{r}
 # Specify 10 fold cross-validation
-ctrl_cv <- trainControl(method = "cv", 
-                        number = 10) 
+ctrl_cv <- trainControl(method = "cv",
+                        number = 10)
 
 # Predict baselers income using lasso regression
 
@@ -545,6 +547,7 @@ lasso_mod <- train(form = income ~ .,
                    data = baselers,
                    method = "glmnet",  # Penalised regression
                    trControl = ctrl_cv,
+                   preProcess = c("center", "scale"),  # Standardise
                    tuneGrid = expand.grid(alpha = 1, # Lasso
                                           lambda = 1:100))
 ```
@@ -621,14 +624,14 @@ If you print the `summary()` of this object, it will print 'prediction' error st
 # Get accuracy statistics across folds for three
 #  models that I have fit with cross validation
 
-resamples_mod <- resamples(list(ridge = ridge_mod, 
-                                lasso = lasso_mod, 
+resamples_mod <- resamples(list(ridge = ridge_mod,
+                                lasso = lasso_mod,
                                 glm = glm_mod))
 
 # Print summary of accuracies
 summary(resamples_mod)
 
-# MAE 
+# MAE
 #         Min. 1st Qu. Median   Mean 3rd Qu.   Max. NA's
 # ridge 1057.9  1078.9 1083.2 1090.1  1112.0 1118.5    0
 # lasso  865.7   892.7  897.2  902.9   914.2  944.8    0
@@ -644,9 +647,3 @@ class: middle, center
 
 
 <h1><a href=https://therbootcamp.github.io/appliedML_2019Jan/_sessions/Optimization/Optimization_practical.html>Practical</a></h1>
-
-
-
-
-
-
