@@ -677,7 +677,7 @@ cp_vec <- seq(from = 0, to = 1, length = 100)
 - Set the data to `hitters_train`
 - Set the method to `"rpart"` for decision trees
 - Set the train control argument to `ctrl_cv`
-- Set the tuneGrid argument such that alpha is 1 (for lasso regression), and with all lambda values you specified in `cp_vec` (we've done this for you below)
+- Set the tuneGrid argument with all `cp` values you specified in `cp_vec`
 
 ```{r, echo = TRUE, eval = FALSE}
 # Decision Tree --------------------------
