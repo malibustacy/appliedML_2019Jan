@@ -223,11 +223,11 @@ murders_crime &lt;- murders_crime %&gt;% mutate_if(is.character, as.factor)</cod
 <h2>B Competition rules</h2>
 <ol style="list-style-type: decimal">
 <li><p>You may enter either one or both of two competitions, one on regression (<code>nonviolent_crime</code>) and on classification (<code>murders_crime</code>), for the price of 🍫🍫🍫.</p></li>
-<li><p>To enter the competitions, you must submit for each competition no more, no less than one caret <code>train</code>-object containing your candidate model. To submit the model, first save your model as an <code>.RDS</code>-file named <code>yourname_regression.RDS</code> and <code>your_name_classification.RDS</code>, respectively, with <code>yourname</code> replaced by your real name or pseudonym using the code below. Do not use any <code>-</code> or <code>_</code> in the file names.</p></li>
+<li><p>To enter the competitions, you must submit for each competition no more, no less than one caret <code>train</code>-object containing your candidate model. To submit the model, first save your model as an <code>.RDS</code>-file named <code>yourname_regression.RDS</code> and <code>yourname_classification.RDS</code>, respectively, with <code>yourname</code> replaced by your real name or pseudonym using the code below. Do not use any <code>-</code> or <code>_</code> in the file names.</p></li>
 </ol>
 <pre class="r"><code># save train obect as .RDS
-saveRDS(yourname_regression.RDS,'1_Data/yourname_regression.RDS')
-saveRDS(yourname_classification.RDS,'1_Data/yourname_classification.RDS')</code></pre>
+saveRDS(training_model_regression,'1_Data/yourname_regression.RDS')
+saveRDS(training_model_classification,'1_Data/yourname_classification.RDS')</code></pre>
 <ol start="3" style="list-style-type: decimal">
 <li>Submit your <code>.RDS</code> file (containing your training object) via these following Links sheets:</li>
 </ol>

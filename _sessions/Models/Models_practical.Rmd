@@ -124,12 +124,12 @@ murders_crime <- murders_crime %>% mutate_if(is.character, as.factor)
 
 1. You may enter either one or both of two competitions, one on regression (`nonviolent_crime`) and on classification (`murders_crime`), for the price of &#127851;&#127851;&#127851;.
 
-2. To enter the competitions, you must submit for each competition no more, no less than one caret `train`-object containing your candidate model. To submit the model, first save your model as an `.RDS`-file named `yourname_regression.RDS` and `your_name_classification.RDS`, respectively, with `yourname` replaced by your real name or pseudonym using the code below. Do not use any `-` or `_` in the file names.
+2. To enter the competitions, you must submit for each competition no more, no less than one caret `train`-object containing your candidate model. To submit the model, first save your model as an `.RDS`-file named `yourname_regression.RDS` and `yourname_classification.RDS`, respectively, with `yourname` replaced by your real name or pseudonym using the code below. Do not use any `-` or `_` in the file names.
 
 ```{r}
 # save train obect as .RDS
-saveRDS(yourname_regression.RDS,'1_Data/yourname_regression.RDS')
-saveRDS(yourname_classification.RDS,'1_Data/yourname_classification.RDS')
+saveRDS(training_model_regression,'1_Data/yourname_regression.RDS')
+saveRDS(training_model_classification,'1_Data/yourname_classification.RDS')
 ```
 
 3. Submit your `.RDS` file (containing your training object) via these following Links sheets:
