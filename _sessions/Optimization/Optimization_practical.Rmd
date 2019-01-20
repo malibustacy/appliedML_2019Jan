@@ -531,7 +531,7 @@ It's time to fit an optimized regression model with a Ridge penalty!
 ```{r, echo = TRUE, eval = FALSE}
 # Determine possible values of lambda
 
-lambda_vec <- seq(from = 0, to = 1000, length = 100)
+lambda_vec <- seq(from = 0, to = 2, length = 100)
 ```
 
 2. Fit a ridge regression model predicting `Salary` as a function of all features
