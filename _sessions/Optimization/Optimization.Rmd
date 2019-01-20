@@ -230,9 +230,11 @@ knitr::include_graphics("image/crossvalidation_4fold.png")
 
 <high>Tuning parameters</high> are parameters that <high>guide</high> (aka. 'tune') a model during fitting.
 
+
 - Decision trees: complexity tuning parameter <high>cp</high>
+
 - Random forests diversity tuning parameter <high>mtry</high>
-    
+
 Tuning parameters never show up in the final model! They are only used to guide fitting.
 
 There is not one 'best' tuning parameter, it always depends on your specific dataset.
@@ -294,7 +296,7 @@ There are two common methods to fit penalized (aka regularized) regression model
 
 ### Ridge
 
-To fit Ridge penalized regression in R, use `method = "glmnet`.
+To fit Ridge penalized regression in R, use `method = "glmnet"`.
 
 In the `tuneGrid` argument: 
 
@@ -356,7 +358,7 @@ There are two common methods to fit penalized (aka regularized) regression model
 
 ### Lasso
 
-To fit Lasso penalized regression in R, use `method = "glmnet`.
+To fit Lasso penalized regression in R, use `method = "glmnet"`.
 
 In the `tuneGrid` argument: 
 
@@ -391,7 +393,7 @@ train(form = criterion ~ .,
 
 Cross-validation is a sampling procedure performed on training data used to <high>estimate a model's prediction performance</high> in future test data, and to determine <high>optimal tuning parameters</high> selected to minimize prediction error.
 
-Cross-validation is not "cheating: because it is only performed on the training data (never on the true test dataset)
+Cross-validation is not "cheating": because it is only performed on the training data (never on the true test dataset)
 
 After cross-validation is complete, the model is trained on the entire dataset, using optimal tuning parameters, resulting in a <high>final model</high> which can be used for future model testing.
 
