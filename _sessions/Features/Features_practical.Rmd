@@ -12,8 +12,8 @@ knitr::opts_chunk$set(comment = NA,
                       fig.width = 6, 
                       fig.height = 6,
                       fig.align = 'center',
-                      echo = FALSE, 
-                      eval = FALSE, 
+                      echo = TRUE, 
+                      eval = TRUE, 
                       warning = FALSE,
                       message = FALSE)
 
@@ -22,6 +22,7 @@ options(digits = 3)
 
 ```{r, echo = FALSE, fig.align = 'center', eval = TRUE, out.width = "90%", fig.cap=""}
 knitr::include_graphics("image/wrongdata.gif")
+require(caret)
 ```
 
 ## {.tabset}
@@ -54,6 +55,7 @@ library(ggthemes)
 # Load datasets locally
 library(tidyverse)
 pima_diabetes <- read_csv("https://raw.githubusercontent.com/therbootcamp/appliedML_2019Jan/master/1_Data/pima_diabetes.csv")
+murders_crime <- read_csv("https://raw.githubusercontent.com/therbootcamp/appliedML_2019Jan/master/1_Data/murders_crime.csv")
 violent_crime <- read_csv("https://raw.githubusercontent.com/therbootcamp/appliedML_2019Jan/master/1_Data/violent_crime.csv")
 nonviolent_crime <- read_csv("https://raw.githubusercontent.com/therbootcamp/appliedML_2019Jan/master/1_Data/nonviolent_crime.csv")
 ```
@@ -306,7 +308,7 @@ In this section, you will explore feature selection for the Pima Indians Diabete
 
 5. As always, before you do anything you need to make sure that you separate a hold-out data set for later. Create `pima_train` and `pima_test` using `createDataPartition()` with as little as <b>15% of cases going into the training set</b>. Also store the variable `diabetes` from the test set as a factor, which will be the criterion. 
 
-```{r, echo = TRUE}
+```{r, echo = TRUE, eval = FALSE}
 # split index
 train_index <- createDataPartition(XX$XX, p = .15, list = FALSE)
 
@@ -336,7 +338,7 @@ OK, with the training set, let's get to work and remove some features.
 
 6. First split the training data into a data frame holding the predictors and the criterion using the code below.
 
-```{r, echo = TRUE}
+```{r, echo = TRUE, eval = FALSE}
 # Select predictors
 pima_train_pred <- pima_train %>% select(-XX)
 
@@ -354,7 +356,7 @@ pima_train_crit <- pima_train %>% select(diabetes) %>% pull()
 
 7. Although, this data set is rather small and rather well curated, test if there are any excessively correlated features using `cor()` and `findCorrelation()` using the code below. Are there any?
 
-```{r, echo = TRUE}
+```{r, echo = TRUE, eval = FALSE}
 # determine correlation matrix
 corr_matrix <- cor(XX_pred)
 
@@ -372,7 +374,7 @@ findCorrelation(corr_matrix)
 
 8. Now, test if there are any near-zero variance features Any of those?
 
-```{r, echo = TRUE}
+```{r, echo = TRUE, eval = FALSE}
 # find near zero variance predictors
 nearZeroVar(XX_pred)
 ```
@@ -388,7 +390,7 @@ After having retained all features in the previous section, this section explore
 
 9. Fit the `glm` to the training data.
 
-```{r, echo = TRUE}
+```{r, echo = TRUE, eval = FALSE}
 # fit regression
 pima_glm <- train(diabetes ~ .,
                 data = XX,
@@ -405,7 +407,7 @@ pima_glm <- train(diabetes ~ .,
 
 10. Evaluate feature importance using `varImp()`. The function will show importance on a scale from 0 (least important feature) to 100 (most important feature). You can set `scale = TRUE` to see absolute importance measures in t-values.
 
-```{r, echo = TRUE}
+```{r, echo = TRUE, eval = FALSE}
 # determine variable importance
 varimp_glm <- varImp(XX)
 
@@ -431,7 +433,7 @@ plot(varimp_glm)
 
 11. Fit the glm a second time using only the four best features and store the result in a different fit object.
 
-```{r, echo = TRUE}
+```{r, echo = TRUE, eval = FALSE}
 # fit glm with best four features
 pima_glm4 = train(diabetes ~ XX + YY + ZZ + AA,
                 data = XX,
@@ -447,7 +449,7 @@ pima_glm4 = train(diabetes ~ glucose + mass + pregnant + pedigree,
 
 12. Using both fits, all features versus the best four, predict the criterion and evaluate the prediction using `confusionMatrix()`. Which model `glm` is better?
 
-```{r, echo = TRUE}
+```{r, echo = TRUE, eval = FALSE}
 # determine predictions for test data
 pima_glm_pred <- predict(XX, newdata = XX)
 pima_glm4_pred <- predict(XX, newdata = XX)
@@ -525,7 +527,7 @@ findCorrelation(corr_matrix)
 
 8. Remove the excessively correlated features from the training predictor set.
 
-```{r, echo = TRUE}
+```{r, echo = TRUE, eval = FALSE}
 # remove features
 murders_train_pred <- murders_train_pred %>% select(- XX)
 ```
@@ -545,7 +547,7 @@ nearZeroVar(murders_train_pred)
 
 10. There were plenty of excessively correlated features but no near-zero variance predictors. Bind the reduced predictor set together with the criterion into a new, clean version of the training set.
 
-```{r, echo = TRUE}
+```{r, echo = TRUE, eval = FALSE}
 # clean training set
 murders_train_clean <- murders_train_pred %>% 
   add_column(murders = XX)
@@ -561,7 +563,7 @@ murders_train_clean <- murders_train_pred %>%
 
 11. Fit a `glm` twice, once using the original training set and once using the clean training set, and store the fits in separate objects. 
 
-```{r, echo = TRUE}
+```{r, echo = TRUE, eval = FALSE}
 # fit glm with best four features
 murders_glm = train(murders ~ .,
                     data = XX,
@@ -654,7 +656,7 @@ plot(varimp_glm_pca)
 
 2. Use the computer to find a good set of features using recursive feature elimination with `rfe()`. 
 
-```{r, echo = TRUE}
+```{r, echo = TRUE, eval = FALSE}
 
 # split index
 train_index <- createDataPartition(violent_crime$ViolentCrimesPerPop, 
