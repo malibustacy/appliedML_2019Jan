@@ -11,12 +11,14 @@ knitr::opts_chunk$set(comment = NA,
                       fig.width = 6, 
                       fig.height = 6,
                       fig.align = 'center',
-                      echo = FALSE, 
-                      eval = FALSE, 
+                      echo = TRUE, 
+                      eval = TRUE, 
                       warning = FALSE,
                       message = FALSE)
 
 options(digits = 3)
+
+set.seed(100)
 ```
 
 ```{r, echo = FALSE, fig.align = 'center', eval = TRUE, out.width = "100%"}
@@ -617,7 +619,7 @@ It's time to fit an optimized regression model with a Ridge penalty!
 
 ```{r, echo = TRUE}
 # Vector of lambda values to try
-lambda_vec <- 10 ^ -(seq(-3, 3, length = 100))
+lambda_vec <- 10 ^ -(seq(-4, 4, length = 100))
 ```
 
 2. Fit a ridge regression model predicting `Salary` as a function of all features
@@ -650,7 +652,7 @@ salary_ridge <- train(form = Salary ~ .,
                       trControl = ctrl_cv,
                       preProcess = c("center", "scale"),  # Standardise
                       tuneGrid = expand.grid(alpha = 0,  # Ridge penalty
-                                            lambda = lambda_vec))
+                                             lambda = lambda_vec))
 ```
 
 3. Print your `salary_ridge` object what do you see?
@@ -702,7 +704,7 @@ It's time to fit an optimized regression model with a Lasso penalty!
 ```{r, echo = TRUE}
 # Determine possible values of lambda
 
-lambda_vec <- 10 ^ seq(from = -3, to = 3, length = 100)
+lambda_vec <- 10 ^ seq(from = -4, to = 4, length = 100)
 ```
 
 2. Fit a lasso regression model predicting `Salary` as a function of all features
@@ -777,7 +779,7 @@ coef(salary_lasso$finalModel,
 ```{r}
 # Yep!
 
-# I see that RBI, CAtBat, CHits and Errors are all removed!
+# I see that many features are now removed!
 ```
 
 ## F - Decision Tree
@@ -858,6 +860,11 @@ plot(as.party(salary_rpart$finalModel))
 
 
 7. How do the nodes in the tree compare to the coefficients you found in your regression analyses? Do you see similarities or differences?
+
+```{r}
+# Actually, the tree just has one root and no nodes! This is due to the optimal complexity parameter being so high.
+```
+
 
 ## G - Random Forests
 
@@ -948,6 +955,9 @@ salary_resamples <- resamples(list(glm = salary_glm,
 
 ```{r}
 # Print summaries of cross-validation accuracy 
+
+# I see below that the random forest model has the lowest mean MAE, so I
+#  would expect it to be the best model in the true test data
 summary(salary_resamples)
 ```
 
@@ -980,12 +990,12 @@ glm_pred <- predict(XXX, newdata = XXX)
 glm_pred <- predict(salary_glm, newdata = hitters_test)
 ```
 
-3. Now do the same with your ridge, lasso, decision tree, and random forest models to get the objects `ridge_pred`, `lasso_pred`, `dt_pred` and `rf_pred`
+3. Now do the same with your ridge, lasso, decision tree, and random forest models to get the objects `ridge_pred`, `lasso_pred`, `rpart_pred` and `rf_pred`
 
 ```{r, eval = FALSE, echo = TRUE}
 ridge_pred <- predict(XXX, newdata = XXX)
 lasso_pred <- predict(XXX, newdata = XXX)
-dt_pred <- predict(XXX, newdata = XXX)
+rpart_pred <- predict(XXX, newdata = XXX)
 rf_pred <- predict(XXX, newdata = XXX)
 ```
 
@@ -995,7 +1005,7 @@ rf_pred <- predict(XXX, newdata = XXX)
 
 ridge_pred <- predict(salary_ridge, newdata = hitters_test)
 lasso_pred <- predict(salary_lasso, newdata = hitters_test)
-dt_pred <- predict(salary_rpart, newdata = hitters_test)
+rpart_pred <- predict(salary_rpart, newdata = hitters_test)
 rf_pred <- predict(salary_rf, newdata = hitters_test)
 ```
 
@@ -1024,7 +1034,7 @@ postResample(pred = lasso_pred,
              obs = hitters_test$Salary)
 
 # Prediction error for decision trees
-postResample(pred = dt_pred, 
+postResample(pred = rpart_pred, 
              obs = hitters_test$Salary)
 
 # Prediction error for random forests
@@ -1033,14 +1043,16 @@ postResample(pred = rf_pred,
 
 ```
 
-5. Which of your models had the best performance in the true training data?
 
-```{r}
-# Random forests had the lowest MAE!
-
- #   RMSE Rsquared      MAE 
- # 237.934    0.633  153.482 
+```{r, echo = FALSE}
+x <- postResample(pred = rf_pred, 
+             obs = hitters_test$Salary)
 ```
+
+
+5. Which of your models had the best performance in the true test data?
+
+*Random forests had the lowest test MAE of* `r x[3]`
 
 6. How close were your models' true prediction error to the values you estimated in the previous section when you ran `resamples()`?
 
