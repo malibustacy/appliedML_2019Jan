@@ -12,8 +12,8 @@ knitr::opts_chunk$set(comment = NA,
                       fig.width = 6, 
                       fig.height = 6,
                       fig.align = 'center',
-                      echo = FALSE, 
-                      eval = FALSE, 
+                      echo = TRUE, 
+                      eval = TRUE, 
                       warning = FALSE,
                       message = FALSE)
 
@@ -115,6 +115,7 @@ names(data_train) # Print the names
 
 # In this case, I will set method = "none" to fit to 
 #  the entire dataset without any fancy methods
+#  such as cross-validation
 
 train_control <- trainControl(method = "none") 
 
@@ -265,10 +266,6 @@ names(college_train)
 View(XXX)
 ```
 
-```{r}
-View(college_train)
-```
-
 9. We need to do a little bit of data cleaning before starting. Specifically, we need to convert all character columns to factors: Do this by running the following code:
 
 ```{r, echo = TRUE}
@@ -284,7 +281,8 @@ In `caret`, we always need to define computational nuances of training using the
 
 ```{r}
 # Set training resampling method to "none" to keep everything super simple
-#   for demonstration purposes
+#  for demonstration purposes. Note that you would almost never
+#  do this for a real prediction task!
 
 ctrl_none <- trainControl(method = "none") 
 ```
@@ -767,6 +765,13 @@ summary(Private_glm)
 glm_fit <- predict(XXX)
 ```
 
+```{r}
+# Get fitted values from the Private_glm object
+
+glm_fit <- predict(Private_glm)
+```
+
+
 2. Print your `glm_fit` object - what are these values? Do they look reasonable?
 
 ```{r}
@@ -796,9 +801,21 @@ confusionMatrix(data = glm_fit,        # This is the prediction!
 
 4. Look at the results, what is the overall accuracy of the model? How do you interpret this?
 
+```{r}
+# The overall accuracy is 0.942. Across all cases, the model fits the true class values 94.2% of the time
+```
+
 5. What is the sensitivity? How do you interpret this number?
 
+```{r}
+# The sensitivity is 0.893. Of those collges that truly are private, the model fits are correct 89.3% of the time
+```
+
 6. What is the specificity? How do you interpret this number?
+
+```{r}
+# The sensitivity is 0.963. Of those collges that truly are not private, the model fits are correct 96.3% of the time
+```
 
 7. To visualize the accuracy of your classification models, use the following code to create a bar plot:
 
