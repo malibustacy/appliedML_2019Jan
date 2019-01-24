@@ -226,19 +226,19 @@ twitter = twitter %>% mutate_if(is.logical, as.numeric)
 
 # ---- create partition
 
-set.seed(100)
-
-# trim to 4000
-twitter_sel = (twitter[sample(1:nrow(twitter)),])[sample(5000),]
-
-# split
-train_index = createDataPartition(twitter_sel$gender, list = FALSE, p = .4998)
-twitter_train = twitter_sel %>% slice(train_index)
-twitter_test = twitter_sel %>% slice(-train_index)
-
-# save
-write_csv(twitter_train,'_sessions/1_Data/tweets_train.csv')
-write_csv(twitter_test,'_sessions/Models/competition2/1_Data/tweets_test.csv')
+# set.seed(100)
+# 
+# # trim to 4000
+# twitter_sel = (twitter[sample(1:nrow(twitter)),])[sample(5000),]
+# 
+# # split
+# train_index = createDataPartition(twitter_sel$gender, list = FALSE, p = .4998)
+# twitter_train = twitter_sel %>% slice(train_index)
+# twitter_test = twitter_sel %>% slice(-train_index)
+# 
+# # save
+# write_csv(twitter_train,'_sessions/1_Data/tweets_train.csv')
+# write_csv(twitter_test,'_sessions/Models/competition2/1_Data/tweets_test.csv')
 
 
 cat(paste0('|',names(twitter_train),'||\n'),sep='')

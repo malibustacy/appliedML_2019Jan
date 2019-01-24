@@ -28,7 +28,7 @@ knitr::include_graphics("image/twitter.gif")
 
 ### Overview
 
-Demonstrate your machine-learning, jedi-knight skills in this second model competition. Predict gender from a tweeter's meta information and win lots of &#127851;&#127851;&#127851; and a hard copy of Kuhn's [Applied Predictive Modeling](https://www.springer.com/de/book/9781461468486)
+Demonstrate your machine-learning-jedi-knight skills in this second model competition. Predict `gender` from a tweeter's meta information and win lots of &#127851;&#127851;&#127851; and a hard copy of Kuhn's [Applied Predictive Modeling](https://www.springer.com/de/book/9781461468486)
 
 
 ### Datasets
@@ -134,7 +134,7 @@ tweets <- tweets %>% mutate_if(is.character, as.factor)
 
 2. Entering the competition grants you a chance to win lots of &#127851;&#127851;&#127851; and a hard copy of Kuhn's [Applied Predictive Modeling](https://www.springer.com/de/book/9781461468486).
 
-3. To enter the competition, you must submit no more, no less than one caret `train`-object (result of the `train()`-function) containing your candidate model. To submit the model, first save your model as an `.RDS`-file named `yourname_pseudonym_train.RDS`, with `yourname` replaced by your real name and `pseudonym` replaced by a pseudonym of your choice. See the code below.
+3. To enter the competition, you must submit no more, no less than one caret `train`-object (result of the `train()` function) containing your candidate model. To submit the model, first save your model as an `.RDS`-file named `yourname_pseudonym_train.RDS`, with `yourname` replaced by your real name and `pseudonym` replaced by a pseudonym of your choice. See the code below.
 
 ```{r}
 # save train obect as .RDS
@@ -160,7 +160,8 @@ saveRDS(my_train,'1_Data/myname_mypseudonym_train.RDS')
 </table>
 </div>
 
-5. Use any weapon in your arsenal (or `caret`'s arsenal). Feel free to try different models, use different tuning parameter settings or preprocessing methods, make use of all or some variables. Whatever may lead to the highest prediction `Accuracy`.
+5. Use any weapon in your arsenal (or `caret`'s arsenal). Feel free to try different models, use different tuning parameter settings or preprocessing methods, make use of all or some variables. Whatever may lead to the highest prediction `Accuracy`. Make sure to look at the [**course materials**](https://therbootcamp.github.io/appliedML_2019Jan/) for help. 
 
 6. In order to be able to evaluate the models refrain from any manipulation (or engineering) of features other than those accessible via the `preProcess` argument in the `train()` function.
 
+7. If you run into problems, feel free to ask us for help (<a href="mailto:therbootcamp.com?subject=Help me"><b>mail</b></a>). However, we won’t give you much modeling advice.

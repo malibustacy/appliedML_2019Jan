@@ -133,7 +133,7 @@ $(document).ready(function () {
 <h2></h2>
 <div id="overview" class="section level3">
 <h3>Overview</h3>
-<p>Demonstrate your machine-learning, jedi-knight skills in this second model competition. Predict gender from a tweeter’s meta information and win lots of 🍫🍫🍫 and a hard copy of Kuhn’s <a href="https://www.springer.com/de/book/9781461468486">Applied Predictive Modeling</a></p>
+<p>Demonstrate your machine-learning-jedi-knight skills in this second model competition. Predict <code>gender</code> from a tweeter’s meta information and win lots of 🍫🍫🍫 and a hard copy of Kuhn’s <a href="https://www.springer.com/de/book/9781461468486">Applied Predictive Modeling</a></p>
 </div>
 <div id="datasets" class="section level3">
 <h3>Datasets</h3>
@@ -307,7 +307,7 @@ tweets &lt;- tweets %&gt;% mutate_if(is.character, as.factor)</code></pre>
 <ol style="list-style-type: decimal">
 <li><p>The goal of the competition is to predict with maximal <code>Accuracy</code> whether a twitter user is <code>'female'</code> or <code>'male'</code>.</p></li>
 <li><p>Entering the competition grants you a chance to win lots of 🍫🍫🍫 and a hard copy of Kuhn’s <a href="https://www.springer.com/de/book/9781461468486">Applied Predictive Modeling</a>.</p></li>
-<li><p>To enter the competition, you must submit no more, no less than one caret <code>train</code>-object (result of the <code>train()</code>-function) containing your candidate model. To submit the model, first save your model as an <code>.RDS</code>-file named <code>yourname_pseudonym_train.RDS</code>, with <code>yourname</code> replaced by your real name and <code>pseudonym</code> replaced by a pseudonym of your choice. See the code below.</p></li>
+<li><p>To enter the competition, you must submit no more, no less than one caret <code>train</code>-object (result of the <code>train()</code> function) containing your candidate model. To submit the model, first save your model as an <code>.RDS</code>-file named <code>yourname_pseudonym_train.RDS</code>, with <code>yourname</code> replaced by your real name and <code>pseudonym</code> replaced by a pseudonym of your choice. See the code below.</p></li>
 </ol>
 <pre class="r"><code># save train obect as .RDS
 saveRDS(my_train,'1_Data/myname_mypseudonym_train.RDS')</code></pre>
@@ -347,8 +347,9 @@ Accuracy
 </table>
 </div>
 <ol start="5" style="list-style-type: decimal">
-<li><p>Use any weapon in your arsenal (or <code>caret</code>’s arsenal). Feel free to try different models, use different tuning parameter settings or preprocessing methods, make use of all or some variables. Whatever may lead to the highest prediction <code>Accuracy</code>.</p></li>
+<li><p>Use any weapon in your arsenal (or <code>caret</code>’s arsenal). Feel free to try different models, use different tuning parameter settings or preprocessing methods, make use of all or some variables. Whatever may lead to the highest prediction <code>Accuracy</code>. Make sure to look at the <a href="https://therbootcamp.github.io/appliedML_2019Jan/"><strong>course materials</strong></a> for help.</p></li>
 <li><p>In order to be able to evaluate the models refrain from any manipulation (or engineering) of features other than those accessible via the <code>preProcess</code> argument in the <code>train()</code> function.</p></li>
+<li><p>If you run into problems, feel free to ask us for help (<a href="mailto:therbootcamp.com?subject=Help me"><b>mail</b></a>). However, we won’t give you much modeling advice.</p></li>
 </ol>
 </div>
 </div>
