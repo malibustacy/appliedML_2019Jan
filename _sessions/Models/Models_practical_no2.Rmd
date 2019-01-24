@@ -134,7 +134,7 @@ tweets <- tweets %>% mutate_if(is.character, as.factor)
 
 2. Entering the competition grants you a chance to win lots of &#127851;&#127851;&#127851; and a hard copy of Kuhn's [Applied Predictive Modeling](https://www.springer.com/de/book/9781461468486).
 
-3. To enter the competition, you must submit no more, no less than one caret `train`-object containing your candidate model. To submit the model, first save your model as an `.RDS`-file named `yourname_pseudonym_train.RDS`, with `yourname` replaced by your real name and `pseudonym` replaced by a pseudonym of your choice. See the code below.
+3. To enter the competition, you must submit no more, no less than one caret `train`-object (result of the `train()`-function) containing your candidate model. To submit the model, first save your model as an `.RDS`-file named `yourname_pseudonym_train.RDS`, with `yourname` replaced by your real name and `pseudonym` replaced by a pseudonym of your choice. See the code below.
 
 ```{r}
 # save train obect as .RDS
