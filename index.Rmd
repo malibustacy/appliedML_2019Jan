@@ -2,22 +2,22 @@
 title: "Applied Machine Learning with R"
 author: "
       <a href='https://therbootcamp.github.io'>
-        <i class='fas fa-home' style='font-size:1.1em;'></i>
+        <i class='fas fa-home' style='font-size:1em;'></i>
       </a>
       <a href='https://therbootcamp.github.io/appliedML_2019Jan/'>
-        <i class='fas fa-clock' style='font-size:1.1em;' ></i>
+        <i class='fas fa-clock' style='font-size:1em;' ></i>
       </a>
       <a href='mailto:therbootcamp@gmail.com'>
-        <i class='fas fa-envelope' style='font-size: 1.1em;'></i>
+        <i class='fas fa-envelope' style='font-size: 1em;'></i>
       </a>
       <a href='https://www.linkedin.com/company/basel-r-bootcamp/'>
-        <i class='fab fa-linkedin' style='font-size: 1.1em;'></i>
+        <i class='fab fa-linkedin' style='font-size: 1em;'></i>
       </a>
       <a href='https://therbootcamp.github.io'>
-        <font style='font-style:normal;font-size:24px;padding-left:5px'>Basel R Bootcamp</font>
+        <font style='font-style:normal;font-size:20px;padding-left:5px'>Basel R Bootcamp</font>
       </a>
       <br>
-      <img src='https://raw.githubusercontent.com/therbootcamp/therbootcamp.github.io/master/_sessions/_image/by-sa.png' style= 'height:18px;vertical-align:baseline'/><font style='font-style:normal;font-size:24px;padding-left:9px'>January 2019</font>
+      <img src='https://raw.githubusercontent.com/therbootcamp/therbootcamp.github.io/master/_sessions/_image/by-sa.png' style= 'height:17px;vertical-align:baseline'/><font style='font-style:normal;font-size:20px;padding-left:8px'>January 2019</font>
       "
 date: ""
 output:
