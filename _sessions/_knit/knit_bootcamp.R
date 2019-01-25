@@ -8,19 +8,19 @@ to_path = '_sessions/_pdf/'
 # htmls to be saved as pdf
 htmls = c(
   'Welcome/Welcome.html',
-  'IntroToR/IntroToR.html',
-  'Data/Data.html',
-  'Data/Data_practical.html',
-  'Wrangling/Wrangling.html',
-  'Wrangling/Wrangling_practical.html',
-  'Analysing/Analysing.html',
-  'Analysing/Analysing_practical.html',
-  'Plotting/Plotting.html',
-  'Plotting/Plotting_practical.html',
-  'CaseStudies/Financial_Data_Case_Study.html',
-  'CaseStudies/Clinical_Data_Case_Study.html',
-  'NextSteps/NextSteps.html'
-)
+  'WhatIsML/WhatIsML.html',
+  'RforML/RforML.html',
+  'Fitting/Fitting.html',
+  'Fitting/Fitting_practical.html',
+  'Prediction/Prediction.html',
+  'Prediction/Prediction_practical.html',
+  'Optimization/Optimization.html',
+  'Optimization/Optimization_practical.html',
+  'Features/Features.html',
+  'Features/Features_practical.html',
+  'Models/Models.html',
+  'LookAhead/LookAhead.html'
+  )
 
 # get pdf names
 pdfs = stringr::str_replace_all(
@@ -39,7 +39,7 @@ for(i in 1:length(htmls)){
 }
 
 # zip files
-zip(paste0(to_path, 'Intro2DataScienceWithR_pdfs.zip'),
+zip(paste0(to_path, 'AppliedMLWithR_pdfs.zip'),
     c(paste0(to_path, pdfs), paste0(to_path, 'README.rtf'))
     )
 

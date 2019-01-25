@@ -15,6 +15,8 @@ output: html_document
 
 #### [**Data sets**](https://raw.githubusercontent.com/therbootcamp/appliedML_2019Jan/master/1_Data/baselrbootcamp_appliedML_data.zip)
 
+#### [**PDFs**](https://raw.githubusercontent.com/therbootcamp/appliedML_2019Jan/master/_sessions/_pdf/AppliedMLWithR_pdfs.zip)
+
 
 
 <!-- #### [**PDFs TO UPDATE**](https://raw.githubusercontent.com/therbootcamp/Intro2DataScience_2018Oct/master/_sessions/_pdf/Intro2DataScienceWithR_pdfs.zip) -->
