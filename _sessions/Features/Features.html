@@ -12,7 +12,7 @@
 class: center, middle, inverse, title-slide
 
 # Features
-### Applied Machine Learning with R<br> <a href='https://therbootcamp.github.io'> Basel R Bootcamp </a> <br> <a href='https://therbootcamp.github.io'> <i class='fas fa-clock' style='font-size:.9em;'></i> </a>  <a href='https://therbootcamp.github.io'> <i class='fas fa-home' style='font-size:.9em;' ></i> </a>  <a href='mailto:therbootcamp@gmail.com'> <i class='fas fa-envelope' style='font-size: .9em;'></i> </a>  <a href='https://www.linkedin.com/company/basel-r-bootcamp/'> <i class='fab fa-linkedin' style='font-size: .9em;'></i> </a>
+### Applied Machine Learning with R<br> <a href='https://therbootcamp.github.io'> Basel R Bootcamp </a> <br> <a href='https://therbootcamp.github.io/appliedML_2019Jan/'> <i class='fas fa-clock' style='font-size:.9em;'></i> </a>  <a href='https://therbootcamp.github.io'> <i class='fas fa-home' style='font-size:.9em;' ></i> </a>  <a href='mailto:therbootcamp@gmail.com'> <i class='fas fa-envelope' style='font-size: .9em;'></i> </a>  <a href='https://www.linkedin.com/company/basel-r-bootcamp/'> <i class='fab fa-linkedin' style='font-size: .9em;'></i> </a>
 ### January 2019
 
 ---
@@ -34,7 +34,7 @@ layout: true
     &lt;/a&gt;
     &lt;a href="https://therbootcamp.github.io/"&gt;
       &lt;font color="#7E7E7E"&gt;
-       Applied Machine Learning with R | January 2010
+       Applied Machine Learning with R | January 2019
       &lt;/font&gt;
     &lt;/a&gt;
     &lt;/span&gt;
@@ -181,15 +181,15 @@ lm variable importance
 
           Overall
 age       100.000
-food       46.729
-alcohol    27.929
-happiness  11.855
-tattoos     9.551
-children    5.978
-height      1.845
-fitness     0.274
-weight      0.214
-datause     0.000
+food       44.417
+alcohol    23.877
+happiness  11.692
+children    3.805
+height      3.609
+tattoos     3.371
+fitness     1.714
+datause     0.058
+weight      0.000
 ```
 
 ]
@@ -239,15 +239,15 @@ Outer resampling method: Bootstrapped (25 reps)
 
 Resampling performance over subset size:
 
- Variables  RMSE Rsquared   MAE RMSESD RsquaredSD  MAESD Selected
-         3 0.374    0.861 0.294 0.0144     0.0147 0.0119         
-         4 0.372    0.862 0.292 0.0135     0.0136 0.0115         
-         5 0.371    0.863 0.291 0.0148     0.0142 0.0124         
-        10 0.371    0.863 0.291 0.0147     0.0144 0.0120        *
-        14 0.371    0.863 0.290 0.0147     0.0145 0.0120         
+ Variables  RMSE Rsquared   MAE RMSESD RsquaredSD   MAESD Selected
+         3 0.381    0.857 0.300 0.0135     0.0109 0.01148         
+         4 0.377    0.860 0.296 0.0135     0.0114 0.01105        *
+         5 0.378    0.859 0.296 0.0128     0.0105 0.01053         
+        10 0.380    0.858 0.297 0.0123     0.0104 0.01009         
+        14 0.381    0.857 0.298 0.0123     0.0104 0.00988         
 
-The top 5 variables (out of 10):
-   age, food, alcohol, happiness, tattoos
+The top 4 variables (out of 4):
+   age, food, alcohol, happiness
 ```
 
 ]
