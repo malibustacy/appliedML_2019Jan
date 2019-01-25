@@ -1,10 +1,37 @@
 ---
 title: "Prediction"
-subtitle: "With regression, decision trees, and random forests"
-author: "Applied Machine Learning with R<br/><a href='https://therbootcamp.github.io'>www.therbootcamp.com</a><br/><a href='https://twitter.com/therbootcamp'>@therbootcamp</a>"
+subtitle: ""
+author: "
+<table style='table-layout:fixed;width:100%;border:0;padding:0;margin:0'><col width='10%'><col width='10%'>
+  <tr style='border:none'>
+    <td style='display:block;width:100%;text-align:left;vertical-align:bottom;padding:0;margin:0;border:none' nowrap>
+      <font style='font-style:normal'>Applied Machine Learning with R</font>
+      <br>
+      <a href='https://therbootcamp.github.io/appliedML_2019Jan/'>
+        <i class='fas fa-clock' style='font-size:.9em;' ></i>
+      </a>
+      <a href='https://therbootcamp.github.io'>
+        <i class='fas fa-home' style='font-size:.9em;'></i>
+      </a>
+      <a href='mailto:therbootcamp@gmail.com'>
+        <i class='fas fa-envelope' style='font-size: .9em;'></i>
+      </a>
+      <a href='https://www.linkedin.com/company/basel-r-bootcamp/'>
+        <i class='fab fa-linkedin' style='font-size: .9em;'></i>
+      </a>
+            <a href='https://therbootcamp.github.io'>
+        <font style='font-style:normal'>Basel R Bootcamp</font>
+      </a>&nbsp;&nbsp;
+    </td>
+    <td style='width:100%;vertical-align:bottom;text-align:right;padding:0;margin:0;border:none'>
+      <img src='https://raw.githubusercontent.com/therbootcamp/therbootcamp.github.io/master/_sessions/_image/by-sa.png' style='height:15px;width:80px'/>
+    </td>
+  </tr>
+</table>"
 output:
   html_document:
     css: practical.css
+    self_contained: no
 ---
 
 ```{r setup, echo = FALSE}
@@ -12,17 +39,18 @@ knitr::opts_chunk$set(comment = NA,
                       fig.width = 6, 
                       fig.height = 6,
                       fig.align = 'center',
-                      echo = FALSE, 
-                      eval = FALSE, 
+                      echo = TRUE, 
+                      eval = TRUE, 
                       warning = FALSE,
                       message = FALSE)
 
 options(digits = 3)
 ```
 
-```{r, echo = FALSE, fig.align = 'center', eval = TRUE, out.width = "90%", fig.cap="Source: Medium.com"}
-knitr::include_graphics("https://cdn-images-1.medium.com/max/1200/0*F0y1bmOEzCFCcPE_")
-```
+<p align="center">
+<img width="100%" src="https://cdn-images-1.medium.com/max/1200/0*F0y1bmOEzCFCcPE_" margin=0><br>
+<font style="font-size:10px">from [Medium.com](https://Medium.com/)</font>
+</p>
 
 ## {.tabset}
 

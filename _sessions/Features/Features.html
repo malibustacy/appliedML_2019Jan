@@ -3,7 +3,7 @@
   <head>
     <title>Features</title>
     <meta charset="utf-8">
-    <meta name="author" content="Applied Machine Learning with R www.therbootcamp.com @therbootcamp" />
+    <meta name="author" content="Applied Machine Learning with R   Basel R Bootcamp" />
     <link href="libs/remark-css/default.css" rel="stylesheet" />
     <link rel="stylesheet" href="baselrbootcamp.css" type="text/css" />
   </head>
@@ -12,7 +12,7 @@
 class: center, middle, inverse, title-slide
 
 # Features
-### Applied Machine Learning with R<br/><a href='https://therbootcamp.github.io'>www.therbootcamp.com</a><br/><a href='https://twitter.com/therbootcamp'><span class="citation">@therbootcamp</span></a>
+### Applied Machine Learning with R<br> <a href='https://therbootcamp.github.io'> Basel R Bootcamp </a> <br> <a href='https://therbootcamp.github.io'> <i class='fas fa-clock' style='font-size:.9em;'></i> </a>  <a href='https://therbootcamp.github.io'> <i class='fas fa-home' style='font-size:.9em;' ></i> </a>  <a href='mailto:therbootcamp@gmail.com'> <i class='fas fa-envelope' style='font-size: .9em;'></i> </a>  <a href='https://www.linkedin.com/company/basel-r-bootcamp/'> <i class='fab fa-linkedin' style='font-size: .9em;'></i> </a>
 ### January 2019
 
 ---
@@ -20,11 +20,25 @@ class: center, middle, inverse, title-slide
 
 layout: true
 
-&lt;div class="my-footer"&gt;&lt;span&gt;
-&lt;a href="https://therbootcamp.github.io/"&gt;&lt;font color="#7E7E7E"&gt;Applied Machine Learning with R, January 2019&lt;/font&gt;&lt;/a&gt;
-&amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp;&amp;emsp;
-&lt;a href="https://therbootcamp.github.io/"&gt;&lt;font color="#7E7E7E"&gt;www.therbootcamp.com&lt;/font&gt;&lt;/a&gt;
-&lt;/span&gt;&lt;/div&gt; 
+&lt;div class="my-footer"&gt;
+  &lt;span style="text-align:center"&gt;
+    &lt;span&gt; 
+      &lt;img src="https://raw.githubusercontent.com/therbootcamp/therbootcamp.github.io/master/_sessions/_image/by-sa.png" height=14 style="vertical-align: middle"/&gt;
+    &lt;/span&gt;
+    &lt;a href="https://therbootcamp.github.io/"&gt;
+      &lt;span style="padding-left:82px"&gt; 
+        &lt;font color="#7E7E7E"&gt;
+          www.therbootcamp.com
+        &lt;/font&gt;
+      &lt;/span&gt;
+    &lt;/a&gt;
+    &lt;a href="https://therbootcamp.github.io/"&gt;
+      &lt;font color="#7E7E7E"&gt;
+       Applied Machine Learning with R | January 2010
+      &lt;/font&gt;
+    &lt;/a&gt;
+    &lt;/span&gt;
+  &lt;/div&gt; 
 
 ---
 
@@ -167,15 +181,15 @@ lm variable importance
 
           Overall
 age       100.000
-food       47.714
-alcohol    27.108
-happiness  11.606
-tattoos     7.243
-children    4.060
-height      1.748
-datause     0.667
-fitness     0.423
-weight      0.000
+food       46.729
+alcohol    27.929
+happiness  11.855
+tattoos     9.551
+children    5.978
+height      1.845
+fitness     0.274
+weight      0.214
+datause     0.000
 ```
 
 ]
@@ -225,14 +239,14 @@ Outer resampling method: Bootstrapped (25 reps)
 
 Resampling performance over subset size:
 
- Variables  RMSE Rsquared   MAE RMSESD RsquaredSD   MAESD Selected
-         3 0.369    0.867 0.292 0.0120    0.01083 0.00990         
-         4 0.368    0.868 0.289 0.0117    0.01085 0.01006         
-         5 0.367    0.869 0.288 0.0106    0.00989 0.00921        *
-        10 0.368    0.867 0.290 0.0116    0.01044 0.00967         
-        14 0.369    0.867 0.290 0.0116    0.01029 0.00987         
+ Variables  RMSE Rsquared   MAE RMSESD RsquaredSD  MAESD Selected
+         3 0.374    0.861 0.294 0.0144     0.0147 0.0119         
+         4 0.372    0.862 0.292 0.0135     0.0136 0.0115         
+         5 0.371    0.863 0.291 0.0148     0.0142 0.0124         
+        10 0.371    0.863 0.291 0.0147     0.0144 0.0120        *
+        14 0.371    0.863 0.290 0.0147     0.0145 0.0120         
 
-The top 5 variables (out of 5):
+The top 5 variables (out of 10):
    age, food, alcohol, happiness, tattoos
 ```
 
